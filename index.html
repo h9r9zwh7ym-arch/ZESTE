@@ -560,6 +560,302 @@ svg{min-width:0;min-height:0}
 #toast span{flex:1;min-width:0}
 .sheet-head{transition:background .25s,box-shadow .25s}
 .sheet-head.scrolled{background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 .5px 0 var(--sep)}
+
+/* ===== V7 : ta version, lexique, sans alcool, vie ===== */
+.adj{padding:6px 16px}
+.adj-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+.adj-row+.adj-row{border-top:.5px solid var(--sep)}
+.adj-l b{display:block;font-size:16px}
+.adj-l span{font-size:13px;color:var(--label2)}
+.adj-dots{display:flex;align-items:center;gap:2px;flex:none;position:relative}
+.adj-dots::before{content:"";position:absolute;left:14px;right:14px;top:50%;height:2px;margin-top:-1px;background:var(--fill);border-radius:1px}
+.adj-dots button{width:28px;height:34px;display:grid;place-items:center;position:relative}
+.adj-dots button i{width:10px;height:10px;border-radius:5px;background:var(--bg2);box-shadow:inset 0 0 0 2px var(--label3);transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .2s,box-shadow .2s}
+.adj-dots button.zero i{width:4px;height:12px;border-radius:2px;box-shadow:none;background:var(--label3)}
+.adj-dots button.on i{width:18px;height:18px;border-radius:9px;background:var(--tint);box-shadow:0 2px 8px color-mix(in srgb,var(--tint) 45%,transparent)}
+.adj-dots button.on.zero i{width:18px;height:18px;border-radius:9px;background:var(--label2)}
+.adj-dots button.pop i{animation:spop .45s cubic-bezier(.3,1.8,.5,1)}
+.delta{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;padding:1px 5px;border-radius:6px;vertical-align:1px;animation:spop .4s cubic-bezier(.3,1.8,.5,1)}
+.delta.up{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green)}
+.delta.down{background:color-mix(in srgb,var(--orange) 18%,transparent);color:var(--orange)}
+.ing-line .q{min-width:88px}
+.bm-mine{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--tint);background:var(--tint-bg);border-radius:12px;padding:5px 10px;margin-top:14px}
+.bm-mine svg{width:16px;height:16px}
+.fb-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.fb-chips .chip{animation:qzin .4s cubic-bezier(.2,.8,.2,1) both}
+.fb-chips .chip:nth-child(2){animation-delay:.04s}.fb-chips .chip:nth-child(3){animation-delay:.08s}.fb-chips .chip:nth-child(4){animation-delay:.12s}.fb-chips .chip:nth-child(5){animation-delay:.16s}.fb-chips .chip:nth-child(6){animation-delay:.2s}.fb-chips .chip:nth-child(7){animation-delay:.24s}
+
+.term{font:inherit;color:inherit;background:none;padding:0;text-decoration:underline dotted;text-decoration-color:var(--tint);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:help}
+.steps li.done .term{text-decoration-color:var(--label3)}
+#pop{position:fixed;z-index:150;background:var(--bg2);color:var(--label);border-radius:16px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.25),0 0 0 .5px var(--sep);font-size:14px;line-height:1.4;opacity:0;transform:scale(.9);pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.3,1.5,.5,1)}
+#pop.show{opacity:1;transform:none;pointer-events:auto}
+#pop.below{transform-origin:var(--ax) 0}#pop.above{transform-origin:var(--ax) 100%}
+#pop b{display:block;font-size:15px;margin-bottom:3px;color:var(--tint)}
+#pop span{color:var(--label2)}
+#pop::before{content:"";position:absolute;left:var(--ax);width:12px;height:12px;background:var(--bg2);margin-left:-6px;transform:rotate(45deg)}
+#pop.below::before{top:-5px}#pop.above::before{bottom:-5px}
+
+.seg.small4 button{font-size:13px}
+.na-banner{margin:4px 16px 4px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--green) 16%,var(--bg2)),var(--bg2));box-shadow:var(--shadow)}
+.na-banner b{display:block;font-family:var(--serif);font-size:18px}
+.na-banner span{font-size:14px;color:var(--label2)}
+
+/* segmentés : curseur qui glisse */
+.seg{isolation:isolate}
+.seg button.on{background:transparent!important;box-shadow:none!important}
+.seg-thumb{position:absolute;top:2px;bottom:2px;left:2px;border-radius:7px;background:var(--bg2);box-shadow:0 1px 3px rgba(0,0,0,.12),0 0 0 .5px rgba(0,0,0,.04);transition:transform .38s cubic-bezier(.3,1.25,.5,1),width .38s cubic-bezier(.3,1.25,.5,1);z-index:0;pointer-events:none}
+.seg button{position:relative;z-index:1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg-thumb{background:#5A544E}}
+:root[data-theme="dark"] .seg-thumb{background:#5A544E}
+/* onglets : pastille qui glisse */
+.tabbar{position:fixed}
+.tab-ind{position:absolute;top:5px;left:0;width:56px;height:30px;border-radius:15px;background:var(--tint-bg);transition:transform .45s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
+.tabbar button{position:relative;z-index:1}
+
+/* feuilles : l'app recule comme sur iOS */
+body{transition:background .4s}
+body.sheet-open{background:#000}
+#app,.tabbar{transition:transform .45s cubic-bezier(.2,.9,.25,1),border-radius .45s,filter .45s;transform-origin:50% 0}
+body.sheet-open #app{transform:scale(.93) translateY(calc(env(safe-area-inset-top,0px) + 10px));border-radius:14px;overflow:hidden;filter:brightness(.85)}
+body.sheet-open .tabbar{transform:translateY(100%)}
+.backdrop{background:rgba(0,0,0,.18)}
+
+/* verres vivants */
+svg.live .wave{animation:wave 2.6s linear infinite}
+@keyframes wave{to{transform:translateX(32px)}}
+svg.pour .ice>g.cube{animation:drop .6s cubic-bezier(.3,1.35,.55,1) var(--d) both,icebob 4.5s ease-in-out calc(var(--d) + .7s + var(--b)) infinite}
+svg.live:not(.pour) .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) infinite}
+@keyframes icebob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+svg.pour .ice>g{animation:none}
+svg.pour .ice>circle{animation:drop .6s cubic-bezier(.3,1.35,.55,1) .8s both}
+svg.live .fz circle{animation:bub 2.6s ease-in infinite;animation-delay:calc(var(--i,0) * .3s)}
+svg.live .fz circle:nth-child(2n){animation-duration:3.1s;animation-delay:.6s}
+svg.live .fz circle:nth-child(3n){animation-duration:2.2s;animation-delay:1.1s}
+svg.live .garn{transform-box:fill-box;transform-origin:50% 100%}
+.jig svg{animation:jig .7s cubic-bezier(.3,1.6,.5,1)!important}
+@keyframes jig{0%{transform:none}20%{transform:rotate(-7deg) scale(1.04)}45%{transform:rotate(5deg)}70%{transform:rotate(-2deg)}100%{transform:none}}
+.hg,.dg{cursor:pointer}
+.bubbles{position:fixed;inset:0;pointer-events:none;z-index:120}
+.bubbles i{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);background:rgba(255,255,255,.18);animation:bubup 1.2s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes bubup{0%{transform:translate(0,0) scale(.4);opacity:0}20%{opacity:1}100%{transform:translate(var(--dx),-120px) scale(1);opacity:0}}
+.hero .glow,.dhero .glow{animation:glowdrift 9s ease-in-out infinite}
+@keyframes glowdrift{0%,100%{transform:scale(1)}50%{transform:scale(1.12) translateY(-8px)}}
+.tile,.duo-c,.mini{transition:transform .25s cubic-bezier(.3,1.3,.5,1)}
+@media (prefers-reduced-motion:reduce){svg.live *{animation:none!important}}
+.btn.did{background:color-mix(in srgb,var(--green) 18%,transparent)!important;color:var(--green)!important;animation:spop .45s cubic-bezier(.3,1.8,.5,1)}
+.btn.did svg{width:18px;height:18px}
+
+/* ===== Lancement ===== */
+#splash{position:fixed;inset:0;z-index:300;background:var(--bg);display:grid;place-items:center;overflow:hidden;transition:opacity .55s ease .05s}
+#splash .sp-glow{position:absolute;width:140vmax;height:140vmax;left:50%;top:44%;margin:-70vmax 0 0 -70vmax;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 42%,transparent) 0%,transparent 42%);transform:scale(.2);opacity:0;animation:spglow 1.6s cubic-bezier(.2,.8,.2,1) .5s forwards}
+@keyframes spglow{to{transform:scale(1);opacity:1}}
+.sp-stage{position:relative;display:flex;flex-direction:column;align-items:center;transform:translateY(-4vh)}
+.sp-glass{width:200px;height:auto;overflow:visible}
+.sp-draw{stroke-dasharray:100;stroke-dashoffset:100;animation:spdraw .7s cubic-bezier(.6,0,.3,1) forwards}
+.sp-draw.d2{animation-delay:.45s;animation-duration:.35s}.sp-draw.d3{animation-delay:.62s;animation-duration:.3s}
+@keyframes spdraw{to{stroke-dashoffset:0}}
+.sp-liq{transform:translateY(46px);animation:spfill 1s cubic-bezier(.25,.8,.25,1) .55s forwards}
+@keyframes spfill{0%{transform:translateY(46px) rotate(-4deg)}60%{transform:translateY(-2px) rotate(2deg)}80%{transform:translateY(1px) rotate(-.8deg)}100%{transform:none}}
+.sp-liq{transform-box:view-box;transform-origin:60px 60px}
+.sp-wave{animation:spwave 1.2s linear infinite}.sp-wave2{animation:spwave 1.6s linear infinite}
+@keyframes spwave{to{transform:translateX(30px)}}
+.sp-bub circle{opacity:0;animation:spbub 1.4s ease-in infinite}
+@keyframes spbub{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-26px);opacity:0}}
+.sp-shine{opacity:0;animation:spfade .4s ease 1.2s forwards}
+@keyframes spfade{to{opacity:1}}
+.sp-lemon{animation:splemon .8s cubic-bezier(.3,1.35,.55,1) .9s both}
+@keyframes splemon{0%{transform:translate(104px,-150px);opacity:0}25%{opacity:1}100%{transform:translate(102px,30px);opacity:1}}
+.sp-spin{animation:spspin .75s cubic-bezier(.3,1.2,.55,1) .95s both}
+@keyframes spspin{from{transform:rotate(-220deg)}to{transform:none}}
+.sp-star{opacity:0;transform:scale(0);transform-box:view-box;animation:spstar .6s cubic-bezier(.3,1.8,.5,1) forwards}
+@keyframes spstar{0%{opacity:0;transform:scale(0) rotate(-45deg)}60%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.sp-title{font-family:var(--serif);font-weight:700;font-size:52px;letter-spacing:-.01em;margin-top:6px;display:flex}
+.sp-title span{display:inline-block;opacity:0;transform:translateY(18px) scale(.8);animation:spletter .55s cubic-bezier(.3,1.5,.5,1) forwards}
+@keyframes spletter{to{opacity:1;transform:none}}
+.sp-sub{font-size:15px;color:var(--label2);font-weight:600;opacity:0;animation:vin .6s cubic-bezier(.2,.8,.2,1) 1.5s forwards}
+#splash.out{opacity:0;pointer-events:none}
+#splash.out .sp-stage{transition:transform .6s cubic-bezier(.5,0,.75,0),filter .6s;transform:translateY(-4vh) scale(2.6);filter:blur(6px)}
+
+/* ===== V10 : ambiance selon l'heure ===== */
+#app{z-index:1}
+#ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.amb-sky{position:absolute;left:0;right:0;top:0;height:64vh;opacity:0;transition:opacity 1.5s}
+:root[data-moment] .amb-sky{opacity:1}
+:root[data-moment="matin"] .amb-sky{background:linear-gradient(180deg,#FFE0C4 0%,#FDEADB 38%,rgba(242,242,247,0) 100%)}
+:root[data-moment="aprem"] .amb-sky{background:linear-gradient(180deg,#D4E8FB 0%,#E6F0FB 42%,rgba(242,242,247,0) 100%)}
+:root[data-moment="apero"] .amb-sky{background:linear-gradient(180deg,#FFC486 0%,#FFD9AE 32%,#FBE8D6 58%,rgba(242,242,247,0) 100%)}
+:root[data-moment="soir"] .amb-sky{background:linear-gradient(180deg,#E2C4EA 0%,#EEDCF1 42%,rgba(242,242,247,0) 100%)}
+:root[data-moment="nuit"] .amb-sky{background:linear-gradient(180deg,#C2CBEA 0%,#DCE1F3 42%,rgba(242,242,247,0) 100%)}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme="light"])[data-moment="matin"] .amb-sky{background:linear-gradient(180deg,#3E2430 0%,#221418 45%,rgba(0,0,0,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="aprem"] .amb-sky{background:linear-gradient(180deg,#12283E 0%,#0A1622 45%,rgba(0,0,0,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="apero"] .amb-sky{background:linear-gradient(180deg,#5A2808 0%,#361606 35%,#1A0A04 60%,rgba(0,0,0,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="soir"] .amb-sky{background:linear-gradient(180deg,#34143E 0%,#1C0A22 45%,rgba(0,0,0,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="nuit"] .amb-sky{background:linear-gradient(180deg,#0C1640 0%,#060A20 45%,rgba(0,0,0,0) 100%)}
+}
+.amb-sun{position:absolute;border-radius:50%;opacity:0;transition:opacity 1.5s;pointer-events:none}
+:root[data-moment="matin"] .amb-sun{opacity:1;width:260px;height:260px;left:-40px;top:2vh;background:radial-gradient(circle,rgba(255,236,190,.95) 0%,rgba(255,200,140,.35) 38%,rgba(255,200,140,0) 70%);animation:sunbreath 8s ease-in-out infinite}
+:root[data-moment="aprem"] .amb-sun{opacity:1;width:200px;height:200px;right:-50px;top:-40px;background:radial-gradient(circle,rgba(255,250,225,1) 0%,rgba(255,236,160,.4) 35%,rgba(255,236,160,0) 70%);animation:sunbreath 10s ease-in-out infinite}
+:root[data-moment="apero"] .amb-sun{opacity:1;width:340px;height:340px;left:calc(50% - 170px);top:14vh;background:radial-gradient(circle,rgba(255,200,110,.95) 0%,rgba(255,140,60,.45) 30%,rgba(255,120,40,0) 68%);animation:sunset 12s ease-in-out infinite}
+:root[data-moment="soir"] .amb-sun{opacity:.9;width:160px;height:160px;right:-20px;top:4vh;background:radial-gradient(circle,rgba(240,225,255,.9) 0%,rgba(200,170,240,.3) 34%,rgba(200,170,240,0) 70%)}
+:root[data-moment="nuit"] .amb-sun{opacity:1;width:120px;height:120px;right:10%;top:5vh;background:radial-gradient(circle,rgba(235,240,255,.95) 0%,rgba(180,200,255,.28) 30%,rgba(180,200,255,0) 70%)}
+@keyframes sunbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes sunset{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(10px) scale(1.06)}}
+.amb-stars{position:absolute;inset:0;opacity:0;transition:opacity 1.5s}
+:root[data-moment="nuit"] .amb-stars{opacity:1}
+:root[data-moment="soir"] .amb-stars{opacity:.45}
+.amb-stars i{position:absolute;width:var(--s);height:var(--s);border-radius:50%;background:#fff;box-shadow:0 0 4px rgba(255,255,255,.8);animation:twinkle2 3.2s ease-in-out infinite}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .amb-stars i{background:#7A86C0;box-shadow:none}}
+:root[data-theme="light"] .amb-stars i{background:#7A86C0;box-shadow:none}
+@keyframes twinkle2{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.amb-stars .shoot{position:absolute;top:8vh;left:70%;width:90px;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);opacity:0;transform:rotate(-24deg);animation:shoot 9s ease-in 3s infinite}
+@keyframes shoot{0%,88%{opacity:0;transform:translate(0,0) rotate(-24deg)}90%{opacity:1}100%{opacity:0;transform:translate(-220px,100px) rotate(-24deg)}}
+.amb-dust{position:absolute;inset:0;opacity:0;transition:opacity 1.5s}
+:root[data-moment="apero"] .amb-dust{opacity:1}
+:root[data-moment="matin"] .amb-dust{opacity:.5}
+.amb-dust i{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(255,200,120,.85);box-shadow:0 0 6px rgba(255,190,100,.9);animation:dust 11s ease-in-out infinite}
+@keyframes dust{0%{transform:translate(0,20px);opacity:0}20%{opacity:.9}80%{opacity:.6}100%{transform:translate(24px,-90px);opacity:0}}
+.mo-eyebrow{display:flex;align-items:center;gap:7px;padding-right:20px}
+.mo-ic{width:19px;height:19px;flex:none;display:grid}
+.mo-ic svg{width:100%;height:100%}
+.mo-matin{color:#E8903A}.mo-aprem{color:#E0AE20}.mo-apero{color:#F0702A}.mo-soir{color:#9A7AE0}.mo-nuit{color:#7A96F0}
+.mo-aprem .rays{transform-origin:12px 12px;animation:spin 18s linear infinite}
+.mo-matin .rays{animation:raypulse 2.6s ease-in-out infinite}
+.mo-apero svg{animation:sunset 4s ease-in-out infinite}
+.mo-nuit .tw{transform-box:fill-box;transform-origin:center;animation:twinkle2 2.2s ease-in-out infinite}.mo-nuit .tw.t2{animation-delay:1.1s}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes raypulse{0%,100%{opacity:.5}50%{opacity:1}}
+.mo-k{margin-left:auto;font-size:13px;color:var(--label2);font-weight:600;white-space:nowrap}
+
+/* accueil personnalisable */
+.home-edit{height:44px;font-size:15px;font-weight:600}
+.home-edit svg{width:17px;height:17px}
+.home-row{background:var(--bg2);position:relative}
+.hm{width:30px;height:30px;display:grid;place-items:center;color:var(--label2);flex:none}
+.hm:disabled{opacity:.2}
+.hm .chev{width:9px;height:14px}
+.chev.up{transform:rotate(-90deg)}.chev.down{transform:rotate(90deg)}
+
+/* accords mets */
+.dishes{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);gap:10px;overflow-x:auto;padding:2px 16px 8px;scrollbar-width:none}
+.dishes::-webkit-scrollbar{display:none}
+.dish{width:100px;height:94px;border-radius:18px;background:var(--bg2);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;animation:qzin .45s cubic-bezier(.2,.8,.2,1) both;transition:transform .2s cubic-bezier(.3,1.3,.5,1)}
+.dish:active{transform:scale(.94)}
+.dish .de{font-size:34px;line-height:1;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.dish:active .de{transform:scale(1.2) rotate(-8deg)}
+.dish .dn{font-size:12.5px;font-weight:600;text-align:center;line-height:1.15;padding:0 6px}
+.dish-hero{text-align:center;padding:0 24px 4px}
+.dish-e{font-size:76px;line-height:1.1;animation:spop .7s cubic-bezier(.3,1.8,.5,1) .1s both}
+.dish-hero h1{font-family:var(--serif);font-size:32px;margin:6px 0 8px}
+.dish-hero p{margin:0;color:var(--label2);font-size:16px;line-height:1.45}
+
+/* coût */
+.cost{margin:12px 16px 0;border-radius:14px;background:var(--bg2);padding:11px 14px;display:flex;gap:12px;align-items:center;box-shadow:var(--shadow)}
+.cost-ic{width:32px;height:32px;border-radius:16px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--orange) 16%,transparent);color:var(--orange)}
+.cost.ok .cost-ic{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+.cost-ic svg{width:20px;height:20px}
+.cost b{display:block;font-family:var(--rounded);font-size:17px}
+.cost span{font-size:13px;color:var(--label2)}
+.cost .link{font-size:13px;font-weight:600}
+.price-in{width:92px;border:0;background:var(--fill);border-radius:9px;padding:6px 9px;text-align:right;font-size:17px;outline:none;font-family:var(--rounded);color:var(--label)}
+
+/* carte Rewind */
+.rw-card{position:relative;display:flex;align-items:flex-end;margin:26px 16px 0;width:calc(100% - 32px);min-height:132px;border-radius:24px;overflow:hidden;text-align:left;color:#fff;background:linear-gradient(125deg,#FF9A3A,#E0406A 45%,#6A3AC8);background-size:200% 200%;animation:rwgrad 8s ease-in-out infinite;box-shadow:0 10px 30px rgba(200,60,110,.25);transition:transform .2s cubic-bezier(.3,1.3,.5,1)}
+.rw-card:active{transform:scale(.97)}
+@keyframes rwgrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.rw-bg{position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-100%);animation:shine 4.5s ease-in-out infinite}
+@keyframes shine{0%,55%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.rw-in{position:relative;padding:16px 70px 16px 18px}
+.rw-k{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;opacity:.9}
+.rw-k svg{width:16px;height:16px}
+.rw-t{font-family:var(--serif);font-size:25px;font-weight:700;margin:3px 0 3px}
+.rw-s{font-size:14px;opacity:.88;line-height:1.3}
+.rw-play{position:absolute;right:16px;bottom:16px;width:44px;height:44px;border-radius:22px;background:#fff;color:#C8306A;display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.rw-play svg{width:20px;height:20px;margin-left:2px}
+
+/* histoires Rewind */
+#rewind{position:fixed;inset:0;z-index:260;display:none;color:#fff;background:linear-gradient(160deg,var(--a,#C8306A),var(--b,#100A14));--sep:rgba(255,255,255,.25);--label2:rgba(255,255,255,.85);--tint:#fff;--glass-stroke:rgba(255,245,230,.7);--glass-fill:rgba(255,255,255,.08)}
+#rewind.open{display:block;animation:ovIn .45s cubic-bezier(.2,.9,.25,1)}
+#rewind::before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.18),transparent 45%),radial-gradient(circle at 80% 80%,rgba(255,255,255,.1),transparent 40%);animation:rwdrift 12s ease-in-out infinite;pointer-events:none}
+@keyframes rwdrift{0%,100%{transform:translate(0,0)}50%{transform:translate(4%,3%)}}
+.rw-prog{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);left:12px;right:58px;display:flex;gap:4px;z-index:3}
+.rw-prog i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.3);overflow:hidden}
+.rw-prog b{display:block;height:100%;width:0;background:#fff}
+.rw-x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 2px);right:12px;background:rgba(255,255,255,.2)!important;color:#fff!important;z-index:4}
+.rw-tap{position:absolute;top:60px;bottom:0;z-index:2}.rw-tap.l{left:0;width:30%}.rw-tap.r{right:0;width:70%}
+#rewind.end .rw-tap{display:none}
+.rw-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:70px 26px 40px}
+.rw-slide{text-align:center;width:100%;max-width:420px}
+.rw-slide>*{animation:rwin .7s cubic-bezier(.2,.8,.2,1) both}
+.rw-slide>*:nth-child(2){animation-delay:.12s}.rw-slide>*:nth-child(3){animation-delay:.24s}.rw-slide>*:nth-child(4){animation-delay:.36s}.rw-slide>*:nth-child(5){animation-delay:.48s}
+@keyframes rwin{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+.rw-small{font-size:17px;font-weight:700;opacity:.85}
+.rw-big{font-family:var(--rounded);font-size:112px;font-weight:800;line-height:1;margin:14px 0 6px;letter-spacing:-.03em;text-shadow:0 8px 30px rgba(0,0,0,.25)}
+.rw-big.money{font-size:64px;margin:18px 0 8px}
+.rw-mid{font-size:21px;font-weight:600}
+.rw-note{font-size:15px;opacity:.85;margin-top:12px;line-height:1.4}
+.rw-name{font-family:var(--serif);font-size:42px;font-weight:700;line-height:1.1;margin:10px 0}
+.rw-glass{height:230px;margin:16px 0 4px}.rw-glass svg{height:100%;width:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.rw-bars{margin-top:22px;text-align:left}
+.rw-bar{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:15px;font-weight:600}
+.rw-bar span{width:118px;text-align:right;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rw-bar i{flex:1;height:14px;border-radius:7px;background:rgba(255,255,255,.18);position:relative;overflow:hidden}
+.rw-bar i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);border-radius:7px;background:#fff;transform-origin:left;animation:grow .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:inherit}
+.rw-bar b{width:28px;font-family:var(--rounded)}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+.rw-months{display:flex;gap:6px;height:170px;align-items:stretch;margin-top:26px}
+.rw-m{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.rw-m i{flex:1;width:100%;position:relative}
+.rw-m i::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--h);min-height:3px;border-radius:5px;background:rgba(255,255,255,.45);transform-origin:bottom;animation:growy .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:inherit}
+.rw-m.top i::after{background:#fff;box-shadow:0 0 16px rgba(255,255,255,.6)}
+.rw-m span{font-size:12px;opacity:.8;font-weight:700}
+@keyframes growy{from{transform:scaleY(0)}to{transform:none}}
+.rw-chips{margin-top:22px;line-height:2.4}
+.rw-chips span{display:inline-block;padding:5px 12px;border-radius:15px;background:rgba(255,255,255,.14);margin:0 3px;font-size:14px;font-weight:600;opacity:.55;animation:spop .5s cubic-bezier(.3,1.8,.5,1) both}
+.rw-chips span.on{background:#fff;color:#1A1020;opacity:1}
+.rw-stars{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.rw-stars span{width:34px;height:34px;color:rgba(255,255,255,.3);animation:spop .5s cubic-bezier(.3,1.8,.5,1) both}.rw-stars span.on{color:#FFD34A}
+.rw-stars svg{width:100%;height:100%}
+.rw-radar{display:flex;justify-content:center;margin-top:10px}.rw-radar svg{width:240px;height:240px}
+.rw-sum{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 6px}
+.rw-sum div{background:rgba(255,255,255,.14);border-radius:18px;padding:14px 8px}
+.rw-sum b{display:block;font-family:var(--rounded);font-size:42px;font-weight:800;line-height:1.05}
+.rw-sum span{font-size:14px;opacity:.85}
+.rw-actions{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+#rewind .btn{background:#fff;color:#1A1020}#rewind .btn.gray{background:rgba(255,255,255,.18);color:#fff}
+
+/* ===== V10 : animations spectaculaires ===== */
+.stream{stroke-dasharray:100 100;stroke-dashoffset:100;animation:stream 1.2s cubic-bezier(.45,0,.25,1) forwards;filter:drop-shadow(0 0 3px rgba(255,255,255,.35))}
+@keyframes stream{0%{stroke-dashoffset:100}38%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
+svg.pour.streaming .liq{animation-delay:.4s!important}
+.hg,.dg{touch-action:pan-y;transform-origin:50% 88%}
+.tilt-back{transition:rotate .7s cubic-bezier(.3,1.7,.45,1)}
+.tiltfix{transform-box:view-box;transform-origin:32px 46px}
+.tilting .tiltfix{transition:transform .06s linear}
+.tilt-back .tiltfix{transition:transform .7s cubic-bezier(.3,1.7,.45,1)}
+.tiltfix.slosh .liq{transform-box:view-box;transform-origin:32px 46px;animation:slosh 1s cubic-bezier(.3,1.2,.5,1) both!important}
+@keyframes slosh{0%{transform:rotate(var(--sl))}35%{transform:rotate(calc(var(--sl) * -.55))}65%{transform:rotate(calc(var(--sl) * .25))}100%{transform:none}}
+.view.enter.from-r{animation:vinr .4s cubic-bezier(.2,.8,.2,1)}
+.view.enter.from-l{animation:vinl .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes vinr{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes vinl{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+.clink{position:fixed;inset:0;z-index:250;pointer-events:none}
+.clink::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(0,0,0,.35),rgba(0,0,0,0) 60%);animation:ckbg 1.8s ease both}
+@keyframes ckbg{0%,100%{opacity:0}25%,75%{opacity:1}}
+.ck-l,.ck-r{position:absolute;top:30%;width:120px;height:150px}
+.ck-l svg,.ck-r svg{width:100%;height:100%;filter:drop-shadow(0 12px 24px rgba(0,0,0,.35))}
+.ck-l{left:calc(50% - 120px);transform-origin:100% 20%;animation:ckl 1.8s cubic-bezier(.3,1.1,.5,1) both}
+.ck-r{left:50%;transform-origin:0% 20%;animation:ckr 1.8s cubic-bezier(.3,1.1,.5,1) both}
+@keyframes ckl{0%{opacity:0;transform:translateX(-160px) rotate(-35deg)}28%{opacity:1;transform:translateX(-6px) rotate(-6deg)}34%{transform:translateX(6px) rotate(10deg)}46%{transform:translateX(0) rotate(4deg)}78%{opacity:1;transform:translateX(0) rotate(4deg)}100%{opacity:0;transform:translate(-20px,-30px) rotate(-6deg)}}
+@keyframes ckr{0%{opacity:0;transform:translateX(160px) rotate(35deg)}28%{opacity:1;transform:translateX(6px) rotate(6deg)}34%{transform:translateX(-6px) rotate(-10deg)}46%{transform:translateX(0) rotate(-4deg)}78%{opacity:1;transform:translateX(0) rotate(-4deg)}100%{opacity:0;transform:translate(20px,-30px) rotate(6deg)}}
+.ck-burst{position:absolute;left:50%;top:calc(30% + 22px);width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #fff;opacity:0;animation:ckburst .7s ease-out .55s both}
+@keyframes ckburst{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(5)}}
+.ck-drops i{position:absolute;left:50%;top:calc(30% + 22px);width:7px;height:10px;margin:-5px 0 0 -3.5px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--c);opacity:0;transform:rotate(var(--a));animation:ckdrop .8s cubic-bezier(.2,.7,.3,1) .56s both}
+@keyframes ckdrop{0%{opacity:1;transform:rotate(var(--a)) translateY(0)}100%{opacity:0;transform:rotate(var(--a)) translateY(-95px)}}
+.ck-txt{position:absolute;left:0;right:0;top:calc(30% + 170px);text-align:center;font-family:var(--serif);font-size:46px;font-weight:700;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.45);animation:cktxt 1.8s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes cktxt{0%,30%{opacity:0;transform:scale(.4)}45%{opacity:1;transform:scale(1.12)}55%{transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+@media (prefers-reduced-motion:reduce){#ambient *{animation:none!important}}
+:root[data-moment] .hero{background:color-mix(in srgb,var(--bg2) 78%,transparent);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -1125,6 +1421,73 @@ REC_RAW.push(
 ["jura_negroni","Negroni du Jura","stirred","stir","rocks","big","#D8B840",[["gin",30],["gentiane",30],["vermouth_blanc",30]],"Zeste de citron",{s:1,cr:1,v:["white_negroni","negroni"],n:"La gentiane des montagnes jurassiennes remplace le Campari, le vermouth blanc arrondit."}],
 ["coco_colada","Colada au Malibu","tiki","shake","highball","pilee","#F4ECD4",[["malibu",40],["rhum_blanc",20],["ananas",90],["creme",20]],"Quartier d’ananas",{v:["pina_colada"]}]
 );
+// ---------- SANS ALCOOL ----------
+FAMILIES.sansalcool="Sans alcool";
+REC_RAW.forEach(r=>{ if(r[0]==="espresso_tonic") r[2]="sansalcool"; });
+REC_RAW.push(
+["nojito","Nojito","sansalcool","mbuild","highball","pilee","#DDEEC8",[["citron_vert",25],["sirop_sucre",20],["menthe",8,"f"],["eau_gazeuse",120,"ml","top"]],"Branche de menthe",{na:1,c:1,v:["mojito","basil_lemonade"],n:"Toute la fraîcheur du Mojito. Un trait de ginger beer à la place d’une partie de l’eau gazeuse lui donne du caractère."}],
+["shirley_temple","Shirley Temple","sansalcool","build","highball","cubes","#F2A0A8",[["citron",10],["grenadine",15,"ml","float"],["ginger_ale",150,"ml","top"]],"Cerise et rondelle d’orange",{na:1,c:1,v:["roy_rogers"],h:"Dit-on créé dans les années 1930 pour l’enfant star Shirley Temple, qui accompagnait ses parents dans les restaurants d’Hollywood. Elle a toujours affirmé ne pas l’aimer, le trouvant trop sucré."}],
+["roy_rogers","Roy Rogers","sansalcool","build","highball","cubes","#5A1E18",[["grenadine",15],["cola",150,"ml","top"]],"Cerise",{na:1,c:1,v:["shirley_temple"],h:"Le pendant du Shirley Temple, nommé d’après Roy Rogers, cow-boy chantant des westerns des années 1940."}],
+["virgin_mary","Virgin Mary","sansalcool","build","highball","cubes","#C03A2A",[["tomate",120],["citron",15],["worcestershire",2,"d"],["tabasco",2,"d"]],"Branche de céleri, sel et poivre",{na:1,c:1,v:["bloody_mary"]}],
+["virgin_colada","Virgin Colada","sansalcool","shake","highball","pilee","#F4EAD0",[["creme_coco",40],["ananas",90],["citron_vert",10]],"Quartier d’ananas",{na:1,c:1,v:["pina_colada"]}],
+["sureau_fizz","Sureau pétillant","sansalcool","build","vin","cubes","#EEF0C8",[["sirop_sureau",25],["citron",15],["menthe",4,"f"],["eau_gazeuse",150,"ml","top"]],"Menthe et rondelle de citron",{na:1,s:1,v:["hugo","sureau_tonic"],se:[5,6,7,8],n:"L’apéritif sans alcool des terrasses suisses en été. Avec un sirop de sureau maison, c’est encore meilleur."}],
+["arnold_palmer","Arnold Palmer","sansalcool","build","highball","cubes","#C8903A",[["the_froid",100],["citron",20],["sirop_sucre",15],["eau",60]],"Rondelle de citron",{na:1,c:1,h:"Moitié thé glacé, moitié citronnade : la boisson que le golfeur Arnold Palmer commandait après ses parcours, dans les années 1960."}],
+["cinderella","Cinderella","sansalcool","shake","highball","cubes","#F5B060",[["orange",45],["ananas",45],["citron",15],["grenadine",10],["eau_gazeuse",60,"ml","top"]],"Rondelle d’orange et cerise",{na:1,c:1}],
+["virgin_mule","Mule sans alcool","sansalcool","build","mug","cubes","#E8E0B8",[["citron_vert",15],["menthe",4,"f"],["concombre",2,"u"],["ginger_beer",150,"ml","top"]],"Menthe et citron vert",{na:1,v:["moscow_mule"]}],
+["framboise_lemonade","Limonade à la framboise","sansalcool","build","highball","cubes","#E8607A",[["sirop_framboise",20],["citron",20],["eau_gazeuse",150,"ml","top"]],"Framboises et rondelle de citron",{na:1,se:[6,7,8]}],
+["passion_fizz","Passion pétillant","sansalcool","build","highball","cubes","#F2C050",[["sirop_passion",20],["citron_vert",15],["eau_gazeuse",150,"ml","top"]],"Rondelle de citron vert",{na:1}],
+["cafe_frappe","Café frappé vanille","sansalcool","shake","rocks","cubes","#B8906A",[["espresso",45],["lait",90],["sirop_vanille",15]],"Grains de café",{na:1,v:["espresso_tonic"],n:"Secoue longtemps : le lait mousse et le café devient crémeux."}],
+["mangue_mule","Mule mangue sans alcool","sansalcool","build","mug","cubes","#F2B840",[["mangue",60],["citron_vert",15],["ginger_beer",100,"ml","top"]],"Rondelle de citron vert",{na:1,v:["mango_mule","virgin_mule"]}],
+["pomme_gingembre","Pomme gingembre","sansalcool","build","highball","cubes","#E8C070",[["pomme",90],["sirop_gingembre",15],["citron",10],["eau_gazeuse",60,"ml","top"]],"Fine tranche de pomme",{na:1,s:1,cr:1,se:[9,10,11],n:"Avec un jus de pomme suisse trouble, le gingembre réveille le fruit."}],
+["sureau_tonic","Sureau tonic","sansalcool","build","highball","cubes","#EEF2DC",[["sirop_sureau",20],["concombre",2,"u"],["tonic",150,"ml","top"]],"Rondelle de concombre",{na:1,s:1,cr:1,v:["sureau_fizz"]}],
+["diabolo_grenadine","Diabolo grenadine","sansalcool","build","highball","cubes","#F07888",[["grenadine",20],["limonade",180,"ml","top"]],"Aucune",{na:1,c:1,v:["diabolo_menthe"],h:"Le diabolo, limonade et sirop, est la boisson des terrasses françaises et romandes depuis des générations."}],
+["diabolo_menthe","Diabolo menthe","sansalcool","build","highball","cubes","#8AD890",[["sirop_menthe",20],["limonade",180,"ml","top"]],"Feuille de menthe",{na:1,c:1,v:["diabolo_grenadine"]}],
+["virgin_sunrise","Sunrise sans alcool","sansalcool","build","highball","cubes","#F5A04A",[["orange",150],["grenadine",15,"ml","float"]],"Rondelle d’orange",{na:1,v:["tequila_sunrise"]}],
+["basil_lemonade","Citronnade au basilic","sansalcool","mbuild","highball","cubes","#D8EBA8",[["basilic",8,"f"],["citron",25],["sirop_sucre",20],["eau_gazeuse",120,"ml","top"]],"Feuille de basilic",{na:1,v:["nojito","gin_basil_smash"]}]
+);
+
+// ---------- LEXIQUE ----------
+// [clé, expression à repérer, terme, définition]
+const TERMS=[
+["t1",/verre à mélange/i,"Verre à mélange","Un grand verre à fond épais dans lequel on remue les cocktails sans jus ni œuf. On remue au lieu de secouer pour garder une texture soyeuse et limpide. Un grand verre ou un pot mesureur dépanne très bien."],
+["t2",/cuillère de bar/i,"Cuillère de bar","Une cuillère au long manche torsadé, pour remuer dans le verre à mélange. Elle mesure environ 5 ml. Une longue cuillère à café fait l’affaire."],
+["t3",/sans glace pour monter la mousse/i,"Dry shake","Secouer d’abord sans glace : le blanc d’œuf s’émulsionne mieux et donne une mousse dense et durable. On ajoute la glace ensuite pour refroidir."],
+["t4",/petite passoire/i,"Double filtrage","On verse à travers une seconde passoire fine pour retenir les éclats de glace et de fruit. La texture devient parfaitement lisse."],
+["t5",/Filtre/,"Filtrer","Verser le cocktail en retenant la glace, avec la passoire du shaker ou une passoire à cocktail."],
+["t6",/Écrase délicatement/i,"Piler","Presser doucement herbes ou fruits au fond du verre pour libérer leurs arômes (« muddle » en anglais). Trop fort, la menthe devient amère."],
+["t7",/Rince/,"Rincer le verre","On fait tourner quelques gouttes d’un alcool très parfumé, souvent l’absinthe, pour en tapisser la paroi, puis on jette l’excédent. Il ne reste qu’un parfum."],
+["t8",/dos d’une cuillère/i,"Faire flotter","Verser très lentement sur le dos d’une cuillère tenue juste au-dessus de la surface : le liquide reste en couche au lieu de se mélanger."],
+["t9",/en filet/i,"En filet","Un mince filet continu. Les liqueurs très sucrées, plus denses, coulent alors lentement et dessinent un dégradé."],
+["t10",/glace pilée/i,"Glace pilée","De la glace concassée. Elle refroidit très vite et dilue davantage, parfait pour les juleps, mojitos et tiki. Maison : des glaçons dans un torchon et quelques coups de rouleau à pâtisserie."],
+["t11",/gros glaçon/i,"Gros glaçon","Un gros cube fond lentement : le cocktail reste froid sans se diluer trop vite. Voir la technique « Glace limpide » dans le labo."],
+["t12",/Complète/,"Compléter","Ajouter en dernier la boisson gazeuse ou le vin pétillant, doucement, pour garder un maximum de bulles."],
+["t13",/zeste/i,"Zeste","Un morceau de peau d’agrume sans le blanc amer. On le presse au-dessus du verre pour projeter ses huiles parfumées (on dit « l’exprimer »), puis on le dépose ou on le retire."],
+["t14",/refroidie?\b/i,"Refroidir le verre","Un verre glacé garde le cocktail frais bien plus longtemps, surtout pour ceux servis sans glace."],
+["t15",/remue doucement/i,"Remuer","Faire tourner la glace avec une cuillère de bar, le dos contre la paroi, pendant une trentaine de secondes. On refroidit et dilue sans aérer."],
+["t16",/traits?\b/,"Trait","Une giclée de bouteille à bec verseur, soit environ 0,8 ml. On l’utilise surtout pour les bitters."],
+["t17",/shaker/i,"Shaker","Le gobelet dans lequel on secoue le cocktail avec de la glace : il refroidit, dilue et aère en une douzaine de secondes. Pas de shaker ? Un bocal à confiture bien fermé fonctionne très bien."]
+];
+// ---------- ACCORDS METS ET COCKTAILS ----------
+// want : ce que le plat appelle (acid, bitter, fizz, herbal, fruity, woody, spicy, sweet, cream, strong : de -1 à 1)
+const DISHES=[
+ {id:"fondue",e:"🫕",n:"Fondue",why:"Le fromage fondu appelle de l’acidité, de l’amertume ou des bulles pour couper le gras. Et la tradition suisse veut un petit kirsch.",want:{acid:1,bitter:.8,fizz:.8,herbal:.4,sweet:-.8,cream:-1,strong:-.2},base:["eaux"],picks:["kirsch_sour","gespritzter","williams_tonic","chasselas_spritz","suze_tonic","genepi_tonic","kirsch_of"]},
+ {id:"raclette",e:"🧀",n:"Raclette",why:"Fromage, pommes de terre et charcuterie : il faut du frais, du sec et un peu d’amertume pour garder l’appétit jusqu’au bout.",want:{acid:.8,bitter:.9,fizz:.8,herbal:.5,sweet:-.8,cream:-1},base:["eaux","amer"],picks:["gespritzter","chasselas_spritz","williams_tonic","americano","jura_negroni","genepi_tonic","suze_spritz"]},
+ {id:"pizza",e:"🍕",n:"Pizza",why:"Tomate, herbes et fromage s’accordent avec l’amertume et les bulles des apéritifs italiens.",want:{bitter:1,fizz:.8,herbal:.4,sweet:-.3,cream:-.8},base:["amer","gin"],picks:["aperol_spritz","americano","negroni","sbagliato","campari_spritz","gin_tonic","bicicletta"]},
+ {id:"grill",e:"🍖",n:"Grillades et burger",why:"Le grillé et le fumé répondent aux spiritueux boisés, et l’acidité rafraîchit entre deux bouchées.",want:{woody:1,acid:.6,spicy:.4,strong:.4,cream:-.6},base:["whisky","agave"],picks:["old_fashioned","whisky_sour","paloma","dark_stormy","mezcal_mule","michelada","kentucky_mule"]},
+ {id:"sushi",e:"🍣",n:"Sushi",why:"Le poisson cru et le riz vinaigré demandent de la délicatesse : agrumes, bulles fines, gingembre et peu de sucre.",want:{acid:.8,fizz:.9,herbal:.6,fruity:.2,sweet:-.6,strong:-.6,woody:-.6},base:["gin","vodka"],picks:["gin_tonic","french75","hugo","gimlet","whisky_highball","moscow_mule","ranch_water"]},
+ {id:"mexicain",e:"🌮",n:"Mexicain",why:"Citron vert, coriandre et piment : l’agave est chez elle, avec de l’acidité et un peu de sel.",want:{acid:1,fizz:.5,spicy:.4,herbal:.4,cream:-.8},base:["agave"],picks:["margarita","paloma","tommys","michelada","ranch_water","el_diablo","batanga"]},
+ {id:"curry",e:"🍛",n:"Curry et épicé",why:"Face au piment, le fruit et un peu de douceur apaisent, les bulles rafraîchissent. Les cocktails très forts, eux, attisent le feu.",want:{fruity:1,sweet:.5,fizz:.7,spicy:.3,strong:-1,bitter:-.4},base:["rhum"],picks:["mango_mule","moscow_mule","gin_gin_mule","mai_tai","pina_colada","passion_fizz","mangue_mule"]},
+ {id:"mer",e:"🦐",n:"Poisson et fruits de mer",why:"L’iode aime les agrumes, les bulles et les vins secs : tout ce qui est vif et minéral.",want:{acid:1,fizz:1,herbal:.4,sweet:-.6,woody:-.8,cream:-.8},base:["gin","vodka"],picks:["french75","gimlet","white_lady","kir","hugo","vesper","gespritzter"]},
+ {id:"pates",e:"🍝",n:"Pâtes et italien",why:"L’Italie à table appelle l’Italie dans le verre : amers, vermouths et bulles.",want:{bitter:.8,fizz:.6,fruity:.3,sweet:-.2},base:["amer"],picks:["negroni","americano","aperol_spritz","bellini","limoncello_spritz","hugo","sbagliato"]},
+ {id:"salade",e:"🥗",n:"Salade et légumes",why:"Un repas léger et vert s’accorde avec les herbes fraîches et le concombre.",want:{herbal:1,acid:.6,fizz:.4,strong:-.5,woody:-.8,cream:-.8},base:["gin"],picks:["gin_basil_smash","southside","eastside","hugo","gin_tonic","virgin_mule","sureau_fizz"]},
+ {id:"apero",e:"🫒",n:"Apéro et charcuterie",why:"Olives, jambon cru et chips ouvrent l’appétit avec des apéritifs amers et peu alcoolisés.",want:{bitter:1,fizz:.6,strong:-.6,sweet:-.4},base:["amer"],picks:["americano","aperol_spritz","vermouth_soda","adonis","bamboo","suze_tonic","negroni"]},
+ {id:"fromages",e:"🍷",n:"Plateau de fromages",why:"Les fromages affinés aiment la rondeur des vins mutés, du vermouth et des whiskys.",want:{woody:.8,sweet:.4,fruity:.4,strong:.3,acid:-.3},base:["whisky","brandy"],picks:["manhattan","porto_flip","adonis","boulevardier","sherry_cobbler","vieux_carre","rob_roy"]},
+ {id:"chocolat",e:"🍫",n:"Chocolat",why:"Le cacao appelle le café, le boisé des spiritueux vieillis et un peu de crème.",want:{woody:1,cream:.8,sweet:.5,strong:.3,acid:-1,fizz:-.6},base:["whisky","brandy","rhum"],picks:["espresso_martini","black_russian","brandy_alexander","rum_of","manhattan","grasshopper","irish_coffee"]},
+ {id:"dessert",e:"🍓",n:"Dessert fruité",why:"Une tarte aux fruits ou une salade de fruits se marie aux bulles et aux fruits rouges.",want:{fruity:1,fizz:.8,sweet:.3,acid:.4,woody:-.6,strong:-.5},base:[],picks:["bellini","kir_royal","clover_club","bramble","mimosa","french75","framboise_lemonade"]},
+ {id:"brunch",e:"🥐",n:"Brunch",why:"Le brunch a ses classiques : bulles et agrumes, ou le Bloody Mary pour les plus salés.",want:{fizz:.8,fruity:.6,acid:.4,strong:-.8},base:[],picks:["mimosa","bloody_mary","bellini","bucks_fizz","ramos","arnold_palmer","virgin_mary"]},
+ {id:"asiat",e:"🥢",n:"Wok et asiatique",why:"Sauce soja, gingembre et citronnelle aiment le gingembre et les highballs légers.",want:{spicy:.6,fizz:.9,acid:.6,herbal:.4,strong:-.6,cream:-.8},base:["whisky","gin"],picks:["whisky_highball","moscow_mule","gin_gin_mule","hugo","paloma","sureau_tonic","virgin_mule"]}
+];
+const PAIR_WHY={acid:"L’acidité coupe le gras et réveille le palais",bitter:"L’amertume ouvre l’appétit et nettoie la bouche",fizz:"Les bulles rafraîchissent entre deux bouchées",herbal:"Les herbes apportent de la fraîcheur",fruity:"Le fruit apaise et accompagne",woody:"Le boisé répond au grillé et au cacao",spicy:"Les épices font écho au plat",sweet:"Un peu de douceur arrondit l’ensemble",cream:"Sa rondeur accompagne la gourmandise",strong:"Un spiritueux bien présent tient tête au plat",light:"Léger, il laisse le plat au premier plan",trad:"La tradition suisse à table"};
 // ================= MOTEUR =================
 const ING = {};
 ING_RAW.forEach(([id,n,cat,abv,sug,ac,fl,x])=>{
@@ -1156,7 +1519,7 @@ function buildRecipes(custom){
   (custom||[]).forEach(c=>RECS.push(Object.assign({},c,{mine:1,ing:c.ing.map(i=>Object.assign({},i))})));
   RMAP={}; RECS.forEach(r=>{RMAP[r.id]=r; r.v=(r.v||[]).slice();});
   RECS.forEach(r=>r.v.forEach(v=>{ if(RMAP[v] && !RMAP[v].v.includes(r.id)) RMAP[v].v.push(r.id); }));
-  AVGP=null; MODEL=null; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; r.base=baseOf(r.ing); });
+  AVGP=null; MODEL=null; STC={}; THUMB={}; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; r.base=baseOf(r.ing); });
   computeZones();
 }
 
@@ -1191,6 +1554,19 @@ function profileOf(items, m){
   });
   const t=x=>1-Math.exp(-x);
   return [clamp01(m.sug/15), clamp01(m.acid/1.1), t(acc.b), clamp01(m.abv/30), t(acc.f), t(acc.h), t(acc.e), t(acc.w), t(acc.k)];
+}
+// ---- Recettes ajustées : ta version d’un cocktail ----
+function getAdj(id){ const a=(S.adj||{})[id]; return a&&(a.s||a.a||a.f)?a:null; }
+function adjItems(r, a){
+  a=a||getAdj(r.id); if(!a) return r.ing;
+  const clampF=f=>Math.max(0.4,Math.min(1.8,f)), base=r.base;
+  return r.ing.map(it=>{ const i=ING[it.id]; let f=1;
+    if(a.s && (i.cat==="sirop"||it.id==="sucre"||(i.cat==="liqueur"&&i.sug>=20&&it.id!==base))) f*=clampF(1+0.2*a.s);
+    if(a.a && ["citron","citron_vert","pamplemousse"].includes(it.id)) f*=clampF(1+0.2*a.a);
+    if(a.f){ if(i.cat==="spirit"&&it.r!=="rinse") f*=clampF(1+0.15*a.f); else if(it.r==="top"&&i.fizz) f*=clampF(1-0.12*a.f); }
+    if(f===1) return it;
+    const u=it.u||"ml"; let q=it.q*f; q = u==="ml"? Math.max(2.5,Math.round(q/2.5)*2.5) : Math.max(1,Math.round(q));
+    return Object.assign({},it,{q,orig:it.q}); });
 }
 function metricsR(r){ return r._m || (r._m = calc(r.ing, r.m, r.ice)); }
 function profileR(r){ return r._p || (r._p = profileOf(r.ing, metricsR(r))); }
@@ -1239,11 +1615,13 @@ function prepActive(id){ return (S.preps||[]).some(p=>{ const t=PREP_TPL.find(x=
 function has(id){ const i=ING[id]; if(!i) return false; if(i.basic) return !((S.settings&&S.settings.nobasic)||[]).includes(id); if(prepActive(id)) return true;
   const v=S.stock[id]; return tracked(id)? (v||0)>0 : v===1; }
 function inBar(id){ return S.stock[id]!==undefined; }
+let STC={};
 function status(r){
+  if(STC[r.id]) return STC[r.id];
   const miss=[], subs={};
-  r.ing.forEach(it=>{ if(it.r==="opt") return; if(!has(it.id)){ miss.push(it.id); const s=(ING[it.id].subs||[]).find(has); if(s) subs[it.id]=s; } });
+  r.ing.forEach(it=>{ if(it.r==="opt"||it.r==="rinse") return; if(!has(it.id)){ miss.push(it.id); const s=(ING[it.id].subs||[]).find(has); if(s) subs[it.id]=s; } });
   const uniq=[...new Set(miss)];
-  return {ok:!uniq.length, miss:uniq, subs, subOk: uniq.length>0 && uniq.every(m=>subs[m])};
+  return STC[r.id]={ok:!uniq.length, miss:uniq, subs, subOk: uniq.length>0 && uniq.every(m=>subs[m])};
 }
 function daysLeft(p){ const t=PREP_TPL.find(x=>x[0]===p.tpl); const life=p.life||(t?t[3]:30); return Math.floor((new Date(p.d).getTime()+life*864e5-Date.now())/864e5); }
 
@@ -1267,10 +1645,11 @@ function trainSet(){
   S.fav.forEach(id=>{ if(RMAP[id]&&!T[id]) T[id]={v:1.3,w:.7}; });
   const cnt={}; S.hist.forEach(h=>cnt[h.id]=(cnt[h.id]||0)+1);
   Object.entries(cnt).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]) T[id]={v:0.45+Math.min(n-1,3)*0.2,w:0.3+Math.min(n,4)*0.1}; });
+  Object.entries(S.opens||{}).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]&&n>=2) T[id]={v:0.3,w:Math.min(0.25,0.08*n)}; });
   return T;
 }
 function getModel(){
-  const k=JSON.stringify(S.ratings)+"|"+S.hist.length+"|"+S.fav.join(",")+"|"+RECS.length+"|"+JSON.stringify(S.quiz||0);
+  const k=JSON.stringify(S.ratings)+"|"+S.hist.length+"|"+S.fav.join(",")+"|"+RECS.length+"|"+JSON.stringify(S.quiz||0)+"|"+JSON.stringify(S.adj||0)+"|"+JSON.stringify(S.mw||0)+"|"+Object.keys(S.opens||{}).length;
   if(MODEL&&MKEY===k) return MODEL; MKEY=k;
   const T=trainSet(), ids=Object.keys(T), n=ids.reduce((a,id)=>a+T[id].w,0);
   const ia={},iw={}, fa={},fw={}, ba={},bw={};
@@ -1284,6 +1663,7 @@ function getModel(){
   const av=avgProfile(), dir=Array(8).fill(0); let dw=0;
   ids.forEach(id=>{ const p=profileR(RMAP[id]), t=T[id]; dw+=t.w; for(let i=0;i<8;i++) dir[i]+=t.v*t.w*(p[i]-av[i]); });
   const qW=Q?3:0; const DIR=dir.map((x,i)=>(x+(Q?Q.dir[i]*1.7*qW:0))/(dw+1+qW));
+  Object.values(S.adj||{}).forEach(a=>{ DIR[0]+=0.02*(a.s||0); DIR[1]+=0.02*(a.a||0); DIR[3]+=0.02*(a.f||0); });
   MODEL={T,ids,n:n+(Q?3:0),Q,IA,FA,BA,DIR,P:{},W:{}}; return MODEL;
 }
 function predict(r){
@@ -1297,12 +1677,24 @@ function predict(r){
   for(const i in sh){ const a=M.IA[i]||0; ing+=sh[i]*a; if(a*sh[i]>topV){topV=a*sh[i];topI=i;} if(a*sh[i]<lowV){lowV=a*sh[i];lowI=i;} }
   const fam=M.FA[r.fam]||0, base=M.BA[baseGroup(r)]||0;
   const p=profileR(r), av=avgProfile(); let dims=0; for(let i=0;i<8;i++) dims+=M.DIR[i]*(p[i]-av[i]); dims*=4;
-  const hasIng=Object.keys(sh).some(i=>M.IA[i]!=null), wk=0.4*kc, wi=hasIng?0.3:0;
-  const dev=(wk*knn+wi*ing+0.12*fam+0.1*base+0.15*dims)/(wk+wi+0.37)*0.75, conf=0.35+0.65*M.n/(M.n+4);
+  const MW=mWeights(), hasIng=Object.keys(sh).some(i=>M.IA[i]!=null), wk=MW.knn*kc, wi=hasIng?MW.ing:0;
+  const famb=0.55*fam+0.45*base*1.1;
+  let vb=0, vbest=null; M.ids.forEach(id=>{ const t=M.T[id]; if(t.v>0.8&&RMAP[id].v.includes(r.id)){ vb+=t.v*t.w*0.4; if(!vbest||t.v>M.T[vbest].v) vbest=id; } }); vb=Math.min(0.8,vb);
+  const dev=(wk*knn+wi*ing+MW.fam*famb+MW.dims*dims)/(wk+wi+MW.fam+MW.dims)*0.75+0.25*vb, conf=0.35+0.65*M.n/(M.n+4);
   const pred=3+1.85*Math.tanh(dev*1.15*conf)+prior*0.5;
-  const parts=[["knn",0.4*knn*kc],["ing",0.3*ing],["fam",0.12*fam+0.1*base],["dims",0.15*dims]].sort((a,b)=>b[1]-a[1]);
-  M.W[r.id]={top:parts[0][0],v:parts[0][1],best:bs>0.72?best:null,topI:(M.IA[topI]||0)>0.35?topI:null,lowI:(M.IA[lowI]||0)<-0.5?lowI:null};
+  const parts=[["knn",wk*knn],["ing",wi*ing],["fam",MW.fam*famb],["dims",MW.dims*dims],["var",0.25*vb*1.6]].sort((a,b)=>b[1]-a[1]);
+  M.W[r.id]={top:parts[0][0],v:parts[0][1],best:bs>0.72?best:null,topI:(M.IA[topI]||0)>0.35?topI:null,lowI:(M.IA[lowI]||0)<-0.5?lowI:null,vbest,raw:{knn:kc>0.05?knn:0,ing:hasIng?ing:0,fam:famb,dims}};
   return M.P[r.id]=pred;
+}
+// Poids des signaux, ajustés à chaque note : les signaux qui avaient vu juste gagnent en importance
+function mWeights(){ return Object.assign({knn:.4,ing:.3,fam:.22,dims:.15},S.mw||{}); }
+function learnFrom(id, rating){
+  const r=RMAP[id]; if(!r) return; const M=getModel(); if(!M.ids.filter(x=>x!==id).length) return;
+  delete M.P[id]; predict(r); const W=M.W[id]; if(!W||!W.raw) return;
+  const t=(rating-3)/2, mw=mWeights(), lr=0.08;
+  for(const k of ["knn","ing","fam","dims"]){ const x=Math.max(-1,Math.min(1,W.raw[k]*1.5)); if(Math.abs(x)<0.03) continue; mw[k]=Math.max(0.05,Math.min(0.8,mw[k]+lr*t*x)); }
+  const sum=mw.knn+mw.ing+mw.fam+mw.dims; for(const k in mw) mw[k]=Math.max(0.05,Math.min(0.7,mw[k]*1.07/sum));
+  S.mw=mw; S.mwN=(S.mwN||0)+1; MODEL=null;
 }
 function score(r){ return S.ratings[r.id] ? S.ratings[r.id]+0.01 : predict(r); }
 function matchPct(r){ const x=score(r); return Math.round(Math.max(5,Math.min(98, 50+ (x-3)*28 ))); }
@@ -1320,13 +1712,18 @@ function ctxBonus(r, c){ c=c||ctxInfo(); const m=metricsR(r), f=r.fam; let b=0;
   if(c.saison==="frais"){ if(f==="chaud") b+=0.2; }
   if(c.saison==="ete"){ if(["highball","bulles","tiki","herbes"].includes(f)) b+=0.2; if(f==="chaud") b-=0.6; if(f==="dessert") b-=0.1; }
   if((r.se||[]).includes(new Date().getMonth()+1)) b+=0.2;
+  const wd=new Date().getDay(), ef=effort(r), weekend=(wd===5||wd===6)&&(c.moment==="soir"||c.moment==="apero"||c.moment==="nuit")||wd===0&&c.moment!=="nuit";
+  if(!weekend&&(c.moment==="soir"||c.moment==="apero")){ if(ef<=3) b+=0.15; else if(ef>=6) b-=0.1; }
+  if(weekend&&ef>=5) b+=0.12;
   return b; }
+function effort(r){ return r.ing.filter(i=>!ING[i.id].basic&&i.r!=="opt").length+(["shake","stir","mshake"].includes(r.m)?1:0)+(r.fam==="tiki"?1:0); }
 function reasons(r){
   const rt=S.ratings[r.id]; if(rt>=5) return "Un de tes coups de cœur"; if(rt===4) return "Tu l’as beaucoup aimé";
   const fb=freshBottle(r); if(fb){ const n=lc(shortN(fb)); return "Pour étrenner "+(/^[aeiouyéèêàâîïôœ]/i.test(n)?"ton ":FEM.test(n)?"ta ":"ton ")+n; }
   if(EXPLORE.has(r.id)) return "Pour sortir un peu de ta zone de confort";
   predict(r); const M=getModel(), W=M.W[r.id];
-  if(W){ if(W.top==="knn"&&W.best) return "Parce que tu as aimé "+RMAP[W.best].n;
+  if(W){ if(W.top==="var"&&W.vbest) return "Une variante du "+RMAP[W.vbest].n+", que tu adores";
+    if(W.top==="knn"&&W.best) return "Parce que tu as aimé "+RMAP[W.best].n;
     if(W.top==="ing"&&W.topI) return "Tu aimes "+lcArt(W.topI)+", et il y en a dedans";
     if(W.best) return "Proche de "+RMAP[W.best].n+", que tu as aimé";
     if(W.topI) return "Avec "+lcArt(W.topI)+", que tu apprécies"; }
@@ -1345,8 +1742,10 @@ function freshBottle(r){ const T=S.stockT||{}, now=Date.now(); let best=null;
 let EXPLORE=new Set();
 function tonight(){
   const now=Date.now(), c=ctxInfo(), seed=daySeed()+"-"+c.moment;
-  const cand=RECS.filter(r=>status(r).ok).map(r=>{ const lm=lastMade(r.id), rt=S.ratings[r.id];
-    let sc=(rt? rt-0.45 : predict(r))+ctxBonus(r,c)+hrand(r.id+seed)*0.5+(madeCount(r.id)?0:0.25)-(now-lm<3*864e5?1.2:0)-(rt&&rt<=2?1.5:0)+(freshBottle(r)?0.3:0);
+  const naOk=S.settings.na||rated().some(([id,rt])=>RMAP[id].na&&rt>=4);
+  const cand=RECS.filter(r=>status(r).ok&&(naOk||!r.na)).map(r=>{ const lm=lastMade(r.id), rt=S.ratings[r.id];
+    const hl=(S.heroLog||[]).filter(h=>h.id===r.id), today=daySeed(), recentHero=hl.some(h=>h.d!==today&&h.d>=today-2), fatigue=hl.length>=3&&!(S.opens||{})[r.id]&&!madeCount(r.id);
+    let sc=(rt? rt-0.45 : predict(r))+ctxBonus(r,c)+hrand(r.id+seed)*0.5+(madeCount(r.id)?0:0.25)-(now-lm<3*864e5?1.2:0)-(rt&&rt<=2?1.5:0)+(freshBottle(r)?0.3:0)-(recentHero?0.35:0)-(fatigue?0.3:0);
     return [r,sc]; }).sort((a,b)=>b[1]-a[1]);
   const pool=cand.slice(0,40), out=[];
   while(pool.length && out.length<14){ let bi=0,bv=-1e9;
@@ -1410,7 +1809,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 function num(x){ return (Math.round(x*100)/100).toString().replace(".",","); }
 function fmtQ(it, mult=1){
   const q=it.q*mult, u=it.u||"ml";
-  if(it.r==="rinse") return "Rinçage";
+  if(it.r==="rinse") return "Quelques gouttes";
   if(u==="d"){ const n=Math.round(q); return n+(n>1?" traits":" trait"); }
   if(u==="f") return Math.round(q)+" feuilles";
   if(u==="u"){ const n=Math.round(q); if(it.id==="oeuf") return n+(n>1?" œufs":" œuf"); if(it.id==="concombre") return n+(n>1?" rondelles":" rondelle"); return n+(n>1?" morceaux":" morceau"); }
@@ -1436,7 +1835,7 @@ function buildSteps(r){
   const up=r.ice==="none";
   const serve= up? "dans "+g+" refroidi"+(["coupe","flute"].includes(r.g)?"e":"") : r.ice==="pilee"? "sur de la glace pilée, dans "+g : r.ice==="big"? "sur un gros glaçon, dans "+g : "sur de la glace fraîche, dans "+g;
   const fg=["coupe","flute"].includes(r.g); if(up && ["shake","stir","mshake"].includes(r.m)) S2.push({t:"Mets "+g+" au congélateur quelques minutes, ou remplis-"+(fg?"la":"le")+" de glace pour "+(fg?"la":"le")+" refroidir."});
-  if(rinse.length) S2.push({t:"Rince "+(up&&["shake","stir","mshake"].includes(r.m)?(fg?"la ":"le ")+(GNAME_SHORT[r.g]||"verre"):g)+" avec quelques gouttes "+de(lc(shortN(rinse[0].id)))+", puis jette l’excédent."});
+  if(rinse.length) S2.push({t:(has(rinse[0].id)?"Rince ":"Si tu en as, rince ")+""+(up&&["shake","stir","mshake"].includes(r.m)?(fg?"la ":"le ")+(GNAME_SHORT[r.g]||"verre"):g)+" avec quelques gouttes "+de(lc(shortN(rinse[0].id)))+", puis jette l’excédent."});
   if(r.m==="shake"||r.m==="mshake"){
     if(r.m==="mshake"&&herbs.length) S2.push({t:"Écrase délicatement "+listN(herbs)+" au fond du shaker avec le sirop, sans trop insister."});
     S2.push({t:"Verse dans le shaker "+listN(liquids)+"."});
@@ -1533,12 +1932,14 @@ function garnishSVG(r, sh, g){
   if(has(/bâton de cannelle|cannelle,/)&&!has(/bord/)) s+=`<path d="M${mid+4} ${Y+18}L${R+3} ${Y-10}" stroke="#8A4A1E" stroke-width="3" stroke-linecap="round"/><path d="M${mid+4} ${Y+18}L${R+3} ${Y-10}" stroke="#B8703A" stroke-width="1" stroke-linecap="round"/>`;
   return s;
 }
+let THUMB={};
+function glassThumb(r){ return THUMB[r.id]||(THUMB[r.id]=glassSVG(r,{garnish:false})); }
 function glassSVG(r, opt={}){
   const g=r.g||"rocks", col=r.col||"#D9A55A", id="g"+(++GID), sh=GLASS_SHAPES[g]||GLASS_SHAPES.rocks;
   const light=mix(col,"#ffffff",.22), deep=mix(col,"#000000",.1);
   const fizz=r.ing&&r.ing.some(i=>ING[i.id]&&ING[i.id].fizz), cream=r.ing&&r.ing.some(i=>(i.id==="creme"&&i.r==="float"));
   const foam=r.ing&&r.ing.some(i=>i.id==="blanc_oeuf"||i.id==="oeuf")&&r.m!=="build";
-  const pour=opt.pour?' class="pour"':"";
+  const pour=(opt.pour||opt.live)?` class="${opt.pour?"pour ":""}${opt.live?"live ":""}${opt.stream?"streaming":""}"`:"";
   let s=`<svg viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" overflow="visible" style="overflow:visible"${pour}><defs><linearGradient id="${id}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${light}"/><stop offset="1" stop-color="${deep}"/></linearGradient>`;
   if(sh.mug){
     s+=`<linearGradient id="${id}c" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B8683A"/><stop offset=".45" stop-color="#E8A878"/><stop offset="1" stop-color="#9A5028"/></linearGradient></defs>`;
@@ -1550,7 +1951,16 @@ function glassSVG(r, opt={}){
   s+=`<clipPath id="${id}k"><path d="${sh.o}"/></clipPath></defs>`;
   if(sh.handle) s+=`<path d="${sh.handle}" fill="none" stroke="var(--glass-stroke)" stroke-width="1.6" stroke-linecap="round"/>`;
   s+=`<path d="${sh.o}" fill="var(--glass-fill)"/>`;
-  s+=`<g clip-path="url(#${id}k)"><g class="liq"><rect x="0" y="${sh.y}" width="64" height="80" fill="url(#${id}l)" opacity=".96"/><rect x="0" y="${sh.y}" width="64" height="1.3" fill="#fff" opacity=".5"/><rect x="0" y="${sh.y+1.3}" width="64" height="5" fill="#fff" opacity=".08"/>`;
+  if(opt.stream){ const mx=(sh.rim[0]+sh.rim[1])/2+2; s+=`<path class="stream" d="M${mx} -42V${sh.y+6}" stroke="${light}" stroke-width="3.2" stroke-linecap="round" pathLength="100"/>`; }
+  s+=`<g clip-path="url(#${id}k)"><g class="ice"><rect x="19" y="15.5" width="9" height="7" rx="2" fill="#fff" fill-opacity=".55" transform="rotate(-10 23 19)"/><rect x="29" y="16" width="8" height="6.5" rx="2" fill="#fff" fill-opacity=".45" transform="rotate(12 33 19)"/></g><ellipse cx="30" cy="20.5" rx="16" ry="2.6" fill="none" stroke="#C07848" stroke-width="1.2"/>`;
+    s+=`<rect x="18" y="26" width="3" height="38" rx="1.5" fill="#fff" opacity=".28"/><g class="garn"><circle cx="41" cy="17" r="5" fill="#C8E07A" stroke="#8AAA3A" stroke-width="1"/><circle cx="41" cy="17" r="3.5" fill="#E4F0B8"/></g>`;
+    return s+`</svg>`;
+  }
+  s+=`<clipPath id="${id}k"><path d="${sh.o}"/></clipPath></defs>`;
+  if(sh.handle) s+=`<path d="${sh.handle}" fill="none" stroke="var(--glass-stroke)" stroke-width="1.6" stroke-linecap="round"/>`;
+  s+=`<path d="${sh.o}" fill="var(--glass-fill)"/>`;
+  if(opt.stream){ const mx=(sh.rim[0]+sh.rim[1])/2+2; s+=`<path class="stream" d="M${mx} -42V${sh.y+6}" stroke="${light}" stroke-width="3.2" stroke-linecap="round" pathLength="100"/>`; }
+  s+=`<g clip-path="url(#${id}k)"><g class="tiltfix"><g class="liq"><rect x="0" y="${sh.y}" width="64" height="80" fill="url(#${id}l)" opacity=".96"/>${opt.live?`<path class="wave" d="M-64 ${sh.y+0.6}${" q4 -1.4 8 0 t8 0".repeat(24)}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/>`:`<rect x="0" y="${sh.y}" width="64" height="1.3" fill="#fff" opacity=".5"/>`}<rect x="0" y="${sh.y+1.3}" width="64" height="5" fill="#fff" opacity=".08"/>`;
   // couches : les ingrédients versés en surface flottent, les liqueurs très sucrées coulent au fond
   const main=r.ing?r.ing.filter(i=>i.r!=="float"&&i.r!=="rinse").reduce((a,i)=>a+mlOf(i),0):0, flo=r.ing?r.ing.filter(i=>i.r==="float"&&i.id!=="creme"&&ING[i.id]&&(mlOf(i)>=5||ING[i.id].cat==="bitters")):[];
   if(flo.length&&main>0){ const H=sh.bot-sh.y, tot=main+flo.reduce((a,i)=>a+mlOf(i),0); let top=sh.y, bot=sh.bot;
@@ -1562,14 +1972,14 @@ function glassSVG(r, opt={}){
   if(cream) s+=`<rect x="0" y="${sh.y-1}" width="64" height="8" fill="#FBF6EC"/>`;
   s+=`</g><g class="ice">`;
   const ice=r.ice, cubes=sh.ice&&sh.ice[ice==="big"?"big":"cubes"];
-  if((ice==="cubes"||ice==="big")&&cubes) cubes.forEach(([x,y,w,h,a],k)=>{ s+=`<g style="animation-delay:${0.72+k*0.09}s" transform="rotate(${a} ${x+w/2} ${y+h/2})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)*0.24}" fill="#fff" fill-opacity=".26" stroke="#fff" stroke-opacity=".62" stroke-width="1"/><path d="M${x+2.5} ${y+h*0.35}V${y+2.5}H${x+w*0.45}" stroke="#fff" stroke-opacity=".75" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>`; });
+  if((ice==="cubes"||ice==="big")&&cubes) cubes.forEach(([x,y,w,h,a],k)=>{ s+=`<g class="cube" style="--d:${(0.72+k*0.09).toFixed(2)}s;--b:${(k*0.7).toFixed(1)}s"><g transform="rotate(${a} ${x+w/2} ${y+h/2})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)*0.24}" fill="#fff" fill-opacity=".26" stroke="#fff" stroke-opacity=".62" stroke-width="1"/><path d="M${x+2.5} ${y+h*0.35}V${y+2.5}H${x+w*0.45}" stroke="#fff" stroke-opacity=".75" stroke-width="1.1" fill="none" stroke-linecap="round"/></g></g>`; });
   else if(ice==="pilee"){ for(let k=0;k<24;k++){ const x=12+hrand(r.id+k)*40, y=sh.y+2+hrand(k+r.id)*46; s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.5+hrand("z"+k)*2.1).toFixed(1)}" fill="#fff" fill-opacity=".4"/>`; } }
   s+=`</g><g class="fz">`;
   if(fizz){ for(let k=0;k<9;k++){ const x=(sh.rim[0]+5)+hrand("b"+k+r.id)*(sh.rim[1]-sh.rim[0]-10), y=sh.y+5+hrand("y"+k+r.id)*Math.max(10,(sh.bot-sh.y-8)); s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r=".9" fill="#fff" opacity=".8"/>`; } }
   const straw=(g==="highball"&&(r.ice==="pilee"||r.fam==="tiki"))||/paille/i.test(r.gar||"");
   const [sL,sR,sY]=sh.rim, sx0=(sL+sR)/2+1, sy0=sh.bot-6, sx1=sR+3, sy1=sY-13;
   if(straw&&opt.garnish!==false) s+=`<g opacity=".55"><path d="M${sx0} ${sy0}L${sx1} ${sy1}" stroke="#E8584A" stroke-width="2.6" stroke-linecap="round"/><path d="M${sx0} ${sy0}L${sx1} ${sy1}" stroke="#fff" stroke-width="2.6" stroke-dasharray="2.5 3" opacity=".85"/></g>`;
-  s+=`</g></g>`;
+  s+=`</g></g></g>`;
   if(straw&&opt.garnish!==false){ const k=(sY-sy0)/(sy1-sy0), xr=sx0+(sx1-sx0)*k; s+=`<g class="garn"><path d="M${xr.toFixed(2)} ${sY}L${sx1} ${sy1}" stroke="#E8584A" stroke-width="2.6" stroke-linecap="round"/><path d="M${xr.toFixed(2)} ${sY}L${sx1} ${sy1}" stroke="#fff" stroke-width="2.6" stroke-dasharray="2.5 3" opacity=".85"/></g>`; }
   s+=`<path d="${sh.o}" fill="none" stroke="var(--glass-stroke)" stroke-width="1.6" stroke-linejoin="round"/>`;
   s+=`<path d="${sh.hl}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>`;
@@ -1617,19 +2027,55 @@ const IC={
   trophy:`<svg viewBox="0 0 24 24"><path class="fillme" d="M7 3.5h10v5.5a5 5 0 0 1-10 0z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 5.5H4.2a3.2 3.2 0 0 0 3.3 4.3M17 5.5h2.8a3.2 3.2 0 0 1-3.3 4.3M12 14v4M8 20.5h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   map:`<svg viewBox="0 0 24 24"><circle cx="7" cy="8" r="2" fill="currentColor"/><circle cx="16" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="14" r="2" fill="currentColor"/><circle cx="18" cy="17" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2" fill="currentColor"/></svg>`,
   shaker:`<svg viewBox="0 0 24 24"><path d="M9 2.5h6l-.4 2.5H9.4z" fill="currentColor"/><path d="M8.5 6h7l-1 3h-5z" fill="currentColor" opacity=".7"/><path d="M8 10h8l-1.4 11a1 1 0 0 1-1 .9h-3.2a1 1 0 0 1-1-.9z" fill="currentColor"/></svg>`,
+  coin:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14.8 9.2c-.5-.9-1.6-1.4-2.8-1.4-1.6 0-2.8.8-2.8 2.1 0 2.9 5.8 1.6 5.8 4.3 0 1.3-1.3 2.1-3 2.1-1.3 0-2.4-.6-2.9-1.5M12 6v1.8M12 16.3V18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   filter:`<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`,
   book:`<svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 21H20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`
 };
 function starsSm(n){ let s='<span class="stars sm">'; for(let i=1;i<=5;i++) s+=`<span class="${i<=n?"on":""}">${IC.star}</span>`; return s+"</span>"; }
+
+// ================= COÛT PAR VERRE =================
+const DEFVOL={spirit:700,liqueur:700,amaro:700,vin:750,bitters:200,sirop:700,soft:1000,jus:1000,frais:500};
+// estimation des basiques, en CHF par unité (ml, trait, feuille ou pièce)
+const BASIC_COST={citron:0.02,citron_vert:0.025,sirop_sucre:0.002,sirop_miel:0.02,blanc_oeuf:0.017,oeuf:0.5,creme:0.008,lait:0.0016,menthe:0.04,basilic:0.05,concombre:0.08,cafe:0.004,espresso:0.012,fleur_oranger:0.02,marmelade:0.1,worcestershire:0.02,tabasco:0.02,sucre:0.02,eau:0};
+function hasPrices(){ return Object.values(S.price||{}).some(p=>p&&p.p>0); }
+function unitPrice(id){ const p=(S.price||{})[id]; if(!p||!p.p) return null; return p.p/(p.v||DEFVOL[ING[id].cat]||700); }
+function costOf(items, mult=1){
+  let tot=0, est=0; const miss=[];
+  items.forEach(it=>{ const i=ING[it.id]; if(!i||it.r==="rinse") return;
+    if(i.basic){ const u=BASIC_COST[it.id]||0; const q=(it.u==="f"||it.u==="u"||it.u==="d")?it.q:it.id==="marmelade"?it.q:mlOf(it); est+=u*q*mult; return; }
+    const up=unitPrice(it.id); if(up==null){ if(it.r!=="opt") miss.push(it.id); return; } tot+=up*mlOf(it)*mult; });
+  return {tot:tot+est, est, miss:[...new Set(miss)]};
+}
+function chf(x){ return (Math.round(x*20)/20).toFixed(2).replace(".",",")+" CHF"; }
+function barValue(){ let v=0; Object.entries(S.stock).forEach(([id,l])=>{ const p=(S.price||{})[id]; if(p&&p.p&&tracked(id)&&l>0) v+=p.p*l/4; }); return v; }
+
+// ================= ACCORDS METS ET COCKTAILS =================
+function pairFeatures(r){ const p=profileR(r), av=avgProfile(), m=metricsR(r);
+  const fz=r.ing.some(i=>ING[i.id].fizz)?1:0;
+  return {sweet:p[0]-av[0],acid:p[1]-av[1],bitter:p[2]-av[2],strong:p[3]-av[3],fruity:p[4]-av[4],herbal:p[5]-av[5],spicy:p[6]-av[6],woody:p[7]-av[7],cream:(p[8]||0)-0.15,fizz:fz-0.35,light:m.abv<10?1:0}; }
+function dishPicks(d){
+  const out=RECS.filter(r=>!r.mine).map(r=>{ const f=pairFeatures(r); let s=0, best=null, bv=0;
+    for(const k in d.want){ const v=d.want[k]*(f[k]||0); s+=v*2.2; if(v>bv){bv=v;best=k;} }
+    const pk=d.picks.indexOf(r.id); if(pk>=0) s+=3-pk*0.25;
+    if(d.base.includes(baseGroup(r))) s+=0.4;
+    if(status(r).ok) s+=0.7; s+=(predict(r)-3)*0.35; if(r.na&&!S.settings.na) s-=1.2;
+    let why=best?PAIR_WHY[best]:PAIR_WHY.light; if((d.id==="fondue"||d.id==="raclette")&&["kirsch","williamine","pflumli","abricotine","trasch","genepi"].includes(r.base)) why=PAIR_WHY.trad;
+    return {r,s,why}; }).sort((a,b)=>b.s-a.s);
+  const res=[]; for(const x of out){ if(res.length>=7) break; if(res.some(y=>cos(fvec(y.r),fvec(x.r))>0.97)) continue; res.push(x); } return res;
+}
+
+// ================= MOMENT DE LA JOURNÉE =================
+const MOMENTS={matin:{n:"Ce matin",k:"Bonne matinée"},aprem:{n:"Cet après-midi",k:"Bel après-midi"},apero:{n:"L’heure de l’apéro",k:"C’est l’heure dorée"},soir:{n:"Ce soir",k:"Belle soirée"},nuit:{n:"Tard dans la nuit",k:"Pour les noctambules"}};
+function currentMoment(){ const m=S.settings&&S.settings.moment; return m&&m!=="auto"?m:ctxInfo().moment; }
 // ================= ÉTAT & SAUVEGARDE =================
 const KEY="zeste.v1";
 const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
 function loadLocal(){ try{ const j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){} return DEF(); }
-S=loadLocal(); fixState();
+S=loadLocal();
 function fixState(){ S.settings=Object.assign({unit:"cl",nobasic:[]},S.settings||{}); if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[]; }
 let DB=null, DOC=null, saveTimer=null, saving=false, pending=false;
 function save(){
-  S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+  STC={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
   clearTimeout(saveTimer); saveTimer=setTimeout(pushRemote,1200);
 }
 async function pushRemote(){
@@ -1666,8 +2112,17 @@ function nav(title,right="",left=""){ return `<div class="navbar"><div class="nb
 const statusDot=r=>{ const s=status(r); return `<span class="dot ${s.ok?"ok":s.subOk?"sub":"no"}"></span>`; };
 function recRow(r, sub){
   const rt=S.ratings[r.id];
-  return `<button class="row tap" data-a="rec" data-id="${r.id}" style="--inset:70px"><div class="thumb">${glassSVG(r,{garnish:false})}</div><div class="grow"><div class="t serif">${esc(r.n)}</div><div class="s">${esc(sub||ingList(r))}</div></div>${rt?starsSm(rt):""}${statusDot(r)}${IC.chev}</button>`;
+  return `<button class="row tap" data-a="rec" data-id="${r.id}" style="--inset:70px"><div class="thumb">${glassThumb(r)}</div><div class="grow"><div class="t serif">${esc(r.n)}</div><div class="s">${esc(sub||ingList(r))}</div></div>${rt?starsSm(rt):""}${statusDot(r)}${IC.chev}</button>`;
 }
+function adjCard(r){
+  const a=(S.adj||{})[r.id]||{}, hasS=r.ing.some(i=>{const I=ING[i.id]; return I.cat==="sirop"||i.id==="sucre"||(I.cat==="liqueur"&&I.sug>=20&&i.id!==r.base);}), hasA=r.ing.some(i=>["citron","citron_vert","pamplemousse"].includes(i.id)), hasF=r.ing.some(i=>ING[i.id].cat==="spirit");
+  const rows=[hasS&&["s","Sucre","Moins sucré","Plus sucré"],hasA&&["a","Acidité","Moins acide","Plus acide"],hasF&&["f","Force","Plus léger","Plus fort"]].filter(Boolean);
+  if(!rows.length) return "";
+  const pk=POP&&POP.k&&POP.k.startsWith("adj"+r.id)&&Date.now()-POP.t<700?POP.k.slice(-1):"";
+  return `<h2 class="sh">Ta version${getAdj(r.id)?`<button class="more" data-a="adjreset" data-id="${r.id}">Réinitialiser</button>`:""}</h2><div class="sh-sub">Ajuste à ton goût : les quantités suivent, et l’app s’en souvient.</div><div class="card adj">${rows.map(([k,n,lo,hi])=>{ const v=a[k]||0; return `<div class="adj-row"><div class="adj-l"><b>${n}</b><span>${v<0?lo:v>0?hi:"Comme l’original"}</span></div><div class="adj-dots">${[-2,-1,0,1,2].map(x=>`<button class="${x===v?"on":""} ${x===0?"zero":""} ${pk===k&&x===v?"pop":""}" data-a="adj" data-id="${r.id}" data-k="${k}" data-v="${x}" aria-label="${n} ${x}"><i></i></button>`).join("")}</div></div>`; }).join("")}</div>`;
+}
+const TERMRE=null;
+function termify(html){ let out=html; TERMS.forEach(([k,re])=>{ let done=false; out=out.replace(new RegExp(re.source,re.flags.replace("g","")),m=>{ if(done) return m; done=true; return `<span class="term" role="button" tabindex="0" data-a="term" data-k="${k}">${m}</span>`; }); }); return out; }
 function pendingRatings(){ const now=Date.now(), sn=S.snooze||{}, seen=new Set(), out=[];
   for(let k=S.hist.length-1;k>=0;k--){ const h=S.hist[k]; if(now-h.t>6*864e5) break; if(seen.has(h.id)||!RMAP[h.id]||S.ratings[h.id]) continue; seen.add(h.id); if(sn[h.id]&&sn[h.id]>h.t) continue; out.push(h); }
   return out; }
@@ -1694,8 +2149,15 @@ function renderAll(){ Object.keys(dirty).forEach(k=>dirty[k]=1); renderView(TAB)
 function renderView(t){
   const el=$("#v-"+t); if(!el) return; const st=el.scrollTop;
   el.innerHTML = ({today:vToday,cocktails:vCocktails,bar:vBar,labo:vLabo,profil:vProfil})[t]();
-  el.scrollTop=st; dirty[t]=0; onScroll.call(el);
+  el.scrollTop=st; dirty[t]=0; onScroll.call(el); animateSegs(el);
 }
+const SEGPREV={};
+function animateSegs(root){ (root||document).querySelectorAll(".seg").forEach(sg=>{ const bs=[...sg.querySelectorAll("button")]; if(!bs.length) return; const on=bs.find(b=>b.classList.contains("on")); if(!on) return;
+  const key=sg.dataset.k||bs[0].dataset.a||"x"; let th=sg.querySelector(".seg-thumb"); if(!th){ th=document.createElement("span"); th.className="seg-thumb"; sg.prepend(th); }
+  const prev=SEGPREV[key], place=b=>{ th.style.transform=`translateX(${b.offsetLeft-2}px)`; th.style.width=b.offsetWidth+"px"; };
+  if(prev!=null&&bs[prev]&&bs[prev]!==on){ th.style.transition="none"; place(bs[prev]); void th.offsetWidth; th.style.transition=""; }
+  place(on); SEGPREV[key]=bs.indexOf(on); }); }
+function moveTabInd(){ const on=document.querySelector(".tabbar button.on"), ind=document.querySelector(".tab-ind"); if(on&&ind){ ind.style.transform=`translateX(${on.offsetLeft+on.offsetWidth/2-28}px)`; } }
 function onScroll(){ this.classList.toggle("scrolled", this.scrollTop>34);
   if(this.id==="v-today"){ const g=this.querySelector(".hero .hg"), y=this.scrollTop; if(g){ g.style.transform=y>0?`scale(${Math.max(0.7,1-y/650).toFixed(3)})`:""; g.style.opacity=y>0?Math.max(0.2,1-y/500):""; } const gl=this.querySelector(".hero .glow"); if(gl) gl.style.opacity=Math.max(0,0.55-y/600); } }
 
@@ -1710,7 +2172,8 @@ function vToday(){
     HERO_LAST="_w";
   } else if(list.length){
     const r=list[0], anim=HERO_LAST!==r.id; HERO_LAST=r.id; const m=metricsR(r);
-    o+=`<div class="hero ${anim?"":"still"}"><div class="glow" style="background:radial-gradient(circle at 50% 36%, ${r.col}70, transparent 62%)"></div><div class="hg">${glassSVG(r,{pour:anim})}</div><div class="kick">${esc(c.label)}</div><div class="hn">${esc(r.n)}</div><div class="hr">${esc(reasons(r))}</div><div class="pills">${S.ratings[r.id]?`<span class="pill match">Noté ${S.ratings[r.id]} sur 5</span>`:taste&&matchPct(r)>=62?`<span class="pill match">${matchPct(r)} % pour toi</span>`:`<span class="pill">${esc(FAMILIES[r.fam])}</span>`}<span class="pill">${Math.round(m.abv)} % d’alcool</span></div><div class="btn-row"><button class="btn sec" data-a="rec" data-id="${r.id}">Voir la recette</button><button class="btn" data-a="barmode" data-id="${r.id}">${IC.play}Préparer</button></div></div>`;
+    S.heroLog=S.heroLog||[]; const dsd=daySeed(); if(!S.heroLog.some(h=>h.id===r.id&&h.d===dsd)){ S.heroLog.push({id:r.id,d:dsd}); S.heroLog=S.heroLog.slice(-30); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+    o+=`<div class="hero ${anim?"":"still"}"><div class="glow" style="background:radial-gradient(circle at 50% 36%, ${r.col}70, transparent 62%)"></div><div class="hg" data-a="jiggle">${glassSVG(r,{pour:anim,live:1})}</div><div class="kick">${esc(c.label)}</div><div class="hn">${esc(r.n)}</div><div class="hr">${esc(reasons(r))}</div><div class="pills">${S.ratings[r.id]?`<span class="pill match">Noté ${S.ratings[r.id]} sur 5</span>`:taste&&matchPct(r)>=62?`<span class="pill match">${matchPct(r)} % pour toi</span>`:`<span class="pill">${esc(FAMILIES[r.fam])}</span>`}<span class="pill">${Math.round(m.abv)} % d’alcool</span></div><div class="btn-row"><button class="btn sec" data-a="rec" data-id="${r.id}">Voir la recette</button><button class="btn" data-a="barmode" data-id="${r.id}">${IC.play}Préparer</button></div></div>`;
   } else {
     o+=`<div class="hero"><div class="hg">${glassSVG({g:"coupe",col:"#D8D0C0",ing:[]})}</div><div class="hn">Presque !</div><div class="hr">Rien n’est encore faisable avec ton bar, mais il manque souvent une seule bouteille.</div><div class="btn-row"><button class="btn sec" data-a="tab" data-t="bar">Voir les achats malins</button></div></div>`;
   }
@@ -1718,6 +2181,8 @@ function vToday(){
   if(list.length>1){ o+=`<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">${list.length} cocktails possibles, variés et classés selon tes goûts</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>`; }
   const br=!empty&&(bottleRecs().find(b=>tracked(b.id))||bottleRecs()[0]);
   o+=`<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?list.length+" possibles":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`;
+  const naL=RECS.filter(r=>r.na&&status(r).ok).sort((a,b)=>score(b)-score(a)).slice(0,8);
+  if(naL.length) o+=`<h2 class="sh">Sans alcool<button class="more" data-a="nafilter">Tout voir</button></h2><div class="sh-sub">Tout le plaisir, zéro degré</div><div class="scroller">${naL.map(r=>tile(r)).join("")}</div>`;
   o+=discoveryCard();
   const mo=new Date().getMonth()+1, se=SEASON[mo];
   o+=`<h2 class="sh">De saison</h2><div class="sh-sub">${esc(se.p.charAt(0).toUpperCase()+se.p.slice(1))}</div><div class="card season"><div class="sp">${esc(se.t)}</div><div class="mini-list">${se.r.map(id=>RMAP[id]).filter(Boolean).map(r=>`<button class="mini" data-a="rec" data-id="${r.id}">${glassSVG(r)}<div class="mn">${esc(r.n)}</div></button>`).join("")}</div></div>`;
@@ -1728,25 +2193,43 @@ function vToday(){
 let CF={q:"",main:"",fam:[],base:[],x:[],mode:"list",sort:"score",all:0};
 const XF=[["swiss","Suisses"],["new","Jamais faits"],["mine","Mes créations"],["crea","Créations à tester"],["classic","Grands classiques"]];
 function nFilters(){ return CF.fam.length+CF.base.length+CF.x.length+(CF.sort==="az"?1:0); }
+const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[’']/g," ").toLowerCase();
+// Notoriété : du plus commandé au moins connu (sert à classer les recherches)
+const POPULAR=["aperol_spritz","mojito","margarita","gin_tonic","negroni","moscow_mule","pina_colada","old_fashioned","espresso_martini","cosmopolitan","caipirinha","daiquiri","long_island","martini","whisky_sour","cuba_libre","manhattan","bloody_mary","hugo","mai_tai","tequila_sunrise","sex_beach","white_russian","french75","paloma","mimosa","pornstar","dark_stormy","irish_coffee","tom_collins","kir","kir_royal","bellini","americano","sbagliato","campari_spritz","limoncello_spritz","pisco_sour","amaretto_sour","black_russian","sidecar","boulevardier","sazerac","gimlet","bramble","vin_chaud","panache","pastis","jagerbomb","b52","blue_lagoon","screwdriver","mint_julep","dirty_martini","vesper","rob_roy","zombie","hurricane","singapore_sling","penicillin","paper_plane","last_word","jungle_bird","clover_club","aviation","gin_fizz","bees_knees","tommys","planters","painkiller","el_diablo","fernet_cola","kafi_luz","suze_tonic","nojito","virgin_mary","shirley_temple","gold_rush","ramos","gin_basil_smash","french_martini","lemon_drop","godfather","grasshopper","brandy_alexander","hot_toddy","mauresque","picon_biere","pimms_cup","st_germain_spritz","death_afternoon","vieux_carre","hanky_panky","white_lady","corpse_reviver","chindon","diabolo_menthe","diabolo_grenadine"];
+const POPIDX={}; POPULAR.forEach((id,k)=>POPIDX[id]=k);
+function popScore(r){ const k=POPIDX[r.id]; return k==null? (r.c?4:0) : 40*(1-k/POPULAR.length)+6; }
+const ALIAS={martini:"martini",gin_tonic:"gin tonic|gt",aperol_spritz:"spritz",moscow_mule:"mule",whisky_sour:"sour|whiskey sour",old_fashioned:"old fashion",pina_colada:"colada|pina",irish_coffee:"irish|cafe irlandais",espresso_martini:"espresso",white_russian:"russian",long_island:"long island|lit",french75:"french 75",cuba_libre:"rhum coca|rum coke",jack_coke:"jack coca|whisky coca",b52:"b 52",sex_beach:"sex on the beach",tequila_sunrise:"sunrise",kir_royal:"kir royale",vin_chaud:"gluhwein|glühwein",panache:"radler",dark_stormy:"dark and stormy|dark n stormy"};
+let ING_WORDS=null;
+function relevance(r,qq){ const n=norm(r.n); let s=0;
+  if(!ING_WORDS){ ING_WORDS=new Set(["whisky","whiskey","rhum","rum","brandy"]); Object.values(ING).forEach(i=>norm(i.n.replace(/ \(.*\)/,"")).split(/\s+/).forEach(w=>{ if(w.length>2) ING_WORDS.add(w); })); }
+  const ingQuery=qq.split(/\s+/).every(w=>ING_WORDS.has(w));
+  if(n===qq) s=100; else if(n.startsWith(qq)) s=62; else if(n.split(/[\s-]+/).some(w=>w.startsWith(qq.split(/\s+/)[0]))) s=48; else if(n.includes(qq)) s=38; else s=8;
+  const al=ALIAS[r.id]; if(al&&al.split("|").some(x=>norm(x)===qq)) s=Math.max(s,95);
+  if(ingQuery&&s<95) s=8+s*0.15+(r.base&&(norm(ING[r.base].n).startsWith(qq)||norm(BASE_LABEL[baseGroup(r)]||"").startsWith(qq))?14:0);
+  return s+popScore(r)+Math.max(0,score(r)-3)*3-n.length*0.05; }
 function filtered(ignoreMain){
-  let L=RECS.slice(); const qq=CF.q.trim().toLowerCase();
-  if(qq) L=L.filter(r=>(r.n+" "+r.ing.map(i=>ING[i.id].n).join(" ")).toLowerCase().includes(qq));
-  if(!ignoreMain){ if(CF.main==="ok") L=L.filter(r=>status(r).ok); if(CF.main==="fav") L=L.filter(r=>S.fav.includes(r.id)); }
+  let L=RECS.slice(); const qq=norm(CF.q.trim());
+  if(qq) L=L.filter(r=>{ r._s=r._s||norm(r.n+" "+r.ing.map(i=>ING[i.id].n).join(" ")+" "+FAMILIES[r.fam]+" "+(BASE_LABEL[baseGroup(r)]||"")+" "+(ALIAS[r.id]||"").replace(/\|/g," ")+(baseGroup(r)==="whisky"?" whiskey":"")+(r.na?" sans alcool mocktail virgin":"")); return qq.split(/\s+/).every(w=>(" "+r._s).includes(" "+w)&&!(w==="gin"&&!/(^| )gin( |$)/.test(r._s))); });
+  if(!ignoreMain){ if(CF.main==="ok") L=L.filter(r=>status(r).ok); if(CF.main==="fav") L=L.filter(r=>S.fav.includes(r.id)); if(CF.main==="na") L=L.filter(r=>r.na||metricsR(r).abv<0.5); }
   if(CF.fam.length) L=L.filter(r=>CF.fam.includes(r.fam)); if(CF.base.length) L=L.filter(r=>CF.base.includes(baseGroup(r)));
   CF.x.forEach(x=>{ if(x==="swiss") L=L.filter(r=>r.s); if(x==="new") L=L.filter(r=>!madeCount(r.id)); if(x==="mine") L=L.filter(r=>r.mine); if(x==="crea") L=L.filter(r=>r.cr); if(x==="classic") L=L.filter(r=>r.c); });
-  if(CF.sort==="az") L.sort((a,b)=>a.n.localeCompare(b.n,"fr")); else L.sort((a,b)=>(status(b).ok-status(a).ok)||(score(b)-score(a)));
+  if(CF.sort==="az") L.sort((a,b)=>a.n.localeCompare(b.n,"fr"));
+  else if(CF.sort==="cost"){ const k=r=>{ const c=costOf(r.ing); return c.miss.length?1e6+c.miss.length:c.tot; }; L.sort((a,b)=>k(a)-k(b)); }
+  else if(qq){ const rel={}; L.forEach(r=>rel[r.id]=relevance(r,qq)); L.sort((a,b)=>rel[b.id]-rel[a.id]); }
+  else L.sort((a,b)=>(status(b).ok-status(a).ok)||(score(b)-score(a)));
   return L;
 }
 function vCocktails(){
   const L=filtered(), nf=nFilters();
   let o=nav("Cocktails",`<button class="icon-btn" data-a="cmode" aria-label="${CF.mode==="list"?"Carte des saveurs":"Liste"}">${CF.mode==="list"?IC.map:IC.book}</button>`)+`<div class="content"><h1 class="lt">Cocktails</h1>`;
   o+=`<label class="search">${IC.search}<input id="cq" type="search" placeholder="Nom ou ingrédient" value="${esc(CF.q)}" autocomplete="off"></label>`;
-  o+=`<div class="toolbar"><div class="seg">${[["","Tous"],["ok","Faisables"],["fav","Favoris"]].map(([k,n])=>`<button class="${CF.main===k?"on":""}" data-a="cmain" data-v="${k}">${n}</button>`).join("")}</div><button class="fbtn" data-a="filters">${IC.filter}Filtres${nf?`<b>${nf}</b>`:""}</button></div>`;
+  o+=`<div class="toolbar"><div class="seg small4">${[["","Tous"],["ok","Faisables"],["fav","Favoris"],["na","0 %"]].map(([k,n])=>`<button class="${CF.main===k?"on":""}" data-a="cmain" data-v="${k}">${n}</button>`).join("")}</div><button class="fbtn" data-a="filters">${IC.filter}Filtres${nf?`<b>${nf}</b>`:""}</button></div>`;
   if(nf){ const chips=[...CF.fam.map(k=>["fam",k,FAMILIES[k]]),...CF.base.map(k=>["base",k,BASE_LABEL[k]]),...CF.x.map(k=>["x",k,XF.find(x=>x[0]===k)[1]])];
     if(CF.sort==="az") chips.push(["sort","az","A à Z"]);
     o+=`<div class="active-f">${chips.map(([g,k,n])=>`<button data-a="unf" data-g="${g}" data-k="${k}">${esc(n)}${IC.x}</button>`).join("")}</div>`; }
   if(CF.mode==="map"){ o+=`<h2 class="sh" style="margin-top:16px">Carte des saveurs</h2><div class="sh-sub">Chaque point est un cocktail. Touche-en un pour l’ouvrir.</div>`+flavorMap(L); return o+`<div class="sp24"></div></div>`; }
   if(!L.length) return o+`<div class="empty"><b>Aucun cocktail</b>Essaie d’enlever un filtre ou de changer ta recherche.</div></div>`;
+  if(CF.main==="na") o+=`<div class="na-banner"><b>Zéro degré, plein de goût</b><span>Des recettes équilibrées comme de vrais cocktails, pour conduire, faire une pause ou les potes qui ne boivent pas.</span></div>`;
   const sectioned = CF.sort!=="az" && !CF.main && !CF.q;
   if(sectioned){
     const ok=[],one=[],rest=[]; L.forEach(r=>{ const s=status(r); if(s.ok) ok.push(r); else if(s.subOk||s.miss.length===1) one.push([r,s]); else rest.push(r); });
@@ -1764,7 +2247,7 @@ function filterSheet(){
       body:`<div class="gh">Famille</div><div class="chips" style="flex-wrap:wrap">${Object.entries(FAMILIES).map(([k,v])=>ch("fam",k,v)).join("")}</div>
       <div class="gh">Alcool de base</div><div class="chips" style="flex-wrap:wrap">${Object.entries(BASE_LABEL).filter(([k])=>k!=="autre").map(([k,v])=>ch("base",k,v)).join("")}</div>
       <div class="gh">Autres</div><div class="chips" style="flex-wrap:wrap">${XF.map(([k,v])=>ch("x",k,v)).join("")}</div>
-      <div class="gh">Tri</div><div class="seg">${[["score","Pour toi"],["az","A à Z"]].map(([k,v])=>`<button class="${CF.sort===k?"on":""}" data-a="tsort" data-k="${k}">${v}</button>`).join("")}</div>`,
+      <div class="gh">Tri</div><div class="seg">${[["score","Pour toi"],["az","A à Z"]].concat(hasPrices()?[["cost","Moins chers"]]:[]).map(([k,v])=>`<button class="${CF.sort===k?"on":""}" data-a="tsort" data-k="${k}">${v}</button>`).join("")}</div>`,
       foot:`<button class="btn" data-a="closesheet">Afficher ${n} cocktail${n>1?"s":""}</button>`};
   });
 }
@@ -1793,7 +2276,7 @@ function vBar(){
   const ids=Object.keys(S.stock).filter(id=>ING[id]&&!ING[id].basic);
   let o=nav("Mon bar",`<button class="icon-btn" data-a="addsheet" aria-label="Ajouter">${IC.plus}</button>`)+`<div class="content"><h1 class="lt">Mon bar</h1>`;
   if(!ids.length){ o+=`<div class="empty">${IC.bottle}<b>Ton bar est vide</b>Ajoute tes bouteilles et tes softs. Sucre, œufs, agrumes, crème et herbes fraîches sont déjà considérés comme disponibles.</div><div class="btn-row"><button class="btn" data-a="quickadd">Ajout rapide</button></div><div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">Parcourir tous les ingrédients</button></div>`; return o+`</div>`; }
-  o+=`<div class="stat-grid" style="grid-template-columns:1fr 1fr"><div class="stat"><b id="st-b">${barCount()}</b><span>bouteilles ouvertes</span></div><div class="stat t"><b id="st-m">${makeable()}</b><span>cocktails faisables</span></div></div><div class="sp16"></div>`;
+  o+=`<div class="stat-grid" style="grid-template-columns:1fr 1fr"><div class="stat"><b id="st-b">${barCount()}</b><span>bouteilles ouvertes</span></div><div class="stat t"><b id="st-m">${makeable()}</b><span>cocktails faisables</span></div></div>${hasPrices()?`<div class="gf" style="margin-top:10px">Valeur estimée de ton bar : <b style="color:var(--label)">${chf(barValue())}</b>, d’après les prix et niveaux renseignés.</div>`:`<div class="gf" style="margin-top:10px">Astuce : renseigne le prix d’une bouteille dans sa fiche pour voir le coût de chaque verre.</div>`}<div class="sp16"></div>`;
   o+=segChips(BF,"bf",true);
   const inSeg=id=>!BF||segOf(id)===BF;
   const out=ids.filter(id=>tracked(id)&&S.stock[id]===0&&inSeg(id));
@@ -1899,7 +2382,7 @@ function vCompose(){
   const {met,st,z}=A;
   o+=`<div class="gh">Analyse, profil ${esc(STYLE_N[st])}</div><div class="card"><div class="metrics"><div class="metric"><b>${num(Math.round(met.abv*10)/10)} %</b><span>alcool</span>${zoneBar(met.abv,z.abv,40)}</div><div class="metric"><b>${num(Math.round(met.sug*10)/10)}</b><span>sucre g/100 ml</span>${zoneBar(met.sug,z.sug,16)}</div><div class="metric"><b>${num(Math.round(met.acid*100)/100)} %</b><span>acidité</span>${zoneBar(met.acid,z.acid,1.6)}</div></div>`;
   const p=profileOf(A.items,met);
-  o+=`<div class="sp16"></div><div class="prof">${radarSVG(p)}<div class="muted" style="font-size:14px">Environ ${fmtMl(met.vol)} dans le verre après ${S.mix.m==="build"?"la fonte de la glace":"dilution"}. La zone verte montre la plage des classiques du même style.</div></div></div>`;
+  o+=`<div class="sp16"></div><div class="prof">${radarSVG(p)}<div class="muted" style="font-size:14px">Environ ${fmtMl(met.vol)} dans le verre après ${S.mix.m==="build"?"la fonte de la glace":"dilution"}. La zone verte montre la plage des classiques du même style.${hasPrices()?(()=>{ const c=costOf(A.items); return c.miss.length?"":" Coût : environ "+chf(c.tot)+"."; })():""}</div></div></div>`;
   o+=`<div class="gh">Diagnostic</div><div class="group">${A.diag.map((d,k)=>`<div class="diag"><div class="di ${d.warn?"warn":"ok"}">${d.warn?IC.warn:IC.checkc}</div><div class="dt"><b>${esc(d.t)}</b>${esc(d.why)}${d.fix?`<br><button class="btn small sec" data-a="mixfix" data-id="${d.fix.id}" data-q="${d.fix.q}">Ajouter ${esc(fmtQ({q:d.fix.q,u:unitOf(d.fix.id)}))} ${esc(de(lc(shortN(d.fix.id))).replace(/^de |^d’/,m=>m==="de "?"de ":"d’"))}</button>`:""}</div></div>`).join("")}</div>`;
   const pa=pairings(A.items);
   if(pa.length) o+=`<div class="gh">Pour aller plus loin</div><div class="group">${pa.map(id=>`<div class="pair"><div class="grow"><div class="pn">${esc(ING[id].n)} ${has(id)?`<span class="badge green">${ING[id].basic?"Toujours là":"Dans ton bar"}</span>`:`<span class="badge">À acheter</span>`}</div><div class="pr">Apporte ${esc(ROLE[id]||"de la complexité")}.</div></div><button class="btn small sec" data-a="mixadd1" data-id="${id}">Ajouter</button></div>`).join("")}</div>`;
@@ -1950,6 +2433,7 @@ const TROPHIES=[
  ["crea","Créateur","Enregistre une création du labo",1,()=>S.labSaved||0],
  ["loyal","Fidèle","Prépare 5 fois le même cocktail",5,()=>Math.max(0,...Object.values(S.hist.reduce((a,h)=>(a[h.id]=(a[h.id]||0)+1,a),{})))],
  ["roul","Aventurier","Suis la roulette 3 fois",3,()=>S.roul||0],
+ ["zero","Zéro degré","3 recettes sans alcool",3,()=>distinct().filter(id=>RMAP[id].na).length],
  ["night","Noctambule","Un cocktail entre minuit et 4 h",1,()=>S.hist.filter(h=>{const x=new Date(h.t).getHours();return x<4;}).length]
 ];
 function distinct(){ return [...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id]); }
@@ -1972,6 +2456,10 @@ function vProfil(){
   else o+=`<div class="card muted" style="font-size:15px">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût. Plus tu notes, plus les suggestions deviennent justes.</div>`;
   if(hasTaste()){ const nx=RECS.filter(r=>!madeCount(r.id)&&!S.ratings[r.id]&&!r.na).map(r=>[r,predict(r)-0.22*status(r).miss.length]).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0];
     if(nx){ const ok=status(nx).ok; o+=`<h2 class="sh">Ton prochain coup de cœur</h2><div class="sh-sub">Jamais préparé, et c’est notre meilleur pari</div><button class="card buy" data-a="rec" data-id="${nx.id}" style="width:calc(100% - 32px);text-align:left"><div class="bb" style="width:56px;height:70px">${glassSVG(nx)}</div><div class="grow"><div class="bt" style="font-family:var(--serif)">${esc(nx.n)}</div><div class="bs">${matchPct(nx)} % pour toi. ${ok?"Tu peux le faire maintenant.":"Il te manque "+esc(status(nx).miss.map(x=>lc(shortN(x))).join(", "))+"."}</div></div>${IC.chev}</button>`; } }
+  if(getModel().n>=2){ const mw=mWeights(), tot=mw.knn+mw.ing+mw.fam+mw.dims, L=[["knn","Cocktails proches de tes favoris"],["ing","Tes ingrédients préférés"],["fam","Tes familles et alcools"],["dims","Ton profil de goût"]];
+    const pl=(n,a,b)=>n+" "+(n>1?b:a);
+    const sig=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"],[S.quiz?1:0,"quiz","quiz"]].filter(x=>x[0]);
+    o+=`<h2 class="sh">Comment Zeste te connaît</h2><div class="sh-sub">Ce qui pèse dans tes suggestions. Ces poids évoluent : chaque note renforce les signaux qui avaient vu juste.</div><div class="card bars" style="padding:10px 0">${L.map(([k,n])=>`<div class="bar-row"><div class="bl" style="width:170px;white-space:normal;line-height:1.2">${n}</div><div class="bt"><i style="width:${Math.round(mw[k]/tot*100)}%"></i></div><div class="bn">${Math.round(mw[k]/tot*100)}</div></div>`).join("")}<div class="gf" style="margin:8px 16px 4px">D’après ${esc(joinFr(sig.map(([n,a,b])=>a==="quiz"?"ton quiz":pl(n,a,b))))}${S.mwN?`, et ${S.mwN} ajustement${S.mwN>1?"s":""} du modèle`:""}.</div></div>`; }
   const byBase={}; S.hist.forEach(h=>{ const r=RMAP[h.id]; if(!r) return; const b=BASE_LABEL[baseGroup(r)]; byBase[b]=(byBase[b]||0)+1; });
   const bb=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6);
   if(bb.length){ const mx=bb[0][1]; o+=`<h2 class="sh">Tes spiritueux</h2><div class="card bars" style="padding:10px 0">${bb.map(([n,c])=>`<div class="bar-row"><div class="bl">${esc(n)}</div><div class="bt"><i style="width:${c/mx*100}%"></i></div><div class="bn">${c}</div></div>`).join("")}</div>`; }
@@ -1983,7 +2471,9 @@ function vProfil(){
   if(last.length) o+=`<h2 class="sh">Derniers verres</h2><div class="group">${last.map(h=>recRow(RMAP[h.id], rel(h.t))).join("")}</div>`;
   const got=S.tro||[];
   o+=`<h2 class="sh">Trophées<span class="more" style="color:var(--label2)">${got.length} sur ${TROPHIES.length}</span></h2><div class="trophies">${TROPHIES.map(([k,n,d,g,f])=>{ const on=got.includes(k), v=Math.min(g,f()); return `<div class="trophy ${on?"":"locked"}" title="${esc(d)}">${medal(k,on)}<div class="tn">${esc(n)}</div><div class="tp">${on?esc(d):v+" / "+g}</div></div>`; }).join("")}</div>`;
-  o+=`<div class="gh">Réglages</div><div class="group"><div class="row"><div class="grow">Ton prénom</div><input id="uname" value="${esc(S.settings.name||"")}" placeholder="Facultatif" maxlength="20" style="border:0;background:transparent;text-align:right;outline:none;color:var(--label2);width:50%"></div><button class="row tap" data-a="quiz"><div class="grow">${S.quiz?"Refaire le quiz de goût":"Faire le quiz de goût"}</div>${IC.chev}</button><div class="row"><div class="grow">Unités</div><div class="seg" style="margin:0;width:120px">${["cl","ml"].map(u=>`<button class="${S.settings.unit===u?"on":""}" data-a="unit" data-u="${u}">${u}</button>`).join("")}</div></div><button class="row tap" data-a="basics"><div class="grow">Contenu additionnel</div><div class="val">${BASICS.filter(has).length} basiques</div>${IC.chev}</button><button class="row tap" data-a="export"><div class="grow link">Exporter une sauvegarde</div></button><button class="row tap" data-a="import"><div class="grow link">Importer une sauvegarde</div></button><button class="row tap" data-a="reset"><div class="grow" style="color:var(--red)">Tout réinitialiser</div></button></div><div class="gf">Ton bar, tes notes et ton historique se synchronisent avec ton compte quand c’est possible, et restent aussi sur cet appareil.</div>`;
+  o+=`${rewindEligible()?`<div class="sp16"></div><button class="rw-card" data-a="rewind" style="margin-top:8px"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">Revis ton année en quelques histoires, et partage ta carte.</div></div><div class="rw-play">${IC.play}</div></button>`:""}
+  <div class="gh">Apparence</div><div class="group"><div class="row"><div class="grow">Ambiance selon l’heure</div><button class="switch ${S.settings.ambiance!==false?"on":""}" data-a="setamb" aria-label="Ambiance selon l’heure"></button></div>${S.settings.ambiance!==false?`<div class="row" style="flex-wrap:wrap"><div class="grow" style="flex-basis:100%">Moment affiché</div><div class="chips" style="flex-wrap:wrap;padding:6px 0 2px;margin:0 -2px">${[["auto","Automatique"],["matin","Matin"],["aprem","Après-midi"],["apero","Apéro"],["soir","Soir"],["nuit","Nuit"]].map(([k,n])=>`<button class="chip ${(S.settings.moment||"auto")===k?"on":""}" data-a="setmoment" data-v="${k}">${n}</button>`).join("")}</div></div>`:""}<div class="row"><div class="grow">Animations spectaculaires<div class="s" style="white-space:normal">Jet de versement, verre inclinable, trinquer, transitions</div></div><button class="switch ${WOW()?"on":""}" data-a="setwow" aria-label="Animations spectaculaires"></button></div><div class="row"><div class="grow">Animation de lancement</div><button class="switch ${S.settings.splash!==false?"on":""}" data-a="setsplash" aria-label="Animation de lancement"></button></div><button class="row tap" data-a="homeedit"><div class="grow">Personnaliser l’accueil</div>${IC.chev}</button></div>
+  <div class="gh">Réglages</div><div class="group"><div class="row"><div class="grow">Ton prénom</div><input id="uname" value="${esc(S.settings.name||"")}" placeholder="Facultatif" maxlength="20" style="border:0;background:transparent;text-align:right;outline:none;color:var(--label2);width:50%"></div><button class="row tap" data-a="quiz"><div class="grow">${S.quiz?"Refaire le quiz de goût":"Faire le quiz de goût"}</div>${IC.chev}</button><div class="row"><div class="grow">Unités</div><div class="seg" style="margin:0;width:120px">${["cl","ml"].map(u=>`<button class="${S.settings.unit===u?"on":""}" data-a="unit" data-u="${u}">${u}</button>`).join("")}</div></div><div class="row"><div class="grow">Sans alcool dans les suggestions</div><button class="switch ${S.settings.na?"on":""}" data-a="setna" aria-label="Sans alcool dans les suggestions"></button></div><button class="row tap" data-a="basics"><div class="grow">Contenu additionnel</div><div class="val">${BASICS.filter(has).length} basiques</div>${IC.chev}</button><button class="row tap" data-a="export"><div class="grow link">Exporter une sauvegarde</div></button><button class="row tap" data-a="import"><div class="grow link">Importer une sauvegarde</div></button><button class="row tap" data-a="reset"><div class="grow" style="color:var(--red)">Tout réinitialiser</div></button></div><div class="gf">Ton bar, tes notes et ton historique se synchronisent avec ton compte quand c’est possible, et restent aussi sur cet appareil.</div>`;
   o+=`<div class="gf" style="margin-top:18px">Zeste compte ${RECS.filter(r=>!r.mine).length} recettes, dont ${RECS.filter(r=>r.cr).length} créations suisses encore non testées.</div>`;
   return o+`<div class="sp24"></div></div>`;
 }
@@ -1994,7 +2484,7 @@ const SHEETS=[];
 function openSheet(render, opt={}){
   const wrap=$("#sheets"); const bd=document.createElement("div"); bd.className="backdrop"; bd.dataset.a="closesheet";
   const el=document.createElement("div"); el.className="sheet"+(opt.short?" short":""); el.setAttribute("role","dialog");
-  wrap.append(bd,el); const sh={el,bd,render,opt}; SHEETS.push(sh); paintSheet(sh);
+  wrap.append(bd,el); const sh={el,bd,render,opt}; SHEETS.push(sh); paintSheet(sh); document.body.classList.add("sheet-open");
   requestAnimationFrame(()=>requestAnimationFrame(()=>{el.classList.add("open"); bd.classList.add("open");}));
   dragSheet(sh); return sh;
 }
@@ -2003,10 +2493,10 @@ function paintSheet(sh){
   sh.el.classList.toggle("has-foot",!!r.foot);
   if(!sh.painted){ sh.painted=1; sh.el.classList.add("fresh"); setTimeout(()=>sh.el.classList.remove("fresh"),1200); }
   sh.el.innerHTML=`<div class="sheet-head ${(r.title||r.left)?"titled":""}"><div class="sl">${r.left||""}</div><div class="st">${esc(r.title||"")}</div><div class="sr">${r.right!=null?r.right:`<button class="close-x" data-a="closesheet" aria-label="Fermer">${IC.x}</button>`}</div></div><div class="sheet-body">${r.body}</div>${r.foot?`<div class="sheet-foot">${r.foot}</div>`:""}`;
-  const nb=sh.el.querySelector(".sheet-body"); nb.scrollTop=st; const hd=sh.el.querySelector(".sheet-head"); const upd=()=>hd.classList.toggle("scrolled",nb.scrollTop>40); nb.addEventListener("scroll",upd,{passive:true}); upd(); if(r.after) r.after(sh.el);
+  animateSegs(sh.el); const nb=sh.el.querySelector(".sheet-body"); nb.scrollTop=st; const hd=sh.el.querySelector(".sheet-head"); const upd=()=>hd.classList.toggle("scrolled",nb.scrollTop>40); nb.addEventListener("scroll",upd,{passive:true}); upd(); if(r.after) r.after(sh.el);
 }
 function refreshSheets(){ SHEETS.forEach(paintSheet); }
-function closeSheet(){ const sh=SHEETS.pop(); if(!sh) return; sh.el.classList.remove("open"); sh.bd.classList.remove("open"); setTimeout(()=>{sh.el.remove(); sh.bd.remove();},420); if(TAB==="cocktails"&&dirty.cocktails) renderView("cocktails"); }
+function closeSheet(){ const sh=SHEETS.pop(); if(!sh) return; if(!SHEETS.length) document.body.classList.remove("sheet-open"); sh.el.classList.remove("open"); sh.bd.classList.remove("open"); setTimeout(()=>{sh.el.remove(); sh.bd.remove();},420); if(TAB==="cocktails"&&dirty.cocktails) renderView("cocktails"); }
 function closeAll(){ while(SHEETS.length) closeSheet(); }
 function dragSheet(sh){
   let y0=null,dy=0; const el=sh.el;
@@ -2018,24 +2508,28 @@ const popOn=(k)=>POP&&POP.k===k&&Date.now()-POP.t<700;
 
 // fiche cocktail
 function recSheet(id){
-  let mult=1, first=true;
-  const sh=openSheet(()=>{ const r=RMAP[id]; if(!r) return {title:"",body:""}; const st=status(r), m=metricsR(r), p=profileR(r), rt=S.ratings[id]||0, fav=S.fav.includes(id);
-    let b=`<div class="dhero"><div class="glow" style="background:radial-gradient(circle at 50% 42%, ${r.col}78, transparent 60%)"></div><div class="dg">${glassSVG(r,{pour:first})}</div><h1>${esc(r.n)}</h1><div class="tags"><span class="badge">${FAMILIES[r.fam]}</span>${r.c?`<span class="badge">Classique</span>`:""}${r.s?`<span class="badge tint">Suisse</span>`:""}${r.cr?`<span class="badge">Création à tester</span>`:""}${r.mine?`<span class="badge tint">Ma création</span>`:""}${m.abv<0.5?`<span class="badge green">Sans alcool</span>`:""}${madeCount(id)?`<span class="badge green">Fait ${madeCount(id)} fois</span>`:""}</div></div>`;
+  S.opens=S.opens||{}; S.opens[id]=(S.opens[id]||0)+1; try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){}
+  let mult=1, first=true, ver=getAdj(id)?"mine":"orig";
+  const sh=openSheet(()=>{ const r=RMAP[id]; if(!r) return {title:"",body:""}; const adj=getAdj(id); if(!adj) ver="orig";
+    const items= ver==="mine"? adjItems(r) : r.ing;
+    const st=status(r), m= ver==="mine"? calc(items,r.m,r.ice) : metricsR(r), p=profileR(r), rt=S.ratings[id]||0, fav=S.fav.includes(id);
+    let b=`<div class="dhero"><div class="glow" style="background:radial-gradient(circle at 50% 42%, ${r.col}78, transparent 60%)"></div><div class="dg" data-a="jiggle">${glassSVG(r,{pour:first,live:1,stream:first&&WOW()})}</div><h1>${esc(r.n)}</h1><div class="tags"><span class="badge">${FAMILIES[r.fam]}</span>${r.c?`<span class="badge">Classique</span>`:""}${r.s?`<span class="badge tint">Suisse</span>`:""}${r.cr?`<span class="badge">Création à tester</span>`:""}${r.mine?`<span class="badge tint">Ma création</span>`:""}${m.abv<0.5?`<span class="badge green">Sans alcool</span>`:""}${madeCount(id)?`<span class="badge green">Fait ${madeCount(id)} fois</span>`:""}</div></div>`;
     first=false;
-    b+=`<div class="facts"><div><b>${Math.round(m.abv)} %</b><span>alcool</span></div><div><b>${fmtMl(m.vol*mult)}</b><span>volume</span></div><div><b>${esc(METH[r.m])}</b><span>méthode</span></div><div><b>${esc(GNAME[r.g]||"")}</b><span>verre</span></div></div>`;
+    b+=`<div class="facts"><div><b>${Math.round(m.abv)} %</b><span>alcool</span></div><div><b>${fmtMl(m.vol*mult)}</b><span>volume</span></div><div><b>${esc(METH[r.m])}</b><span>méthode</span></div><div><b>${esc(GNAME[r.g]||"")}</b><span>verre</span></div></div>`+costLine(items,mult,id);
     if(st.ok) b+=`<div class="status ok">${IC.checkc}<span>Tu as tout ce qu’il faut.</span></div>`;
     else b+=`<div class="status no">${IC.warn}<span>${st.subOk?"Faisable en remplaçant ":"Il te manque "}${st.miss.map(x=>`<b>${esc(lc(shortN(x)))}</b>${st.subs[x]?" par "+esc(lc(shortN(st.subs[x]))):""}`).join(", ")}.</span></div>`;
     const rp=popOn("rate"+id);
     b+=`<div class="card rate-box" style="padding:6px 8px 6px 12px;margin-top:10px"><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${n<=rt?"on":""} ${rp&&n<=rt?"pop":""}" data-a="rate" data-id="${id}" data-n="${n}" aria-label="${n} étoiles">${IC.star}</button>`).join("")}</div><span class="muted" style="font-size:14px;text-align:right;line-height:1.2">${rt?["","Pas pour moi","Bof","Correct","Très bon","Coup de cœur"][rt]:hasTaste()?`<b style="color:var(--tint);font-family:var(--rounded);font-size:17px">${matchPct(r)} %</b><br>pour toi`:"Pas encore noté"}</span></div>`;
-    b+=`<h2 class="sh">Ingrédients<span class="stepper" style="font-size:15px"><button data-a="mult" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${mult} verre${mult>1?"s":""}</span><button data-a="mult" data-d="1" aria-label="Plus">${IC.plus}</button></span></h2><div class="sp8"></div><div class="group">`;
+    b+=adjCard(r);
+    b+=`<h2 class="sh">Ingrédients<span class="stepper" style="font-size:15px"><button data-a="mult" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${mult} verre${mult>1?"s":""}</span><button data-a="mult" data-d="1" aria-label="Plus">${IC.plus}</button></span></h2>${adj?`<div class="seg" data-k="ver" style="margin:8px 16px 0">${[["mine","Ta version"],["orig","Originale"]].map(([k,n])=>`<button class="${ver===k?"on":""}" data-a="ver" data-v="${k}">${n}</button>`).join("")}</div>`:""}<div class="sp8"></div><div class="group">`;
     SEGS.forEach(([sg,sn])=>{ const L=r.ing.filter(it=>segOf(it.id)===sg); if(!L.length) return;
       b+=`<div class="ing-sec"><i style="background:${SEGCOL[sg]}"></i>${sn}${sg==="add"?"<span>Toujours à portée de main</span>":""}</div>`;
-      L.forEach(it=>{ const bas=ING[it.id].basic, miss=!has(it.id)&&it.r!=="opt";
-        const role={opt:"Facultatif",top:"Pour compléter le verre",float:ING[it.id].sug>=40?"Versé en filet à la fin":ING[it.id].cat==="bitters"?"Quelques gouttes sur le dessus":"Versé en dernier, en surface",rinse:"Pour rincer le verre"}[it.r]||"";
-        b+=`<button class="ing-line ${miss?"miss":""} ${bas&&!miss?"basic":""}" data-a="ing" data-id="${it.id}"><span class="q">${fmtQ(it,mult)}</span><span class="n">${esc(ING[it.id].n)}${role?`<small>${role}</small>`:""}</span>${miss?`<span class="badge red">Manque</span>`:""}</button>`; });
+      L.forEach(it0=>{ const it=items.find(x=>x.id===it0.id&&x.r===it0.r)||it0; const bas=ING[it.id].basic, miss=!has(it.id)&&it.r!=="opt"&&it.r!=="rinse";
+        const role={opt:"Facultatif",rinse:"Facultatif, pour parfumer le verre",top:"Pour compléter le verre",float:ING[it.id].sug>=40?"Versé en filet à la fin":ING[it.id].cat==="bitters"?"Quelques gouttes sur le dessus":"Versé en dernier, en surface",rinse:"Pour rincer le verre"}[it.r]||"";
+        b+=`<button class="ing-line ${miss?"miss":""} ${bas&&!miss?"basic":""}" data-a="ing" data-id="${it.id}"><span class="q">${termify(esc(fmtQ(it,mult)))}${it.orig!=null&&ver==="mine"?`<span class="delta ${it.q>it.orig?"up":"down"}">${it.q>it.orig?"+":"−"}${esc(fmtQ({q:Math.abs(it.q-it.orig),u:it.u},mult).replace(/ (traits?|feuilles|morceaux?)$/,""))}</span>`:""}</span><span class="n">${esc(ING[it.id].n)}${role?`<small>${role}</small>`:""}</span>${miss?`<span class="badge red">Manque</span>`:""}</button>`; });
     });
     b+=`</div><div class="gf">Garniture : ${esc(lc(r.gar||"aucune"))}.</div>`;
-    b+=`<h2 class="sh">Préparation</h2><div class="sp8"></div><div class="group"><ol class="steps tick-steps">${buildSteps(r).map(s=>`<li data-a="stepck">${esc(s.t)}</li>`).join("")}</ol></div><div class="gf">Touche une étape pour la cocher au fur et à mesure.</div>`;
+    b+=`<h2 class="sh">Préparation</h2><div class="sp8"></div><div class="group"><ol class="steps tick-steps">${buildSteps(r).map(s=>`<li data-a="stepck">${termify(esc(s.t))}</li>`).join("")}</ol></div><div class="gf">Touche une étape pour la cocher, et un mot souligné pour son explication.</div>`;
     if(r.tip) b+=`<div class="sp8"></div><div class="card" style="font-size:15px;display:flex;gap:10px"><span style="color:var(--tint);flex:none">${IC.sparkle.replace("<svg","<svg width='20' height='20'")}</span><span>${esc(r.tip)}</span></div>`;
     if(r.h) b+=`<h2 class="sh">Histoire</h2><div class="sp8"></div><div class="card"><p class="hist">${esc(r.h)}</p></div>`;
     b+=`<h2 class="sh">Profil</h2><div class="sp8"></div><div class="card"><div class="prof">${radarSVG(p,avgProfile())}<div style="font-size:14px;color:var(--label2)">${esc(reasons(r))}.<div style="margin-top:8px;font-size:12px">La ligne pointillée montre la moyenne de la carte.</div></div></div></div>`;
@@ -2046,9 +2540,11 @@ function recSheet(id){
     b+=`<div class="sp16"></div><div class="group"><button class="row tap" data-a="tolab" data-id="${id}"><span style="color:var(--tint)">${IC.flask.replace("<svg","<svg width='22' height='22'")}</span><div class="grow">Modifier dans le labo</div>${IC.chev}</button></div>`;
     if(r.mine) b+=`<div class="sp16"></div><div class="btn-row"><button class="btn danger" data-a="delcustom" data-id="${id}">Supprimer cette création</button></div>`;
     const hp=popOn("fav"+id);
-    return {title:"",body:b,foot:`<button class="btn sec sq ${hp?"hpop":""}" data-a="fav" data-id="${id}" aria-label="Favori">${fav?IC.heartf:IC.heart}</button><button class="btn sec" data-a="made" data-id="${id}">Je l’ai fait</button><button class="btn" data-a="barmode" data-id="${id}">${IC.play}Préparer</button>`};
+    return {title:"",body:b,foot:`<button class="btn sec sq ${hp?"hpop":""}" data-a="fav" data-id="${id}" aria-label="Favori">${fav?IC.heartf:IC.heart}</button><button class="btn sec ${popOn("made"+id)?"did":""}" data-a="made" data-id="${id}">${popOn("made"+id)?IC.check+"Ajouté":"Je l’ai fait"}</button><button class="btn" data-a="barmode" data-id="${id}">${IC.play}Préparer</button>`};
   });
   sh.setMult=d=>{ mult=Math.max(1,Math.min(8,mult+d)); paintSheet(sh); };
+  sh.setVer=v=>{ ver=v; paintSheet(sh); };
+  sh.recId=id;
 }
 
 // fiche ingrédient
@@ -2063,6 +2559,7 @@ function ingSheet(id){
       else b+=`<div class="group" style="margin-top:18px"><div class="row"><div class="grow">J’en ai</div><button class="switch ${v===1?"on":""}" data-a="toggle" data-id="${id}"></button></div></div>`;
     }
     if(prepActive(id)) b+=`<div class="gf">Tu en as une préparation maison en cours.</div>`;
+    b+=priceBlock(id);
     if(i.tip) b+=`<div class="gh">Conseil</div><div class="card" style="font-size:15px">${esc(i.tip)}</div>`;
     const tech=TECH.find(t=>t.u.includes(id)&&t.p.length); if(tech) b+=`<div class="sp8"></div><div class="group"><button class="row tap" data-a="tech" data-id="${tech.id}"><div class="grow link">Le faire maison : ${esc(tech.n.toLowerCase())}</div>${IC.chev}</button></div>`;
     if(!hv&&unlock.length) b+=`<div class="gh">Si tu l’achètes, tu débloques</div><div class="group">${unlock.slice(0,8).map(r=>recRow(r)).join("")}</div>`;
@@ -2077,7 +2574,7 @@ function addSheet(){
   let qq="";
   const sh=openSheet(()=>{ let b=`<label class="search">${IC.search}<input id="aq" type="search" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label>`;
     if(!qq) b+=segChips(AS,"as",false);
-    const L=Object.values(ING).filter(i=>i.id!=="eau"&&(qq? i.n.toLowerCase().includes(qq.toLowerCase()) : segOf(i.id)===AS)).sort((a,c)=>a.n.localeCompare(c.n,"fr"));
+    const L=Object.values(ING).filter(i=>i.id!=="eau"&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===AS)).sort((a,c)=>a.n.localeCompare(c.n,"fr"));
     const bas=L.filter(i=>i.basic), oth=L.filter(i=>!i.basic);
     if(oth.length) b+=`<div class="group" style="margin-top:8px">${oth.map(i=>{ const on=inBar(i.id)&&(tracked(i.id)?S.stock[i.id]>0:S.stock[i.id]===1); return `<button class="row tap" data-a="addtoggle" data-id="${i.id}"><div class="grow"><div class="t">${esc(i.n)}</div>${qq?`<div class="s">${SEGS.find(s=>s[0]===segOf(i.id))[1]}</div>`:""}</div><span style="color:${on?"var(--tint)":"var(--label3)"};width:26px;height:26px;display:grid;place-items:center">${on?IC.checkc.replace("<svg","<svg width='24' height='24'"):IC.plus.replace("<svg","<svg width='22' height='22'")}</span></button>`; }).join("")}</div>`;
     if(bas.length) b+=`<div class="gh">Toujours à portée de main</div><div class="group">${bas.map(i=>`<div class="row"><div class="grow"><div class="t">${esc(i.n)}</div></div><span class="badge ${has(i.id)?"green":""}">${has(i.id)?"Compté":"Désactivé"}</span></div>`).join("")}</div><div class="gf">Ces basiques sont comptés automatiquement. <button class="link" data-a="basics">Modifier</button></div>`;
@@ -2091,7 +2588,7 @@ function basicsSheet(){
 let PS="spirit";
 function pickIngSheet(cb){
   let qq="";
-  const sh=openSheet(()=>{ const L=Object.values(ING).filter(i=>i.id!=="eau"&&(qq? i.n.toLowerCase().includes(qq.toLowerCase()) : segOf(i.id)===PS));
+  const sh=openSheet(()=>{ const L=Object.values(ING).filter(i=>i.id!=="eau"&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===PS));
     const mine=L.filter(i=>has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr")), rest=L.filter(i=>!has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr"));
     const rows=A=>A.map(i=>`<button class="row tap" data-a="pickit" data-id="${i.id}"><i style="width:8px;height:8px;border-radius:4px;background:${SEGCOL[segOf(i.id)]};flex:none"></i><div class="grow"><div class="t">${esc(i.n)}</div></div>${IC.plus.replace("<svg","<svg width='20' height='20' style='color:var(--tint)'")}</button>`).join("");
     return {title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label>${qq?"":segChips(PS,"ps",false)}${mine.length?`<div class="gh">Disponible chez toi</div><div class="group">${rows(mine)}</div>`:""}${rest.length?`<div class="gh">À acheter</div><div class="group">${rows(rest)}</div>`:""}`,
@@ -2133,16 +2630,17 @@ function nameSheet(){
 // ================= MODE BARMAN & ROULETTE =================
 let BM=null;
 function barMode(id){
-  const r=RMAP[id]; BM={r,i:0,mult:1,done:{},timer:null};
+  const r=RMAP[id]; BM={r,i:0,mult:1,done:{},timer:null,items:adjItems(r)};
   $("#overlay").classList.add("open"); paintBM();
 }
 function bmSteps(){ const r=BM.r; return [{t:"Prépare tout",list:1}].concat(buildSteps(r)).concat([{t:"Santé !",end:1}]); }
 function paintBM(){
   const r=BM.r, st=bmSteps(), s=st[BM.i], n=st.length;
   let body=`<div class="bm-prog">${st.map((_,k)=>`<i class="${k<BM.i?"done":k===BM.i?"now":""}"></i>`).join("")}</div><div class="bm-count">Étape ${BM.i+1} sur ${n}</div>`;
-  if(s.list){ body+=`<div class="bm-text">Sors ${esc(GLASSES[r.g])}${r.ice!=="none"||["shake","stir","mshake"].includes(r.m)?" et de la glace":""}, puis réunis :</div><div class="bm-list">${r.ing.map((it,k)=>`<button class="bm-item ${BM.done[k]?"done":""}" data-a="bmck" data-k="${k}"><span class="ck">${BM.done[k]?IC.check.replace("<svg","<svg width='18' height='18'"):""}</span><span class="bq">${fmtQ(it,BM.mult)}</span><span class="bn">${esc(ING[it.id].n)}${it.r==="opt"?" (facultatif)":""}</span></button>`).join("")}</div>`; }
-  else if(s.end){ const rt=S.ratings[r.id]||0; body+=`<div style="text-align:center;margin-top:10px"><div style="height:200px;display:grid;place-items:center">${glassSVG(r,{pour:!BM.rate}).replace("<svg","<svg style='height:200px;width:auto'")}</div><div class="bm-text" style="font-family:var(--serif);font-size:34px">Santé !</div><p class="muted">Comment tu le trouves ?</p><div class="stars" style="justify-content:center">${[1,2,3,4,5].map(k=>`<button class="${k<=(BM.rate||rt)?"on":""}" data-a="bmrate" data-n="${k}" aria-label="${k} étoiles">${IC.star}</button>`).join("")}</div></div>`; }
-  else { body+=`<div class="bm-text">${esc(s.t)}</div>`; if(s.timer){ const C=2*Math.PI*96; const left=BM.tleft==null?s.timer:BM.tleft; body+=`<div class="timer"><svg viewBox="0 0 210 210"><circle cx="105" cy="105" r="96" fill="none" stroke="var(--fill)" stroke-width="10"/><circle id="tring" cx="105" cy="105" r="96" fill="none" stroke="var(--tint)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*(left/s.timer)} ${C}"/></svg><div class="shk">${IC.shaker}</div><div class="tv" id="tval">${Math.ceil(left)}</div><div class="tl">secondes</div></div><div style="display:flex;justify-content:center"><button class="btn small sec" data-a="bmtimer" data-s="${s.timer}">${BM.timer?"Recommencer":"Lancer le minuteur"}</button></div>`; } }
+  if(s.list){ body+=`<div class="bm-text">Sors ${esc(GLASSES[r.g])}${r.ice!=="none"||["shake","stir","mshake"].includes(r.m)?" et de la glace":""}, puis réunis :</div>${getAdj(r.id)?`<div class="bm-mine">${IC.sparkle}Ta version ajustée</div>`:""}<div class="bm-list">${BM.items.map((it,k)=>`<button class="bm-item ${BM.done[k]?"done":""}" data-a="bmck" data-k="${k}"><span class="ck">${BM.done[k]?IC.check.replace("<svg","<svg width='18' height='18'"):""}</span><span class="bq">${fmtQ(it,BM.mult)}</span><span class="bn">${esc(ING[it.id].n)}${it.r==="opt"?" (facultatif)":""}</span></button>`).join("")}</div>`; }
+  else if(s.end){ const rt=S.ratings[r.id]||0; body+=`<div style="text-align:center;margin-top:10px"><div style="height:200px;display:grid;place-items:center">${glassSVG(r,{pour:!BM.rate}).replace("<svg","<svg style='height:200px;width:auto'")}</div><div class="bm-text" style="font-family:var(--serif);font-size:34px">Santé !</div><p class="muted">Comment tu le trouves ?</p><div class="stars" style="justify-content:center">${[1,2,3,4,5].map(k=>`<button class="${k<=(BM.rate||rt)?"on":""}" data-a="bmrate" data-n="${k}" aria-label="${k} étoiles">${IC.star}</button>`).join("")}</div>${BM.rate?`<p class="muted" style="margin:18px 0 8px">Pour la prochaine fois, c’était…</p><div class="fb-chips">${[["s",-1,"Trop sucré"],["s",1,"Pas assez sucré"],["a",-1,"Trop acide"],["a",1,"Pas assez acide"],["f",-1,"Trop fort"],["f",1,"Trop léger"],["ok",0,"Parfait"]].map(([k,v,n])=>`<button class="chip ${BM.fb===k+v?"on":""}" data-a="bmfb" data-k="${k}" data-v="${v}">${n}</button>`).join("")}</div>`:""}</div>`; }
+  else if(s.list) {}
+  else { body+=`<div class="bm-text">${termify(esc(s.t))}</div>`; if(s.timer){ const C=2*Math.PI*96; const left=BM.tleft==null?s.timer:BM.tleft; body+=`<div class="timer"><svg viewBox="0 0 210 210"><circle cx="105" cy="105" r="96" fill="none" stroke="var(--fill)" stroke-width="10"/><circle id="tring" cx="105" cy="105" r="96" fill="none" stroke="var(--tint)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*(left/s.timer)} ${C}"/></svg><div class="shk">${IC.shaker}</div><div class="tv" id="tval">${Math.ceil(left)}</div><div class="tl">secondes</div></div><div style="display:flex;justify-content:center"><button class="btn small sec" data-a="bmtimer" data-s="${s.timer}">${BM.timer?"Recommencer":"Lancer le minuteur"}</button></div>`; } }
   const dir=BM.dir||""; BM.dir="";
   $("#overlay").innerHTML=`<div class="ov-top"><button class="close-x" data-a="bmclose" aria-label="Fermer">${IC.x}</button><div class="ot">${esc(r.n)}</div><div class="stepper"><button data-a="bmmult" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${BM.mult}</span><button data-a="bmmult" data-d="1" aria-label="Plus">${IC.plus}</button></div></div><div class="ov-body ${dir}">${body}</div><div class="ov-bottom">${BM.i>0?`<button class="btn gray" data-a="bmnav" data-d="-1" style="flex:0 0 34%">Retour</button>`:""}${s.end?`<button class="btn" data-a="bmfinish">Terminer</button>`:`<button class="btn" data-a="bmnav" data-d="1">${BM.i===0?"C’est prêt":"Suivant"}</button>`}</div>`;
 }
@@ -2166,10 +2664,23 @@ function paintRL(r,spinning){
 function spin(){
   const L=RL.L, w=L.map(r=>Math.max(.2,score(r)-1.5)), tot=w.reduce((a,b)=>a+b,0); let x=Math.random()*tot, pick=L[0];
   for(let k=0;k<L.length;k++){ x-=w[k]; if(x<=0){pick=L[k];break;} } RL.pick=pick;
-  let n=0; const steps=16; const tick=()=>{ if(!RL) return; if(n<steps){ paintRL(L[Math.floor(Math.random()*L.length)],true); n++; setTimeout(tick,50+n*n*1.6); } else { paintRL(pick,false); const g=document.querySelector(".roul .rg"); if(g) g.innerHTML=glassSVG(pick,{pour:true}).replace("<svg","<svg style='height:230px;width:auto'"); } }; tick();
+  let n=0; const steps=16; const tick=()=>{ if(!RL) return; if(n<steps){ paintRL(L[Math.floor(Math.random()*L.length)],true); n++; setTimeout(tick,50+n*n*1.6); } else { paintRL(pick,false); const g=document.querySelector(".roul .rg"); if(g) g.innerHTML=glassSVG(pick,{pour:true,stream:WOW()}).replace("<svg","<svg style='height:230px;width:auto'"); } }; tick();
 }
 
 
+function showTerm(k,btn){
+  const T=TERMS.find(x=>x[0]===k); if(!T) return; let p=$("#pop"); if(!p){ p=document.createElement("div"); p.id="pop"; document.body.appendChild(p); }
+  p.innerHTML=`<b>${esc(T[2])}</b><span>${esc(T[3])}</span>`; p.className=""; const b=btn.getBoundingClientRect(), W=Math.min(300,innerWidth-24);
+  p.style.width=W+"px"; const left=Math.max(12,Math.min(innerWidth-W-12,b.left+b.width/2-W/2)); p.style.left=left+"px";
+  p.style.setProperty("--ax",(b.left+b.width/2-left)+"px"); void p.offsetWidth;
+  const below=b.bottom+p.offsetHeight+16<innerHeight; p.style.top=(below?b.bottom+10:b.top-p.offsetHeight-10)+"px"; p.classList.add("show",below?"below":"above");
+}
+function hideTerm(){ const p=$("#pop"); if(p) p.classList.remove("show"); }
+document.addEventListener("click",e=>{ if(!e.target.closest(".term")&&!e.target.closest("#pop")) hideTerm(); },true);
+document.addEventListener("scroll",hideTerm,true);
+function bubbles(x,y){ const box=document.createElement("div"); box.className="bubbles"; document.body.appendChild(box);
+  for(let k=0;k<14;k++){ const s=document.createElement("i"); const sz=4+Math.random()*7; s.style.cssText=`left:${x+(Math.random()-.5)*50}px;top:${y+(Math.random()-.5)*30}px;width:${sz}px;height:${sz}px;--dx:${(Math.random()-.5)*40}px;animation-delay:${Math.random()*150}ms`; box.appendChild(s); }
+  setTimeout(()=>box.remove(),1400); }
 function markBought(id){ S.stockT=S.stockT||{}; S.stockT[id]=Date.now(); }
 function confetti(x,y,col){
   const L=["#F2C94C","#F29A30","#E8584A","#9CCB4A","#F4EFA8",col||"#FFB340"]; const box=document.createElement("div"); box.className="confetti"; document.body.appendChild(box);
@@ -2205,9 +2716,9 @@ const ACT={
   rec:(d)=>recSheet(d.id), ing:(d)=>ingSheet(d.id), closesheet:()=>closeSheet(),
   quickadd:()=>quickAdd(), addsheet:()=>addSheet(), roulette:()=>roulette(),
   barmode:(d)=>{ closeAll(); barMode(d.id); },
-  made:(d)=>{ logMade(d.id); toast("Ajouté à ton historique",{action:{label:"Annuler",fn:()=>{ const k=S.hist.map(h=>h.id).lastIndexOf(d.id); if(k>=0){ S.hist.splice(k,1); changed(); } }}}); },
+  made:(d)=>{ POP={k:"made"+d.id,t:Date.now()}; logMade(d.id); toast("Ajouté à ton historique",{action:{label:"Annuler",fn:()=>{ const k=S.hist.map(h=>h.id).lastIndexOf(d.id); if(k>=0){ S.hist.splice(k,1); changed(); } }}}); },
   fav:(d)=>{ const i=S.fav.indexOf(d.id); if(i<0){ S.fav.push(d.id); POP={k:"fav"+d.id,t:Date.now()}; } else S.fav.splice(i,1); changed(); },
-  rate:(d,t)=>{ const n=+d.n; S.rt=S.rt||{}; S.rt[d.id]=Date.now(); if(S.ratings[d.id]===n) delete S.ratings[d.id]; else { S.ratings[d.id]=n; POP={k:"rate"+d.id,t:Date.now()}; if(n===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top+b.height/2,RMAP[d.id].col); } } changed(); },
+  rate:(d,t)=>{ const n=+d.n; S.rt=S.rt||{}; S.rt[d.id]=Date.now(); if(S.ratings[d.id]===n) delete S.ratings[d.id]; else { if(!S.ratings[d.id]) learnFrom(d.id,n); S.ratings[d.id]=n; POP={k:"rate"+d.id,t:Date.now()}; if(n===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top+b.height/2,RMAP[d.id].col); } } changed(); },
   mult:(d)=>{ const sh=SHEETS[SHEETS.length-1]; sh&&sh.setMult&&sh.setMult(+d.d); },
   cmain:(d)=>{ CF.main=d.v; CF.all=0; renderView("cocktails"); },
   filters:()=>filterSheet(),
@@ -2257,14 +2768,14 @@ const ACT={
   sharetxt:()=>{ const el=SHEETS[SHEETS.length-1].el; navigator.share({text:el._text}).catch(()=>{}); },
   unit:(d)=>{ S.settings.unit=d.u; changed(); },
   export:()=>exportData(), import:()=>importData(),
-  reset:()=>{ if(confirm("Effacer ton bar, tes notes, ton historique et tes créations ?")){ const u=S.settings.unit; S=DEF(); S.settings.unit=u; buildRecipes([]); changed(); toast("Tout a été réinitialisé"); } },
+  reset:()=>{ if(confirm("Effacer ton bar, tes notes, ton historique et tes créations ?")){ const u=S.settings.unit, nm=S.settings.name; S=DEF(); S.settings.unit=u; S.settings.name=nm; S.quizSkip=1; fixState(); buildRecipes([]); changed(); toast("Tout a été réinitialisé"); } },
   bmclose:()=>{ RL=null; closeOverlay(); },
   bmnav:(d)=>{ if(BM.timer){clearInterval(BM.timer);BM.timer=null;} BM.tleft=null; BM.dir=+d.d>0?"fwd":"back"; BM.i=Math.max(0,Math.min(bmSteps().length-1,BM.i+(+d.d))); paintBM(); },
   bmck:(d)=>{ BM.done[d.k]=!BM.done[d.k]; paintBM(); },
   bmmult:(d)=>{ BM.mult=Math.max(1,Math.min(8,BM.mult+(+d.d))); paintBM(); },
   bmtimer:(d)=>bmTimer(+d.s),
   bmrate:(d,t)=>{ BM.rate=+d.n; if(BM.rate===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top,BM.r.col); } paintBM(); },
-  bmfinish:()=>{ const id=BM.r.id, rate=BM.rate, rl=BM.fromRoul; if(rate){ S.rt=S.rt||{}; S.rt[id]=Date.now(); } closeOverlay(); logMade(id,rate,rl); toast(rate?"Noté et ajouté à ton historique":"Ajouté à ton historique"); },
+  bmfinish:()=>{ const id=BM.r.id, rate=BM.rate, rl=BM.fromRoul; if(rate&&!S.ratings[id]) learnFrom(id,rate); if(rate){ S.rt=S.rt||{}; S.rt[id]=Date.now(); } closeOverlay(); logMade(id,rate,rl); toast(rate?"Noté et ajouté à ton historique":"Ajouté à ton historique"); },
   rlagain:()=>spin(),
   qzpick:(d)=>{ const q=QUIZ[QZ.i]; if(q.multi){ const L=QZ.a[q.id]=QZ.a[q.id]||[]; const k=L.indexOf(d.v); if(k<0) L.push(d.v); else L.splice(k,1); paintQuiz(); }
     else { QZ.a[q.id]=d.v; paintQuiz(); setTimeout(()=>{ if(QZ&&QUIZ[QZ.i]===q){ QZ.i++; QZ.dir="fwd"; paintQuiz(); } },320); } },
@@ -2272,17 +2783,28 @@ const ACT={
   qzskip:()=>{ if(!S.quiz){ S.quizSkip=1; save(); } QZ=null; closeOverlay(); },
   qzdone:()=>{ QZ=null; closeOverlay(); HERO_LAST=null; changed(); },
   quiz:()=>{ closeAll(); openQuiz(); },
-  remind:(d,t)=>{ const n=+d.n, id=d.id; S.ratings[id]=n; S.rt=S.rt||{}; S.rt[id]=Date.now(); POP={k:"rem"+id,t:Date.now()}; const card=t.closest(".remind"); if(n===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top,RMAP[id].col); }
+  remind:(d,t)=>{ const n=+d.n, id=d.id; learnFrom(id,n); S.ratings[id]=n; S.rt=S.rt||{}; S.rt[id]=Date.now(); POP={k:"rem"+id,t:Date.now()}; const card=t.closest(".remind"); if(n===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top,RMAP[id].col); }
     if(card){ card.querySelectorAll(".stars button").forEach(b=>b.classList.toggle("on",+b.dataset.n<=n)); card.classList.add("done"); setTimeout(()=>{ changed(); },900); } else changed(); },
   snooze:(d,t)=>{ S.snooze=S.snooze||{}; S.snooze[d.id]=Date.now(); const card=t.closest(".remind"); if(card){ card.classList.add("gone"); setTimeout(()=>changed(),420); } else changed(); },
+  adj:(d)=>{ S.adj=S.adj||{}; const a=S.adj[d.id]=Object.assign({s:0,a:0,f:0},S.adj[d.id]||{}); a[d.k]=+d.v; if(!a.s&&!a.a&&!a.f) delete S.adj[d.id]; POP={k:"adj"+d.id+d.k,t:Date.now()}; const sh=SHEETS[SHEETS.length-1]; if(sh&&sh.setVer) sh.setVer(getAdj(d.id)?"mine":"orig"); changed(); },
+  adjreset:(d)=>{ if(S.adj) delete S.adj[d.id]; changed(); toast("Retour à la recette originale"); },
+  ver:(d)=>{ const sh=SHEETS[SHEETS.length-1]; if(sh&&sh.setVer) sh.setVer(d.v); },
+  bmfb:(d)=>{ BM.fb=d.k+d.v; if(d.k!=="ok"){ S.adj=S.adj||{}; const a=S.adj[BM.r.id]=Object.assign({s:0,a:0,f:0},S.adj[BM.r.id]||{}); a[d.k]=Math.max(-2,Math.min(2,(a[d.k]||0)+(+d.v))); save(); toast("Ta version est ajustée pour la prochaine fois"); } paintBM(); },
+  term:(d,t)=>showTerm(d.k,t),
+  jiggle:(d,t)=>{ const g=t.querySelector("svg")||t; t.classList.remove("jig"); void t.offsetWidth; t.classList.add("jig"); const b=t.getBoundingClientRect(); bubbles(b.left+b.width/2,b.top+b.height*0.35); },
+  nafilter:()=>{ CF.main="na"; dirty.cocktails=1; switchTab("cocktails"); },
+  setna:()=>{ S.settings.na=!S.settings.na; changed(); },
   stepck:(d,t)=>{ const li=t.closest("li"); if(li) li.classList.toggle("done"); },
   flip:(d,t)=>{ const c=t.closest(".disc"); if(c) c.classList.toggle("flipped"); },
   setname:()=>{},
   rlgo:()=>{ const r=RL.pick; RL=null; barMode(r.id); BM.fromRoul=1; }
 };
 document.addEventListener("click",e=>{ const t=e.target.closest("[data-a]"); if(!t) return; const a=ACT[t.dataset.a]; if(a){ e.preventDefault(); a(t.dataset,t,e); } });
+document.addEventListener("touchstart",e=>{ const t=e.target.closest(".tile,.duo-c,.mini"); if(!t) return; const b=t.getBoundingClientRect(), p=e.touches[0]; const rx=((p.clientY-b.top)/b.height-.5)*-9, ry=((p.clientX-b.left)/b.width-.5)*9; t.style.transform=`perspective(500px) rotateX(${rx}deg) rotateY(${ry}deg) scale(.97)`; },{passive:true});
+document.addEventListener("touchend",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
+document.addEventListener("touchcancel",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
 document.addEventListener("input",e=>{
-  if(e.target.id==="cq"){ CF.q=e.target.value; const pos=e.target.selectionStart; renderView("cocktails"); const n=$("#cq"); n.focus(); n.setSelectionRange(pos,pos); }
+  if(e.target.id==="cq"){ CF.q=e.target.value; clearTimeout(window._cqT); window._cqT=setTimeout(()=>{ const n0=$("#cq"), pos=n0?n0.selectionStart:CF.q.length; renderView("cocktails"); const n=$("#cq"); if(n){ n.focus(); n.setSelectionRange(pos,pos); } },140); }
 });
 document.addEventListener("change",e=>{
   const t=e.target;
@@ -2303,16 +2825,36 @@ async function exportData(){
 }
 function importData(){
   const inp=document.createElement("input"); inp.type="file"; inp.accept=".json,application/json";
-  inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const d=JSON.parse(rd.result); if(!d||typeof d.stock!=="object") throw 0; S=Object.assign(DEF(),d); buildRecipes(S.custom); changed(); toast("Sauvegarde importée"); }catch(e){ toast("Ce fichier n’est pas une sauvegarde Zeste"); } }; rd.readAsText(f); };
+  inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const d=JSON.parse(rd.result); if(!d||typeof d.stock!=="object") throw 0; S=Object.assign(DEF(),d); fixState(); buildRecipes(S.custom); changed(); toast("Sauvegarde importée"); }catch(e){ toast("Ce fichier n’est pas une sauvegarde Zeste"); } }; rd.readAsText(f); };
   inp.click();
 }
 
 
+// ================= LANCEMENT =================
+function splash(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return 0;
+  const r=(barCount()&&tonight()[0])||RMAP.negroni, col=r.col, light=mix(col,"#ffffff",.3), deep=mix(col,"#000000",.12);
+  const el=document.createElement("div"); el.id="splash"; el.style.setProperty("--c",col);
+  const bub=[...Array(9)].map((_,k)=>`<circle cx="${34+hrand("s"+k)*52}" cy="${60+hrand("t"+k)*14}" r="${1+hrand("u"+k)*1.4}" fill="#fff" style="animation-delay:${1.35+k*0.12}s"/>`).join("");
+  el.innerHTML=`<div class="sp-glow"></div><div class="sp-stage"><svg class="sp-glass" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <defs><clipPath id="spk"><path d="M14 30H106C106 64 88 78 60 78C32 78 14 64 14 30Z"/></clipPath><linearGradient id="spl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${light}"/><stop offset="1" stop-color="${deep}"/></linearGradient></defs>
+    <g clip-path="url(#spk)"><g class="sp-liq"><rect x="0" y="38" width="120" height="60" fill="url(#spl)"/><path class="sp-wave" d="M-60 38${" q7.5 -3 15 0 t15 0".repeat(12)}V60H-60Z" fill="${light}"/><path class="sp-wave2" d="M-60 38.5${" q7.5 -2 15 0 t15 0".repeat(12)}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.4"/></g><g class="sp-bub">${bub}</g></g>
+    <path class="sp-draw" d="M14 30H106C106 64 88 78 60 78C32 78 14 64 14 30Z" fill="none" stroke="var(--glass-stroke)" stroke-width="2.6" stroke-linejoin="round" pathLength="100"/>
+    <path class="sp-draw d2" d="M60 78V124" stroke="var(--glass-stroke)" stroke-width="2.8" pathLength="100"/><path class="sp-draw d3" d="M38 126H82" stroke="var(--glass-stroke)" stroke-width="3.6" stroke-linecap="round" pathLength="100"/>
+    <path class="sp-shine" d="M21 36Q23 54 34 62" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>
+    <g class="sp-lemon"><g class="sp-spin"><circle cx="0" cy="0" r="13" fill="#F2D84A" stroke="#C8A820" stroke-width="1.6"/><circle cx="0" cy="0" r="9.8" fill="#FBEFA8"/>${[0,1,2,3,4,5,6,7].map(k=>{ const a=k*Math.PI/4; return `<path d="M0 0L${(Math.cos(a)*9.4).toFixed(2)} ${(Math.sin(a)*9.4).toFixed(2)}" stroke="#F2D84A" stroke-width="1.2"/>`; }).join("")}<circle r="1.6" fill="#F2D84A"/></g></g>
+    ${[[18,8],[104,70],[8,58]].map(([x,y],k)=>`<path class="sp-star" style="animation-delay:${1.55+k*0.12}s;transform-origin:${x}px ${y}px" d="M${x} ${y-6}L${x+1.6} ${y-1.6}L${x+6} ${y}L${x+1.6} ${y+1.6}L${x} ${y+6}L${x-1.6} ${y+1.6}L${x-6} ${y}L${x-1.6} ${y-1.6}Z" fill="var(--tint)"/>`).join("")}
+  </svg><div class="sp-title">${"Zeste".split("").map((ch,k)=>`<span style="animation-delay:${1.05+k*0.07}s">${ch}</span>`).join("")}</div><div class="sp-sub">Ton bar, tes cocktails</div></div>`;
+  document.body.appendChild(el);
+  const T=2350; let gone=false;
+  const out=()=>{ if(gone) return; gone=true; el.classList.add("out"); HERO_LAST=null; dirty.today=1; if(TAB==="today") renderView("today"); setTimeout(()=>el.remove(),650); };
+  el.addEventListener("click",out); setTimeout(out,T); return T;
+}
 // ================= ONGLETS & DÉMARRAGE =================
 function switchTab(t){
-  const prev=TAB; TAB=t; document.querySelectorAll(".view").forEach(v=>{ v.classList.toggle("active",v.id==="v-"+t); if(v.id==="v-"+t && prev!==t){ v.classList.remove("enter"); void v.offsetWidth; v.classList.add("enter"); } });
+  const prev=TAB; TAB=t; document.querySelectorAll(".view").forEach(v=>{ v.classList.toggle("active",v.id==="v-"+t); if(v.id==="v-"+t && prev!==t){ const order=["today","cocktails","bar","labo","profil"], dir=order.indexOf(t)>order.indexOf(prev)?"from-r":"from-l"; v.classList.remove("enter","from-r","from-l"); void v.offsetWidth; v.classList.add("enter"); if(WOW()) v.classList.add(dir); } });
   document.querySelectorAll(".tabbar button").forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle("on",on); if(on&&prev!==t){ b.classList.remove("bounce"); void b.offsetWidth; b.classList.add("bounce"); } });
-  if(dirty[t]) renderView(t);
+  if(dirty[t]) renderView(t); else animateSegs($("#v-"+t)); requestAnimationFrame(moveTabInd);
   if(t==="profil"&&prev!==t) document.querySelectorAll("#v-profil .stat b").forEach(el=>{ const v=+el.textContent; if(!v) return; const t0=performance.now(); const step=now=>{ const k=Math.min(1,(now-t0)/700), e=1-Math.pow(1-k,3); el.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(step); }; el.textContent="0"; requestAnimationFrame(step); });
 }
 function init(){
@@ -2320,12 +2862,233 @@ function init(){
   REC_RAW.forEach(r=>{ if(r[9]&&r[9].n){ r[9].tip=r[9].n; delete r[9].n; } });
   buildRecipes(S.custom);
   const tabs=[["today","Aujourd’hui",IC.sparkle],["cocktails","Cocktails",IC.coupe],["bar","Bar",IC.bottle],["labo","Labo",IC.flask],["profil","Profil",IC.trophy]];
-  $(".tabbar").innerHTML=tabs.map(([k,n,ic])=>`<button data-t="${k}" class="${k===TAB?"on":""}">${ic}<span>${n}</span></button>`).join("");
+  $(".tabbar").innerHTML=`<span class="tab-ind"></span>`+tabs.map(([k,n,ic])=>`<button data-t="${k}" class="${k===TAB?"on":""}">${ic}<span>${n}</span></button>`).join("");
   $(".tabbar").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; if(b.dataset.t===TAB){ const v=$("#v-"+TAB); v.scrollTo({top:0,behavior:"smooth"}); } else switchTab(b.dataset.t); });
   document.querySelectorAll(".view").forEach(v=>v.addEventListener("scroll",onScroll,{passive:true}));
   switchTab("today");
   initRemote();
-  if(!S.quiz && !S.quizSkip) setTimeout(openQuiz,700);
+  applyAmbient(); applyWowClass();
+  const splashMs=S.settings.splash===false?0:splash();
+  if(!S.quiz && !S.quizSkip) setTimeout(openQuiz,splashMs+250);
 }
+// ================= V10 =================
+const DEFAULT_HOME=[["suggest",1],["duo",1],["table",1],["rewind",1],["na",1],["disc",1],["season",1],["prep",1]];
+const HOME_N={suggest:"Aussi pour toi",duo:"Surprends-moi et achat malin",table:"À table : accords mets",rewind:"Ton Zeste Rewind",na:"Sans alcool",disc:"Le saviez-vous ?",season:"De saison",prep:"Préparations à surveiller"};
+function fixState(){
+  S.settings=Object.assign({unit:"cl",nobasic:[],na:false,wow:true,splash:true,ambiance:true,moment:"auto"},S.settings||{});
+  if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[];
+  let H=Array.isArray(S.settings.home)?S.settings.home.filter(x=>HOME_N[x[0]]):[];
+  DEFAULT_HOME.forEach(d=>{ if(!H.some(x=>x[0]===d[0])) H.push(d.slice()); }); S.settings.home=H;
+  S.price=S.price||{};
+}
+const WOW=()=>S.settings.wow!==false;
+function ctxInfo(){ const h=new Date().getHours(), m=new Date().getMonth()+1;
+  const auto= h>=4&&h<12?"matin":h<16?"aprem":h<20?"apero":h<23?"soir":"nuit";
+  const f=S.settings&&S.settings.moment; const moment=f&&f!=="auto"?f:auto;
+  const saison= [12,1,2].includes(m)?"hiver":[11,3].includes(m)?"frais":[6,7,8].includes(m)?"ete":"doux";
+  return {moment,saison,label:{matin:"Pour ce matin",aprem:"Pour cet après-midi",apero:"Pour l’apéro",soir:"Pour ce soir",nuit:"Pour finir la soirée"}[moment]}; }
+
+// ---------- Ambiance selon l'heure ----------
+const MO_IC={
+ matin:`<svg viewBox="0 0 24 24"><path d="M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 18a5 5 0 0 1 10 0" fill="currentColor" opacity=".9"/><g class="rays" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 7v2"/><path d="M5.6 10.6l1.4 1.4"/><path d="M18.4 10.6L17 12"/></g></svg>`,
+ aprem:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g class="rays" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>`,
+ apero:`<svg viewBox="0 0 24 24"><path d="M2.5 17.5h19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 17.5a6 6 0 0 1 12 0" fill="currentColor"/><path d="M5 20.5h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".5"/></svg>`,
+ soir:`<svg viewBox="0 0 24 24"><path d="M15.5 3.5a8.5 8.5 0 1 0 5 13.6A7 7 0 0 1 15.5 3.5z" fill="currentColor"/></svg>`,
+ nuit:`<svg viewBox="0 0 24 24"><path d="M14 4a7.5 7.5 0 1 0 6 11.5A6 6 0 0 1 14 4z" fill="currentColor"/><path class="tw" d="M19 3l.6 1.4L21 5l-1.4.6L19 7l-.6-1.4L17 5l1.4-.6z" fill="currentColor"/><path class="tw t2" d="M21.5 9l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4z" fill="currentColor"/></svg>`
+};
+let AMB_M=null;
+function applyAmbient(){
+  const on=S.settings.ambiance!==false, m=currentMoment();
+  if(on) document.documentElement.dataset.moment=m; else delete document.documentElement.dataset.moment;
+  let a=document.getElementById("ambient");
+  if(!a){ a=document.createElement("div"); a.id="ambient"; a.setAttribute("aria-hidden","true");
+    a.innerHTML=`<div class="amb-sky"></div><div class="amb-sun"></div><div class="amb-stars">${[...Array(46)].map((_,k)=>`<i style="left:${(hrand("x"+k)*100).toFixed(1)}%;top:${(hrand("y"+k)*48).toFixed(1)}%;--s:${(0.6+hrand("s"+k)*1.6).toFixed(1)}px;animation-delay:${(hrand("d"+k)*4).toFixed(2)}s"></i>`).join("")}<b class="shoot"></b></div><div class="amb-dust">${[...Array(18)].map((_,k)=>`<i style="left:${(hrand("dx"+k)*100).toFixed(1)}%;top:${(8+hrand("dy"+k)*40).toFixed(1)}%;animation-delay:${(hrand("dd"+k)*9).toFixed(2)}s;animation-duration:${(8+hrand("du"+k)*7).toFixed(1)}s"></i>`).join("")}</div>`;
+    document.body.prepend(a); }
+  a.style.display=on?"":"none";
+  if(AMB_M!==null&&AMB_M!==m){ dirty.today=1; if(TAB==="today") renderView("today"); }
+  AMB_M=m;
+}
+setInterval(()=>{ if(S&&S.settings) applyAmbient(); },60000);
+
+// ---------- Accueil personnalisable ----------
+function vToday(){
+  const c=ctxInfo(), mo=c.moment, h=new Date().getHours(), nm=(S.settings.name||"").trim();
+  const title= nm? ({matin:"Bonjour ",aprem:"Salut ",apero:"Santé ",soir:"Bonsoir ",nuit:"Bonne nuit "}[mo])+nm : (h>=17||h<4? "Ce soir" : "Aujourd’hui");
+  const list=tonight(), empty=!barCount(), taste=hasTaste();
+  let o=nav(title)+`<div class="content"><div class="eyebrow mo-eyebrow"><span class="mo-ic mo-${mo}">${MO_IC[mo]}</span>${dateLabel()}<span class="mo-k">${esc(MOMENTS[mo].k)}</span></div><h1 class="lt">${esc(title)}</h1>`;
+  if(empty){
+    o+=`<div class="hero"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #E8A84A44, transparent 65%)"></div><div class="hg" data-a="jiggle">${glassSVG(RMAP.negroni,{pour:HERO_LAST!=="_w",live:1,stream:HERO_LAST!=="_w"&&WOW()})}</div><div class="hn">Bienvenue au bar</div><div class="hr">Dis-moi quelles bouteilles tu as. Sucre, œufs, agrumes et autres basiques sont déjà comptés.</div><div class="btn-row"><button class="btn" data-a="quickadd">Remplir mon bar</button></div></div>`;
+    HERO_LAST="_w";
+  } else if(list.length){
+    const r=list[0], anim=HERO_LAST!==r.id; HERO_LAST=r.id; const m=metricsR(r);
+    S.heroLog=S.heroLog||[]; const dsd=daySeed(); if(!S.heroLog.some(x=>x.id===r.id&&x.d===dsd)){ S.heroLog.push({id:r.id,d:dsd}); S.heroLog=S.heroLog.slice(-30); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+    o+=`<div class="hero ${anim?"":"still"}"><div class="glow" style="background:radial-gradient(circle at 50% 36%, ${r.col}70, transparent 62%)"></div><div class="hg" data-a="jiggle">${glassSVG(r,{pour:anim,live:1,stream:anim&&WOW()})}</div><div class="kick">${esc(c.label)}</div><div class="hn">${esc(r.n)}</div><div class="hr">${esc(reasons(r))}</div><div class="pills">${S.ratings[r.id]?`<span class="pill match">Noté ${S.ratings[r.id]} sur 5</span>`:taste&&matchPct(r)>=62?`<span class="pill match">${matchPct(r)} % pour toi</span>`:`<span class="pill">${esc(FAMILIES[r.fam])}</span>`}<span class="pill">${Math.round(m.abv)} % d’alcool</span>${hasPrices()&&!costOf(r.ing).miss.length?`<span class="pill">${chf(costOf(r.ing).tot)}</span>`:""}</div><div class="btn-row"><button class="btn sec" data-a="rec" data-id="${r.id}">Voir la recette</button><button class="btn" data-a="barmode" data-id="${r.id}">${IC.play}Préparer</button></div></div>`;
+  } else {
+    o+=`<div class="hero"><div class="hg">${glassSVG({g:"coupe",col:"#D8D0C0",ing:[]})}</div><div class="hn">Presque !</div><div class="hr">Rien n’est encore faisable avec ton bar, mais il manque souvent une seule bouteille.</div><div class="btn-row"><button class="btn sec" data-a="tab" data-t="bar">Voir les achats malins</button></div></div>`;
+  }
+  o+=remindCard();
+  const ctx={list,empty};
+  S.settings.home.forEach(([k,on])=>{ if(on&&HOME_SEC[k]) o+=HOME_SEC[k](ctx); });
+  o+=`<div class="sp24"></div><div class="btn-row"><button class="btn gray home-edit" data-a="homeedit">${IC.filter}Personnaliser l’accueil</button></div>`;
+  return o+`<div class="sp24"></div></div>`;
+}
+const HOME_SEC={
+  suggest:({list})=> list.length>1? `<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">${list.length} cocktails possibles, variés et classés selon tes goûts</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>` : "",
+  duo:({list,empty})=>{ const br=!empty&&(bottleRecs().find(b=>tracked(b.id))||bottleRecs()[0]);
+    return `<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?list.length+" possibles":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`; },
+  table:()=>`<h2 class="sh">À table</h2><div class="sh-sub">Tu manges quoi ? Je te dis quoi boire avec</div><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${d.e}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
+  rewind:()=> rewindEligible()? `<button class="rw-card" data-a="rewind"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">${rewindData().count} verres, ${rewindData().distinct} recettes. Revis tout ça en quelques histoires.</div></div><div class="rw-play">${IC.play}</div></button>` : "",
+  na:()=>{ const naL=RECS.filter(r=>r.na&&status(r).ok).sort((a,b)=>score(b)-score(a)).slice(0,8);
+    return naL.length? `<h2 class="sh">Sans alcool<button class="more" data-a="nafilter">Tout voir</button></h2><div class="sh-sub">Tout le plaisir, zéro degré</div><div class="scroller">${naL.map(r=>tile(r)).join("")}</div>` : ""; },
+  disc:()=>discoveryCard(),
+  season:()=>{ const mo=new Date().getMonth()+1, se=SEASON[mo];
+    return `<h2 class="sh">De saison</h2><div class="sh-sub">${esc(se.p.charAt(0).toUpperCase()+se.p.slice(1))}</div><div class="card season"><div class="sp">${esc(se.t)}</div><div class="mini-list">${se.r.map(id=>RMAP[id]).filter(Boolean).map(r=>`<button class="mini" data-a="rec" data-id="${r.id}">${glassSVG(r)}<div class="mn">${esc(r.n)}</div></button>`).join("")}</div></div>`; },
+  prep:()=>{ const exp=(S.preps||[]).filter(p=>daysLeft(p)<=3); return exp.length? `<h2 class="sh">À surveiller</h2><div class="sh-sub">Préparations maison bientôt périmées</div><div class="group">${exp.map(p=>prepRow(p)).join("")}</div>` : ""; }
+};
+function homeSheet(){
+  const sh=openSheet(()=>({title:"Personnaliser l’accueil",right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,
+    body:`<p class="body" style="margin-bottom:12px">Choisis les sections et leur ordre. La suggestion du soir reste toujours en haut.</p><div class="group home-list">${S.settings.home.map(([k,on],i,A)=>`<div class="row home-row" data-hk="${k}"><button class="hm" data-a="homemv" data-k="${k}" data-d="-1" ${i===0?"disabled":""} aria-label="Monter">${IC.chev.replace('class="chev"','class="chev up"')}</button><button class="hm" data-a="homemv" data-k="${k}" data-d="1" ${i===A.length-1?"disabled":""} aria-label="Descendre">${IC.chev.replace('class="chev"','class="chev down"')}</button><div class="grow ${on?"":"muted"}">${esc(HOME_N[k])}</div><button class="switch ${on?"on":""}" data-a="homeon" data-k="${k}" aria-label="${esc(HOME_N[k])}"></button></div>`).join("")}</div><div class="sp16"></div><div class="btn-row"><button class="btn danger" data-a="homereset">Rétablir l’ordre par défaut</button></div>`}));
+  sh.isHome=1;
+}
+function flipRows(sh, mutate){
+  const before={}; sh.el.querySelectorAll(".home-row").forEach(r=>before[r.dataset.hk]=r.getBoundingClientRect().top);
+  mutate(); paintSheet(sh);
+  sh.el.querySelectorAll(".home-row").forEach(r=>{ const b=before[r.dataset.hk]; if(b==null) return; const d=b-r.getBoundingClientRect().top; if(!d) return;
+    r.style.transition="none"; r.style.transform=`translateY(${d}px)`; r.style.zIndex=2; void r.offsetWidth; r.style.transition="transform .38s cubic-bezier(.3,1.25,.5,1)"; r.style.transform=""; setTimeout(()=>{ r.style.zIndex=""; },400); });
+}
+
+// ---------- Accords mets ----------
+function dishSheet(id){
+  const d=DISHES.find(x=>x.id===id);
+  openSheet(()=>{ const P=dishPicks(d);
+    return {title:"",body:`<div class="dish-hero"><div class="dish-e">${d.e}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Classés selon l’accord, ton bar et tes goûts. Point vert : tu peux le faire maintenant.</div>`}; });
+}
+
+// ---------- Coût par verre ----------
+function costLine(items, mult, id){
+  if(!hasPrices()) return "";
+  const c=costOf(items,mult);
+  if(!c.miss.length) return `<div class="cost ok"><span class="cost-ic">${IC.coin}</span><div class="grow"><b>${chf(c.tot)}</b><span>${mult>1?"pour "+mult+" verres":"le verre"}${c.est>0.01?", basiques estimés compris":""}</span></div></div>`;
+  return `<div class="cost"><span class="cost-ic">${IC.coin}</span><div class="grow"><b>Coût partiel${c.tot>0.01?" : "+chf(c.tot):""}</b><span>Prix à renseigner : ${c.miss.map(x=>`<button class="link" data-a="ing" data-id="${x}">${esc(shortN(x))}</button>`).join(", ")}</span></div></div>`;
+}
+function priceBlock(id){
+  const i=ING[id]; if(i.basic) return `<div class="gf">Coût estimé automatiquement (environ ${chf((BASIC_COST[id]||0)*(["menthe","basilic","oeuf","sucre","concombre","worcestershire","tabasco","fleur_oranger","marmelade"].includes(id)?1:10))} ${["menthe","basilic"].includes(id)?"la feuille":id==="oeuf"?"l’œuf":id==="sucre"?"le morceau":id==="concombre"?"la rondelle":["worcestershire","tabasco","fleur_oranger"].includes(id)?"le trait":id==="marmelade"?"la cuillère":"les 10 ml"}).</div>`;
+  const p=(S.price||{})[id]||{}, v=p.v||DEFVOL[i.cat]||700, sizes=i.cat==="bitters"?[100,200,500]:[200,500,700,750,1000];
+  const up=unitPrice(id);
+  return `<div class="gh">Prix</div><div class="group"><label class="row"><div class="grow">Prix de la bouteille</div><input class="price-in" type="number" inputmode="decimal" step="0.05" min="0" data-price="${id}" value="${p.p!=null?p.p:""}" placeholder="0,00"><span class="muted">CHF</span></label><div class="row"><div class="grow">Contenance</div><div class="seg" data-k="vol" style="margin:0;width:${sizes.length*50}px">${sizes.map(s=>`<button class="${v===s?"on":""}" data-a="setvol" data-id="${id}" data-v="${s}">${s>=1000?"1 l":s/10}</button>`).join("")}</div></div></div><div class="gf">${up!=null?`Soit ${chf(up*10)} le cl. `:""}Sert à calculer le coût de chaque cocktail et la valeur de ton bar.</div>`;
+}
+
+// ---------- Zeste Rewind ----------
+function rewindData(){
+  const now=Date.now(), H=S.hist.filter(h=>now-h.t<365*864e5&&RMAP[h.id]);
+  const cnt={}; H.forEach(h=>cnt[h.id]=(cnt[h.id]||0)+1);
+  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]||((S.ratings[b[0]]||0)-(S.ratings[a[0]]||0)))[0];
+  const bases={}; H.forEach(h=>{ const b=BASE_LABEL[baseGroup(RMAP[h.id])]; bases[b]=(bases[b]||0)+1; });
+  const fams=new Set(H.map(h=>RMAP[h.id].fam));
+  const months=Array(12).fill(0); const m0=new Date().getMonth(); H.forEach(h=>{ const d=new Date(h.t); const k=(d.getMonth()-(m0+1)+24)%12; months[k]++; });
+  const monthNames=[...Array(12)].map((_,k)=>monthName(((m0+1+k)%12)+1));
+  const best=Object.keys(cnt).filter(id=>S.ratings[id]).sort((a,b)=>S.ratings[b]-S.ratings[a]||cnt[b]-cnt[a])[0];
+  let spent=0, priced=0; H.forEach(h=>{ const c=costOf(adjItems(RMAP[h.id])); if(!c.miss.length){ spent+=c.tot; priced++; } });
+  const topMonth=months.indexOf(Math.max(...months));
+  return {count:H.length,distinct:Object.keys(cnt).length,top:top&&{id:top[0],n:top[1]},bases:Object.entries(bases).sort((a,b)=>b[1]-a[1]),fams:[...fams],months,monthNames,topMonth,best,avgCost:priced?spent/priced:null,priced,style:tasteStyle(),tro:(S.tro||[]).length,crea:(S.custom||[]).length};
+}
+function rewindEligible(){ return S.hist.filter(h=>RMAP[h.id]).length>=3; }
+let RW=null;
+function openRewind(){
+  const D=rewindData(), top=D.top&&RMAP[D.top.id], best=D.best&&RMAP[D.best];
+  const col=top?top.col:"#E8A84A";
+  const slides=[];
+  slides.push({c:[col,"#1A1020"],h:`<div class="rw-small">Ton année Zeste</div><div class="rw-big" data-count="${D.count}">0</div><div class="rw-mid">cocktails préparés</div><div class="rw-note">dont ${D.distinct} recettes différentes</div>`});
+  if(top) slides.push({c:[top.col,mix(top.col,"#000000",.6)],h:`<div class="rw-small">Ton cocktail de l’année</div><div class="rw-glass">${glassSVG(top,{pour:true,live:1})}</div><div class="rw-name">${esc(top.n)}</div><div class="rw-note">préparé ${D.top.n} fois${S.ratings[top.id]?", noté "+S.ratings[top.id]+" sur 5":""}</div>`});
+  if(D.bases.length){ const mx=D.bases[0][1]; slides.push({c:["#C98A2E","#2A1606"],h:`<div class="rw-small">Ton alcool fétiche</div><div class="rw-name">${esc(D.bases[0][0])}</div><div class="rw-bars">${D.bases.slice(0,5).map(([n,v],k)=>`<div class="rw-bar"><span>${esc(n)}</span><i style="--w:${Math.round(v/mx*100)}%;animation-delay:${0.3+k*0.12}s"></i><b>${v}</b></div>`).join("")}</div>`}); }
+  slides.push({c:["#6A9A4A","#0E1A0A"],h:`<div class="rw-small">Tu as exploré</div><div class="rw-big" data-count="${D.fams.length}">0</div><div class="rw-mid">famille${D.fams.length>1?"s":""} de cocktails sur ${Object.keys(FAMILIES).length}</div><div class="rw-chips">${Object.keys(FAMILIES).map((f,k)=>`<span class="${D.fams.includes(f)?"on":""}" style="animation-delay:${0.4+k*0.06}s">${esc(FAMILIES[f])}</span>`).join("")}</div>`});
+  if(D.count>=3){ const mx=Math.max(...D.months,1); slides.push({c:["#3A6AC0","#08102A"],h:`<div class="rw-small">Ton mois le plus festif</div><div class="rw-name">${esc(D.monthNames[D.topMonth].charAt(0).toUpperCase()+D.monthNames[D.topMonth].slice(1))}</div><div class="rw-months">${D.months.map((v,k)=>`<div class="rw-m ${k===D.topMonth?"top":""}"><i style="--h:${Math.round(v/mx*100)}%;animation-delay:${0.2+k*0.05}s"></i><span>${esc(D.monthNames[k].slice(0,1).toUpperCase())}</span></div>`).join("")}</div>`}); }
+  if(best&&best!==top) slides.push({c:[best.col,mix(best.col,"#000000",.6)],h:`<div class="rw-small">Ton coup de cœur</div><div class="rw-glass">${glassSVG(best,{pour:true,live:1})}</div><div class="rw-name">${esc(best.n)}</div><div class="rw-stars">${[1,2,3,4,5].map(k=>`<span class="${k<=S.ratings[best.id]?"on":""}" style="animation-delay:${0.5+k*0.1}s">${IC.star}</span>`).join("")}</div>`});
+  if(D.style){ const tv=tasteVector(); slides.push({c:["#8A4AB8","#140820"],h:`<div class="rw-small">Ton style</div><div class="rw-name">${esc(D.style)}</div>${tv&&tv.liked?`<div class="rw-radar">${radarSVG(tv.liked)}</div>`:""}`}); }
+  if(D.avgCost!=null&&D.priced>=2) slides.push({c:["#C8A020","#1A1404"],h:`<div class="rw-small">Côté porte-monnaie</div><div class="rw-big money">${chf(D.avgCost)}</div><div class="rw-mid">le verre en moyenne</div><div class="rw-note">Au bar, compte plutôt entre 14 et 20 CHF. Ton bar à la maison est rentable.</div>`});
+  slides.push({c:[col,"#100A14"],end:1,h:`<div class="rw-small">C’était ton année</div><div class="rw-sum"><div><b>${D.count}</b><span>verres</span></div><div><b>${D.distinct}</b><span>recettes</span></div><div><b>${D.fams.length}</b><span>familles</span></div><div><b>${D.tro}</b><span>trophées</span></div></div>${top?`<div class="rw-note">Cocktail de l’année : <b>${esc(top.n)}</b></div>`:""}<div class="rw-actions"><button class="btn" data-a="rwsave">${IC.share}Enregistrer ma carte</button><button class="btn gray" data-a="rwclose">Terminer</button></div>`});
+  RW={i:0,slides,D,t0:0,timer:null,paused:false};
+  let el=document.getElementById("rewind"); if(!el){ el=document.createElement("div"); el.id="rewind"; document.body.appendChild(el); }
+  el.innerHTML=`<div class="rw-prog">${slides.map(()=>`<i><b></b></i>`).join("")}</div><button class="close-x rw-x" data-a="rwclose" aria-label="Fermer">${IC.x}</button><div class="rw-stage"></div><div class="rw-tap l"></div><div class="rw-tap r"></div>`;
+  el.classList.add("open");
+  el.querySelector(".rw-tap.l").onclick=()=>rwGo(-1); el.querySelector(".rw-tap.r").onclick=()=>rwGo(1);
+  const st=el.querySelector(".rw-stage"); st.onpointerdown=()=>{ RW&&(RW.paused=true); }; st.onpointerup=()=>{ RW&&(RW.paused=false); };
+  rwShow(0);
+}
+function rwShow(i){
+  if(!RW) return; RW.i=i; const el=document.getElementById("rewind"), s=RW.slides[i]; el.classList.toggle("end",!!s.end);
+  el.style.setProperty("--a",s.c[0]); el.style.setProperty("--b",s.c[1]);
+  el.querySelectorAll(".rw-prog i").forEach((p,k)=>{ p.className=k<i?"done":k===i?"now":""; p.querySelector("b").style.width=k<i?"100%":"0%"; });
+  const stg=el.querySelector(".rw-stage"); stg.innerHTML=`<div class="rw-slide">${s.h}</div>`;
+  stg.querySelectorAll("[data-count]").forEach(n=>{ const v=+n.dataset.count, t0=performance.now(); const step=t=>{ const k=Math.min(1,(t-t0)/1100), e=1-Math.pow(1-k,3); n.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
+  if(i===RW.slides.length-1||(s.h.includes("rw-big")&&i===0)) setTimeout(()=>{ const b=stg.getBoundingClientRect(); if(i===RW.slides.length-1||WOW()) confetti(b.left+b.width/2,b.top+b.height*0.35,s.c[0]); },500);
+  cancelAnimationFrame(RW.timer); const dur=s.end?0:5200; let acc=0, last=performance.now();
+  const bar=el.querySelectorAll(".rw-prog i b")[i];
+  if(!dur){ bar.style.width="100%"; return; }
+  const tick=t=>{ if(!RW) return; const dt=t-last; last=t; if(!RW.paused) acc+=dt; bar.style.width=Math.min(100,acc/dur*100)+"%"; if(acc>=dur) rwGo(1); else RW.timer=requestAnimationFrame(tick); };
+  RW.timer=requestAnimationFrame(tick);
+}
+function rwGo(d){ if(!RW) return; const n=RW.i+d; if(n<0) return rwShow(0); if(n>=RW.slides.length) return; rwShow(n); }
+function rwClose(){ if(RW) cancelAnimationFrame(RW.timer); RW=null; const el=document.getElementById("rewind"); if(el){ el.classList.remove("open"); setTimeout(()=>{ el.innerHTML=""; },350); } }
+function svgStandalone(s){ return s.replace(/var\(--glass-stroke\)/g,"rgba(255,245,230,.7)").replace(/var\(--glass-fill\)/g,"rgba(255,255,255,.08)").replace(/ class="[^"]*"/g,"").replace(/ style="[^"]*"/g,""); }
+async function rwSave(){
+  const D=RW&&RW.D; if(!D) return; const top=D.top&&RMAP[D.top.id], col=top?top.col:"#E8A84A";
+  const W=1080,H=1350; const g=top? svgStandalone(glassSVG(top)).replace("<svg",`<svg x="340" y="300" width="400" height="500"`) : "";
+  const st=(x,y,v,l)=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="92" fill="#fff">${v}</text><text x="${x}" y="${y+48}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">${l}</text>`;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><radialGradient id="bg" cx="50%" cy="32%" r="80%"><stop offset="0" stop-color="${col}"/><stop offset=".55" stop-color="${mix(col,"#000000",.65)}"/><stop offset="1" stop-color="#0C0810"/></radialGradient></defs><rect width="${W}" height="${H}" fill="url(#bg)"/>
+    <text x="540" y="150" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="40" letter-spacing="3" fill="rgba(255,255,255,.8)">MON ZESTE REWIND</text>
+    <text x="540" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#fff">${new Date().getFullYear()}</text>${g}
+    ${top?`<text x="540" y="880" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#fff">${esc(top.n)}</text><text x="540" y="935" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">mon cocktail de l’année</text>`:""}
+    ${st(200,1110,D.count,"verres")}${st(420,1110,D.distinct,"recettes")}${st(640,1110,D.fams.length,"familles")}${st(860,1110,D.tro,"trophées")}
+    <text x="540" y="1270" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="44" fill="rgba(255,255,255,.9)">Zeste</text></svg>`;
+  try{
+    const img=new Image(); img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); await img.decode();
+    const cv=document.createElement("canvas"); cv.width=W; cv.height=H; cv.getContext("2d").drawImage(img,0,0);
+    const blob=await new Promise(r=>cv.toBlob(r,"image/png"));
+    try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:"zeste-rewind.png",data:blob}); return; } }catch(e){ if(e&&e.code==="declined") return; }
+    try{ const f=new File([blob],"zeste-rewind.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); return; } }catch(e){ return; }
+    const url=URL.createObjectURL(blob); rwClose(); openSheet(()=>({title:"Ta carte",body:`<p class="body" style="margin-bottom:12px">Appuie longuement sur l’image pour l’enregistrer.</p><div style="padding:0 16px"><img src="${url}" alt="Carte Zeste Rewind" style="width:100%;border-radius:16px"></div>`}));
+  }catch(e){ toast("Impossible de créer l’image ici"); }
+}
+
+// ---------- Animations spectaculaires ----------
+function clink(r){
+  if(!WOW()||matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const el=document.createElement("div"); el.className="clink"; const gl=glassSVG(r);
+  el.innerHTML=`<div class="ck-l">${gl}</div><div class="ck-r">${gl}</div><div class="ck-burst"></div><div class="ck-drops">${[...Array(12)].map((_,k)=>`<i style="--a:${k*30}deg;--c:${r.col}"></i>`).join("")}</div><div class="ck-txt">Santé !</div>`;
+  document.body.appendChild(el); setTimeout(()=>el.remove(),1900);
+}
+let TILT=null, TILT_CLICK=0;
+document.addEventListener("pointerdown",e=>{ if(!WOW()) return; const h=e.target.closest(".hg,.dg"); if(!h) return; TILT={h,x:e.clientX,y:e.clientY,a:0,drag:false}; },{passive:true});
+document.addEventListener("pointermove",e=>{ if(!TILT) return; const dx=e.clientX-TILT.x, dy=e.clientY-TILT.y;
+  if(!TILT.drag){ if(Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)){ TILT.drag=true; TILT.h.classList.add("tilting"); } else if(Math.abs(dy)>10){ TILT=null; return; } else return; }
+  const a=Math.max(-32,Math.min(32,dx*0.22)); TILT.a=a; TILT.h.style.rotate=a+"deg"; const tf=TILT.h.querySelector(".tiltfix"); if(tf) tf.style.transform=`rotate(${-a}deg)`; },{passive:true});
+function tiltEnd(){ if(!TILT) return; const {h,drag,a}=TILT; TILT=null; if(!drag) return; TILT_CLICK=Date.now();
+  h.classList.remove("tilting"); h.classList.add("tilt-back"); h.style.rotate=""; const tf=h.querySelector(".tiltfix"); if(tf){ tf.style.transform=""; tf.classList.remove("slosh"); void tf.getBoundingClientRect(); tf.style.setProperty("--sl",(a>0?-1:1)*Math.min(9,Math.abs(a)/3)+"deg"); tf.classList.add("slosh"); }
+  if(Math.abs(a)>14){ const b=h.getBoundingClientRect(); bubbles(b.left+b.width/2+(a>0?30:-30),b.top+b.height*0.3); }
+  setTimeout(()=>h.classList.remove("tilt-back"),700); }
+document.addEventListener("pointerup",tiltEnd,{passive:true}); document.addEventListener("pointercancel",tiltEnd,{passive:true});
+document.addEventListener("click",e=>{ if(Date.now()-TILT_CLICK<250&&e.target.closest(".hg,.dg")){ e.stopPropagation(); e.preventDefault(); } },true);
+function applyWowClass(){ document.body.classList.toggle("wow",WOW()); }
+
+// ---------- Actions ----------
+Object.assign(ACT,{
+  homeedit:()=>homeSheet(),
+  homemv:(d)=>{ const sh=SHEETS[SHEETS.length-1]; const H=S.settings.home, i=H.findIndex(x=>x[0]===d.k), j=i+(+d.d); if(j<0||j>=H.length) return; flipRows(sh,()=>{ [H[i],H[j]]=[H[j],H[i]]; }); save(); dirty.today=1; },
+  homeon:(d)=>{ const x=S.settings.home.find(x=>x[0]===d.k); x[1]=x[1]?0:1; save(); dirty.today=1; const sh=SHEETS[SHEETS.length-1]; sh&&paintSheet(sh); },
+  homereset:()=>{ S.settings.home=DEFAULT_HOME.map(x=>x.slice()); save(); dirty.today=1; const sh=SHEETS[SHEETS.length-1]; sh&&flipRows(sh,()=>{}); },
+  dish:(d)=>dishSheet(d.id),
+  rewind:()=>openRewind(), rwclose:()=>rwClose(), rwsave:()=>rwSave(),
+  setvol:(d)=>{ S.price=S.price||{}; S.price[d.id]=Object.assign({},S.price[d.id]||{},{v:+d.v}); changed(); },
+  setamb:()=>{ S.settings.ambiance=S.settings.ambiance===false; save(); applyAmbient(); changed(); },
+  setmoment:(d)=>{ S.settings.moment=d.v; save(); applyAmbient(); HERO_LAST=null; changed(); },
+  setwow:()=>{ S.settings.wow=!WOW(); applyWowClass(); changed(); },
+  setsplash:()=>{ S.settings.splash=S.settings.splash===false; changed(); }
+});
+const _made=ACT.made; ACT.made=(d,t)=>{ _made(d,t); clink(RMAP[d.id]); };
+const _bmf=ACT.bmfinish; ACT.bmfinish=(d,t)=>{ const r=BM&&BM.r; _bmf(d,t); if(r) setTimeout(()=>clink(r),120); };
+document.addEventListener("change",e=>{ const t=e.target; if(t.dataset&&t.dataset.price){ const id=t.dataset.price, v=parseFloat(String(t.value).replace(",",".")); S.price=S.price||{}; const p=S.price[id]=Object.assign({v:DEFVOL[ING[id].cat]||700},S.price[id]||{}); if(isFinite(v)&&v>0) p.p=Math.round(v*100)/100; else delete p.p; changed(); } });
+
+fixState();
 init();
 </script></body></html>
