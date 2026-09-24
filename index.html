@@ -909,6 +909,237 @@ body.sheet-open #ambient *{animation-play-state:paused!important}
 .mix-row .rm{width:36px;height:36px}
 .close-x{width:32px;height:32px}
 .group>.row.tap{content-visibility:auto;contain-intrinsic-size:auto 64px}
+
+/* ===== LABO V2 ===== */
+.lab-stage{position:relative;margin:0 16px;border-radius:26px;background:var(--bg2);box-shadow:var(--shadow);padding:14px 16px 16px;overflow:hidden;text-align:center}
+.lab-glow{position:absolute;inset:0;pointer-events:none;transition:background .6s}
+.lab-top{position:relative;display:flex;justify-content:space-between;align-items:center;min-height:34px}
+.lab-chip{font-size:13px;font-weight:700;color:var(--label2);background:var(--fill2);border-radius:12px;padding:5px 10px}
+.lab-score{display:flex;align-items:baseline;gap:1px;padding:4px 12px;border-radius:16px;background:var(--fill);font-family:var(--rounded);cursor:pointer;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.lab-score b{font-size:22px;font-weight:800;color:var(--label2)}
+.lab-score i{font-style:normal;font-size:12px;color:var(--label2);font-weight:700}
+.lab-score.shown{background:var(--tint);animation:spop .6s cubic-bezier(.3,1.8,.5,1)}
+.lab-score.shown b,.lab-score.shown i{color:var(--on-tint)}
+.lab-glass{position:relative;height:230px;display:grid;place-items:center;margin:4px 0 2px;touch-action:pan-y;transform-origin:50% 88%}
+.lab-glass svg{height:100%;width:auto;filter:drop-shadow(0 16px 24px rgba(0,0,0,.16))}
+.lab-tool{position:absolute;inset:0;pointer-events:none;display:grid;place-items:center}
+.lab-gauge{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px}
+.lab-gbar{width:70%;height:8px;border-radius:4px;background:var(--fill);overflow:hidden}
+.lab-gbar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),#9CCB4A);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.lab-stage.over .lab-gbar i{background:var(--red)}
+.lab-gauge span{font-size:13px;color:var(--label2);font-weight:600;font-family:var(--rounded)}
+.lab-goals{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}
+.goal{display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 10px 0 6px;border-radius:14px;background:var(--fill2);font-size:13px;font-weight:600;color:var(--label2);transition:background .3s,color .3s}
+.goal i{width:18px;height:18px;border-radius:9px;display:grid;place-items:center;font-style:normal;font-size:12px;background:var(--fill);color:var(--label2)}
+.goal i svg{width:12px;height:12px}
+.goal.ok{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+.goal.ok i{background:var(--green);color:#fff}
+.goal.mid{background:color-mix(in srgb,var(--orange) 14%,transparent);color:var(--orange)}
+.goal.mid i{background:var(--orange);color:#fff}
+.goal.pop{animation:spop .5s cubic-bezier(.3,1.8,.5,1) both}
+.lab-hint{position:relative;font-size:14px;color:var(--label2);margin-top:10px}
+.lab-verdict{display:flex;gap:12px;align-items:center;margin:12px 16px 0;padding:12px 14px;border-radius:16px;background:var(--tint-bg);animation:vin .5s cubic-bezier(.2,.8,.2,1) both}
+.lv-e{font-size:32px}
+.lab-verdict b{display:block;font-family:var(--serif);font-size:19px;color:var(--label)}
+.lab-verdict span{font-size:14px;color:var(--label2)}
+.lab-h{align-items:center!important;justify-content:flex-start!important;gap:10px}
+.lab-h .more{margin-left:auto}
+.lab-n{width:26px;height:26px;border-radius:13px;background:var(--tint);color:var(--on-tint);display:grid;place-items:center;font-size:14px;font-weight:800;font-family:var(--rounded);flex:none}
+.lab-chips{flex-wrap:wrap;margin-top:8px}
+.lab-glasses{padding-top:6px}
+.lg{flex:none;width:86px;padding:10px 6px 8px;border-radius:16px;background:var(--bg2);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;scroll-snap-align:start;transition:transform .2s cubic-bezier(.3,1.3,.5,1),box-shadow .2s}
+.lg:active{transform:scale(.94)}
+.lg-i{height:52px;width:52px;display:grid;place-items:center}.lg-i svg{height:100%;width:auto}
+.lg b{font-size:12.5px;font-weight:700}
+.lg span{font-size:11.5px;color:var(--label2);font-family:var(--rounded)}
+.lg.on{box-shadow:inset 0 0 0 2px var(--tint),var(--shadow);background:var(--tint-bg)}
+.lg em{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-style:normal;font-size:10px;font-weight:700;background:var(--green);color:#fff;border-radius:8px;padding:1px 6px;white-space:nowrap}
+.lab-shelf{padding-top:4px;padding-bottom:10px}
+.shelf{flex:none;width:76px;min-height:104px;padding:8px 4px;border-radius:16px;background:var(--bg2);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;transition:transform .2s cubic-bezier(.3,1.3,.5,1)}
+.shelf .sh-b{height:48px;width:30px;display:grid}.shelf .sh-b svg{width:100%;height:100%}
+.shelf .sh-ic{width:34px;height:34px;border-radius:17px;margin:7px 0 7px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.shelf .sh-plus{width:40px;height:40px;border-radius:20px;background:var(--tint-bg);color:var(--tint);display:grid;place-items:center;margin:4px 0 8px}.shelf .sh-plus svg{width:22px;height:22px}
+.shelf .sh-n{font-size:11.5px;font-weight:600;line-height:1.15;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.shelf .sh-q{position:absolute;top:-6px;right:-4px;font-size:10.5px;font-weight:800;font-family:var(--rounded);background:var(--tint);color:var(--on-tint);border-radius:9px;padding:2px 6px}
+.shelf.in{box-shadow:inset 0 0 0 1.5px var(--tint),var(--shadow)}
+.shelf.pour .sh-b{animation:bpour .55s cubic-bezier(.3,1.2,.5,1)}
+@keyframes bpour{0%{transform:none}40%{transform:rotate(-38deg) translateY(-6px)}100%{transform:none}}
+.lab-ice{margin-top:8px}
+.lab-gars{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px;margin:0 16px}
+.lgar{display:flex;align-items:center;gap:6px;height:44px;padding:0 10px;border-radius:14px;background:var(--bg2);box-shadow:var(--shadow);text-align:left;transition:transform .2s cubic-bezier(.3,1.4,.5,1),background .2s}
+.lgar span{font-size:20px;flex:none;transition:transform .3s cubic-bezier(.3,1.8,.5,1)}
+.lgar b{font-size:12.5px;font-weight:600;line-height:1.1}
+.lgar.on{background:var(--tint-bg);box-shadow:inset 0 0 0 2px var(--tint)}
+.lgar.on span{transform:scale(1.18) rotate(-8deg)}
+.lgar.sug{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--green) 60%,transparent),var(--shadow)}
+.lgar:active{transform:scale(.93)}
+.lab-tips .tip-r{display:flex;gap:12px;padding:12px 16px;align-items:flex-start;position:relative}
+.lab-tips .tip-r+.tip-r::before{content:"";position:absolute;top:0;left:48px;right:0;height:.5px;background:var(--sep)}
+.tip-r>svg{width:22px;height:22px;flex:none;color:var(--tint);margin-top:1px}
+.tip-r:has(>svg circle) >svg{color:var(--orange)}
+.tip-r.bad>svg{color:var(--red)}
+.tip-r b{display:block;font-size:15.5px}
+.tip-r span{display:block;font-size:14px;color:var(--label2);margin:2px 0 8px}
+.lab-serve{height:58px;font-size:19px;border-radius:18px;box-shadow:0 8px 22px color-mix(in srgb,var(--tint) 35%,transparent)}
+.lab-more{margin:18px 0 0}
+.lab-more summary{list-style:none;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--tint);font-weight:600;font-size:16px;padding:8px;cursor:pointer}
+.lab-more summary::-webkit-details-marker{display:none}
+.lab-more summary .chev{transition:transform .25s;color:var(--tint)}
+.lab-more[open] summary .chev{transform:rotate(90deg)}
+.lab-start{text-align:center}.lab-start b{display:block;font-family:var(--serif);font-size:19px}.lab-start span{font-size:14px;color:var(--label2)}
+/* animations du labo */
+svg .liq.rise{animation:rise .7s cubic-bezier(.25,.8,.3,1) both!important}
+@keyframes rise{from{transform:translateY(var(--from))}to{transform:none}}
+.lab-stage.shake-no .lab-glass{animation:nope .5s cubic-bezier(.3,1.5,.5,1)}
+.lab-stage.shake-no .lab-gbar i{background:var(--red)}
+@keyframes nope{0%,100%{transform:none}20%{transform:translateX(-10px) rotate(-3deg)}40%{transform:translateX(9px) rotate(3deg)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.lab-stage.serving.shake .lab-glass svg{opacity:.15;transition:opacity .3s}
+.lab-tool .shaker{width:110px;height:110px;color:var(--tint);animation:shaking .16s ease-in-out infinite alternate;filter:drop-shadow(0 10px 18px rgba(0,0,0,.2))}
+.lab-tool .shaker svg{width:100%;height:100%}
+@keyframes shaking{from{transform:translate(-8px,-6px) rotate(-18deg)}to{transform:translate(8px,6px) rotate(18deg)}}
+.lab-tool .spoon{position:absolute;left:50%;top:14%;width:4px;height:150px;margin-left:-2px;border-radius:2px;background:linear-gradient(var(--label3),var(--label2));transform-origin:50% 100%;animation:stirr 0.45s ease-in-out infinite alternate}
+@keyframes stirr{from{transform:translateX(-14px) rotate(-8deg)}to{transform:translateX(14px) rotate(8deg)}}
+.lab-stage.serving.stir .lab-glass svg{animation:jig .9s ease-in-out}
+@media (prefers-reduced-motion:reduce){.lab-tool *{animation:none!important}}
+
+/* ===== Fenêtre de service du labo ===== */
+#serve{position:fixed;inset:0;z-index:270;color:#fff;opacity:0;transition:opacity .35s;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#serve.open{opacity:1}
+#serve.closing{opacity:0}
+.sv-bg{position:fixed;inset:0;background:radial-gradient(circle at 50% 26%,color-mix(in srgb,var(--c) 75%,#3A1A40) 0%,color-mix(in srgb,var(--c) 25%,#1A0E20) 45%,#0E0A12 85%)}
+.sv-bg::before,.sv-bg::after{content:"";position:absolute;width:70vmax;height:70vmax;border-radius:50%;filter:blur(40px);opacity:.35;animation:svblob 9s ease-in-out infinite}
+.sv-bg::before{left:-25vmax;top:-10vmax;background:color-mix(in srgb,var(--c) 80%,#FF9F0A)}
+.sv-bg::after{right:-25vmax;bottom:-15vmax;background:color-mix(in srgb,var(--c) 60%,#5E5CE6);animation-delay:-4.5s}
+@keyframes svblob{0%,100%{transform:translate(0,0)}50%{transform:translate(6vmax,4vmax)}}
+.sv-x{position:fixed!important;top:calc(env(safe-area-inset-top,0px) + 10px);right:14px;background:rgba(255,255,255,.18)!important;color:#fff!important;z-index:3}
+.sv-in{position:relative;z-index:2;min-height:100%;display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 54px) 22px calc(env(safe-area-inset-bottom,0px) + 24px);text-align:center}
+.sv-kick{font-size:17px;font-weight:700;opacity:.85;min-height:24px;animation:vin .5s both}
+.sv-glass{position:relative;height:230px;width:100%;display:grid;place-items:center;margin:8px 0 6px}
+.sv-g{height:100%;opacity:0;transform:scale(.85);transition:opacity .4s,transform .6s cubic-bezier(.3,1.5,.5,1);--glass-stroke:rgba(255,245,230,.75);--glass-fill:rgba(255,255,255,.08)}
+.sv-g svg{height:100%;width:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.4))}
+#serve.p2 .sv-g{opacity:1;transform:none}
+.sv-tool{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.5,0,.75,0)}
+#serve.p2 .sv-tool{opacity:0;transform:translateY(-60px) scale(.6)}
+.sv-shaker{width:140px;height:140px;color:#fff;animation:shaking .15s ease-in-out infinite alternate;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35))}
+.sv-shaker svg{width:100%;height:100%}
+.sv-spoon{position:relative;width:120px;height:160px;border-radius:0 0 30px 30px;border:3px solid rgba(255,255,255,.7);border-top:0}
+.sv-spoon i{position:absolute;left:50%;top:-30px;width:5px;height:180px;margin-left:-2.5px;border-radius:3px;background:#fff;transform-origin:50% 100%;animation:stirr .4s ease-in-out infinite alternate}
+.sv-res{display:flex;align-items:center;gap:18px;margin-top:4px;opacity:0;transform:translateY(20px);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+#serve.p3 .sv-res{opacity:1;transform:none}
+.sv-ring{position:relative;width:120px;height:120px;flex:none}
+.sv-ring svg{width:100%;height:100%}
+.sv-num{position:absolute;inset:0;display:flex;align-items:baseline;justify-content:center;padding-top:36px}
+.sv-num b{font-family:var(--rounded);font-size:40px;font-weight:800;line-height:1}
+.sv-num span{font-family:var(--rounded);font-size:14px;font-weight:700;opacity:.75}
+.sv-grade{text-align:left;opacity:0;transform:scale(.8);transition:opacity .4s,transform .5s cubic-bezier(.3,1.7,.5,1)}
+#serve.p5 .sv-grade{opacity:1;transform:none}
+.sv-e{font-size:40px;display:block;line-height:1.1}
+.sv-grade b{display:block;font-family:var(--serif);font-size:24px;line-height:1.15;max-width:170px}
+.sv-grade em{display:inline-block;margin-top:6px;font-style:normal;font-size:12px;font-weight:800;background:#fff;color:#1A1020;border-radius:10px;padding:3px 9px;animation:spop .5s cubic-bezier(.3,1.8,.5,1) .3s both}
+.sv-goals{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:380px;margin-top:22px}
+.sv-goal{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.1);text-align:left;opacity:0;transform:translateY(14px) scale(.95);transition:opacity .4s calc(var(--i)*110ms),transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--i)*110ms)}
+#serve.p4 .sv-goal{opacity:1;transform:none}
+.sv-gi{width:24px;height:24px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:800;font-size:13px}
+.sv-gi svg{width:14px;height:14px}
+.sv-goal.ok .sv-gi{background:#30D158;color:#fff}.sv-goal.mid .sv-gi{background:#FF9F0A;color:#fff}.sv-goal.ko .sv-gi{background:#FF453A;color:#fff}
+.sv-goal b{display:block;font-size:14px}
+.sv-goal i{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.18);margin-top:5px;overflow:hidden}
+.sv-goal u{display:block;height:100%;width:0;border-radius:3px;background:#fff;transition:width .8s cubic-bezier(.2,.8,.2,1) calc(var(--i)*110ms + .2s)}
+#serve.p4 .sv-goal u{width:var(--w)}
+.sv-sum{font-size:15px;opacity:0;margin:16px 0 0;max-width:340px;line-height:1.4;transition:opacity .5s .2s}
+#serve.p5 .sv-sum{opacity:.85}
+.sv-actions{width:100%;max-width:380px;margin-top:20px;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(16px);transition:opacity .5s .3s,transform .5s .3s}
+#serve.p5 .sv-actions{opacity:1;transform:none}
+.sv-row{display:flex;gap:10px}.sv-row .btn{flex:1}
+.sv-btn{background:#fff!important;color:#1A1020!important;height:54px}
+.sv-btn2{background:rgba(255,255,255,.16)!important;color:#fff!important}
+#serve.skip *{transition-delay:0s!important}
+.roul .rg{background:none;border:0;cursor:pointer}
+.roul .rn{background:none;border:0;color:var(--label);cursor:pointer}
+.rl-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:10px;animation:vin .5s both}
+.rl-pills .pill.ok{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+.rl-ing{font-size:14px;color:var(--label2);margin-top:8px;animation:vin .5s .08s both}
+.rl-more{display:inline-flex;align-items:center;gap:4px;font-weight:600;font-size:16px;margin-top:12px;animation:vin .5s .15s both}
+.rl-more .chev{color:var(--tint)}
+.guide{padding:16px}
+.gd-top{font-size:16px;line-height:1.4;margin-bottom:14px}
+.gd-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px;margin-bottom:6px}
+.gd-bar i{display:block;height:100%;transform-origin:left;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
+.gd-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:.5px solid var(--sep)}
+.gd-row:last-of-type{border-bottom:0}
+.gd-dot{width:12px;height:12px;border-radius:6px;flex:none}
+.gd-row b{display:block;font-size:16px}
+.gd-row span{display:block;font-size:13px;color:var(--label2);line-height:1.3;margin-top:1px}
+.gd-row em{font-style:normal;font-family:var(--rounded);font-weight:800;font-size:18px;flex:none}
+.gd-src{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;font-size:13px;color:var(--label2)}
+.gd-src i{font-style:normal;background:var(--fill2);border-radius:10px;padding:3px 9px;color:var(--label);font-weight:600}
+.gd-foot{font-size:12.5px;color:var(--label2);margin-top:10px}
+.sv-goal .grow{flex:1;min-width:0}
+.sv-num{padding-top:38px}.sv-num b{font-size:36px}
+/* remuer : verre à mélange, cuillère qui tourne, glaçons qui suivent (aucun changement de taille) */
+.sv-mix{position:relative;width:118px;height:150px;border:3px solid rgba(255,255,255,.75);border-top:0;border-radius:4px 4px 26px 26px;display:block}
+.sv-liq{position:absolute;left:3px;right:3px;bottom:3px;height:62%;border-radius:2px 2px 22px 22px;background:linear-gradient(180deg,color-mix(in srgb,var(--lc) 70%,#fff),var(--lc));opacity:.9;overflow:hidden}
+.sv-liq b{position:absolute;top:18%;width:24px;height:22px;border-radius:5px;background:rgba(255,255,255,.35);border:1.5px solid rgba(255,255,255,.7);animation:orbit 1.1s linear infinite}
+.sv-liq .c1{left:12px}.sv-liq .c2{left:44px;top:42%;animation-delay:-.37s}.sv-liq .c3{left:70px;top:22%;animation-delay:-.73s}
+@keyframes orbit{0%{transform:translateX(0) rotate(0)}25%{transform:translateX(18px) rotate(20deg)}50%{transform:translateX(0) rotate(0)}75%{transform:translateX(-18px) rotate(-20deg)}100%{transform:translateX(0) rotate(0)}}
+.sv-sp{position:absolute;left:50%;top:-44px;width:5px;height:176px;margin-left:-2.5px;border-radius:3px;background:linear-gradient(#fff,rgba(255,255,255,.75));transform-origin:50% 15%;animation:spoonturn 1.1s linear infinite}
+.sv-sp::after{content:"";position:absolute;left:-4px;bottom:-4px;width:13px;height:8px;border-radius:50%;background:#fff}
+@keyframes spoonturn{0%{transform:translateX(0) rotate(0)}25%{transform:translateX(24px) rotate(-5deg)}50%{transform:translateX(0) rotate(0)}75%{transform:translateX(-24px) rotate(5deg)}100%{transform:translateX(0) rotate(0)}}
+.timer.run .shk.stir{animation:spoonturn 1.1s linear infinite;transform-origin:50% 20%}
+
+/* ===== Trophées ===== */
+.trophies{grid-template-columns:repeat(3,1fr);gap:10px}
+.trophy{display:flex;flex-direction:column;align-items:center;padding:12px 6px 10px;border-radius:18px;transition:transform .2s cubic-bezier(.3,1.4,.5,1)}
+.trophy:active{transform:scale(.94)}
+.trophy svg.medal{width:62px;height:68px}
+.trophy .tn{font-size:12.5px;font-weight:700;margin-top:4px;line-height:1.2}
+.trophy .tp{font-size:11px;color:var(--label2);margin-top:2px;font-family:var(--rounded);font-weight:600}
+.trophy.locked svg{opacity:1}
+.trophy.locked .tn{color:var(--label2)}
+svg.medal.on{animation:mdfloat 4s ease-in-out infinite}
+.trophies .trophy:nth-child(3n+2) svg.medal.on{animation-delay:-1.3s}.trophies .trophy:nth-child(3n) svg.medal.on{animation-delay:-2.6s}
+@keyframes mdfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.md-shine{animation:mdshine 5s ease-in-out infinite}
+.trophies .trophy:nth-child(2n) .md-shine{animation-delay:-2.2s}
+@keyframes mdshine{0%,70%{transform:translateX(0) skewX(-20deg)}100%{transform:translateX(130px) skewX(-20deg)}}
+svg.medal.t-plat.on{filter:drop-shadow(0 0 6px rgba(140,200,255,.55))}
+svg.medal.t-plat.on circle:nth-of-type(1){animation:iris 6s linear infinite}
+@keyframes iris{0%,100%{filter:hue-rotate(-25deg)}50%{filter:hue-rotate(35deg)}}
+svg.medal.t-gold.on{filter:drop-shadow(0 2px 6px rgba(242,182,50,.45))}
+.tro-tiers{display:flex;flex-wrap:wrap;gap:6px;margin:0 16px 12px}
+.tt{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:13px;background:var(--fill2);font-size:12.5px;font-weight:700;color:var(--label2);font-family:var(--rounded)}
+.tt i{width:12px;height:12px;border-radius:6px;display:block}
+/* scène de déblocage */
+.tro-pop{position:fixed;inset:0;z-index:290;display:grid;place-items:center;opacity:0;transition:opacity .35s;color:#fff;text-align:center}
+.tro-pop.open{opacity:1}.tro-pop.out{opacity:0}
+.tp-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--tc) 55%,#1A1020) 0%,rgba(10,6,14,.92) 62%)}
+.tp-rays{position:absolute;left:50%;top:42%;width:720px;height:720px;margin:-360px 0 0 -360px;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.14) 0 8deg,transparent 8deg 22deg);border-radius:50%;-webkit-mask:radial-gradient(circle,#000 0%,transparent 62%);mask:radial-gradient(circle,#000 0%,transparent 62%);animation:spin 18s linear infinite;opacity:0;transition:opacity .8s .3s}
+.tro-pop.open .tp-rays{opacity:1}
+.tp-in{position:relative;padding:0 30px}
+.tp-k{font-size:15px;font-weight:800;letter-spacing:.02em;opacity:0;animation:vin .5s .15s both}
+.tp-m{width:190px;height:209px;margin:14px auto 6px;perspective:600px}
+.tp-m svg{width:100%;height:100%;animation:medalin 1.1s cubic-bezier(.2,.9,.3,1.15) .1s both;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+@keyframes medalin{0%{transform:scale(.2) rotateY(-540deg) translateY(-80px);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.tp-tier{display:inline-block;font-size:12px;font-weight:800;border-radius:11px;padding:4px 11px;background:#fff;color:#1A1020;animation:spop .5s cubic-bezier(.3,1.8,.5,1) .9s both}
+.tp-n{font-family:var(--serif);font-size:32px;font-weight:700;margin-top:10px;animation:vin .5s 1s both}
+.tp-d{font-size:16px;opacity:.85;margin-top:4px;animation:vin .5s 1.1s both}
+.tp-tap{font-size:13px;opacity:.6;margin-top:26px;animation:vin .5s 1.6s both}
+.t-plat .tp-tier{background:linear-gradient(90deg,#DDF2FF,#E8DDFF,#DDFFF2);animation:spop .5s cubic-bezier(.3,1.8,.5,1) .9s both}
+/* fiche d'un trophée */
+.ts-hero{position:relative;text-align:center;padding:0 24px 8px;overflow:hidden}
+.ts-rays{position:absolute;left:50%;top:95px;width:520px;height:520px;margin:-260px 0 0 -260px;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--tint) 16%,transparent) 0 8deg,transparent 8deg 22deg);border-radius:50%;-webkit-mask:radial-gradient(circle,#000 0%,transparent 60%);mask:radial-gradient(circle,#000 0%,transparent 60%);animation:spin 20s linear infinite;opacity:0}
+.ts-hero.on .ts-rays{opacity:1}
+.ts-m{position:relative;width:150px;height:165px;margin:4px auto 8px;perspective:600px}
+.ts-m svg{width:100%;height:100%;animation:medalin .9s cubic-bezier(.2,.9,.3,1.15) both}
+.ts-hero h1{position:relative;font-family:var(--serif);font-size:28px;margin:10px 0 4px}
+.ts-hero p{position:relative;margin:0;color:var(--label2);font-size:16px}
+.ts-hero .tp-tier{position:relative;background:var(--fill);color:var(--label);animation:none}
+.ts-done{display:flex;align-items:center;gap:10px;color:var(--green);font-weight:700}
+.ts-done svg{width:24px;height:24px}.ts-done span{color:var(--label)}
+.ts-prog{display:flex;align-items:center;gap:12px}
+.ts-bar{flex:1;height:10px;border-radius:5px;background:var(--fill);overflow:hidden}
+.ts-bar i{display:block;height:100%;border-radius:5px;background:var(--tint);transform-origin:left;animation:grow 1s cubic-bezier(.2,.8,.2,1) both}
+.ts-prog span{font-family:var(--rounded);font-weight:700;font-size:15px}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -2033,7 +2264,8 @@ let THUMB={};
 function glassThumb(r){ return THUMB[r.id]||(THUMB[r.id]=glassSVG(r,{garnish:false})); }
 function glassSVG(r, opt={}){
   if(typeof FX==="function"&&(opt.live||opt.stream)){ opt=Object.assign({},opt); if(!FX("live")) opt.live=0; if(!FX("stream")) opt.stream=0; }
-  const g=r.g||"rocks", col=r.col||"#D9A55A", id="g"+(++GID), sh=GLASS_SHAPES[g]||GLASS_SHAPES.rocks;
+  const g=r.g||"rocks", col=r.col||"#D9A55A", id="g"+(++GID); let sh=GLASS_SHAPES[g]||GLASS_SHAPES.rocks;
+  if(opt.fill!=null&&!sh.mug){ const f=Math.max(0,Math.min(1,opt.fill)); sh=Object.assign({},sh,{y:sh.bot-f*(sh.bot-(sh.rim[2]+1.8))}); }
   const light=mix(col,"#ffffff",.22), deep=mix(col,"#000000",.1);
   const fizz=r.ing&&r.ing.some(i=>ING[i.id]&&ING[i.id].fizz), cream=r.ing&&r.ing.some(i=>(i.id==="creme"&&i.r==="float"));
   const foam=r.ing&&r.ing.some(i=>i.id==="blanc_oeuf"||i.id==="oeuf")&&r.m!=="build";
@@ -2050,7 +2282,7 @@ function glassSVG(r, opt={}){
   if(sh.handle) s+=`<path d="${sh.handle}" fill="none" stroke="var(--glass-stroke)" stroke-width="1.6" stroke-linecap="round"/>`;
   s+=`<path d="${sh.o}" fill="var(--glass-fill)"/>`;
   if(opt.stream){ const mx=(sh.rim[0]+sh.rim[1])/2+2; s+=`<path class="stream" d="M${mx} -42V${sh.y+6}" stroke="${light}" stroke-width="3.2" stroke-linecap="round" pathLength="100"/>`; }
-  s+=`<g clip-path="url(#${id}k)"><g class="tiltfix"><g class="liq"><rect x="-40" y="${sh.y}" width="144" height="110" fill="url(#${id}l)" opacity=".96"/>${opt.live?`<path class="wave" d="M-64 ${sh.y+0.6}${" q4 -1.4 8 0 t8 0".repeat(24)}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/>`:`<rect x="-40" y="${sh.y}" width="144" height="1.3" fill="#fff" opacity=".5"/>`}<rect x="-40" y="${sh.y+1.3}" width="144" height="5" fill="#fff" opacity=".08"/>`;
+  s+=`<g clip-path="url(#${id}k)"><g class="tiltfix"><g class="liq${opt.riseFrom!=null?" rise":""}"${opt.riseFrom!=null?` style="--from:${(opt.riseFrom-sh.y).toFixed(1)}px"`:""}><rect x="-40" y="${sh.y}" width="144" height="110" fill="url(#${id}l)" opacity=".96"/>${opt.live?`<path class="wave" d="M-64 ${sh.y+0.6}${" q4 -1.4 8 0 t8 0".repeat(24)}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/>`:`<rect x="-40" y="${sh.y}" width="144" height="1.3" fill="#fff" opacity=".5"/>`}<rect x="-40" y="${sh.y+1.3}" width="144" height="5" fill="#fff" opacity=".08"/>`;
   // couches : les ingrédients versés en surface flottent, les liqueurs très sucrées coulent au fond
   const main=r.ing?r.ing.filter(i=>i.r!=="float"&&i.r!=="rinse").reduce((a,i)=>a+mlOf(i),0):0, flo=r.ing?r.ing.filter(i=>i.r==="float"&&i.id!=="creme"&&ING[i.id]&&(mlOf(i)>=5||ING[i.id].cat==="bitters")):[];
   if(flo.length&&main>0){ const H=sh.bot-sh.y, tot=main+flo.reduce((a,i)=>a+mlOf(i),0); let top=sh.y, bot=sh.bot;
@@ -2061,12 +2293,17 @@ function glassSVG(r, opt={}){
   if(foam) s+=`<rect x="-40" y="${sh.y-1.5}" width="144" height="5.5" fill="#FBF6EA" opacity=".94"/>`;
   if(cream) s+=`<rect x="-40" y="${sh.y-1}" width="144" height="8" fill="#FBF6EC"/>`;
   s+=`</g><g class="ice">`;
-  const ice=r.ice, cubes=sh.ice&&sh.ice[ice==="big"?"big":"cubes"];
+  const ice=r.ice; let cubes=sh.ice&&sh.ice[ice==="big"?"big":"cubes"];
+  if(!cubes&&(ice==="cubes"||ice==="big")){ // placement générique pour les verres sans positions prévues
+    const [L,R,Y]=sh.rim, w=R-L, top=Math.max(Y+3,sh.y-2), h=sh.bot-top, cx=(L+R)/2;
+    if(ice==="big"){ const s=Math.max(8,Math.min(w*0.55,h*0.8)), hh=g==="highball"?Math.min(h*0.72,s*2.6):s; cubes=[[cx-s/2,Math.min(sh.bot-hh-1.5,top+h*0.1),s,hh,-3]]; }
+    else { const s=Math.max(6,Math.min(w*0.32,h*0.45)); cubes=[[cx-s*1.05,top+h*0.12,s,s*0.92,-9],[cx+s*0.05,top+h*0.2,s,s*0.92,10]]; if(h>s*2.2) cubes.push([cx-s/2,top+h*0.5,s*0.95,s*0.9,4]); }
+  }
   if((ice==="cubes"||ice==="big")&&cubes) cubes.forEach(([x,y,w,h,a],k)=>{ s+=`<g class="cube" style="--d:${(0.72+k*0.09).toFixed(2)}s;--b:${(k*0.7).toFixed(1)}s"><g transform="rotate(${a} ${x+w/2} ${y+h/2})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)*0.24}" fill="#fff" fill-opacity=".26" stroke="#fff" stroke-opacity=".62" stroke-width="1"/><path d="M${x+2.5} ${y+h*0.35}V${y+2.5}H${x+w*0.45}" stroke="#fff" stroke-opacity=".75" stroke-width="1.1" fill="none" stroke-linecap="round"/></g></g>`; });
   else if(ice==="pilee"){ for(let k=0;k<24;k++){ const x=12+hrand(r.id+k)*40, y=sh.y+2+hrand(k+r.id)*46; s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.5+hrand("z"+k)*2.1).toFixed(1)}" fill="#fff" fill-opacity=".4"/>`; } }
   s+=`</g><g class="fz">`;
   if(fizz){ for(let k=0;k<9;k++){ const x=(sh.rim[0]+5)+hrand("b"+k+r.id)*(sh.rim[1]-sh.rim[0]-10), y=sh.y+5+hrand("y"+k+r.id)*Math.max(10,(sh.bot-sh.y-8)); s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r=".9" fill="#fff" opacity=".8"/>`; } }
-  const straw=(g==="highball"&&(r.ice==="pilee"||r.fam==="tiki"))||/paille/i.test(r.gar||"");
+  const straw=(g==="highball"&&(r.ice==="pilee"||r.fam==="tiki"))||/paille/i.test((r.garList||[r.gar||""]).join(" "));
   const [sL,sR,sY]=sh.rim, sx0=(sL+sR)/2+1, sy0=sh.bot-6, sx1=sR+3, sy1=sY-13;
   if(straw&&opt.garnish!==false) s+=`<g opacity=".55"><path d="M${sx0} ${sy0}L${sx1} ${sy1}" stroke="#E8584A" stroke-width="2.6" stroke-linecap="round"/><path d="M${sx0} ${sy0}L${sx1} ${sy1}" stroke="#fff" stroke-width="2.6" stroke-dasharray="2.5 3" opacity=".85"/></g>`;
   s+=`</g></g></g>`;
@@ -2074,7 +2311,8 @@ function glassSVG(r, opt={}){
   s+=`<path d="${sh.o}" fill="none" stroke="var(--glass-stroke)" stroke-width="1.6" stroke-linejoin="round"/>`;
   s+=`<path d="${sh.hl}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>`;
   if(sh.stem) s+=`<path d="M32 ${sh.stem[0]}V${sh.stem[1]}" stroke="var(--glass-stroke)" stroke-width="1.8"/><path d="M${sh.base[0]} ${sh.stem[1]+1}H${sh.base[1]}" stroke="var(--glass-stroke)" stroke-width="2.4" stroke-linecap="round"/>`;
-  s+=`<g class="garn">${opt.garnish===false?"":garnishSVG(r,sh,g)}</g>`;
+  const GL=r.garList&&r.garList.length? r.garList : [r.gar];
+  s+=`<g class="garn">${opt.garnish===false?"":GL.map((t,k)=>{ const one=garnishSVG(Object.assign({},r,{gar:t}),sh,g); const rim=/bord|paille/i.test(t); const sh2=rim||k===0?0:k; return sh2?`<g transform="translate(${-sh2*9} ${sh2%2?2:0})">${one}</g>`:one; }).join("")}</g>`;
   return s+`</svg>`;
 }
 function bottleSVG(id, level, big){
@@ -2427,7 +2665,7 @@ function mixItems(){ return S.mix.items.map(it=>({id:it.id,q:it.q,u:unitOf(it.id
 function mixIce(){ return S.mix.m==="build"?"cubes":"none"; }
 function analyze(){
   const items=mixItems(), m=S.mix.m; if(!items.length) return null;
-  const met=calc(items,m,mixIce()), st=styleOf(items,m), z=ZONES[st]||ZONES.sour, ratio=met.sug/Math.max(.05,met.acid*10);
+  const met=calc(items,m,mixIce()), st=labStyle(items,m), z=ZONES[st]||ZONES.sour, ratio=met.sug/Math.max(.05,met.acid*10);
   const out=[]; const base=baseOf(items)||"gin";
   const pickAcid=()=>{ const g=SPIRIT_GROUP[base]; const pref=(g==="rhum"||g==="agave"||g==="vodka"||items.some(i=>i.id==="ginger_beer"))?["citron_vert","citron"]:["citron","citron_vert"]; return pref.find(has)||pref[0]; };
   const pickSweet=()=>{ const g=SPIRIT_GROUP[base]; const pref=g==="agave"?["sirop_agave"]:g==="whisky"?["sirop_miel"]:g==="rhum"?["orgeat","sirop_sucre"]:[]; return pref.find(has)||"sirop_sucre"; };
@@ -2491,7 +2729,8 @@ function aiPrompt(){
   const lines=items.map(i=>"- "+fmtQ(i).replace(/^(\d)/,"$1")+" "+de(lc(shortN(i.id))).replace(/^de /,"de ").replace(/^/,"").trim());
   const meth={shake:"au shaker",stir:"au verre à mélange",build:"construit directement sur glace"}[S.mix.m];
   const bar=Object.keys(S.stock).filter(has).map(id=>ING[id].n);
-  let t="Tu es un barman expert en équilibre des cocktails. Aide-moi à améliorer une création maison.\n\nMon mélange ("+meth+") :\n"+lines.join("\n")+"\n\n";
+  const LG=labGlass(), gname=(LGLASS.find(x=>x[0]===LG.g)||[,""])[1], icen=(LICE.find(x=>x[0]===LG.ice)||[,""])[1].toLowerCase(), garn=(S.mix.gar||[]).map(k=>LGARTXT[k].toLowerCase());
+  let t="Tu es un barman expert en équilibre des cocktails. Aide-moi à améliorer une création maison.\n\nMon mélange ("+meth+") :\n"+lines.join("\n")+"\nVerre : "+gname.toLowerCase()+" ("+fmtMl(LCAP[LG.g])+"), glace : "+icen+(garn.length?", garniture : "+garn.join(", "):"")+".\n\n";
   if(A){ t+="Analyse de mon app (après dilution estimée) : environ "+num(Math.round(A.met.abv*10)/10)+" % d’alcool, "+num(Math.round(A.met.sug*10)/10)+" g de sucre pour 100 ml, "+num(Math.round(A.met.acid*100)/100)+" % d’acidité. Style détecté : "+STYLE_N[A.st]+".\nDiagnostic : "+A.diag.map(d=>d.t+(d.fix?" (suggestion : ajouter "+fmtQ({q:d.fix.q,u:unitOf(d.fix.id)})+" "+de(lc(shortN(d.fix.id)))+")":"")).join(" ; ")+".\n\n"; }
   t+="Ce que j’ai dans mon bar : "+(bar.length?bar.join(", "):"pas encore renseigné")+" (plus sucre, eau et glace).\n";
   const ts=tasteSentence(); if(ts) t+="Mes goûts, d’après mes notes : "+ts+"\n";
@@ -2529,7 +2768,7 @@ const TROPHIES=[
 ];
 function distinct(){ return [...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id]); }
 function medal(k,on){ const id="m"+(++GID); const c1=on?"#F7D57A":"#D4D0CA", c2=on?"#C98A1E":"#A8A29A";
-  const glyphs={first:"1",ten:"10",fifty:"50",hundred:"100",d10:"10",d30:"30",fam:"8",sour:"S",stir:"M",tiki:"T",swiss:"+",bitter:"A",hist:"H",critic:"★",palate:"★",bar15:"15",bar30:"30",alch:"⚗",crea:"✦",loyal:"∞",roul:"?",night:"☾"};
+  const glyphs={first:"1",ten:"10",fifty:"50",hundred:"100",d10:"10",d30:"30",fam:"8",sour:"S",stir:"M",tiki:"T",swiss:"+",bitter:"A",hist:"H",critic:"★",palate:"★",bar15:"15",bar30:"30",alch:"⚗",crea:"✦",loyal:"∞",roul:"?",night:"☾",zero:"0",labpro:"90",lab10:"10"};
   const g=glyphs[k]||"•", small=g.length>2;
   return `<svg viewBox="0 0 56 56"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><circle cx="28" cy="28" r="25" fill="url(#${id})"/><circle cx="28" cy="28" r="20" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>${k==="swiss"?`<rect x="24.5" y="17" width="7" height="22" rx="1" fill="#fff"/><rect x="17" y="24.5" width="22" height="7" rx="1" fill="#fff"/>`:`<text x="28" y="${small?33:35}" text-anchor="middle" font-size="${small?15:20}" font-weight="800" fill="#fff" font-family="ui-rounded,-apple-system,sans-serif">${g}</text>`}</svg>`; }
 function checkTrophies(){
@@ -2547,10 +2786,16 @@ function vProfil(){
   else o+=`<div class="card muted" style="font-size:15px">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût. Plus tu notes, plus les suggestions deviennent justes.</div>`;
   if(hasTaste()){ const nx=RECS.filter(r=>!madeCount(r.id)&&!S.ratings[r.id]&&!r.na).map(r=>[r,predict(r)-0.22*status(r).miss.length]).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0];
     if(nx){ const ok=status(nx).ok; o+=`<h2 class="sh">Ton prochain coup de cœur</h2><div class="sh-sub">Jamais préparé, et c’est notre meilleur pari</div><button class="card buy" data-a="rec" data-id="${nx.id}" style="width:calc(100% - 32px);text-align:left"><div class="bb" style="width:56px;height:70px">${glassSVG(nx)}</div><div class="grow"><div class="bt" style="font-family:var(--serif)">${esc(nx.n)}</div><div class="bs">${matchPct(nx)} % pour toi. ${ok?"Tu peux le faire maintenant.":"Il te manque "+esc(status(nx).miss.map(x=>lc(shortN(x))).join(", "))+"."}</div></div>${IC.chev}</button>`; } }
-  if(getModel().n>=2){ const mw=mWeights(), tot=mw.knn+mw.ing+mw.fam+mw.dims, L=[["knn","Cocktails proches de tes favoris"],["ing","Tes ingrédients préférés"],["fam","Tes familles et alcools"],["dims","Ton profil de goût"]];
-    const pl=(n,a,b)=>n+" "+(n>1?b:a);
-    const sig=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"],[S.quiz?1:0,"quiz","quiz"]].filter(x=>x[0]);
-    o+=`<h2 class="sh">Comment Zeste te connaît</h2><div class="sh-sub">Ce qui pèse dans tes suggestions. Ces poids évoluent : chaque note renforce les signaux qui avaient vu juste.</div><div class="card bars" style="padding:10px 0">${L.map(([k,n])=>`<div class="bar-row"><div class="bl" style="width:170px;white-space:normal;line-height:1.2">${n}</div><div class="bt"><i style="width:${Math.round(mw[k]/tot*100)}%"></i></div><div class="bn">${Math.round(mw[k]/tot*100)}</div></div>`).join("")}<div class="gf" style="margin:8px 16px 4px">D’après ${esc(joinFr(sig.map(([n,a,b])=>a==="quiz"?"ton quiz":pl(n,a,b))))}${S.mwN?`, et ${S.mwN} ajustement${S.mwN>1?"s":""} du modèle`:""}.</div></div>`; }
+  if(getModel().n>=2){ const mw=mWeights(), tot=mw.knn+mw.ing+mw.fam+mw.dims;
+    const L=[["knn","Tes coups de cœur","des cocktails qui ressemblent à ceux que tu as bien notés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs qui reviennent dans ce que tu aimes","#FF375F"],["fam","Tes styles","les familles (sours, spritz…) et les alcools que tu préfères","#5E5CE6"],["dims","Ton palais","ton goût pour l’amer, le sucré, l’acide, le fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
+    const top=L.slice().sort((a,b)=>b[4]-a[4])[0], pl=(n,a,b)=>n+" "+(n>1?b:a);
+    const src=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"]].filter(x=>x[0]).map(([n,a,b])=>pl(n,a,b)).concat(S.quiz?["quiz de goût"]:[]);
+    o+=`<h2 class="sh">Ce qui guide tes suggestions</h2><div class="sh-sub">Zeste apprend de toi. Voici sur quoi il s’appuie le plus pour te proposer des cocktails.</div>
+    <div class="card guide"><div class="gd-top">En ce moment, surtout <b style="color:${top[3]}">${esc(top[1].toLowerCase())}</b> : ${esc(top[2])}.</div>
+    <div class="gd-bar">${L.map(x=>`<i style="width:${x[4]}%;background:${x[3]}"></i>`).join("")}</div>
+    ${L.sort((a,b)=>b[4]-a[4]).map(x=>`<div class="gd-row"><span class="gd-dot" style="background:${x[3]}"></span><div class="grow"><b>${esc(x[1])}</b><span>${esc(x[2].charAt(0).toUpperCase()+x[2].slice(1))}</span></div><em>${x[4]} %</em></div>`).join("")}
+    <div class="gd-src"><span>Appris grâce à</span>${src.map(x=>`<i>${esc(x)}</i>`).join("")}</div>
+    <div class="gd-foot">Chaque nouvelle note renforce ce qui avait vu juste.</div></div>`; }
   const byBase={}; S.hist.forEach(h=>{ const r=RMAP[h.id]; if(!r) return; const b=BASE_LABEL[baseGroup(r)]; byBase[b]=(byBase[b]||0)+1; });
   const bb=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6);
   if(bb.length){ const mx=bb[0][1]; o+=`<h2 class="sh">Tes spiritueux</h2><div class="card bars" style="padding:10px 0">${bb.map(([n,c])=>`<div class="bar-row"><div class="bl">${esc(n)}</div><div class="bt"><i style="width:${c/mx*100}%"></i></div><div class="bn">${c}</div></div>`).join("")}</div>`; }
@@ -2561,7 +2806,7 @@ function vProfil(){
   const last=S.hist.slice(-6).reverse().filter(h=>RMAP[h.id]);
   if(last.length) o+=`<h2 class="sh">Derniers verres</h2><div class="group">${last.map(h=>recRow(RMAP[h.id], rel(h.t))).join("")}</div>`;
   const got=S.tro||[];
-  o+=`<h2 class="sh">Trophées<span class="more" style="color:var(--label2)">${got.length} sur ${TROPHIES.length}</span></h2><div class="trophies">${TROPHIES.map(([k,n,d,g,f])=>{ const on=got.includes(k), v=Math.min(g,f()); return `<div class="trophy ${on?"":"locked"}" title="${esc(d)}">${medal(k,on)}<div class="tn">${esc(n)}</div><div class="tp">${on?esc(d):v+" / "+g}</div></div>`; }).join("")}</div>`;
+  o+=trophyGrid();
   o+=`${rewindEligible()?`<div class="sp16"></div><button class="rw-card" data-a="rewind" style="margin-top:8px"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">Revis ton année en quelques histoires, et partage ta carte.</div></div><div class="rw-play">${IC.play}</div></button>`:""}`;
   o+=`<div class="sp24"></div><div class="group"><button class="row tap" data-a="settings" style="--inset:62px"><span class="set-ic" style="background:#8E8E93">${IC.gear}</span><div class="grow">Paramètres</div>${IC.chev}</button></div>`;
   return o+`<div class="sp24"></div></div>`;
@@ -2729,7 +2974,7 @@ function paintBM(){
   if(s.list){ body+=`<div class="bm-text">Sors ${esc(GLASSES[r.g])}${r.ice!=="none"||["shake","stir","mshake"].includes(r.m)?" et de la glace":""}, puis réunis :</div>${getAdj(r.id)?`<div class="bm-mine">${IC.sparkle}Ta version ajustée</div>`:""}<div class="bm-list">${BM.items.map((it,k)=>`<button class="bm-item ${BM.done[k]?"done":""}" data-a="bmck" data-k="${k}"><span class="ck">${BM.done[k]?IC.check.replace("<svg","<svg width='18' height='18'"):""}</span><span class="bq">${fmtQ(it,BM.mult)}</span><span class="bn">${esc(ING[it.id].n)}${it.r==="opt"?" (facultatif)":""}</span></button>`).join("")}</div>`; }
   else if(s.end){ const rt=S.ratings[r.id]||0; body+=`<div style="text-align:center;margin-top:10px"><div style="height:200px;display:grid;place-items:center">${glassSVG(r,{pour:!BM.rate}).replace("<svg","<svg style='height:200px;width:auto'")}</div><div class="bm-text" style="font-family:var(--serif);font-size:34px">Santé !</div><p class="muted">Comment tu le trouves ?</p><div class="stars" style="justify-content:center">${[1,2,3,4,5].map(k=>`<button class="${k<=(BM.rate||rt)?"on":""}" data-a="bmrate" data-n="${k}" aria-label="${k} étoiles">${IC.star}</button>`).join("")}</div>${BM.rate?`<p class="muted" style="margin:18px 0 8px">Pour la prochaine fois, c’était…</p><div class="fb-chips">${[["s",-1,"Trop sucré"],["s",1,"Pas assez sucré"],["a",-1,"Trop acide"],["a",1,"Pas assez acide"],["f",-1,"Trop fort"],["f",1,"Trop léger"],["ok",0,"Parfait"]].map(([k,v,n])=>`<button class="chip ${BM.fb===k+v?"on":""}" data-a="bmfb" data-k="${k}" data-v="${v}">${n}</button>`).join("")}</div>`:""}</div>`; }
   else if(s.list) {}
-  else { body+=`<div class="bm-text">${termify(esc(s.t))}</div>`; if(s.timer){ const C=2*Math.PI*96; const left=BM.tleft==null?s.timer:BM.tleft; body+=`<div class="timer"><svg viewBox="0 0 210 210"><circle cx="105" cy="105" r="96" fill="none" stroke="var(--fill)" stroke-width="10"/><circle id="tring" cx="105" cy="105" r="96" fill="none" stroke="var(--tint)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*(left/s.timer)} ${C}"/></svg><div class="shk">${IC.shaker}</div><div class="tv" id="tval">${Math.ceil(left)}</div><div class="tl">secondes</div></div><div style="display:flex;justify-content:center"><button class="btn small sec" data-a="bmtimer" data-s="${s.timer}">${BM.timer?"Recommencer":"Lancer le minuteur"}</button></div>`; } }
+  else { body+=`<div class="bm-text">${termify(esc(s.t))}</div>`; if(s.timer){ const C=2*Math.PI*96; const left=BM.tleft==null?s.timer:BM.tleft; body+=`<div class="timer"><svg viewBox="0 0 210 210"><circle cx="105" cy="105" r="96" fill="none" stroke="var(--fill)" stroke-width="10"/><circle id="tring" cx="105" cy="105" r="96" fill="none" stroke="var(--tint)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*(left/s.timer)} ${C}"/></svg><div class="shk ${/remue/i.test(s.t)?"stir":""}">${/remue/i.test(s.t)?'<svg viewBox="0 0 24 24"><path d="M12 2v15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="12" cy="19.5" rx="3" ry="2.5" fill="currentColor"/></svg>':IC.shaker}</div><div class="tv" id="tval">${Math.ceil(left)}</div><div class="tl">secondes</div></div><div style="display:flex;justify-content:center"><button class="btn small sec" data-a="bmtimer" data-s="${s.timer}">${BM.timer?"Recommencer":"Lancer le minuteur"}</button></div>`; } }
   const dir=BM.dir||""; BM.dir="";
   $("#overlay").innerHTML=`<div class="ov-top"><button class="close-x" data-a="bmclose" aria-label="Fermer">${IC.x}</button><div class="ot">${esc(r.n)}</div><div class="stepper"><button data-a="bmmult" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${BM.mult}</span><button data-a="bmmult" data-d="1" aria-label="Plus">${IC.plus}</button></div></div><div class="ov-body ${dir}">${body}</div><div class="ov-bottom">${BM.i>0?`<button class="btn gray" data-a="bmnav" data-d="-1" style="flex:0 0 34%">Retour</button>`:""}${s.end?`<button class="btn" data-a="bmfinish">Terminer</button>`:`<button class="btn" data-a="bmnav" data-d="1">${BM.i===0?"C’est prêt":"Suivant"}</button>`}</div>`;
 }
@@ -2748,8 +2993,10 @@ function roulette(){
   $("#overlay").classList.add("open"); spin();
 }
 function paintRL(r,spinning){
-  $("#overlay").innerHTML=`<div class="ov-top"><button class="close-x" data-a="bmclose" aria-label="Fermer">${IC.x}</button><div class="ot">Surprends-moi</div><div style="width:30px"></div></div><div class="ov-body"><div class="roul ${spinning?"spin":""}"><div class="rg">${glassSVG(r).replace("<svg","<svg style='height:230px;width:auto'")}</div><div class="rn">${esc(r.n)}</div><div class="rs">${spinning?"":esc(reasons(r))}</div></div></div><div class="ov-bottom"><button class="btn gray" data-a="rlagain" style="flex:0 0 40%" ${spinning?"disabled":""}>Relancer</button><button class="btn" data-a="rlgo" ${spinning?"disabled":""}>Je le fais</button></div>`;
+  const st=status(r), m=metricsR(r);
+  $("#overlay").innerHTML=`<div class="ov-top"><button class="close-x" data-a="bmclose" aria-label="Fermer">${IC.x}</button><div class="ot">Surprends-moi</div><div style="width:32px"></div></div><div class="ov-body"><div class="roul ${spinning?"spin":""}"><button class="rg" ${spinning?"":`data-a="rlinfo" aria-label="Voir la recette"`}>${glassSVG(r).replace("<svg","<svg style='height:230px;width:auto'")}</button><button class="rn" ${spinning?"":`data-a="rlinfo"`}>${esc(r.n)}</button><div class="rs">${spinning?"":esc(reasons(r))}</div>${spinning?"":`<div class="rl-pills"><span class="pill">${esc(FAMILIES[r.fam])}</span><span class="pill">${m.abv<0.5?"Sans alcool":Math.round(m.abv)+" % d’alcool"}</span><span class="pill ${st.ok?"ok":""}">${st.ok?"Tu peux le faire":"Il manque "+esc(st.miss.map(x=>lc(shortN(x))).join(", "))}</span></div><div class="rl-ing">${esc(ingList(r))}</div><button class="link rl-more" data-a="rlinfo">Voir la recette ${IC.chev}</button>`}</div></div><div class="ov-bottom"><button class="btn gray" data-a="rlagain" style="flex:0 0 40%" ${spinning?"disabled":""}>Relancer</button><button class="btn" data-a="rlgo" ${spinning?"disabled":""}>Je le fais</button></div>`;
 }
+
 function spin(){
   const L=RL.L, w=L.map(r=>Math.max(.2,score(r)-1.5)), tot=w.reduce((a,b)=>a+b,0); let x=Math.random()*tot, pick=L[0];
   for(let k=0;k<L.length;k++){ x-=w[k]; if(x<=0){pick=L[k];break;} } RL.pick=pick;
@@ -2849,9 +3096,8 @@ const ACT={
     const famMap={sour:"sour",stirred:"stirred",long:"highball",spritz:"bulles",cremeux:"dessert"};
     const items=mixItems(); let V=0,rr=0,gg=0,bb=0; items.forEach(i=>{ const ml=Math.max(mlOf(i),1), c=colOf(i.id); V+=ml; rr+=parseInt(c.slice(1,3),16)*ml; gg+=parseInt(c.slice(3,5),16)*ml; bb+=parseInt(c.slice(5,7),16)*ml; });
     const col="#"+[rr,gg,bb].map(x=>Math.round(x/V).toString(16).padStart(2,"0")).join("");
-    const st=A.st, m=S.mix.m; const g= st==="stirred"?"rocks": st==="long"?"highball": st==="spritz"?"vin": m==="build"?"rocks":"coupe";
-    const ice= st==="stirred"?"big": (st==="long"||st==="spritz"||m==="build")?"cubes":"none";
-    const rec={id:"c_"+Date.now(),n:n.trim(),fam:famMap[st]||"sour",m:m==="build"?"build":m,g,ice,col,gar:"",ing:items.map(i=>({id:i.id,q:i.q,u:i.u,r:ING[i.id].fizz?"top":""}))};
+    const st=A.st, m=S.mix.m, LG=labGlass(), g=LG.g, ice=LG.ice, garL=(S.mix.gar||[]).map(k=>LGARTXT[k]);
+    const rec={id:"c_"+Date.now(),n:n.trim(),fam:famMap[st]||"sour",m:m==="build"?"build":m,g,ice,col,gar:garL.join(", ")||"",garList:garL.length?garL:undefined,ing:items.map(i=>({id:i.id,q:i.q,u:i.u,r:ING[i.id].fizz?"top":""}))};
     S.custom.push(rec); S.labSaved=(S.labSaved||0)+1; buildRecipes(S.custom); closeSheet(); changed(); toast("Création enregistrée"); recSheet(rec.id); },
   delcustom:(d)=>{ S.custom=S.custom.filter(c=>c.id!==d.id); delete S.ratings[d.id]; buildRecipes(S.custom); closeSheet(); changed(); },
   aiprompt:()=>copyText(aiPrompt(),"Prompt copié : colle-le dans ton IA"),
@@ -2867,6 +3113,7 @@ const ACT={
   bmrate:(d,t)=>{ BM.rate=+d.n; if(BM.rate===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top,BM.r.col); } paintBM(); },
   bmfinish:()=>{ const id=BM.r.id, rate=BM.rate, rl=BM.fromRoul; if(rate&&!S.ratings[id]) learnFrom(id,rate); if(rate){ S.rt=S.rt||{}; S.rt[id]=Date.now(); } closeOverlay(); logMade(id,rate,rl); toast(rate?"Noté et ajouté à ton historique":"Ajouté à ton historique"); },
   rlagain:()=>spin(),
+  rlinfo:()=>{ if(!RL||!RL.pick) return; const r=RL.pick; RL=null; closeOverlay(); recSheet(r.id); },
   qzpick:(d)=>{ const q=QUIZ[QZ.i]; if(q.multi){ const L=QZ.a[q.id]=QZ.a[q.id]||[]; const k=L.indexOf(d.v); if(k<0) L.push(d.v); else L.splice(k,1); paintQuiz(); }
     else { QZ.a[q.id]=d.v; paintQuiz(); setTimeout(()=>{ if(QZ&&QUIZ[QZ.i]===q){ QZ.i++; QZ.dir="fwd"; paintQuiz(); } },320); } },
   qznav:(d)=>{ QZ.i=Math.max(0,QZ.i+(+d.d)); QZ.dir=+d.d>0?"fwd":"back"; paintQuiz(); },
@@ -2958,7 +3205,7 @@ function init(){
   switchTab("today");
   initRemote();
   applyAmbient(); applyWowClass();
-  const splashMs=S.settings.splash===false?0:splash();
+  const splashMs=FX("splash")?splash():0;
   if(!S.quiz && !S.quizSkip) setTimeout(()=>{ if(!S.quiz&&!S.quizSkip&&!QZ) openQuiz(); },splashMs+250);
 }
 // ================= V10 =================
@@ -3180,6 +3427,302 @@ const _made=ACT.made; ACT.made=(d,t)=>{ _made(d,t); clink(RMAP[d.id]); };
 const _bmf=ACT.bmfinish; ACT.bmfinish=(d,t)=>{ const r=BM&&BM.r; _bmf(d,t); if(r) setTimeout(()=>clink(r),120); };
 document.addEventListener("change",e=>{ const t=e.target; if(t.dataset&&t.dataset.price){ const id=t.dataset.price, v=parseFloat(String(t.value).replace(",",".")); S.price=S.price||{}; const p=S.price[id]=Object.assign({v:DEFVOL[ING[id].cat]||700},S.price[id]||{}); if(isFinite(v)&&v>0) p.p=Math.round(v*100)/100; else delete p.p; changed(); } });
 
+// ================= LABO V2 : le jeu du barman =================
+const LGLASS=[["coupe","Coupe",180],["martini","Martini",150],["rocks","Tumbler",300],["highball","Highball",350],["flute","Flûte",200],["vin","Verre à vin",450],["mug","Mug",400],["tasse","Irish coffee",250],["shot","Shot",50]];
+const LCAP=Object.fromEntries(LGLASS.map(x=>[x[0],x[2]]));
+const LICE=[["none","Sans",0],["cubes","Glaçons",0.35],["big","Gros glaçon",0.42],["pilee","Pilée",0.45]];
+const ICESHARE=Object.fromEntries(LICE.map(x=>[x[0],x[2]]));
+const LTYPE=[["auto","Je ne sais pas"],["court","Cocktail court"],["sec","Sec et fort"],["long","Long drink"],["spritz","Spritz"],["shot","Shot"]];
+const LGAR=[["zeste_c","🍋","Zeste de citron"],["cv","🍈","Rondelle de citron vert"],["rc","🟡","Rondelle de citron"],["or","🍊","Rondelle d’orange"],["zo","🟠","Zeste d’orange"],["menthe","🌿","Branche de menthe"],["basilic","🌱","Feuille de basilic"],["olive","🫒","Olives vertes"],["cerise","🍒","Cerise"],["sel","🧂","Bord de sel"],["sucre","🍬","Bord sucré"],["concombre","🥒","Rondelle de concombre"],["fraise","🍓","Framboises"],["ananas","🍍","Quartier d’ananas"],["paille","🥤","Paille"],["cannelle","🪵","Bâton de cannelle"],["cafe","☕","Grains de café"],["muscade","🌰","Muscade râpée"]];
+const LGARTXT=Object.fromEntries(LGAR.map(x=>[x[0],x[2]]));
+function mixState(){ const M=S.mix; M.t=M.t||"auto"; M.gar=Array.isArray(M.gar)?M.gar:[]; if(!M.m) M.m="shake"; return M; }
+// Style réellement visé : celui choisi, ou deviné d'après le mélange
+function labStyle(items,m){
+  const t=(S.mix&&S.mix.t)||"auto", guess=styleOf(items,m);
+  if(t==="sec") return "stirred"; if(t==="long") return "long"; if(t==="spritz") return "spritz";
+  if(t==="court") return guess==="long"||guess==="spritz"? "sour" : guess;
+  return guess;
+}
+// Recommandations du barman selon le style
+function labReco(st, items){
+  const acid=items.some(i=>["citron","citron_vert","pamplemousse","ananas"].includes(i.id)), egg=items.some(i=>["blanc_oeuf","oeuf","creme"].includes(i.id));
+  const t=mixState().t;
+  if(t==="shot") return {g:"shot",ice:"none",m:acid?"shake":"build"};
+  if(st==="long") return {g:"highball",ice:"cubes",m:acid&&items.filter(i=>!ING[i.id].fizz).length>2?"shake":"build"};
+  if(st==="spritz") return {g:"vin",ice:"cubes",m:"build"};
+  if(st==="stirred"){ const ids=items.map(i=>i.id), grp=SPIRIT_GROUP[baseOf(items)];
+    if(ids.some(i=>["vermouth_dry","lillet","vermouth_blanc"].includes(i))&&!ids.includes("campari")) return {g:"martini",ice:"none",m:"stir"};
+    if(["whisky","brandy","rhum","agave","amer"].includes(grp)||ids.includes("campari")) return {g:"rocks",ice:"big",m:"stir"};
+    return {g:"coupe",ice:"none",m:"stir"}; }
+  if(st==="cremeux") return {g:"coupe",ice:"none",m:"shake"};
+  return {g:"coupe",ice:"none",m:(acid||egg)?"shake":"stir"};
+}
+function labGlass(){ const M=mixState(), items=mixItems(); const st=items.length?labStyle(items,M.m):({long:"long",spritz:"spritz",sec:"stirred"}[M.t]||"sour"); const rec=labReco(st,items); return {g:M.g||rec.g, ice:M.ice||rec.ice, rec}; }
+function mixIce(){ return labGlass().ice; }
+function labAvail(g,ice){ return (LCAP[g]||250)*(1-(ICESHARE[ice]||0)); }
+function labVol(items,m,ice){ return items.length? calc(items,m,ice).vol : 0; }
+function labSuggestGar(items){
+  const ids=items.map(i=>i.id), base=baseOf(items), grp=base&&SPIRIT_GROUP[base];
+  if(ids.includes("gin")&&ids.includes("vermouth_dry")) return ["olive","zeste_c"];
+  if(ids.includes("menthe")) return ["menthe","cv"];
+  if(ids.includes("campari")||ids.includes("aperol")) return ["or","zo"];
+  if(ids.includes("espresso")||ids.includes("kahlua")) return ["cafe"];
+  if(ids.includes("creme")||ids.includes("creme_cacao")) return ["muscade"];
+  if(ids.includes("creme_coco")||ids.includes("ananas")) return ["ananas","cerise","paille"];
+  if(ids.includes("fraise_puree")||ids.includes("sirop_framboise")) return ["fraise"];
+  return ({gin:["zeste_c","concombre"],agave:["sel","cv"],rhum:["cv","menthe"],whisky:["zo","cerise"],vodka:["cv","rc"],brandy:["zo","rc"],eaux:["zeste_c","rc"],amer:["or","zo"],gingembre:["cv","menthe"]})[grp]||["zeste_c","rc"];
+}
+// Score façon jeu : six objectifs
+function labScore(A){
+  const M=mixState(), {g,ice}=labGlass(), st=A.st, z=A.z, met=A.met, avail=labAvail(g,ice), fill=met.vol/avail;
+  // dans la plage des classiques = plein score, puis ça décroît en s'éloignant
+  const zone=(v,lo,hi,span)=>{ v=Math.max(v,1e-3); if(v>=lo&&v<=hi) return 1; const d=v<lo? Math.log(lo/v) : Math.log(v/hi); return Math.max(0,1-d/Math.log(span)); };
+  let bal; if(st==="stirred"||st==="cremeux") bal=zone(met.sug,z.sug[0]*0.2,z.sug[2]*1.15,3); else bal=0.6*zone(A.ratio,z.ratio[0]*0.8,z.ratio[2]*1.2,2.2)+0.4*zone(met.acid,z.acid[0]*0.8,z.acid[2]*1.2,2.5);
+  const abv=M.t==="shot"||met.abv<0.5?1:zone(met.abv,z.abv[0]*0.85,z.abv[2]*1.15,2);
+  const fillS= fill>=0.6&&fill<=1.02?1: fill>=0.42?0.55: fill>1.02?0: 0.15;
+  const iceOk={long:["cubes","pilee"],spritz:["cubes","big","none"],stirred:["big","none","cubes"],sour:["none","cubes","pilee"],cremeux:["none","cubes"]}[st]||["none","cubes","big","pilee"];
+  const iceS= M.t==="shot"? (ice==="none"?1:0.2) : iceOk.includes(ice)?1:0.2;
+  const glassOk={long:["highball","mug","vin","rocks"],spritz:["vin","flute","highball","coupe"],stirred:["rocks","coupe","martini"],sour:["coupe","martini","rocks"],cremeux:["coupe","martini","rocks","tasse"]}[st]||[];
+  const glassS= M.t==="shot"? (g==="shot"?1:0.2) : glassOk.includes(g)?1:0.3;
+  const sug=labSuggestGar(A.items), garS= !M.gar.length?0: M.gar.some(x=>sug.includes(x))?1:0.5;
+  const goals=[["bal","Équilibre",bal,25],["abv","Force",abv,20],["fill","Remplissage",fillS,15],["glass","Verre",glassS,15],["ice","Glace",iceS,15],["gar","Décor",garS,10]];
+  const score=Math.round(goals.reduce((a,x)=>a+x[2]*x[3],0));
+  return {score,goals,fill,avail,sug};
+}
+function labGrade(s){ return s>=90?["Digne d’un chef de bar","🏆"]:s>=78?["Très bon","🥂"]:s>=60?["Pas mal du tout","👍"]:s>=40?["À retravailler","🔧"]:["Continue tes essais","🧪"]; }
+let LAB_LASTY=null, LAB_SERVE=null;
+function labBlendCol(items){ let V=0,rr=0,gg=0,bb=0; items.forEach(i=>{ if(i.u==="f"||i.u==="u") return; const ml=Math.max(mlOf(i),0.5), c=colOf(i.id); V+=ml; rr+=parseInt(c.slice(1,3),16)*ml; gg+=parseInt(c.slice(3,5),16)*ml; bb+=parseInt(c.slice(5,7),16)*ml; }); return V? "#"+[rr,gg,bb].map(x=>Math.round(x/V).toString(16).padStart(2,"0")).join("") : "#E8D8B0"; }
+function labGlassSVG(big){
+  const M=mixState(), items=mixItems(), {g,ice}=labGlass(), vol=labVol(items,M.m,ice), fill=vol/labAvail(g,ice);
+  const r={id:"lab"+items.length+g+ice,g,col:labBlendCol(items),ice,ing:items,gar:"",garList:M.gar.map(k=>LGARTXT[k]),fam:""};
+  const sh=GLASS_SHAPES[g]||GLASS_SHAPES.rocks, ly=sh.mug?null:sh.bot-Math.max(0,Math.min(1,fill))*(sh.bot-(sh.rim[2]+1.8));
+  const from=LAB_LASTY!=null&&ly!=null&&Math.abs(LAB_LASTY-ly)>0.3?LAB_LASTY:null; if(big) LAB_LASTY=ly;
+  return glassSVG(r,{fill:Math.min(1,fill),live:1,riseFrom:big?from:null,stream:big&&from!=null&&from>ly&&FX("stream")});
+}
+function vCompose(){
+  const M=mixState(), items=M.items, A=items.length?analyze():null, {g,ice,rec}=labGlass(), avail=labAvail(g,ice), vol=A?A.met.vol:0, fill=vol/avail;
+  const SC=A?labScore(A):null, served=LAB_SERVE&&LAB_SERVE.key===JSON.stringify(M);
+  let o=`<div class="sp16"></div>`;
+  // ---- la scène ----
+  o+=`<div class="lab-stage ${fill>1.02?"over":""}"><div class="lab-glow" style="background:radial-gradient(circle at 50% 55%, ${A?labBlendCol(mixItems()):"#E8D8B0"}66, transparent 62%)"></div>
+    <div class="lab-top"><span class="lab-chip">${esc(LTYPE.find(x=>x[0]===M.t)[1]==="Je ne sais pas"?(A?"Style deviné : "+{sour:"cocktail court",stirred:"sec et fort",long:"long drink",spritz:"spritz",cremeux:"crémeux"}[A.st]:"Style libre"):LTYPE.find(x=>x[0]===M.t)[1])}</span>${SC?`<span class="lab-score ${served?"shown":""}" data-a="mixserve"><b>${served?SC.score:"?"}</b><i>/100</i></span>`:""}</div>
+    <div class="lab-glass" data-a="jiggle">${labGlassSVG(true)}<div class="lab-tool"></div></div>
+    <div class="lab-gauge"><div class="lab-gbar"><i style="width:${Math.min(100,fill*100).toFixed(0)}%"></i></div><span>${fmtMl(vol)} versés sur ${fmtMl(avail)} disponibles${ICESHARE[ice]?", glace déduite":""}</span></div>
+    ${SC?`<div class="lab-goals">${SC.goals.map(([k,n,v])=>`<span class="goal ${v>=0.85?"ok":v>=0.5?"mid":""}"><i>${v>=0.85?IC.check:v>=0.5?"~":"·"}</i>${n}</span>`).join("")}</div>`:`<div class="lab-hint">Choisis un style, un verre, puis verse tes ingrédients.</div>`}
+  </div>`;
+  if(served&&SC){ const [gt,ge]=labGrade(SC.score); o+=`<div class="lab-verdict"><span class="lv-e">${ge}</span><div class="grow"><b>${esc(gt)}</b><span>${esc(labSummary(A,SC))}</span></div></div>`; }
+  // ---- étape 1 : style ----
+  o+=`<h2 class="sh lab-h"><span class="lab-n">1</span>Le style</h2><div class="chips lab-chips">${LTYPE.map(([k,n])=>`<button class="chip ${M.t===k?"on":""}" data-a="mixtype" data-v="${k}">${n}</button>`).join("")}</div>`;
+  // ---- étape 2 : verre ----
+  o+=`<h2 class="sh lab-h"><span class="lab-n">2</span>Le verre${!M.g?`<span class="more muted" style="font-size:14px">Choisi par le barman</span>`:`<button class="more" data-a="mixglassauto">Auto</button>`}</h2><div class="scroller lab-glasses">${LGLASS.map(([k,n,c])=>`<button class="lg ${g===k?"on":""} ${rec.g===k?"rec":""}" data-a="mixglass" data-v="${k}"><span class="lg-i">${glassSVG({id:"e"+k,g:k,col:"#E8D8B0",ing:[],ice:"none",gar:""},{fill:0,garnish:false})}</span><b>${n}</b><span>${fmtMl(c)}</span>${rec.g===k&&g!==k?`<em>Conseillé</em>`:""}</button>`).join("")}</div>`;
+  // ---- étape 3 : ingrédients ----
+  const shelf=Object.keys(S.stock).filter(id=>ING[id]&&has(id)&&!ING[id].basic).concat(["citron","citron_vert","sirop_sucre","sirop_miel","blanc_oeuf","menthe"]).filter((x,i,a)=>a.indexOf(x)===i);
+  o+=`<h2 class="sh lab-h"><span class="lab-n">3</span>Les ingrédients${items.length?`<button class="more" data-a="mixfit">Ajuster au verre</button>`:""}</h2><div class="sh-sub">Touche une bouteille pour verser, ou choisis dans toute la carte.</div>
+    <div class="scroller lab-shelf">${shelf.map(id=>{ const inMix=items.find(i=>i.id===id); return `<button class="shelf ${inMix?"in":""}" data-a="mixpour" data-id="${id}">${ING[id].basic&&!tracked(id)?`<span class="sh-ic" style="background:${colOf(id)}"></span>`:`<span class="sh-b">${bottleSVG(id,4)}</span>`}<span class="sh-n">${esc(shortN(id))}</span>${inMix?`<span class="sh-q">${esc(fmtQ({q:inMix.q,u:unitOf(id)}))}</span>`:""}</button>`; }).join("")}<button class="shelf more" data-a="mixadd"><span class="sh-plus">${IC.plus}</span><span class="sh-n">Autre</span></button></div>`;
+  if(items.length) o+=`<div class="sp8"></div><div class="group">${items.map((it,k)=>`<div class="mix-row"><button class="rm" data-a="mixrm" data-k="${k}" aria-label="Retirer">${IC.x}</button><div class="n"><i style="display:inline-block;width:9px;height:9px;border-radius:5px;background:${colOf(it.id)};margin-right:9px;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.2)"></i>${esc(ING[it.id].n)}</div><div class="stepper"><button data-a="mixq" data-k="${k}" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${fmtQ({q:it.q,u:unitOf(it.id)}).replace(/ (traits?|feuilles|rondelles?|morceaux?)$/,"")}</span><button data-a="mixq" data-k="${k}" data-d="1" aria-label="Plus">${IC.plus}</button></div></div>`).join("")}</div>`;
+  // ---- étape 4 : glace et décor ----
+  o+=`<h2 class="sh lab-h"><span class="lab-n">4</span>Glace et décor</h2><div class="seg lab-ice" data-k="labice">${LICE.map(([k,n])=>`<button class="${ice===k?"on":""}" data-a="mixice" data-v="${k}">${n}</button>`).join("")}</div>
+    <div class="sp8"></div><div class="lab-gars">${LGAR.map(([k,e,n])=>{ const on=M.gar.includes(k), sug=SC&&SC.sug.includes(k); return `<button class="lgar ${on?"on":""} ${sug&&!on?"sug":""}" data-a="mixgar" data-v="${k}"><span>${e}</span><b>${esc(n.replace(/^(Rondelle|Branche|Feuille|Quartier|Bâton|Grains) (de |d’)/,"").replace(/^Bord /,"Bord ").replace(/^./,c=>c.toUpperCase()))}</b></button>`; }).join("")}</div>`;
+  // ---- étape 5 : méthode et service ----
+  o+=`<h2 class="sh lab-h"><span class="lab-n">5</span>La méthode</h2><div class="seg" data-k="labm">${[["shake","Shaker"],["stir","Verre à mélange"],["build","Construit"]].map(([k,n])=>`<button class="${M.m===k?"on":""}" data-a="mm" data-m="${k}">${n}</button>`).join("")}</div>`;
+  // ---- conseils ----
+  if(A){ const tips=[];
+    A.diag.filter(d=>d.warn).forEach(d=>tips.push(`<div class="tip-r">${IC.warn}<div class="grow"><b>${esc(d.t)}</b><span>${esc(d.why)}</span>${d.fix?`<button class="btn small sec" data-a="mixfix" data-id="${d.fix.id}" data-q="${d.fix.q}">Ajouter ${esc(fmtQ({q:d.fix.q,u:unitOf(d.fix.id)}))} ${esc(de(lc(shortN(d.fix.id))).replace(/^de /,"de "))}</button>`:""}</div></div>`));
+    if(M.g&&M.g!==rec.g&&SC.goals.find(x=>x[0]==="glass")[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un autre verre ?</b><span>Pour ce style, le barman te conseille ${esc(GLASSES[rec.g])}.</span><button class="btn small sec" data-a="mixglass" data-v="${rec.g}">Prendre ${esc(LGLASS.find(x=>x[0]===rec.g)[1].toLowerCase())}</button></div></div>`);
+    if(SC.goals.find(x=>x[0]==="ice")[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Côté glace</b><span>${{long:"Un long drink se sert sur beaucoup de glaçons.",spritz:"Un spritz se sert sur des glaçons.",stirred:"Un cocktail sec se sert sur un gros glaçon, ou sans glace dans un verre refroidi.",sour:"Un cocktail court se sert plutôt sans glace, bien froid.",cremeux:"Plutôt sans glace."}[A.st]||"Adapte la glace au style."}</span><button class="btn small sec" data-a="mixice" data-v="${rec.ice}">${esc(LICE.find(x=>x[0]===rec.ice)[1])}</button></div></div>`);
+    if(!M.gar.length) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un peu de décor ?</b><span>Avec ce mélange, ${esc(LGARTXT[SC.sug[0]].toLowerCase())} irait très bien.</span><button class="btn small sec" data-a="mixgar" data-v="${SC.sug[0]}">Ajouter</button></div></div>`);
+    if(fill>1.02) tips.unshift(`<div class="tip-r bad">${IC.warn}<div class="grow"><b>Ça déborde !</b><span>Il faut environ ${fmtMl(vol-avail)} de place en plus.</span><button class="btn small sec" data-a="mixfit">Ajuster au verre</button></div></div>`);
+    else if(fill<0.42) tips.push(`<div class="tip-r">${IC.warn}<div class="grow"><b>Le verre paraît vide</b><span>Ajoute du volume ou choisis un verre plus petit.</span><button class="btn small sec" data-a="mixfit">Ajuster au verre</button></div></div>`);
+    if(tips.length) o+=`<h2 class="sh">Conseils du barman</h2><div class="group lab-tips">${tips.slice(0,4).join("")}</div>`;
+    o+=`<div class="sp16"></div><div class="btn-row"><button class="btn lab-serve" data-a="mixserve">${M.m==="shake"?"🍸 Secouer et servir":M.m==="stir"?"🥄 Remuer et servir":"🥂 Servir"}</button></div>`;
+    // ---- détails ----
+    const p=profileOf(A.items,A.met), pa=pairings(A.items), nr=nearest(A.items);
+    o+=`<details class="lab-more"><summary>Voir l’analyse détaillée${IC.chev}</summary><div class="card" style="margin-top:8px"><div class="metrics"><div class="metric"><b>${num(Math.round(A.met.abv*10)/10)} %</b><span>alcool</span>${zoneBar(A.met.abv,A.z.abv,40)}</div><div class="metric"><b>${num(Math.round(A.met.sug*10)/10)}</b><span>sucre g/100 ml</span>${zoneBar(A.met.sug,A.z.sug,16)}</div><div class="metric"><b>${num(Math.round(A.met.acid*100)/100)} %</b><span>acidité</span>${zoneBar(A.met.acid,A.z.acid,1.6)}</div></div><div class="sp16"></div><div class="prof">${radarSVG(p)}<div class="muted" style="font-size:14px">La zone verte montre la plage des classiques du même style.${hasPrices()?(()=>{ const c=costOf(A.items); return c.miss.length?"":" Coût : environ "+chf(c.tot)+"."; })():""}</div></div></div>
+      ${pa.length?`<div class="gh">Pour aller plus loin</div><div class="group">${pa.map(id=>`<div class="pair"><div class="grow"><div class="pn">${esc(ING[id].n)} ${has(id)?`<span class="badge green">${ING[id].basic?"Toujours là":"Dans ton bar"}</span>`:`<span class="badge">À acheter</span>`}</div><div class="pr">Apporte ${esc(ROLE[id]||"de la complexité")}.</div></div><button class="btn small sec" data-a="mixadd1" data-id="${id}">Ajouter</button></div>`).join("")}</div>`:""}
+      ${nr.length?`<div class="gh">Ça ressemble à</div><div class="group">${nr.map(([r,s])=>recRow(r, s>0.9?"Presque identique":"Proche à "+Math.round(s*100)+" %")).join("")}</div>`:""}</details>`;
+    o+=`<div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="mixsave">Enregistrer</button><button class="btn gray" data-a="aiprompt">${IC.copy}Prompt IA</button></div><div class="sp8"></div><div class="btn-row"><button class="btn danger" data-a="mixclear">Recommencer à zéro</button></div>`;
+  } else {
+    o+=`<div class="sp16"></div><div class="card lab-start"><b>Besoin d’inspiration ?</b><span>Pars d’un classique et transforme-le.</span><div class="starter">${["daiquiri","negroni","moscow_mule","whisky_sour","aperol_spritz"].map(id=>`<button class="chip" data-a="tolab" data-id="${id}">${esc(RMAP[id].n)}</button>`).join("")}</div></div>`;
+  }
+  return o;
+}
+function labSummary(A,SC){
+  const p=profileOf(A.items,A.met), av=avgProfile(); const top=p.slice(0,8).map((v,i)=>[v-av[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,2).map(x=>DIMS[x[1]].toLowerCase());
+  const weak=SC.goals.filter(x=>x[2]<0.6).map(x=>x[1].toLowerCase());
+  return "Plutôt "+joinFr(top)+"."+(weak.length?" À améliorer : "+joinFr(weak)+".":" Tous les objectifs sont atteints !");
+}
+// ---- garde-fous de contenance ----
+function labFits(items){ const M=mixState(), {g,ice}=labGlass(); return labVol(items.map(it=>({id:it.id,q:it.q,u:unitOf(it.id),r:ING[it.id].fizz&&M.m!=="build"?"top":""})),M.m,ice)<=labAvail(g,ice)*1.03; }
+function labOverflow(){ const el=document.querySelector(".lab-stage"); if(el){ el.classList.remove("shake-no"); void el.offsetWidth; el.classList.add("shake-no"); } toast("Plus de place dans ce verre !",{action:{label:"Ajuster",fn:()=>ACT.mixfit()}}); }
+function labTry(mut){ const before=JSON.stringify(S.mix.items); mut(); if(!labFits(S.mix.items)){ S.mix.items=JSON.parse(before); labOverflow(); return false; } LAB_SERVE=null; changed(); return true; }
+const _mixq=ACT.mixq; ACT.mixq=(d)=>{ if(+d.d<0){ LAB_SERVE=null; return _mixq(d); } labTry(()=>{ const it=S.mix.items[+d.k]; it.q=stepQ(it.q,unitOf(it.id),+d.d); }); };
+ACT.mixadd1=(d)=>{ labTry(()=>S.mix.items.push({id:d.id,q:defaultQ(d.id)})); };
+ACT.mixfix=(d)=>{ labTry(()=>{ const ex=S.mix.items.find(i=>i.id===d.id); if(ex) ex.q=Math.round((ex.q+ +d.q)*10)/10; else S.mix.items.push({id:d.id,q:+d.q}); }); };
+ACT.mixadd=()=>pickIngSheet(id=>{ labTry(()=>S.mix.items.push({id,q:defaultQ(id)})); });
+const _mixrm=ACT.mixrm; ACT.mixrm=(d)=>{ LAB_SERVE=null; _mixrm(d); };
+Object.assign(ACT,{
+  mixtype:(d)=>{ mixState().t=d.v; LAB_SERVE=null; const rec=labGlass().rec; if(!S.mix.gUser){ S.mix.g=null; S.mix.ice=null; } if(!S.mix.mUser&&S.mix.items.length) S.mix.m=rec.m; changed(); },
+  mixglass:(d)=>{ const M=mixState(), old=[M.g,M.gUser]; M.g=d.v; M.gUser=1; if(!labFits(M.items)){ toast("Ton mélange ne tient pas dans ce verre",{action:{label:"Ajuster",fn:()=>ACT.mixfit()}}); } LAB_SERVE=null; LAB_LASTY=null; changed(); },
+  mixglassauto:()=>{ const M=mixState(); M.g=null; M.gUser=0; LAB_LASTY=null; changed(); },
+  mixice:(d)=>{ const M=mixState(); M.ice=d.v; LAB_SERVE=null; if(!labFits(M.items)) toast("Avec cette glace, ça déborde un peu",{action:{label:"Ajuster",fn:()=>ACT.mixfit()}}); changed(); },
+  mixgar:(d)=>{ const M=mixState(), i=M.gar.indexOf(d.v); if(i<0){ if(M.gar.length>=4){ toast("Quatre garnitures maximum, sinon on ne voit plus le cocktail"); return; } M.gar.push(d.v); } else M.gar.splice(i,1); LAB_SERVE=null; changed(); },
+  mixpour:(d,t)=>{ if(t){ t.classList.remove("pour"); void t.offsetWidth; t.classList.add("pour"); } labTry(()=>{ const ex=S.mix.items.find(i=>i.id===d.id); if(ex) ex.q=stepQ(ex.q,unitOf(d.id),1); else S.mix.items.push({id:d.id,q:defaultQ(d.id)}); }); },
+  mixfit:()=>{ const M=mixState(), {g,ice}=labGlass(), target=labAvail(g,ice)*0.9; const cur=labVol(mixItems(),M.m,ice); if(!cur) return; let k=target/cur;
+    for(let it=0;it<3;it++){ const trial=M.items.map(i=>{ const u=unitOf(i.id); return Object.assign({},i,{q:u==="ml"?Math.max(2.5,Math.round(i.q*k/2.5)*2.5):i.q}); }); const v=labVol(trial.map(i=>({id:i.id,q:i.q,u:unitOf(i.id),r:ING[i.id].fizz&&M.m!=="build"?"top":""})),M.m,ice); if(v<=labAvail(g,ice)*1.02||it===2){ M.items=trial; break; } k*=0.95; }
+    LAB_SERVE=null; changed(); toast("Quantités ajustées au verre"); },
+  mixserve:()=>{ const M=mixState(); if(!M.items.length) return; const A=analyze(), SC=labScore(A); const st=document.querySelector(".lab-stage"), tool=st&&st.querySelector(".lab-tool");
+    if(st){ st.classList.add("serving",M.m); if(tool) tool.innerHTML=M.m==="shake"?`<span class="shaker">${IC.shaker}</span>`:M.m==="stir"?`<span class="spoon"></span>`:""; }
+    const wait=M.m==="build"?250:1300;
+    setTimeout(()=>{ LAB_SERVE={key:JSON.stringify(M),t:Date.now()}; LAB_LASTY=null; S.labBest=Math.max(S.labBest||0,SC.score); S.labServes=(S.labServes||0)+1; changed();
+      const sc=document.querySelector(".lab-score b"); if(sc){ const t0=performance.now(), v=SC.score; const step=t=>{ const k=Math.min(1,(t-t0)/900), e=1-Math.pow(1-k,3); sc.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
+      document.querySelectorAll(".lab-goals .goal").forEach((gl,i)=>{ gl.style.animationDelay=(i*90)+"ms"; gl.classList.add("pop"); });
+      if(SC.score>=85){ const b=document.querySelector(".lab-glass"); if(b){ const r=b.getBoundingClientRect(); setTimeout(()=>confetti(r.left+r.width/2,r.top+r.height*0.4,labBlendCol(mixItems())),500); } }
+      const [gt]=labGrade(SC.score); toast(SC.score+"/100 : "+gt); },wait); },
+});
+// garnitures et verre repris quand on part d'un cocktail
+const _tolab=ACT.tolab; ACT.tolab=(d)=>{ _tolab(d); const r=RMAP[d.id]; const M=mixState(); M.g=r.g; M.gUser=1; M.ice=r.ice; M.t={sour:"court",stirred:"sec",highball:"long",bulles:"spritz",herbes:"auto",tiki:"auto",dessert:"auto",chaud:"auto",shot:"shot",sansalcool:"auto"}[r.fam]||"auto";
+  const low=(r.gar||"").toLowerCase(); M.gar=LGAR.filter(([k,,n])=>{ const w=n.toLowerCase(); return (k==="cv"&&/citron vert/.test(low))||(k==="zeste_c"&&/zeste de citron/.test(low))||(k==="rc"&&/(rondelle|roue|demi)[^,]*citron(?! vert)/.test(low))||(k==="or"&&/(rondelle|tranche|quartier)[^,]*orange/.test(low))||(k==="zo"&&/zeste d’orange/.test(low))||(["menthe","basilic","olive","cerise","concombre","ananas","paille","muscade"].includes(k)&&low.includes(w.split(" ").pop().replace(/s$/,"")))||(k==="sel"&&/sel/.test(low))||(k==="sucre"&&/bord sucré/.test(low))||(k==="cafe"&&/café/.test(low))||(k==="cannelle"&&/cannelle/.test(low))||(k==="fraise"&&/framboise|fraise|mûre/.test(low)); }).map(x=>x[0]).slice(0,4); LAB_SERVE=null; LAB_LASTY=null; changed(); };
+const _mm=ACT.mm; ACT.mm=(d)=>{ S.mix.mUser=1; LAB_SERVE=null; _mm(d); };
+const _mixclear=ACT.mixclear; ACT.mixclear=()=>{ const bak=JSON.stringify(S.mix); _mixclear(); S.mix={m:"shake",items:[],t:"auto",gar:[]}; LAB_SERVE=null; LAB_LASTY=null; changed(); toast("Labo remis à zéro",{action:{label:"Annuler",fn:()=>{ S.mix=JSON.parse(bak); changed(); }}}); };
+TROPHIES.push(["labpro","Chef de bar","Obtiens 90/100 au labo",90,()=>S.labBest||0],["lab10","Apprenti mixologue","Sers 10 créations au labo",10,()=>S.labServes||0]);
+
+// ================= FENÊTRE DE SERVICE =================
+let SV=null;
+function openServe(){
+  const M=mixState(); if(!M.items.length) return; const A=analyze(), SC=labScore(A), items=mixItems(), {g,ice}=labGlass();
+  const col=labBlendCol(items), [gt,ge]=labGrade(SC.score), prevBest=S.labBest||0, record=SC.score>prevBest&&S.labServes>0;
+  LAB_SERVE={key:JSON.stringify(M),t:Date.now()}; S.labBest=Math.max(prevBest,SC.score); S.labServes=(S.labServes||0)+1; save();
+  const r={id:"sv"+Date.now(),g,col,ice,ing:items,gar:"",garList:M.gar.map(k=>LGARTXT[k])};
+  const fill=Math.min(1,A.met.vol/labAvail(g,ice)), C=2*Math.PI*52;
+  const tool=M.m==="shake"?`<span class="sv-shaker">${IC.shaker}</span>`:M.m==="stir"?`<span class="sv-mix" style="--lc:${col}"><span class="sv-liq"><b class="c1"></b><b class="c2"></b><b class="c3"></b></span><span class="sv-sp"></span></span>`:"";
+  const GL={bal:"Équilibre",abv:"Force",fill:"Remplissage",glass:"Verre",ice:"Glace",gar:"Décor"};
+  const el=document.createElement("div"); el.id="serve"; el.style.setProperty("--c",col);
+  el.innerHTML=`<div class="sv-bg"></div><button class="close-x sv-x" data-a="svclose" aria-label="Fermer">${IC.x}</button>
+   <div class="sv-in">
+    <div class="sv-kick">${M.m==="shake"?"On secoue…":M.m==="stir"?"On remue…":"On sert…"}</div>
+    <div class="sv-glass"><div class="sv-g">${glassSVG(r,{fill,pour:true,live:1,stream:FX("stream")})}</div><div class="sv-tool">${tool}</div></div>
+    <div class="sv-res">
+      <div class="sv-ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="10"/><circle class="sv-arc" cx="60" cy="60" r="52" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 ${C}" transform="rotate(-90 60 60)"/></svg><div class="sv-num"><b>0</b><span>/100</span></div></div>
+      <div class="sv-grade"><span class="sv-e">${ge}</span><b>${esc(gt)}</b>${record?`<em>Nouveau record !</em>`:""}</div>
+    </div>
+    <div class="sv-goals">${SC.goals.map(([k,n,v],i)=>`<div class="sv-goal ${v>=0.85?"ok":v>=0.5?"mid":"ko"}" style="--i:${i}"><span class="sv-gi">${v>=0.85?IC.check:v>=0.5?"~":"!"}</span><div class="grow"><b>${GL[k]}</b><i><u style="--w:${Math.round(v*100)}%"></u></i></div></div>`).join("")}</div>
+    <p class="sv-sum">${esc(labSummary(A,SC))}</p>
+    <div class="sv-actions"><button class="btn sv-btn" data-a="svsave">Enregistrer ma création</button><div class="sv-row"><button class="btn sv-btn2" data-a="svtips">Conseils</button><button class="btn sv-btn2" data-a="svclose">Continuer</button></div></div>
+   </div>`;
+  document.body.appendChild(el); SV={el,score:SC.score,timers:[]};
+  const T=(ms,f)=>SV.timers.push(setTimeout(f,ms));
+  const tTool=M.m==="build"?150:1350, tPour=tTool+(FX("stream")?1300:900), tScore=tPour+150;
+  requestAnimationFrame(()=>el.classList.add("open"));
+  el.classList.add("p1");
+  T(tTool,()=>{ el.classList.add("p2"); el.querySelector(".sv-kick").textContent="Et voilà ton cocktail"; });
+  T(tScore,()=>svScore());
+  el.addEventListener("click",e=>{ if(e.target.closest("[data-a]")) return; svSkip(); });
+}
+function svScore(){
+  if(!SV) return; const el=SV.el; el.classList.add("p3"); const v=SV.score, C=2*Math.PI*52, arc=el.querySelector(".sv-arc"), num=el.querySelector(".sv-num b"), t0=performance.now();
+  const step=t=>{ if(!SV) return; const k=Math.min(1,(t-t0)/1100), e=1-Math.pow(1-k,3); num.textContent=Math.round(v*e); arc.setAttribute("stroke-dasharray",`${C*v/100*e} ${C}`); if(k<1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+  SV.timers.push(setTimeout(()=>{ if(!SV) return; el.classList.add("p4"); },900));
+  SV.timers.push(setTimeout(()=>{ if(!SV) return; el.classList.add("p5"); if(v>=85){ const b=el.querySelector(".sv-ring").getBoundingClientRect(); confetti(b.left+b.width/2,b.top+b.height/2,getComputedStyle(el).getPropertyValue("--c")); } checkTrophies(); },1750));
+}
+function svSkip(){ if(!SV||SV.el.classList.contains("p5")) return; SV.timers.forEach(clearTimeout); SV.timers=[]; const el=SV.el; el.classList.add("p2","p3","p4","p5","skip"); const C=2*Math.PI*52; el.querySelector(".sv-arc").setAttribute("stroke-dasharray",`${C*SV.score/100} ${C}`); el.querySelector(".sv-num b").textContent=SV.score; checkTrophies(); }
+function svClose(then){ if(!SV) return; SV.timers.forEach(clearTimeout); const el=SV.el; SV=null; el.classList.remove("open"); el.classList.add("closing"); setTimeout(()=>el.remove(),380); LAB_LASTY=null; changed(); if(then) setTimeout(then,200); }
+Object.assign(ACT,{
+  mixserve:()=>openServe(),
+  svclose:()=>svClose(),
+  svsave:()=>svClose(()=>ACT.mixsave()),
+  svtips:()=>svClose(()=>{ const t=document.querySelector(".lab-tips")||document.querySelector(".lab-more"); if(t) t.scrollIntoView({behavior:"smooth",block:"center"}); })
+});
+// ================= TROPHÉES : niveaux, médailles et célébrations =================
+const TIERS={bronze:{n:"Bronze",c:["#F4C79A","#B8703A","#7A4418"]},silver:{n:"Argent",c:["#FFFFFF","#C9D0DA","#7E8896"]},gold:{n:"Or",c:["#FFF1B0","#F2B632","#A86A10"]},plat:{n:"Platine",c:["#F4FBFF","#A8D8F0","#6A7FC8"]}};
+const TIER_OF={first:"bronze",crea:"bronze",alch:"bronze",roul:"bronze",night:"bronze",zero:"bronze",lab10:"silver",ten:"silver",d10:"bronze",sour:"silver",stir:"silver",tiki:"silver",swiss:"silver",bitter:"silver",critic:"bronze",bar15:"silver",loyal:"silver",fifty:"gold",d30:"gold",fam:"gold",hist:"gold",palate:"gold",bar30:"gold",labpro:"gold",hundred:"plat"};
+const TRO_IC={ // pictogrammes des médailles
+ glass:'<path d="M-9-9H9C9-1 5 3 0 3S-9-1-9-9Z" fill="#fff"/><path d="M0 3V10M-5 11H5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>',
+ star:'<path d="M0-11l3.2 6.6 7.3 1-5.3 5.1 1.3 7.2L0 5.5l-6.5 3.4 1.3-7.2L-10.5-3.4l7.3-1z" fill="#fff"/>',
+ flask:'<path d="M-3-11h6M-2-11v6l-7 11a2 2 0 0 0 1.7 3h14.6A2 2 0 0 0 9 6L2-5v-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/><path d="M-6 3h12l2.5 4H-8.5z" fill="#fff"/>',
+ heart:'<path d="M0 10s-10-6-10-12.5C-10-6-7-8.5-4-8.5c2 0 3.2 1.2 4 2.5.8-1.3 2-2.5 4-2.5 3 0 6 2.5 6 6C10 4 0 10 0 10z" fill="#fff"/>',
+ leaf:'<path d="M-8 9C-8-3 0-10 10-10 10 2 3 9-8 9z" fill="#fff"/><path d="M-8 9L4-3" stroke-width="1.6" stroke="rgba(0,0,0,.25)"/>',
+ book:'<path d="M-9-9h7a2 2 0 0 1 2 2v17a2 2 0 0 0-2-2h-7zM9-9H2a2 2 0 0 0-2 2v17a2 2 0 0 1 2-2h7z" fill="#fff"/>',
+ bottle:'<path d="M-2.5-12h5v5l3.5 4v15a1 1 0 0 1-1 1h-10a1 1 0 0 1-1-1v-15l3.5-4z" fill="#fff"/>',
+ crown:'<path d="M-11 7l-1-13 6 5 6-9 6 9 6-5-1 13z" fill="#fff"/><path d="M-11 10H11" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>',
+ moon:'<path d="M3-10a9 9 0 1 0 7 14.5A7.5 7.5 0 0 1 3-10z" fill="#fff"/>',
+ dice:'<rect x="-9" y="-9" width="18" height="18" rx="4" fill="#fff"/><g fill="rgba(0,0,0,.35)"><circle cx="-4" cy="-4" r="1.8"/><circle cx="4" cy="4" r="1.8"/><circle cx="0" cy="0" r="1.8"/></g>',
+ cross:'<path d="M-3.5-10h7v6.5H10v7H3.5V10h-7V3.5H-10v-7h6.5z" fill="#fff"/>',
+ cal:'<rect x="-10" y="-8" width="20" height="18" rx="3" fill="#fff"/><path d="M-10-3H10" stroke="rgba(0,0,0,.25)" stroke-width="2"/><path d="M-5-11v5M5-11v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>',
+ coin:'<circle r="10" fill="#fff"/><path d="M3.5-4c-.6-1.2-2-1.8-3.5-1.8-2 0-3.5 1-3.5 2.6 0 3.7 7.3 2 7.3 5.4 0 1.6-1.6 2.6-3.8 2.6-1.6 0-3-.7-3.6-1.9" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="2" stroke-linecap="round"/>',
+ fork:'<path d="M-6-11v8a3 3 0 0 0 6 0v-8M-3-11v22M6-11c-3 3-3 9 0 11v11" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>',
+ target:'<circle r="10" fill="none" stroke="#fff" stroke-width="2.4"/><circle r="5.5" fill="none" stroke="#fff" stroke-width="2.4"/><circle r="1.8" fill="#fff"/>',
+ num:''
+};
+const TRO_GLYPH={first:"glass",ten:"glass",fifty:"glass",hundred:"crown",d10:"book",d30:"book",fam:"leaf",sour:"target",stir:"glass",tiki:"leaf",swiss:"cross",bitter:"leaf",hist:"book",critic:"star",palate:"star",bar15:"bottle",bar30:"bottle",alch:"flask",crea:"flask",loyal:"heart",roul:"dice",night:"moon",zero:"leaf",labpro:"crown",lab10:"flask"};
+// Nouveaux trophées, du plus simple au plus corsé
+TROPHIES.push(
+ ["quizdone","Fais connaissance","Termine le quiz de goût",1,()=>S.quiz?1:0],
+ ["lab1","Premier mélange","Sers ta première création au labo",1,()=>S.labServes||0],
+ ["price5","Comptable du bar","Renseigne le prix de 5 bouteilles",5,()=>Object.values(S.price||{}).filter(p=>p&&p.p>0).length],
+ ["adj5","Sur mesure","Ajuste 5 recettes à ton goût",5,()=>Object.keys(S.adj||{}).length],
+ ["dish6","Fin gourmet","Explore 6 accords mets et cocktails",6,()=>(S.dishes||[]).length],
+ ["fav10","Collectionneur","Garde 10 favoris",10,()=>(S.fav||[]).length],
+ ["prep3","Aux fourneaux","Lance 3 préparations maison",3,()=>S.prepCount||0],
+ ["seasons4","Quatre saisons","Prépare un cocktail de saison pendant 4 mois différents",4,()=>new Set(S.hist.filter(h=>RMAP[h.id]&&(RMAP[h.id].se||[]).includes(new Date(h.t).getMonth()+1)).map(h=>new Date(h.t).getMonth())).size],
+ ["weekend","Rituel du vendredi","Prépare un cocktail trois vendredis différents",3,()=>new Set(S.hist.filter(h=>new Date(h.t).getDay()===5).map(h=>new Date(h.t).toDateString())).size],
+ ["d50","Encyclopédie vivante","Prépare 50 recettes différentes",50,()=>distinct().length],
+ ["lab100","Perfection","Obtiens 100/100 au labo",100,()=>S.labBest||0],
+ ["allfam","Tour complet","Au moins un cocktail de chaque famille, sans alcool compris",Object.keys(FAMILIES).length,()=>new Set(distinct().map(id=>RMAP[id].fam)).size],
+ ["palate60","Palais d’or","Note 60 cocktails",60,()=>rated().length],
+ ["d100","Maître Zeste","Prépare 100 recettes différentes",100,()=>distinct().length],
+ ["collector","Vitrine pleine","Débloque 30 trophées",30,()=>(S.tro||[]).filter(k=>k!=="collector").length]
+);
+Object.assign(TIER_OF,{quizdone:"bronze",lab1:"bronze",price5:"bronze",adj5:"silver",dish6:"silver",fav10:"silver",prep3:"silver",seasons4:"gold",weekend:"silver",d50:"gold",lab100:"gold",allfam:"plat",palate60:"plat",d100:"plat",collector:"plat"});
+Object.assign(TRO_GLYPH,{quizdone:"star",lab1:"flask",price5:"coin",adj5:"target",dish6:"fork",fav10:"heart",prep3:"flask",seasons4:"cal",weekend:"cal",d50:"book",lab100:"target",allfam:"leaf",palate60:"star",d100:"crown",collector:"crown"});
+const TIER_RANK={bronze:0,silver:1,gold:2,plat:3};
+function tierOf(k){ return TIER_OF[k]||"silver"; }
+// Médaille : disque bombé, rayons, ruban, pictogramme ; anneau de progression si verrouillée
+function medal(k,on,prog){
+  const t=TIERS[tierOf(k)], id="md"+(++GID), c=on?t.c:["#E4E2DE","#B9B5AE","#8E8A84"], P=prog==null?0:Math.max(0,Math.min(1,prog)), R=31;
+  return `<svg viewBox="0 0 80 88" class="medal ${on?"on":"off"} t-${tierOf(k)}"><defs><linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset=".55" stop-color="${c[1]}"/><stop offset="1" stop-color="${c[2]}"/></linearGradient><radialGradient id="${id}h" cx="35%" cy="28%" r="60%"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></radialGradient><clipPath id="${id}k"><circle cx="40" cy="40" r="26"/></clipPath></defs>
+  <path d="M27 58L20 84L31 78L37 86L40 62ZM53 58L60 84L49 78L43 86L40 62Z" fill="${on?c[2]:"#A9A59F"}" opacity="${on?1:.6}"/>
+  ${[...Array(16)].map((_,i)=>{ const a=i*Math.PI/8; return `<path d="M${(40+Math.cos(a)*27).toFixed(1)} ${(40+Math.sin(a)*27).toFixed(1)}L${(40+Math.cos(a+0.2)*33).toFixed(1)} ${(40+Math.sin(a+0.2)*33).toFixed(1)}L${(40+Math.cos(a+0.39)*27).toFixed(1)} ${(40+Math.sin(a+0.39)*27).toFixed(1)}Z" fill="${c[2]}" opacity="${on?.9:.45}"/>`; }).join("")}
+  <circle cx="40" cy="40" r="28" fill="url(#${id}g)"/><circle cx="40" cy="40" r="22.5" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.6"/>
+  <g transform="translate(40 40)" opacity="${on?1:.75}">${TRO_IC[TRO_GLYPH[k]||"star"]}</g>
+  <circle cx="40" cy="40" r="28" fill="url(#${id}h)"/>
+  ${on?`<g clip-path="url(#${id}k)"><rect class="md-shine" x="-40" y="0" width="22" height="80" fill="#fff" opacity=".5" transform="skewX(-20)"/></g>`:""}
+  ${!on&&P>0?`<circle cx="40" cy="40" r="${R+4}" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="3.5"/><circle cx="40" cy="40" r="${R+4}" fill="none" stroke="var(--tint)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="${(2*Math.PI*(R+4)*P).toFixed(1)} 400" transform="rotate(-90 40 40)"/>`:""}</svg>`;
+}
+function troProgress(k){ const T=TROPHIES.find(x=>x[0]===k); if(!T) return [0,1]; return [Math.min(T[3],T[4]()),T[3]]; }
+// Vérification : note la date, puis célèbre chaque nouveau trophée
+let TRO_Q=[], TRO_SHOW=false;
+function checkTrophies(){
+  S.tro=S.tro||[]; S.troT=S.troT||{}; const nw=[];
+  TROPHIES.forEach(([k,n,,g,f])=>{ if(!S.tro.includes(k)){ let v=0; try{ v=f(); }catch(e){} if(v>=g){ S.tro.push(k); S.troT[k]=Date.now(); nw.push(k); } } });
+  if(nw.length){ save(); dirty.profil=1; nw.sort((a,b)=>TIER_RANK[tierOf(b)]-TIER_RANK[tierOf(a)]);
+    TRO_Q.push(...nw.slice(0,3)); if(nw.length>3) setTimeout(()=>toast("Et "+(nw.length-3)+" autres trophées débloqués, à voir dans ton profil"),500+3*3200); setTimeout(showTrophy,500); }
+}
+function showTrophy(){
+  if(TRO_SHOW||!TRO_Q.length) return; if(document.getElementById("serve")||document.getElementById("rewind")?.classList.contains("open")){ setTimeout(showTrophy,1200); return; }
+  const k=TRO_Q.shift(), T=TROPHIES.find(x=>x[0]===k); if(!T) return showTrophy(); TRO_SHOW=true; const tr=tierOf(k), tc=TIERS[tr];
+  if(!FX("confetti")){ toast("Trophée débloqué : "+T[1],{icon:medal(k,true),trophy:1}); TRO_SHOW=false; setTimeout(showTrophy,2600); return; }
+  const el=document.createElement("div"); el.className="tro-pop t-"+tr; el.style.setProperty("--tc",tc.c[1]);
+  el.innerHTML=`<div class="tp-bg"></div><div class="tp-rays"></div><div class="tp-in"><div class="tp-k">Trophée débloqué</div><div class="tp-m">${medal(k,true)}</div><span class="tp-tier">${tc.n}</span><div class="tp-n">${esc(T[1])}</div><div class="tp-d">${esc(T[2])}</div><div class="tp-tap">Touche pour continuer${TRO_Q.length?` · encore ${TRO_Q.length}`:""}</div></div>`;
+  document.body.appendChild(el); requestAnimationFrame(()=>el.classList.add("open"));
+  setTimeout(()=>{ const m=el.querySelector(".tp-m"); if(m){ const b=m.getBoundingClientRect(); confetti(b.left+b.width/2,b.top+b.height/2,tc.c[1]); if(tr==="gold"||tr==="plat") setTimeout(()=>confetti(b.left+b.width/2,b.top+b.height/3,tc.c[0]),350); } },650);
+  const close=()=>{ el.classList.remove("open"); el.classList.add("out"); setTimeout(()=>{ el.remove(); TRO_SHOW=false; setTimeout(showTrophy,250); },380); };
+  el.addEventListener("click",close); setTimeout(()=>{ if(el.isConnected) close(); },6500);
+}
+// Grille des trophées du profil, triée par niveau
+function trophyGrid(){
+  const got=S.tro||[], order=TROPHIES.slice().sort((a,b)=>(got.includes(b[0])-got.includes(a[0]))||(TIER_RANK[tierOf(a[0])]-TIER_RANK[tierOf(b[0])]));
+  const cnt=t=>TROPHIES.filter(x=>tierOf(x[0])===t&&got.includes(x[0])).length+"/"+TROPHIES.filter(x=>tierOf(x[0])===t).length;
+  return `<h2 class="sh">Trophées<span class="more" style="color:var(--label2)">${got.length} sur ${TROPHIES.length}</span></h2><div class="tro-tiers">${Object.entries(TIERS).map(([t,v])=>`<span class="tt t-${t}"><i style="background:linear-gradient(135deg,${v.c[0]},${v.c[2]})"></i>${v.n} ${cnt(t)}</span>`).join("")}</div>
+  <div class="trophies">${order.map(([k,n,d,g,f])=>{ const on=got.includes(k), [v,G]=troProgress(k); return `<button class="trophy ${on?"":"locked"} t-${tierOf(k)}" data-a="trophy" data-k="${k}">${medal(k,on,on?null:v/G)}<div class="tn">${esc(n)}</div><div class="tp">${on?TIERS[tierOf(k)].n:v+" / "+g}</div></button>`; }).join("")}</div>`;
+}
+function trophySheet(k){
+  const T=TROPHIES.find(x=>x[0]===k), on=(S.tro||[]).includes(k), [v,G]=troProgress(k), tr=tierOf(k), when=(S.troT||{})[k];
+  openSheet(()=>({title:"",body:`<div class="ts-hero t-${tr} ${on?"on":""}"><div class="ts-rays"></div><div class="ts-m">${medal(k,on,on?null:v/G)}</div><span class="tp-tier">${TIERS[tr].n}</span><h1>${esc(T[1])}</h1><p>${esc(T[2])}</p></div>
+    <div class="card" style="margin-top:8px">${on?`<div class="ts-done">${IC.checkc}<span>Débloqué${when?" le "+new Date(when).getDate()+" "+monthName(new Date(when).getMonth()+1)+" "+new Date(when).getFullYear():""}</span></div>`:`<div class="ts-prog"><div class="ts-bar"><i style="width:${Math.round(v/G*100)}%"></i></div><span>${v} sur ${G}</span></div><div class="gf" style="margin:10px 0 0">${G-v<=Math.max(1,G*0.2)?"Tu y es presque !":"Continue comme ça."}</div>`}</div>`}),{short:true});
+}
+Object.assign(ACT,{ trophy:(d)=>trophySheet(d.k) });
+const _dish=ACT.dish; ACT.dish=(d)=>{ S.dishes=S.dishes||[]; if(!S.dishes.includes(d.id)){ S.dishes.push(d.id); save(); checkTrophies(); } _dish(d); };
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
