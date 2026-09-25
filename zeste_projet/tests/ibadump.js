@@ -1,6 +1,6 @@
 // Affiche côte à côte la recette IBA et la recette Zeste correspondante.
-// usage : node tools/ibadump.js [filtre]
-const d=require('./load.js')(),iba=require('../data/iba.json').cocktails,man=require('./ibapairs.json');
+// usage : node tests/ibadump.js [filtre]
+const d=require('./load.js')(),iba=require('../data/iba.json').cocktails,man=require('../data/ibapairs.json');
 const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
 const ING={};d.ING_RAW.forEach(i=>ING[i[0]]=i[1]);
 const byN={};d.REC_RAW.forEach(r=>{byN[norm(r[1])]=byN[norm(r[1])]||r[0];byN[norm(r[0])]=byN[norm(r[0])]||r[0]});

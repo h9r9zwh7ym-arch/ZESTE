@@ -48,7 +48,7 @@ function recRow(r, sub){
   return `<button class="row tap" data-a="rec" data-id="${r.id}" style="--inset:70px"><div class="thumb">${glassThumb(r)}</div><div class="grow"><div class="t serif">${esc(r.n)}</div><div class="s">${esc(sub||ingList(r))}</div></div>${rt?starsSm(rt):""}${statusDot(r)}${IC.chev}</button>`;
 }
 function adjCard(r){
-  const a=(S.adj||{})[r.id]||{}, hasS=r.ing.some(i=>{const I=ING[i.id]; return I.cat==="sirop"||i.id==="sucre"||(I.cat==="liqueur"&&I.sug>=20&&i.id!==r.base);}), hasA=r.ing.some(i=>["citron","citron_vert","pamplemousse"].includes(i.id)), hasF=r.ing.some(i=>ING[i.id].cat==="spirit");
+  const a=(S.adj||{})[r.id]||{}, hasS=r.ing.some(i=>{const I=ING[i.id]; return I.cat==="sirop"||ADJ_SWEET.includes(i.id)||(I.cat==="liqueur"&&I.sug>=20&&i.id!==r.base);}), hasA=r.ing.some(i=>ADJ_ACID.includes(i.id)), hasF=r.ing.some(i=>ING[i.id].cat==="spirit");
   const rows=[hasS&&["s","Sucre","Moins sucré","Plus sucré"],hasA&&["a","Acidité","Moins acide","Plus acide"],hasF&&["f","Force","Plus léger","Plus fort"]].filter(Boolean);
   if(!rows.length) return "";
   const pk=POP&&POP.k&&POP.k.startsWith("adj"+r.id)&&Date.now()-POP.t<700?POP.k.slice(-1):"";
@@ -337,9 +337,9 @@ function vCompose(){
   o+=`<div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="mixsave">Enregistrer</button><button class="btn gray" data-a="mixclear">Vider</button></div>`;
   return o;
 }
-function defaultQ(id){ const i=ING[id], u=unitOf(id); if(u==="d") return 2; if(u==="f") return 6; if(u==="u") return 1; if(u==="bs") return 1;
+function defaultQ(id){ const i=ING[id], u=unitOf(id); if(u==="d") return 2; if(u==="f") return 6; if(u==="u") return 1; if(u==="bs") return 1; if(u==="br") return 2; if(u==="gt") return 3;
   if(id==="blanc_oeuf") return 20; if(i.fizz) return 100; return {spirit:45,liqueur:15,amaro:22.5,vin:30,sirop:15,jus:(i.ac>3?22.5:60),frais:30}[i.cat]||30; }
-function stepQ(q,u,d){ if(u==="d"||u==="f"||u==="u"||u==="bs") return Math.max(1,q+d); const st=q<30||(q===30&&d<0)?2.5:q<100||(q===100&&d<0)?5:10; return Math.max(2.5,Math.round((q+d*st)*10)/10); }
+function stepQ(q,u,d){ if(u==="d"||u==="f"||u==="u"||u==="bs"||u==="br"||u==="gt") return Math.max(1,q+d); const st=q<30||(q===30&&d<0)?2.5:q<100||(q===100&&d<0)?5:10; return Math.max(2.5,Math.round((q+d*st)*10)/10); }
 function aiPrompt(){
   const A=analyze(); const items=mixItems();
   const lines=items.map(i=>"- "+fmtQ(i).replace(/^(\d)/,"$1")+" "+de(lc(shortN(i.id))).replace(/^de /,"de ").replace(/^/,"").trim());
@@ -477,7 +477,7 @@ function recSheet(id){
       b+=`<div class="ing-sec"><i style="background:${SEGCOL[sg]}"></i>${sn}${sg==="add"?"<span>Toujours à portée de main</span>":""}</div>`;
       L.forEach(it0=>{ const it=items.find(x=>x.id===it0.id&&x.r===it0.r)||it0; const bas=ING[it.id].basic, miss=!has(it.id)&&it.r!=="opt"&&it.r!=="rinse";
         const role={opt:"Facultatif",rinse:"Facultatif, pour parfumer le verre",top:"Pour compléter le verre",float:ING[it.id].sug>=40?"Versé en filet à la fin":ING[it.id].cat==="bitters"?"Quelques gouttes sur le dessus":"Versé en dernier, en surface",rinse:"Pour rincer le verre"}[it.r]||"";
-        b+=`<button class="ing-line ${miss?"miss":""} ${bas&&!miss?"basic":""}" data-a="ing" data-id="${it.id}"><span class="q">${termify(esc(fmtQ(it,mult)))}${it.orig!=null&&ver==="mine"?`<span class="delta ${it.q>it.orig?"up":"down"}">${it.q>it.orig?"+":"−"}${esc(fmtQ({q:Math.abs(it.q-it.orig),u:it.u},mult).replace(/ (traits?|feuilles|morceaux?)$/,""))}</span>`:""}</span><span class="n">${esc(ING[it.id].n)}${role?`<small>${role}</small>`:""}</span>${miss?`<span class="badge red">Manque</span>`:""}</button>`; });
+        b+=`<button class="ing-line ${miss?"miss":""} ${bas&&!miss?"basic":""}" data-a="ing" data-id="${it.id}"><span class="q">${termify(esc(fmtQ(it,mult)))}${it.orig!=null&&ver==="mine"?`<span class="delta ${it.q>it.orig?"up":"down"}">${it.q>it.orig?"+":"−"}${esc(fmtQ({q:Math.abs(it.q-it.orig),u:it.u},mult).replace(/ (traits?|feuilles|morceaux?|brins?|gouttes?)$/,""))}</span>`:""}</span><span class="n">${esc(ING[it.id].n)}${role?`<small>${role}</small>`:""}</span>${miss?`<span class="badge red">Manque</span>`:""}</button>`; });
     });
     b+=`</div><div class="gf">Garniture : ${esc(lc(r.gar||"aucune"))}.</div>`;
     b+=`<h2 class="sh">Préparation</h2><div class="sp8"></div><div class="group"><ol class="steps tick-steps">${buildSteps(r).map(s=>`<li data-a="stepck">${termify(esc(s.t))}</li>`).join("")}</ol></div><div class="gf">Touche une étape pour la cocher, et un mot souligné pour son explication.</div>`;

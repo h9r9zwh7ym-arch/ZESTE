@@ -5,7 +5,7 @@ const {chromium}=require('playwright'),path=require('path');
   const out=process.argv[2];
   const b=await chromium.launch(),p=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:2});
   const errs=[];p.on('pageerror',e=>errs.push('pageerror: '+e.message));p.on('console',m=>{if(m.type()==='error')errs.push('console: '+m.text());});
-  await p.goto('file://'+path.resolve(__dirname,'..','index.html'));await p.waitForTimeout(1500);
+  await p.goto('file://'+path.resolve(__dirname,'..','dist','zeste.html'));await p.waitForTimeout(1500);
   const res=await p.evaluate(()=>{const bad=[];
     for(const r of RECS){try{
       const st=buildSteps(r); if(!st.length||st.some(s=>!s.t||/undefined|NaN/.test(s.t))) bad.push(r.id+' : étapes '+JSON.stringify(st));
@@ -16,7 +16,7 @@ const {chromium}=require('playwright'),path=require('path');
     return bad;});
   if(out){ for(const id of ['caipirinha','sazerac','zombie','penicillin','old_fashioned','mojito','spicy_fifty','sherry_cobbler','iba_tiki','dons_daiquiri']){
       await p.evaluate(()=>{document.querySelectorAll('.sheet').forEach(s=>s.remove&&0);});
-      await p.goto('file://'+path.resolve(__dirname,'..','index.html'));await p.waitForTimeout(3500);if(await p.getByText('Passer').count()){await p.getByText('Passer').first().click();await p.waitForTimeout(800);}
+      await p.goto('file://'+path.resolve(__dirname,'..','dist','zeste.html'));await p.waitForTimeout(3500);if(await p.getByText('Passer').count()){await p.getByText('Passer').first().click();await p.waitForTimeout(800);}
       await p.evaluate(id=>ACT.rec({id}),id);await p.waitForTimeout(900);
       await p.screenshot({path:path.join(out,id+'.png'),fullPage:false});
       const txt=await p.evaluate(()=>{const s=[...document.querySelectorAll('.ing-line,.steps li')].map(e=>e.innerText.replace(/\n/g,' '));return s.join('\n');});

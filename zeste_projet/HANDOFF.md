@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.20**. Chaque mise à jour livrée incrémente : 1.21, 1.22… La constante est `APP_VERSION` dans `src/v117.js`.
+- **Numérotation des versions** : la version actuelle est **1.21**. Chaque mise à jour livrée incrémente : 1.21, 1.22… La constante est `APP_VERSION` dans `src/v117.js`.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -17,7 +17,10 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 ```sh
 sh build.sh                 # assemble dist/zeste.html (fichier unique, ~660 Ko)
 node tests/v.js             # validation des données (doit afficher « aucune erreur »)
-python3 tests/fuzz.py       # batterie complète dans Chromium (Playwright) : fiches, clics, labo, sauvegardes
+node tests/validate.js      # validation stricte : unités, rôles, verres, doublons
+node tests/ibacmp.js        # comparaison avec les recettes officielles de l’IBA (-v : tableau méthode/verre)
+NODE_PATH=$(npm root -g) node tests/smoke.js   # ouvre les 368 fiches dans Chromium
+python3 tests/fuzz.py       # (Python ≥ 3.12) batterie complète dans Chromium (Playwright) : fiches, clics, labo, sauvegardes
 node tests/m3.js            # simulateur du moteur de recommandation (avec notes)
 node tests/m5.js            # simulateur du quiz initial (démarrage à froid)
 python3 tests/perf.py       # mesures de performance (processeur ralenti ×4)
@@ -31,7 +34,7 @@ Tous les scripts se lancent **depuis la racine du projet**. Playwright (Chromium
 
 ```
 style.css
-data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js
+data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
 core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js ui_final.js
 ```
 
@@ -75,76 +78,28 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 
 ## 5. Ce qui existe (résumé)
 
-- **Bar** : 358 recettes, 138 ingrédients, stock par niveaux, étagère visuelle, onglet « Presque vides », achats malins, prix et coût par verre, bouteilles gazeuses débouchées suivies automatiquement.
+- **Bar** : 368 recettes, 158 ingrédients, stock par niveaux, étagère visuelle, onglet « Presque vides », achats malins, prix et coût par verre, bouteilles gazeuses débouchées suivies automatiquement.
 - **Suggestions** : modèle hybride (voisins pondérés par similarité, ingrédients, familles et alcools, direction du profil de goût) avec poids adaptatifs, contexte horaire et saisonnier, diversification, créneau de découverte et démarrage à froid par la notoriété.
 - **Quiz initial** : 9 questions, dont 8 cocktails à évaluer, choisis par popularité × information d’après Rashid et al., IUI 2002. Les réponses deviennent des pseudo-notes, avec un poids de 0,35 réglé puis validé par simulation.
 - **Labo** : jeu du barman avec verre, contenance, glace, décor (bonus, hors note), objectifs, fenêtre de service animée, conseils cliquables et défis hebdomadaires.
 - **Explorer** : carte du monde (plein écran, glisser et pincer), lignées vérifiées, radar inversé.
 - **Plaisir d’usage** : Rewind annuel en décembre et récaps mensuels (dans « Pour toi »), 50 trophées dont 8 cachés, sons, ambiance horaire, accords mets et cocktails, mode sans alcool, réglages, sauvegarde et import robustes.
 
-## 6. Travail en cours : vérification des recettes (À TERMINER EN PRIORITÉ)
+## 6. Vérification des recettes
 
-**Source de référence** : les recettes officielles de l’IBA, extraites d’iba-world.com en août 2025 (dépôt GitHub `kolaente/iba-cocktails-list`), dans `data/iba.json` : 102 cocktails avec doses en ml, méthode, garniture et URL officielle.
+### Fait en 1.21 (liste IBA)
+- Les 102 cocktails de l’IBA (`data/iba.json`, relevé d’iba-world.com du 16 août 2025) sont alignés : ingrédients, doses, méthode, verre, garniture. `node tests/ibacmp.js` donne **102 conformes, 0 à examiner**.
+- Les 10 cocktails absents ont été ajoutés (Angel Face, Casino, Don’s Special Daiquiri, Grand Margarita, IBA Tiki, Illegal, Paradise, Russian Spring Punch, Spicy Fifty, Ve.N.To), avec 20 ingrédients nouveaux. Tout est dans `src/data_iba.js`, sauf les recettes existantes corrigées sur place dans leur fichier d’origine.
+- Substitutions et écarts assumés : listés dans `ALT` et `EXC` de `tests/ibacmp.js`, et toujours expliqués dans la note `n` de la fiche (curaçao → triple sec, rhums Havana Club → rhum ambré, amargo → Angostura, champagne servi à côté du Porn Star Martini…).
+- « Quelques gouttes de blanc d’œuf » (IBA) est traduit par 15 ml ; un « top » de champagne sans dose par 90 ml.
+- Nouveaux mécanismes : unités `br` (brin) et `gt` (goutte) ; clé de recette `st` (étapes propres, qui remplacent les étapes générées : sucre en morceau, mixeur…) ; côté ingrédient, `u` (unité par défaut), `uL` (libellé de l’unité), `yml` (jus libéré par fruit) et `bsml` (volume d’une cuillère de sucre).
+- `data/ibapairs.json` ne contient plus que les appariements que le nom ne permet pas de trouver ; `tests/ibamap.js` est supprimé.
 
-**Outils** :
-- `tests/ibamap.js` apparie les cocktails de l’IBA avec ceux de Zeste (→ `data/ibapairs.json`). Ajouter manuellement la paire `["South Side","southside"]`, déjà gérée dans `ibacmp.js`.
-- `tests/ibacmp.js` compare ingrédients, doses (tolérance 5 ml ou 20 %), verre et méthode, et écrit `data/ibareport.json`.
-
-**État** : 92 cocktails comparés, 32 conformes, 60 à examiner. Une partie des écarts sont des **faux positifs du comparateur**, à corriger dans les règles :
-- « stir gently » dans le verre veut dire « construit », pas « verre à mélange » ;
-- « tall tumbler » veut dire highball ;
-- certains noms d’ingrédients sont encore mal reliés : « White Cuban Ron », « Bénédictine » avec accent, lignes avec « pcs », « Donn’s Mix »…
-
-**Politique décidée avec YaYa** :
-- pour un cocktail de la liste IBA, aligner ingrédients, doses, verre, méthode et garniture sur la recette officielle ;
-- si l’IBA autorise plusieurs verres, garder le choix actuel s’il est autorisé ;
-- une variante très répandue et **documentée** peut être mentionnée dans la note `n`, jamais présentée comme officielle ;
-- une variante historique différente, portant un nom distinct, peut rester, par exemple l’Alexander au gin (Zeste a déjà la Brandy Alexander, qui correspond à l’« Alexander » de l’IBA).
-
-**Écarts réels relevés** (Zeste → IBA), à corriger après relecture de `data/iba.json` :
-
-| Cocktail | Correction à faire |
-|---|---|
-| Boulevardier | verre à cocktail (coupe) sans glace, au lieu de rocks avec gros glaçon |
-| Cardinale | gin 40, vermouth dry 20, Campari 10 ; verre à cocktail |
-| Corpse Reviver n° 2 | 30/30/30/30 (gin, Cointreau, Lillet blanc, citron) et 1 trait d’absinthe **dans** le cocktail, pas en rinçage |
-| Negroni | construit directement dans un verre old fashioned sur glace (méthode `build`) |
-| Old Fashioned | 45 ml de whiskey, 1 morceau de sucre, quelques traits d’Angostura et quelques traits d’eau, piler, glace, remuer ; garniture orange et cerise |
-| Dry Martini | 60/10 ; les orange bitters ne sont pas dans la recette IBA (les passer en `opt` ou les retirer) |
-| Manhattan | rye 50, vermouth 20, 1 trait d’Angostura ; garniture cerise |
-| Whiskey Sour | bourbon 45, citron 25, sirop 20, blanc d’œuf facultatif |
-| Espresso Martini | Kahlúa 30 au lieu de 20 |
-| Mojito | 2 cuillères à café de sucre de canne blanc (et non 20 ml de sirop), citron vert 20, rhum 45, eau gazeuse ; garniture menthe et rondelle de citron vert |
-| Paloma | 50 ml de tequila, 5 ml de citron vert, une pincée de sel, 100 ml de soda au pamplemousse rose (il faut l’ingrédient « soda au pamplemousse ») |
-| Paper Plane | 30/30/30/30 |
-| Penicillin | scotch blend 60, Islay 7,5 flotté, citron 22,5, sirop de miel 22,5, 2–3 tranches de gingembre frais pilées. Vérifier que Zeste utilise le gingembre frais ou documenter l’écart (Zeste utilise un sirop gingembre-miel, une pratique courante mais pas celle de l’IBA) |
-| Pisco Sour | **citron jaune** 30 (pas citron vert), sirop 20, blanc d’œuf ; quelques traits d’amargo bitters **en garniture** sur la mousse |
-| Planter’s Punch | version IBA minimaliste : rhum jamaïcain 45, citron vert 15, jus de canne 30, construit ; il faut un ingrédient « jus de canne ». Les versions aux jus d’orange et d’ananas peuvent être mentionnées comme variante courante |
-| Porn Star Martini | vodka vanille 50, liqueur de fruit de la passion 20, purée de passion 50, 2 cuillères de sucre vanillé ; 50 ml de champagne servis à côté ; pas de citron vert |
-| Sazerac | **cognac** 50 (IBA), absinthe 10 ml en rinçage, 1 sucre, 2 traits de Peychaud’s. La version au rye est aussi historique et très répandue : garder l’une et expliquer, ou proposer les deux |
-| Vieux Carré | 30/30/30, 1 cuillère de bar de Bénédictine, 2 traits de Peychaud’s (pas d’Angostura dans la version IBA), verre à cocktail |
-| Irish Coffee | whiskey 50, café chaud 120, crème froide 50, 1 cuillère à café de sucre |
-| Moscow Mule | vodka 45, ginger beer 120, citron vert 10 ; mug ou rocks |
-| Mai Tai | rhum jamaïcain ambré 30, rhum de mélasse de Martinique 30, curaçao orange 15, orgeat 15, citron vert 30 (Zeste : 25), sirop 7,5 |
-| Gin Fizz | servi **sans glace** dans un tumbler fin (Zeste : highball sans glace, à confirmer) |
-| Gin Basil Smash | l’IBA le sert dans un verre à cocktail refroidi, sans glace (Zeste : rocks avec glaçons) |
-| Zombie | 45 rhum jamaïcain foncé, 45 rhum doré de Porto Rico, 30 rhum demerara, citron vert 20, falernum 15, Donn’s Mix 15 (2 parts de pamplemousse pour 1 de sirop de cannelle), 1 cuillère à café de grenadine, 1 trait d’Angostura, 6 gouttes de Pernod ; mixé avec 170 g de glace concassée |
-| South Side | **citron jaune** 30 (pas citron vert), gin 60, sirop 15, 5–6 feuilles de menthe, blanc d’œuf facultatif ; double filtrage dans un verre à cocktail |
-| Tommy’s Margarita | tequila 60, citron vert 30, nectar d’agave 30 (Zeste : 15) |
-| Lemon Drop Martini | vodka 30, triple sec 20, citron 15, sans sirop |
-| Long Island Iced Tea | sirop 30 au lieu de 15 |
-| French Martini | ananas 15 au lieu de 45 |
-| French Connection | 35/35 |
-| Grasshopper | 20/20/20 (cacao blanc, menthe verte, crème) |
-| Hemingway Special | rhum 60, pamplemousse 40, marasquin 15, citron vert 15 |
-| Bee’s Knees | gin 52,5, 2 cuillères à café de sirop de miel, citron 22,5, **orange 22,5** (spécificité IBA ; la version gin-citron-miel est aussi très répandue : le mentionner) |
-| Autres | Canchánchara, Champagne Cocktail, Dark ’n’ Stormy (pas de citron vert dans la recette IBA), John Collins (IBA : **gin**, pas bourbon), Martinez (orange bitters), Monkey Gland, Rabo de Galo (Cynar), Ramos (crème 60, vanille), Remember the Maine, Sea Breeze, Sherry Cobbler, Stinger (remué), Suffering Bastard, Three Dots and a Dash, Tuxedo, Pisco Punch, Missionary’s Downfall : relire ligne par ligne dans `data/ibareport.json` |
-
-**Ensuite** :
-1. **Relancer le comparateur** jusqu’à obtenir 0 écart réel. Mettre à jour `h` (histoire) et `n` (conseil) si une correction les contredit, et relancer `node tests/v.js`, `python3 tests/fuzz.py` et les simulateurs (`m3`, `m5`), puisque les profils de goût changent.
-2. **Ajouter les 10 cocktails de l’IBA absents** de Zeste, avec leur recette officielle : Angel Face, Casino, Don’s Special Daiquiri, Grand Margarita, IBA Tiki, Illegal, Paradise, Russian Spring Punch, Spicy Fifty, Ve.N.To. Ajouter les ingrédients manquants.
-3. **Vérifier les recettes populaires hors IBA**, en commençant par la liste `POPULAR` dans `ui.js` : Gin tonic, Aperol Spritz (vérifier la version IBA « Spritz »), Moscow Mule, Hugo, Negroni Sbagliato, Garibaldi, Limoncello Spritz, etc. Utiliser des sources reconnues (Difford’s Guide, PUNCH, sites des marques pour leurs cocktails signature) et croiser au moins deux sources.
-4. **Les 32 créations suisses** (`cr:1`) ne sont pas des recettes établies : elles sont marquées « à tester ». Ne jamais les présenter comme traditionnelles.
+### Reste à faire
+1. **Recettes populaires hors IBA**, en commençant par `POPULAR` dans `ui.js` : Gin tonic, Moscow Mule, Hugo, Negroni Sbagliato, Garibaldi, Limoncello Spritz, etc. Croiser au moins deux sources reconnues (Difford’s Guide, PUNCH, sites des marques).
+2. **Doublons** : `air_mail`/`airmail` et `harvey`/`harvey_wallbanger` sont la même recette. En supprimer un demande de migrer `ratings`, `hist`, `fav`, `adj` des utilisateurs vers l’id gardé.
+3. Les 32 créations suisses (`cr:1`) restent « à tester » : ne jamais les présenter comme traditionnelles.
+4. `tests/m3.js` ignore la variable `SEED` : à ajouter pour pouvoir régler sur une graine et valider sur une autre.
 
 ## 7. Autres chantiers proposés (après la vérification)
 

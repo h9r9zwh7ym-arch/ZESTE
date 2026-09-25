@@ -1,1 +1,14 @@
-[["Alexander","alexander"],["Americano","americano"],["Aviation","aviation"],["Bee’s Knees","bees_knees"],["Bellini","bellini"],["Between the Sheets","between_sheets"],["Black Russian","black_russian"],["Bloody Mary","bloody_mary"],["Boulevardier","boulevardier"],["Bramble","bramble"],["Brandy Crusta","brandy_crusta"],["Caipirinha","caipirinha"],["Canchanchara","canchanchara"],["Cardinale","cardinale"],["Champagne Cocktail","champagne_cocktail"],["Chartreuse Swizzle","chartreuse_swizzle"],["Clover Club","clover_club"],["Corpse Reviver #2","corpse_reviver"],["Cosmopolitan","cosmopolitan"],["Cuba Libre","cuba_libre"],["Daiquiri","daiquiri"],["Dark ‘N’ Stormy","dark_stormy"],["Dry Martini","martini"],["Espresso Martini","espresso_martini"],["Fernandito","fernet_cola"],["French 75","french75"],["French Connection","french_connection"],["French Martini","french_martini"],["Garibaldi","garibaldi"],["Gin Basil Smash","gin_basil_smash"],["Gin Fizz","gin_fizz"],["Grasshopper","grasshopper"],["Hanky Panky","hanky_panky"],["Hemingway Special","hemingway"],["Horse’s Neck","horses_neck"],["Irish Coffee","irish_coffee"],["John Collins","john_collins"],["Jungle Bird","jungle_bird"],["Kir","kir"],["Last Word","last_word"],["Lemon Drop Martini","lemon_drop"],["Long Island Iced Tea","long_island"],["Mai-Tai","mai_tai"],["Manhattan","manhattan"],["Margarita","margarita"],["Martinez","martinez"],["Mary Pickford","mary_pickford"],["Mimosa","mimosa"],["Mint Julep","mint_julep"],["Missionary’s Downfall","missionary"],["Mojito","mojito"],["Monkey Gland","monkey_gland"],["Moscow Mule","moscow_mule"],["Naked and Famous","naked_famous"],["Negroni","negroni"],["New York Sour","new_york_sour"],["Old Cuban","old_cuban"],["Old Fashioned","old_fashioned"],["Paloma","paloma"],["Paper Plane","paper_plane"],["Penicillin","penicillin"],["Pina Colada","pina_colada"],["Pisco Punch","pisco_punch"],["Pisco Sour","pisco_sour"],["Planters Punch","planters"],["Porn Star Martini","pornstar"],["Porto Flip","porto_flip"],["Rabo de Galo","rabo_galo"],["Ramos Fizz","ramos"],["Remember the Maine","remember_maine"],["Rusty Nail","rusty_nail"],["Sazerac","sazerac"],["Sea Breeze","sea_breeze"],["Sex on the Beach","sex_beach"],["Sherry Cobbler","sherry_cobbler"],["Sidecar","sidecar"],["Singapore Sling","singapore_sling"],["Spritz","aperol_spritz"],["Stinger","stinger"],["Suffering Bastard","suffering_bastard"],["Tequila Sunrise","tequila_sunrise"],["Three Dots and a Dash","three_dots"],["Tipperary","tipperary"],["Tommy’s Margarita","tommys"],["Trinidad Sour","trinidad_sour"],["Tuxedo","tuxedo"],["Vesper","vesper"],["Vieux Carré","vieux_carre"],["Whiskey Sour","whisky_sour"],["White Lady","white_lady"],["Zombie","zombie"]]
+{
+ "Alexander":"brandy_alexander",
+ "Corpse Reviver #2":"corpse_reviver",
+ "Hemingway Special":"hemingway",
+ "Lemon Drop Martini":"lemon_drop",
+ "Ramos Fizz":"ramos",
+ "Spritz":"aperol_spritz",
+ "Whiskey Sour":"whisky_sour",
+ "Fernandito":"fernet_cola",
+ "South Side":"southside",
+ "Don’s Special Daiquiri":"dons_daiquiri",
+ "Ve.N.To":"vento",
+ "Russian Spring Punch":"russian_spring_punch"
+}

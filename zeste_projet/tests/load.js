@@ -1,7 +1,7 @@
 // Charge les données de recettes et d'ingrédients depuis le bundle index.html.
 const fs=require('fs'),vm=require('vm'),path=require('path');
 function load(file){
-  const html=fs.readFileSync(file||path.join(__dirname,'..','index.html'),'utf8');
+  const html=fs.readFileSync(file||path.join(__dirname,'..','dist','zeste.html'),'utf8');
   const js=html.slice(html.indexOf('<script>')+8,html.lastIndexOf('</script>'));
   const a=js.indexOf('const ING_RAW'),b=js.indexOf('ING_RAW.forEach(');
   const ctx={};vm.createContext(ctx);

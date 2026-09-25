@@ -34,7 +34,7 @@ with sync_playwright() as p:
             n=pg.evaluate(f"()=>document.querySelectorAll('#v-{tab} [data-a]').length")
             for i in range(min(n,140)):
                 try:
-                    act=pg.evaluate(f"(i)=>{{ const el=[...document.querySelectorAll('#v-{tab} [data-a]')][i]; if(!el) return null; const a=el.dataset.a; if(['reset','import','export','quiz','roulette','barmode','rewind','rwsave','settings','fxpreview'].includes(a)) return a+' (sauté)'; el.click(); return a; }}", i)
+                    act=pg.evaluate(f"(i)=>{{ const el=[...document.querySelectorAll('#v-{tab} [data-a]')][i]; if(!el) return null; const a=el.dataset.a; if(['reset','import','export','quiz','roulette','barmode','rewind','rwsave','settings','fxpreview'].includes(a)) return a+' (sauté)'; el.dispatchEvent(new MouseEvent('click',{{bubbles:true,cancelable:true}})); return a; }}", i)
                     pg.wait_for_timeout(30)
                     pg.evaluate(f"()=>{{ closeAll(); rwClose(); if(typeof QZ!=='undefined') QZ=null; RL=null; closeOverlay(); if(TAB!=='{tab}') switchTab('{tab}'); }}")
                 except Exception as e: out.append(f"{tab} {i}: {e}")

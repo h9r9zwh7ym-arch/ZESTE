@@ -15,10 +15,10 @@ const tracked = id => !!CATS[ING[id].cat].track;
 const LVLN = ["Vide","¼","½","¾","Pleine"];
 
 function unitOf(id){
-  const i=ING[id]; if(i.cat==="bitters"||["fleur_oranger","tabasco","worcestershire"].includes(id)) return "d";
+  const i=ING[id]; if(i.u) return i.u; if(i.cat==="bitters"||["fleur_oranger","tabasco","worcestershire"].includes(id)) return "d";
   if(id==="menthe"||id==="basilic") return "f"; if(id==="sucre"||id==="oeuf"||id==="concombre"||id==="piment") return "u"; if(id==="marmelade") return "bs"; return "ml";
 }
-function mlOf(it){ const u=it.u||"ml"; if(it.r==="rinse") return 1; if(it.id==="oeuf") return it.q*45; if(u==="d") return it.q*0.8; if(u==="f"||u==="u") return 0; if(u==="bs") return it.q*5; return it.q; }
+function mlOf(it){ const u=it.u||"ml", I=ING[it.id]||{}; if(it.r==="rinse") return 1; if(it.id==="oeuf") return it.q*45; if(u==="d") return it.q*0.8; if(u==="gt") return it.q*0.05; if(u==="u") return it.q*(I.yml||0); if(u==="f"||u==="br") return 0; if(u==="bs") return it.q*(I.bsml||5); return it.q; }
 if(!("sucre" in ING)) {}
 
 // Recettes
@@ -57,7 +57,7 @@ const DIMS=["Sucré","Acide","Amer","Fort","Fruité","Herbacé","Épicé","Bois�
 function profileOf(items, m){
   const acc={f:0,h:0,e:0,w:0,b:0,k:0};
   items.forEach(it=>{ const i=ING[it.id]; if(!i) return;
-    let ml = mlOf(it); if(it.u==="f") ml = it.q*4; if(it.r==="rinse") ml=2;
+    let ml = mlOf(it); if(it.u==="f") ml = it.q*4; if(it.u==="br") ml = it.q*12; if(it.r==="rinse") ml=2;
     const ref = i.ref || ((it.r==="top"||i.fizz)?90:30), fac=Math.min(1.3, ml/ref);
     for(const L in i.f){ const w=i.f[L]/3*fac*1.2;
       if(L==="l") acc.h+=w*.7; else if(L==="m") acc.w+=w; else acc[L]+=w; }
@@ -66,16 +66,17 @@ function profileOf(items, m){
   return [clamp01(m.sug/15), clamp01(m.acid/1.1), t(acc.b), clamp01(m.abv/30), t(acc.f), t(acc.h), t(acc.e), t(acc.w), t(acc.k)];
 }
 // ---- Recettes ajustées : ta version d’un cocktail ----
+const ADJ_SWEET=["sucre","sucre_poudre","sucre_vanille","miel"], ADJ_ACID=["citron","citron_vert","pamplemousse","citron_vert_fr"];
 function getAdj(id){ const a=(S.adj||{})[id]; return a&&(a.s||a.a||a.f)?a:null; }
 function adjItems(r, a){
   a=a||getAdj(r.id); if(!a) return r.ing;
   const clampF=f=>Math.max(0.4,Math.min(1.8,f)), base=r.base;
   return r.ing.map(it=>{ const i=ING[it.id]; let f=1;
-    if(a.s && (i.cat==="sirop"||it.id==="sucre"||(i.cat==="liqueur"&&i.sug>=20&&it.id!==base))) f*=clampF(1+0.2*a.s);
-    if(a.a && ["citron","citron_vert","pamplemousse"].includes(it.id)) f*=clampF(1+0.2*a.a);
+    if(a.s && (i.cat==="sirop"||ADJ_SWEET.includes(it.id)||(i.cat==="liqueur"&&i.sug>=20&&it.id!==base))) f*=clampF(1+0.2*a.s);
+    if(a.a && ADJ_ACID.includes(it.id)) f*=clampF(1+0.2*a.a);
     if(a.f){ if(i.cat==="spirit"&&it.r!=="rinse") f*=clampF(1+0.15*a.f); else if(it.r==="top"&&i.fizz) f*=clampF(1-0.12*a.f); }
     if(f===1) return it;
-    const u=it.u||"ml"; let q=it.q*f; q = u==="ml"? Math.max(2.5,Math.round(q/2.5)*2.5) : Math.max(1,Math.round(q));
+    const u=it.u||"ml"; let q=it.q*f; q = u==="ml"? Math.max(2.5,Math.round(q/2.5)*2.5) : u==="bs"? Math.max(0.5,Math.round(q*2)/2) : Math.max(1,Math.round(q));
     return Object.assign({},it,{q,orig:it.q}); });
 }
 function metricsR(r){ return r._m || (r._m = calc(r.ing, r.m, r.ice)); }
@@ -331,13 +332,15 @@ function fmtQ(it, mult=1){
   if(it.r==="rinse") return "Quelques gouttes";
   if(u==="d"){ const n=Math.round(q); return n+(n>1?" traits":" trait"); }
   if(u==="f") return Math.round(q)+" feuilles";
-  if(u==="u"){ const n=Math.round(q); if(it.id==="oeuf") return n+(n>1?" œufs":" œuf"); if(it.id==="concombre"||it.id==="piment") return n+(n>1?" rondelles":" rondelle"); return n+(n>1?" morceaux":" morceau"); }
+  if(u==="br"){ const n=Math.round(q); return n+(n>1?" brins":" brin"); }
+  if(u==="gt"){ const n=Math.round(q); return n+(n>1?" gouttes":" goutte"); }
+  if(u==="u"){ const n=Math.max(1,Math.round(q)), L=ING[it.id]&&ING[it.id].uL; if(L) return n+" "+(n>1?L[1]:L[0]); if(it.id==="oeuf") return n+(n>1?" œufs":" œuf"); if(it.id==="concombre"||it.id==="piment") return n+(n>1?" rondelles":" rondelle"); return n+(n>1?" morceaux":" morceau"); }
   if(u==="bs") return num(q)+" c. à café";
   if(S.settings.unit==="ml") return num(Math.round(q*2)/2)+" ml";
   return num(Math.round(q/10*100)/100)+" cl";
 }
 function fmtMl(ml){ return S.settings.unit==="ml"? Math.round(ml)+" ml" : num(Math.round(ml/10*10)/10)+" cl"; }
-function lc(n){ return /^(Suze|Pimm|Picon|Amer Picon|Jägermeister|Malibu|Passoã|Licor|Drambuie|Galliano|Cynar|Baileys|Southern|Tennessee|Campari|Aperol|Fernet|Lillet|Angostura|Peychaud|Bénédictine|Chartreuse|Rivella|Tabasco|Cointreau|Grand Marnier|Appenzeller|Williamine|Prosecco|Champagne)/.test(n)? n : n.charAt(0).toLowerCase()+n.slice(1); }
+function lc(n){ return /^(Suze|Pimm|Picon|Amer Picon|Jägermeister|Malibu|Passoã|Licor|Drambuie|Galliano|Cynar|Baileys|Southern|Tennessee|Campari|Aperol|Fernet|Lillet|Angostura|Peychaud|Bénédictine|Chartreuse|Rivella|Tabasco|Cointreau|Grand Marnier|Appenzeller|Williamine|Prosecco|Champagne|Old Tom)/.test(n)? n : n.charAt(0).toLowerCase()+n.slice(1); }
 function ingList(r){ return r.ing.filter(i=>i.r!=="rinse"&&i.r!=="opt"&&!ING[i.id].basic&&(ING[i.id].abv>0||ING[i.id].cat==="sirop"||ING[i.id].cat==="soft")).slice(0,3).map(i=>shortN(i.id)).join(", "); }
 function shortN(id){ return ING[id].n.replace(/ \(.*\)/,""); }
 
@@ -349,7 +352,10 @@ const GNAME_SHORT={coupe:"coupe",flute:"flûte",martini:"verre",rocks:"verre",hi
 function buildSteps(r){
   const g=GLASSES[r.g]||"le verre", S2=[];
   const main=r.ing.filter(i=>!["top","float","rinse"].includes(i.r)), top=r.ing.filter(i=>i.r==="top"), flo=r.ing.filter(i=>i.r==="float"), rinse=r.ing.filter(i=>i.r==="rinse");
-  const herbs=main.filter(i=>i.u==="f"), liquids=main.filter(i=>i.u!=="f");
+  if(r.st){ const L=r.st.map(s=>Array.isArray(s)?{t:s[0],timer:s[1]}:{t:s});
+    if(r.gar && r.gar!=="Aucune") L.push({t:"Décore : "+lc(r.gar)+"."}); return L; }
+  const herbs=main.filter(i=>i.u==="f"||i.u==="br"), liquids=main.filter(i=>i.u!=="f"&&i.u!=="br");
+  const powder=liquids.some(i=>ING[i.id].bsml&&ING[i.id].cat==="frais");
   const egg=main.some(i=>i.id==="blanc_oeuf"||i.id==="creme"&&r.id==="ramos");
   const up=r.ice==="none";
   const serve= up? "dans "+g+" refroidi"+(["coupe","flute"].includes(r.g)?"e":"") : r.ice==="pilee"? "sur de la glace pilée, dans "+g : r.ice==="big"? "sur un gros glaçon, dans "+g : "sur de la glace fraîche, dans "+g;
@@ -358,6 +364,7 @@ function buildSteps(r){
   if(r.m==="shake"||r.m==="mshake"){
     if(r.m==="mshake"&&herbs.length) S2.push({t:"Écrase délicatement "+listN(herbs)+" au fond du shaker avec le sirop, sans trop insister."});
     S2.push({t:"Verse dans le shaker "+listN(liquids)+"."});
+    if(powder) S2.push({t:"Remue sans glace jusqu’à ce que le sucre soit dissous."});
     if(egg) S2.push({t:"Ferme et secoue sans glace pour monter la mousse.",timer:10});
     S2.push({t:"Ajoute beaucoup de glace et secoue vigoureusement.",timer:r.id==="ramos"?60:12});
     S2.push({t:"Filtre "+serve+(up?", à travers une petite passoire pour une texture fine.":".")});
@@ -580,13 +587,13 @@ function starsSm(n){ let s='<span class="stars sm">'; for(let i=1;i<=5;i++) s+=`
 // ================= COÛT PAR VERRE =================
 const DEFVOL={spirit:700,liqueur:700,amaro:700,vin:750,bitters:200,sirop:700,soft:1000,jus:1000,frais:500};
 // estimation des basiques, en CHF par unité (ml, trait, feuille ou pièce)
-const BASIC_COST={citron:0.02,citron_vert:0.025,sirop_sucre:0.002,sirop_miel:0.02,blanc_oeuf:0.017,oeuf:0.5,creme:0.008,lait:0.0016,menthe:0.04,basilic:0.05,concombre:0.08,cafe:0.004,espresso:0.012,fleur_oranger:0.02,marmelade:0.1,worcestershire:0.02,tabasco:0.02,sucre:0.02,eau:0};
+const BASIC_COST={sucre_poudre:0.01,miel:0.03,sel:0,citron_vert_fr:0.6,citron_fr:0.1,jaune_oeuf:0.03,citron:0.02,citron_vert:0.025,sirop_sucre:0.002,sirop_miel:0.02,blanc_oeuf:0.017,oeuf:0.5,creme:0.008,lait:0.0016,menthe:0.04,basilic:0.05,concombre:0.08,cafe:0.004,espresso:0.012,fleur_oranger:0.02,marmelade:0.1,worcestershire:0.02,tabasco:0.02,sucre:0.02,eau:0};
 function hasPrices(){ return Object.values(S.price||{}).some(p=>p&&p.p>0); }
 function unitPrice(id){ const p=(S.price||{})[id]; if(!p||!p.p) return null; return p.p/(p.v||DEFVOL[ING[id].cat]||700); }
 function costOf(items, mult=1){
   let tot=0, est=0; const miss=[];
   items.forEach(it=>{ const i=ING[it.id]; if(!i||it.r==="rinse") return;
-    if(i.basic){ const u=BASIC_COST[it.id]||0; const q=(it.u==="f"||it.u==="u"||it.u==="d")?it.q:it.id==="marmelade"?it.q:mlOf(it); est+=u*q*mult; return; }
+    if(i.basic){ const u=BASIC_COST[it.id]||0; const q=(it.u==="f"||it.u==="u"||it.u==="d"||it.u==="gt"||it.u==="bs")?it.q:it.u==="br"?it.q*3:mlOf(it); est+=u*q*mult; return; }
     const up=unitPrice(it.id); if(up==null){ if(it.r!=="opt") miss.push(it.id); return; } tot+=up*mlOf(it)*mult; });
   return {tot:tot+est, est, miss:[...new Set(miss)]};
 }

@@ -1,4 +1,4 @@
-// Validation des données de recettes : node tools/validate.js
+// Validation des données de recettes : node tests/validate.js
 const d=require('./load.js')();
 const ING={};d.ING_RAW.forEach(i=>{if(ING[i[0]])err('ingrédient en double : '+i[0]);ING[i[0]]=i;});
 const M=["shake","stir","build","mbuild","mshake","hot","louche"],G=["coupe","martini","rocks","highball","flute","vin","mug","tasse","shot"],

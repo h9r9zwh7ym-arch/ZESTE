@@ -62,7 +62,7 @@ function labScore(A){
 }
 function labGrade(s){ return s>=90?["Digne d’un chef de bar","🏆"]:s>=78?["Très bon","🥂"]:s>=60?["Pas mal du tout","👍"]:s>=40?["À retravailler","🔧"]:["Continue tes essais","🧪"]; }
 let LAB_LASTY=null, LAB_SERVE=null;
-function labBlendCol(items){ let V=0,rr=0,gg=0,bb=0; items.forEach(i=>{ if(i.u==="f"||i.u==="u") return; const ml=Math.max(mlOf(i),0.5), c=colOf(i.id); V+=ml; rr+=parseInt(c.slice(1,3),16)*ml; gg+=parseInt(c.slice(3,5),16)*ml; bb+=parseInt(c.slice(5,7),16)*ml; }); return V? "#"+[rr,gg,bb].map(x=>Math.round(x/V).toString(16).padStart(2,"0")).join("") : "#E8D8B0"; }
+function labBlendCol(items){ let V=0,rr=0,gg=0,bb=0; items.forEach(i=>{ if(i.u==="f"||i.u==="u"||i.u==="br") return; const ml=Math.max(mlOf(i),0.5), c=colOf(i.id); V+=ml; rr+=parseInt(c.slice(1,3),16)*ml; gg+=parseInt(c.slice(3,5),16)*ml; bb+=parseInt(c.slice(5,7),16)*ml; }); return V? "#"+[rr,gg,bb].map(x=>Math.round(x/V).toString(16).padStart(2,"0")).join("") : "#E8D8B0"; }
 function labGlassSVG(big){
   const M=mixState(), items=mixItems(), {g,ice}=labGlass(), vol=labVol(items,M.m,ice), fill=vol/labAvail(g,ice);
   const r={id:"lab"+items.length+g+ice,g,col:labBlendCol(items),ice,ing:items,gar:"",garList:M.gar.map(k=>LGARTXT[k]),fam:""};
