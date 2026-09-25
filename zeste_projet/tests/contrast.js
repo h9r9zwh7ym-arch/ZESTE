@@ -7,7 +7,8 @@ const AUDIT=()=>{ const P=s=>{ const m=s.match(/rgba?\(([^)]+)\)/); if(!m) retur
     let bg=P(getComputedStyle(document.body).backgroundColor)||[255,255,255,1]; for(let i=st.length-1;i>=0;i--) bg=over(st[i],bg); return bg; };
   const out=[], seen=new Set();
   document.querySelectorAll("body *").forEach(el=>{ if(!el.childNodes.length) return; const txt=[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(" ").trim(); if(!txt) return;
-    const r=el.getBoundingClientRect(); if(!r.width||!r.height||r.bottom<0||r.top>innerHeight*3) return; const cs=getComputedStyle(el); if(cs.visibility==="hidden"||+cs.opacity===0) return;
+    const r=el.getBoundingClientRect(); if(!r.width||!r.height||r.bottom<0||r.top>innerHeight*3) return;
+    if(r.top>=0&&r.bottom<=innerHeight){ const top=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); if(top&&top!==el&&!el.contains(top)&&!top.contains(el)) return; } /* masqué par une fiche ouverte */ if(document.body.classList.contains("sheet-open")&&!el.closest("#sheets")) return; const cs=getComputedStyle(el); if(cs.visibility==="hidden"||+cs.opacity===0) return;
     let op=1; for(let e=el;e;e=e.parentElement) op*=+getComputedStyle(e).opacity; if(op<0.2) return;
     const bg=bgOf(el); if(!bg) return; let fg=P(cs.color); fg=over([fg[0],fg[1],fg[2],fg[3]*op],bg);
     const a=L(fg),b=L(bg), ratio=(Math.max(a,b)+0.05)/(Math.min(a,b)+0.05), px=parseFloat(cs.fontSize), bold=+cs.fontWeight>=700, large=px>=24||(px>=18.66&&bold), need=large?3:4.5;

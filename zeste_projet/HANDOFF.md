@@ -8,13 +8,14 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.21**. Chaque mise à jour livrée incrémente : 1.21, 1.22… La constante est `APP_VERSION` dans `src/v117.js`.
+- **Numérotation des versions** : la version actuelle est **1.22**. Chaque mise à jour livrée incrémente : 1.21, 1.22… La constante est `APP_VERSION` dans `src/v117.js`.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
 ## 2. Démarrage rapide
 
 ```sh
+sh tests/all.sh           # TOUT : build, données, IBA, prédiction, Chromium, contraste, VoiceOver, WebKit, fuzz ; s’arrête au premier échec
 sh build.sh                 # assemble dist/zeste.html (fichier unique, ~660 Ko)
 node tests/v.js             # validation des données (doit afficher « aucune erreur »)
 node tests/validate.js      # validation stricte : unités, rôles, verres, doublons
@@ -28,6 +29,8 @@ python3 tests/perf.py       # mesures de performance (processeur ralenti ×4)
 
 Tous les scripts se lancent **depuis la racine du projet**. Playwright (Chromium) est requis pour les `.py` (`pip install playwright && playwright install chromium`). **Installe aussi WebKit** (`playwright install webkit`) et teste dans WebKit : c’était impossible dans l’environnement précédent, et plusieurs bugs n’existaient que dans Safari.
 
+Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, `SEED=`), `tests/contrast.js` (WCAG 2.2, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/sounds.js` (crête et intensité de chaque son, rendu hors ligne), `tests/audit2.js` (doublons, glace, contenance), `tests/webkit.js` (WebKit via WebKitGTK : `apt-get install webkit2gtk-driver xvfb`, car le WebKit de Playwright ne se télécharge pas ici).
+
 ## 3. Architecture
 
 **Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh`. L’ordre de concaténation est important :
@@ -35,7 +38,7 @@ Tous les scripts se lancent **depuis la racine du projet**. Playwright (Chromium
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js ui_final.js
+core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js ui_final.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -74,11 +77,15 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 5. **Conflits de noms de classes CSS** : `.empty` existait déjà et a écrasé une étiquette de l’étagère. Préfixer les nouvelles classes.
 6. **Heures** : toujours passer par `momentForHour(h)` (heure locale via `Date#getHours`). Un bug classait minuit–4 h en « après-midi ».
 7. **Harnais Node** (`tests/*.js`) : ils évaluent le bundle avec un faux DOM. Si tu ajoutes du code qui s’exécute au chargement (`window.addEventListener`, `document.createElement`…), complète les bouchons en tête de fichier.
+9. **Animations CSS dans les SVG = coût permanent** : elles tournent sur le fil principal et forcent un recalcul complet 60 fois par seconde. Les limiter à quelques cycles (`animation-iteration-count`) et les relancer au toucher (`reanimate` dans `v122.js`) ; mettre en pause ce qui est invisible. Une animation CSS terminée ne redémarre qu’en changeant de nom (d’où `wave`/`wave_b`).
+10. **Web Audio** : un gain vaut 1 par défaut ; toujours l’initialiser au silence (`g.gain.value=0.0001`) avant de programmer l’enveloppe, sinon les premiers échantillons claquent.
+11. **Tailles de police en `rem`** (1 rem = 17 px à la taille standard) : la racine suit Dynamic Type ou le réglage « Taille du texte ». Ne plus écrire de `font-size` en px ; prévoir que les libellés peuvent passer sur deux lignes (`.txt-big`).
+12. **Tubes shell** : `node tests/v.js | tail -1` masque un échec ; utiliser `tests/all.sh` (`set -e`) ou `set -o pipefail`.
 8. **Performances** : la liste des cocktails s’affiche par paquets (bouton « Afficher plus ») ; les dessins de verres sont mis en cache (`GFULL`, `THUMB`) et invalidés dans `buildRecipes`. Toute nouvelle vue lourde doit suivre le même principe.
 
 ## 5. Ce qui existe (résumé)
 
-- **Bar** : 368 recettes, 158 ingrédients, stock par niveaux, étagère visuelle, onglet « Presque vides », achats malins, prix et coût par verre, bouteilles gazeuses débouchées suivies automatiquement.
+- **Bar** : 366 recettes, 158 ingrédients, stock par niveaux, étagère visuelle, onglet « Presque vides », achats malins, prix et coût par verre, bouteilles gazeuses débouchées suivies automatiquement.
 - **Suggestions** : modèle hybride (voisins pondérés par similarité, ingrédients, familles et alcools, direction du profil de goût) avec poids adaptatifs, contexte horaire et saisonnier, diversification, créneau de découverte et démarrage à froid par la notoriété.
 - **Quiz initial** : 9 questions, dont 8 cocktails à évaluer, choisis par popularité × information d’après Rashid et al., IUI 2002. Les réponses deviennent des pseudo-notes, avec un poids de 0,35 réglé puis validé par simulation.
 - **Labo** : jeu du barman avec verre, contenance, glace, décor (bonus, hors note), objectifs, fenêtre de service animée, conseils cliquables et défis hebdomadaires.
@@ -95,22 +102,26 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - Nouveaux mécanismes : unités `br` (brin) et `gt` (goutte) ; clé de recette `st` (étapes propres, qui remplacent les étapes générées : sucre en morceau, mixeur…) ; côté ingrédient, `u` (unité par défaut), `uL` (libellé de l’unité), `yml` (jus libéré par fruit) et `bsml` (volume d’une cuillère de sucre).
 - `data/ibapairs.json` ne contient plus que les appariements que le nom ne permet pas de trouver ; `tests/ibamap.js` est supprimé.
 
+### Fait en 1.22
+- Recettes populaires hors IBA vérifiées (Difford’s Guide, PUNCH, sites des marques, créateurs) : Amaretto Sour (Morgenthaler), Painkiller (4-1-1 de Pusser’s), Hurricane (recette d’origine), Death in the Afternoon (dose d’Hemingway), Campari et Limoncello Spritz (3-2-1), Hugo (Roland Gruber), Kir royal, Chrysanthemum (Savoy 2:1). Les autres classiques ont été relus et correspondent aux références connues.
+- Doublons fusionnés : `airmail` → `air_mail`, `harvey_wallbanger` → `harvey` ; `ID_ALIAS` et `migrateIds()` (dans `ui_final.js`) reportent notes, historique, favoris et réglages.
+- Ingrédients « formes » (`al:` dans `data_iba.js`) : citron vert en quartiers, jaune d’œuf, etc. suivent leur produit et sont masqués des listes.
+
 ### Reste à faire
-1. **Recettes populaires hors IBA**, en commençant par `POPULAR` dans `ui.js` : Gin tonic, Moscow Mule, Hugo, Negroni Sbagliato, Garibaldi, Limoncello Spritz, etc. Croiser au moins deux sources reconnues (Difford’s Guide, PUNCH, sites des marques).
-2. **Doublons** : `air_mail`/`airmail` et `harvey`/`harvey_wallbanger` sont la même recette. En supprimer un demande de migrer `ratings`, `hist`, `fav`, `adj` des utilisateurs vers l’id gardé.
-3. Les 32 créations suisses (`cr:1`) restent « à tester » : ne jamais les présenter comme traditionnelles.
-4. `tests/m3.js` ignore la variable `SEED` : à ajouter pour pouvoir régler sur une graine et valider sur une autre.
+1. Recettes non classiques (hors `c:1`) : pas encore vérifiées une à une.
+2. Les 32 créations suisses (`cr:1`) restent « à tester » : ne jamais les présenter comme traditionnelles.
 
 ## 7. Autres chantiers proposés (après la vérification)
 
-1. **Accessibilité** (recommandations d’Apple, WCAG 2.2) :
+1. ~~**Accessibilité**~~ : fait en 1.22 (contraste conforme en clair et en sombre, Dynamic Type, VoiceOver, zones de toucher). Reste : essai réel avec VoiceOver sur iPhone.
+   Ancien détail :
    - libellés VoiceOver pour les verres, médailles, graphiques et radar ;
    - taille de texte qui suit les réglages du système (unités relatives) ;
    - contraste des textes gris.
 2. **Audit d’ergonomie de la navigation** : l’app est très riche, regrouper ce qui peut l’être.
 3. **Liste de courses** exportable : bouteilles vides et achats malins.
 4. **Carte recette à partager** (image), en réutilisant le principe du Rewind (SVG vers canvas vers PNG).
-5. **Tests sur un vrai iPhone ou dans WebKit**, et correction de ce qui ne marche que dans Chromium.
+5. **Tests sur un vrai iPhone** (WebKitGTK est testé depuis 1.22, mais ce n’est pas iOS Safari), et correction de ce qui ne marche que dans Chromium.
 
 ## 8. Méthode de travail attendue
 
