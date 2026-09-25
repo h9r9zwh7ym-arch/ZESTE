@@ -15,7 +15,12 @@ const FX_PRESETS={complet:{},standard:{stream:false,tilt:false,clink:false,slide
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)");
 function FX(k){ if(REDUCED.matches) return false; const f=(S.settings&&S.settings.fx)||{}; return f[k]!==false; }
 function fxPreset(){ const f=S.settings.fx||{}; for(const [n,p] of Object.entries(FX_PRESETS)){ if(FX_LIST.every(([k])=>(f[k]!==false)===(p[k]!==false))) return n; } return "perso"; }
+// Recettes fusionnées : les anciens identifiants sont reportés sur ceux qu'on garde
+const ID_ALIAS={airmail:"air_mail",harvey_wallbanger:"harvey"};
+function migrateIds(){ const t=JSON.stringify(S); let n=t; for(const a in ID_ALIAS) n=n.split('"'+a+'"').join('"'+ID_ALIAS[a]+'"');
+  if(n!==t){ S=JSON.parse(n); if(Array.isArray(S.fav)) S.fav=[...new Set(S.fav)]; } }
 function fixState(){
+  migrateIds();
   S.settings=Object.assign({unit:"cl",nobasic:[],na:false,ambiance:true,moment:"auto",theme:"auto",cur:"CHF",explore:1,ctx:true},S.settings||{});
   if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[];
   let H=Array.isArray(S.settings.home)?S.settings.home.filter(x=>HOME_N[x[0]]):[];

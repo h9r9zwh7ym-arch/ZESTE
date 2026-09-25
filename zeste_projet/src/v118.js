@@ -21,7 +21,7 @@
 // ---------- Villes et notoriété ----------
 (function(){ const c=CITIES.find(x=>x[0]==="Baie de San Francisco"); if(c&&!c[3].includes("pisco_punch")) c[3].push("pisco_punch");
   const ny=CITIES.find(x=>x[0]==="New York"); if(ny&&!ny[3].includes("fitzgerald")) ny[3].push("fitzgerald");
-  ["harvey_wallbanger","dirty_shirley","mezcal_margarita","airmail","italian_greyhound"].forEach(id=>{ if(!POPULAR.includes(id)) POPULAR.push(id); });
+  ["harvey","dirty_shirley","mezcal_margarita","air_mail","italian_greyhound"].forEach(id=>{ if(!POPULAR.includes(id)) POPULAR.push(id); });
   POPULAR.forEach((id,k)=>POPIDX[id]=k); })();
 // ---------- Suggestions : profiter des bouteilles qui s'abîment une fois ouvertes ----------
 // Seuls les alcools gazeux perdent vite leurs bulles une fois débouchés

@@ -1,8 +1,6 @@
 // ---------- Recettes 1.18 ----------
 REC_RAW.push(
-["airmail","Airmail","bulles","shake","flute","none","#F2E0A0",[["rhum_ambre",30],["citron_vert",15],["sirop_miel",15],["champagne",60,"ml","top"]],"Zeste de citron vert",{c:1,v:["french75"],h:"Le cousin au rhum du French 75, publié en 1949 dans un guide de cocktails du magazine Esquire."}],
 ["satans_whiskers","Satan’s Whiskers","sour","shake","coupe","none","#E89A50",[["gin",20],["vermouth_rouge",20],["vermouth_dry",20],["orange",20],["grand_marnier",10],["orange_bitters",1,"d"]],"Zeste d’orange",{c:1,v:["bronx"],h:"Une recette du Savoy Cocktail Book de 1930, cousine du Bronx avec une touche de liqueur d’orange."}],
-["harvey_wallbanger","Harvey Wallbanger","highball","build","highball","cubes","#F5B040",[["vodka",45],["orange",90],["galliano",15,"ml","float"]],"Rondelle d’orange",{c:1,v:["screwdriver"],h:"Un Screwdriver coiffé de Galliano, star des années 1970 en Californie."}],
 ["fitzgerald","Fitzgerald","sour","shake","rocks","none","#F0E2B0",[["gin",45],["citron",20],["sirop_sucre",15],["angostura",2,"d"]],"Zeste de citron",{c:1,v:["gin_sour"],h:"Un gin sour relevé d’Angostura, créé par Dale DeGroff au Rainbow Room de New York dans les années 1990."}],
 ["corn_oil","Corn ’n’ Oil","stirred","build","rocks","cubes","#5A3018",[["rhum_brun",60],["falernum",15],["citron_vert",5],["angostura",2,"d"]],"Quartier de citron vert",{c:1,h:"Un classique de la Barbade : rhum sombre et falernum, épicé et profond."}],
 ["italian_greyhound","Italian Greyhound","highball","build","highball","cubes","#F07A6A",[["vodka",45],["pamplemousse",90],["campari",15]],"Quartier de pamplemousse",{v:["greyhound","salty_dog"],n:"Le Greyhound avec une touche d’amertume italienne."}],
