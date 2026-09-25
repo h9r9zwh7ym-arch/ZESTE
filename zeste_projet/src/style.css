@@ -1388,3 +1388,24 @@ svg.medal.secret{filter:none}
 .qzi-b button{height:34px;padding:0 9px;border-radius:10px;background:var(--fill2);font-size:12.5px;font-weight:700;color:var(--label2);transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
 .qzi-b button:active{transform:scale(.92)}
 .qzi-b button.on.love{background:#30A14E;color:#fff}.qzi-b button.on.bof{background:#8E8E93;color:#fff}.qzi-b button.on.no{background:#E0503A;color:#fff}
+
+/* 1.22 — économie d’énergie : les animations d’ambiance ne tournent que lorsqu’elles sont visibles */
+.amb-stars i,.amb-stars .shoot,.amb-dust i{animation-play-state:paused}
+:root[data-moment="nuit"] .amb-stars i,:root[data-moment="soir"] .amb-stars i,:root[data-moment="nuit"] .amb-stars .shoot,
+:root[data-moment="apero"] .amb-dust i,:root[data-moment="matin"] .amb-dust i{animation-play-state:running}
+body.sheet-open #ambient *{animation-play-state:paused!important}
+/* l’icône du moment s’anime quelques fois à l’arrivée, puis se pose */
+.mo-aprem .rays,.mo-matin .rays,.mo-apero svg,.mo-nuit .tw{animation-iteration-count:3}
+/* le verre vivant de l’accueil s’anime une quinzaine de secondes, puis se pose ; un toucher le relance (v122.js) */
+svg.live .wave{animation-iteration-count:6}
+svg.live:not(.pour) .ice>g.cube{animation-iteration-count:3}
+svg.live .fz circle{animation-iteration-count:5}
+.disc-hint svg{animation-iteration-count:4}
+svg.pour .ice>g.cube{animation-iteration-count:1,3}
+@keyframes wave_b{to{transform:translateX(32px)}}
+@keyframes icebob_b{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+svg.live.again1 .wave{animation:wave_b 2.6s linear 6}
+svg.live.again2 .wave{animation:wave 2.6s linear 6}
+svg.live.again1 .ice>g.cube{animation:icebob_b 4.5s ease-in-out var(--b) 3}
+svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
+@media (prefers-reduced-motion:reduce){svg.live.again1 *,svg.live.again2 *{animation:none!important}}
