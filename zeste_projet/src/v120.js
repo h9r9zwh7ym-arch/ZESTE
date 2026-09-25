@@ -23,7 +23,7 @@ function sanitizeBackup(d){
   if(isObj(d.settings)) out.settings=Object.assign({},out.settings,d.settings);
   // champs simples conservés tels quels s'ils ont le bon type
   ["quiz","adj","notes","price","stockT","opened","opens","mw","skips","chal","dishes","troT","rt","mix","heroLog"].forEach(k=>{ if(isObj(d[k])) out[k]=d[k]; });
-  ["tro","preps","citiesSeen","linSeen"].forEach(k=>{ if(Array.isArray(d[k])) out[k]=d[k]; });
+  ["tro","preps","citiesSeen","linSeen","drinks"].forEach(k=>{ if(Array.isArray(d[k])) out[k]=d[k]; });
   ["quizSkip","roul","labBest","labServes","mwN","prepCount","bmDone","chalHard"].forEach(k=>{ if(num(d[k])||typeof d[k]==="boolean") out[k]=d[k]; });
   return out;
 }

@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.24**. Chaque mise à jour livrée incrémente : 1.21, 1.22, 1.23, 1.24… La constante est `APP_VERSION` dans `src/v117.js`.
+- **Numérotation des versions** : la version actuelle est **1.25**. Chaque mise à jour livrée incrémente : 1.21, 1.22, 1.23, 1.24, 1.25… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js ui_final.js
+core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js ui_final.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -117,6 +117,14 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **Suggestions par occasion** (`src/v123.js`) : une carte apparaît à l'accueil (section « Occasions à venir », activable/désactivable comme les autres) à l'approche de la Saint-Valentin, Pâques (date calculée, algorithme de Gauss), la Fête nationale suisse, Halloween, Noël et le Réveillon. Elle s'affiche entre `lead` jours avant et le jour même (`OCCASIONS[].lead`), puis disparaît d'elle-même le lendemain — aucun nettoyage manuel nécessaire, tout est recalculé à partir de la date du jour à chaque rendu. La feuille ouverte au toucher (`occasionSheet`) liste les recettes proposées pour l'occasion et les ingrédients qui manquent encore, pour laisser le temps de les acheter.
 - Recettes choisies avec des IDs déjà vérifiés/existants dans le jeu de données (pas de nouvelle recette ajoutée). Couleurs de dégradé propres à chaque occasion, dans le même esprit que la carte « Zeste Rewind » (`.rw-card`) — réutilisée telle quelle, sans nouveau CSS.
 - Testé avec un script ad hoc (Chromium/Playwright, horloge simulée à J-2 puis au lendemain de chacune des 6 occasions) : section d'accueil correcte, feuille correcte, disparition confirmée le lendemain, aucune erreur JS. Le contraste du texte blanc sur ces dégradés n'est pas vérifié par `tests/contrast.js` (qui exempte volontairement tout fond `background-image`, comme pour `.rw-card` déjà en place) ; les couleurs choisies restent dans la fourchette déjà utilisée par `.rw-card`/`.rw-card.month`.
+
+### Fait en 1.25
+
+- **Taux d'alcoolémie, à titre indicatif** (`src/v124.js`) : une petite bulle discrète apparaît sur « Aujourd'hui » dès qu'un cocktail est préparé (`S.hist`) ou qu'une autre boisson est ajoutée manuellement (`S.drinks` : bière/vin/fort, degré et quantité). Formule de Widmark simplifiée à dessein (`BAC_R=0.66` sans distinction homme/femme, `BAC_BETA=0.15` ‰/h) sur une fenêtre glissante de 30 h. La bulle affiche le taux et l'heure de retour à zéro, se met à jour toutes les minutes, et disparaît d'elle-même (transition `max-height`, classe `.bac-gone`) une fois à zéro — sans confirmation ni bouton à fermer.
+- Nécessite le poids (`S.settings.weightKg`), demandé une seule fois (ligne « Poids » dans Paramètres > Toi, à côté du prénom) ; tant qu'il n'est pas renseigné, la bulle invite à le faire au lieu d'afficher un chiffre. Volontairement **pas de sexe biologique demandé** (garde `r` unique) ni de gros avertissement sur la bulle elle-même : juste « Estimation, pas une mesure exacte. » en petit dessous, à la demande du propriétaire (« discret, pas le but de l'app »). La phrase plus explicite (« ne t'y fie jamais pour prendre le volant ») est reléguée dans Paramètres > À propos, pas sur la bulle.
+- `settingsSheet` est entièrement redéfini par assignation (`settingsSheet=function(){…}`, même technique que `trophyGrid` en 1.20) pour ajouter la ligne Poids et la phrase d'À propos — **attention si `ui_final.js` change `settingsSheet`** : reporter le changement dans les deux endroits, ou fusionner cette redéfinition dans `ui_final.js` à l'occasion.
+- Piège rencontré : `ICS`, `srow`, `sic`, `sw`, `sseg` sont des `const` déclarés dans `ui_final.js`, qui charge *après* `v124.js` (obligatoire pour que l'accroche de `vToday` s'applique dès le premier rendu, avant `init()`). Une référence à `ICS.xxx=...` au niveau racine du fichier plante donc (`ReferenceError: Cannot access 'ICS' before initialization`, zone morte temporelle) : l'ajout à `ICS` doit se faire à l'intérieur d'une fonction appelée plus tard (ici, au tout début de `settingsSheet`), jamais au chargement du script.
+- Testé (Chromium/Playwright) : rien n'apparaît sans historique ; l'invite au poids apparaît après un cocktail sans poids renseigné ; le calcul correspond à la formule attendue à 0,02 ‰ près ; ajouter une bière augmente bien le taux ; après une horloge avancée de 8 h, le taux est à zéro et la bulle a disparu du DOM. Contraste vérifié (clair et sombre) sur `.bac-card`.
 
 ## 7. Autres chantiers proposés (après la vérification)
 
