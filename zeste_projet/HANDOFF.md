@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.22**. Chaque mise à jour livrée incrémente : 1.21, 1.22… La constante est `APP_VERSION` dans `src/v117.js`.
+- **Numérotation des versions** : la version actuelle est **1.23**. Chaque mise à jour livrée incrémente : 1.21, 1.22, 1.23… La constante est `APP_VERSION` dans `src/v117.js`.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js ui_final.js
+core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js ui_final.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -50,7 +50,7 @@ core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v
   - Options : `c` (classique), `s` (suisse), `cr` (création maison **non testée**), `na` (sans alcool), `se` (mois de saison), `v` (variantes), `h` (histoire), `n` (conseil).
 - **`core.js`** : moteur (calcul d’équilibre `calc`, profils `profileR`, dessin SVG `glassSVG`/`garnishSVG`/`bottleSVG`, modèle de recommandation `getModel`/`predict`/`tonight`, quiz `QUIZ`/`quizPrior`, coût).
 - **`ui.js`** : interface de base (5 onglets : Aujourd’hui, Cocktails, Bar, Labo, Profil ; feuilles modales ; mode barman ; roulette).
-- **Modules suivants** : chaque version a ajouté un fichier (`ui10`, `labo2`, `trophies`, `explore`, `chal`, `sound`, `v117`, `v118`, `v120`). **Convention importante** : ils modifient le comportement en **redéfinissant ou enveloppant** des fonctions existantes.
+- **Modules suivants** : chaque version a ajouté un fichier (`ui10`, `labo2`, `trophies`, `explore`, `chal`, `sound`, `v117`, `v118`, `v120`, `v122`, `v123`). **Convention importante** : ils modifient le comportement en **redéfinissant ou enveloppant** des fonctions existantes.
   - Une déclaration `function f()` ultérieure remplace l’antérieure (hissage JS).
   - Les enveloppes réassignent : `const _f=f; f=function(){ … _f() … }`.
   - Les actions se complètent via `Object.assign(ACT,{…})`.
@@ -110,6 +110,12 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 ### Reste à faire
 1. Recettes non classiques (hors `c:1`) : pas encore vérifiées une à une.
 2. Les 32 créations suisses (`cr:1`) restent « à tester » : ne jamais les présenter comme traditionnelles.
+
+### Fait en 1.23
+
+- **Suggestions par occasion** (`src/v123.js`) : une carte apparaît à l'accueil (section « Occasions à venir », activable/désactivable comme les autres) à l'approche de la Saint-Valentin, Pâques (date calculée, algorithme de Gauss), la Fête nationale suisse, Halloween, Noël et le Réveillon. Elle s'affiche entre `lead` jours avant et le jour même (`OCCASIONS[].lead`), puis disparaît d'elle-même le lendemain — aucun nettoyage manuel nécessaire, tout est recalculé à partir de la date du jour à chaque rendu. La feuille ouverte au toucher (`occasionSheet`) liste les recettes proposées pour l'occasion et les ingrédients qui manquent encore, pour laisser le temps de les acheter.
+- Recettes choisies avec des IDs déjà vérifiés/existants dans le jeu de données (pas de nouvelle recette ajoutée). Couleurs de dégradé propres à chaque occasion, dans le même esprit que la carte « Zeste Rewind » (`.rw-card`) — réutilisée telle quelle, sans nouveau CSS.
+- Testé avec un script ad hoc (Chromium/Playwright, horloge simulée à J-2 puis au lendemain de chacune des 6 occasions) : section d'accueil correcte, feuille correcte, disparition confirmée le lendemain, aucune erreur JS. Le contraste du texte blanc sur ces dégradés n'est pas vérifié par `tests/contrast.js` (qui exempte volontairement tout fond `background-image`, comme pour `.rw-card` déjà en place) ; les couleurs choisies restent dans la fourchette déjà utilisée par `.rw-card`/`.rw-card.month`.
 
 ## 7. Autres chantiers proposés (après la vérification)
 
