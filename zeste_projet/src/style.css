@@ -1418,13 +1418,14 @@ svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
 .txt-big .btn.small{min-height:36px;padding-top:6px;padding-bottom:6px}
 .txt-big .nb-right .icon-btn{min-width:36px}
 
-/* 1.25 — bulle discrète du taux d'alcoolémie */
-.bac-card{margin-top:22px;overflow:hidden;max-height:130px;transition:max-height .4s cubic-bezier(.2,.8,.2,1),margin-top .4s,padding .4s,opacity .3s}
+/* 1.25/1.26 — bulle discrète du taux d'alcoolémie, avec anneau de décroissance */
+.bac-card{margin-top:22px;overflow:hidden;max-height:150px;transition:max-height .4s cubic-bezier(.2,.8,.2,1),margin-top .4s,padding .4s,opacity .3s,transform .18s cubic-bezier(.3,.7,.4,1)}
 .bac-card.bac-gone{max-height:0;margin-top:0;padding-top:0;padding-bottom:0;opacity:0}
-.bac-setup:active{opacity:.7}
+.bac-card:active,.bac-setup:active{transform:scale(.98)}
 .bac-row{display:flex;align-items:center;gap:12px}
-.bac-ic{width:28px;height:28px;flex:none;color:var(--tint);display:grid;place-items:center}
-.bac-ic svg{width:22px;height:22px}
-.bac-row .grow b{display:block;font-family:var(--rounded);font-size:calc(19rem / 17);font-weight:700}
+.bac-ic{width:38px;height:38px;flex:none;color:var(--tint);display:grid;place-items:center}
+.bac-ic svg{width:100%;height:100%}
+.bac-row .grow b{display:block;font-family:var(--rounded);font-size:calc(20rem / 17);font-weight:700}
 .bac-t{font-size:calc(13rem / 17);color:var(--label2)}
 .bac-note{font-size:calc(12rem / 17);color:var(--label2);margin-top:8px}
+.bac-add{flex:none}
