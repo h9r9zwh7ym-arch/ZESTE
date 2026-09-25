@@ -2307,11 +2307,23 @@ function predict(r){
   const famb=0.55*fam+0.45*base*1.1;
   let vb=0, vbest=null; M.ids.forEach(id=>{ const t=M.T[id]; if(t.v>0.8&&RMAP[id].v.includes(r.id)){ vb+=t.v*t.w*0.4; if(!vbest||t.v>M.T[vbest].v) vbest=id; } }); vb=Math.min(0.8,vb);
   const dev=(wk*knn+wi*ing+MW.fam*famb+MW.dims*dims)/(wk+wi+MW.fam+MW.dims)*0.75+0.25*vb, conf=0.35+0.65*M.n/(M.n+4);
-  const pred=3+1.85*Math.tanh(dev*1.15*conf)+prior*0.5;
+  let pred=3+1.85*Math.tanh(dev*1.15*conf)+prior*0.5;
+  const RW=ridgeOf(M); if(RW){ const x=fvec(r); let s=0; for(let i=0;i<x.length;i++) s+=RW.W[i]*(x[i]-RW.mean[i]); pred=0.3*pred+0.7*(3+1.85*Math.tanh(s*1.1)); }
   const parts=[["knn",wk*knn],["ing",wi*ing],["fam",MW.fam*famb],["dims",MW.dims*dims],["var",0.25*vb*1.6]].sort((a,b)=>b[1]-a[1]);
   M.W[r.id]={top:parts[0][0],v:parts[0][1],best:bs>0.72?best:null,topI:(M.IA[topI]||0)>0.35?topI:null,lowI:(M.IA[lowI]||0)<-0.5?lowI:null,vbest,raw:{knn:kc>0.05?knn:0,ing:hasIng?ing:0,fam:famb,dims}};
   return M.P[r.id]=pred;
 }
+// Régression ridge sur le vecteur de goût (profil + famille + alcool de base), pondérée comme les notes.
+// Réglée avec tests/m6.js (graine 1 : λ = 1,5, part 0,7) puis validée sur les graines 2 et 3.
+let FVMEAN=null, FVMEAN_N=0;
+function ridgeOf(M){ if(M.RW!==undefined) return M.RW; const ids=M.ids; if(ids.length<2||rated().length<2) return M.RW=null;
+  if(!FVMEAN||FVMEAN_N!==RECS.length){ const d0=fvec(RECS[0]).length; FVMEAN=Array(d0).fill(0); RECS.forEach(r=>fvec(r).forEach((v,i)=>FVMEAN[i]+=v/RECS.length)); FVMEAN_N=RECS.length; }
+  const mean=FVMEAN, d=mean.length, L=1.5, A=[], b=Array(d).fill(0);
+  for(let i=0;i<d;i++){ A.push(Array(d).fill(0)); A[i][i]=L; }
+  ids.forEach(id=>{ const t=M.T[id], x=fvec(RMAP[id]).map((v,i)=>v-mean[i]); for(let i=0;i<d;i++){ if(!x[i]) continue; b[i]+=t.w*x[i]*t.v; for(let j=0;j<d;j++) A[i][j]+=t.w*x[i]*x[j]; } });
+  for(let i=0;i<d;i++){ let p=i; for(let k=i+1;k<d;k++) if(Math.abs(A[k][i])>Math.abs(A[p][i])) p=k; [A[i],A[p]]=[A[p],A[i]]; [b[i],b[p]]=[b[p],b[i]];
+    for(let k=0;k<d;k++){ if(k===i) continue; const f=A[k][i]/A[i][i]; if(!f) continue; for(let c=i;c<d;c++) A[k][c]-=f*A[i][c]; b[k]-=f*b[i]; } }
+  return M.RW={W:b.map((v,i)=>v/A[i][i]),mean}; }
 // Poids des signaux, ajustés à chaque note : les signaux qui avaient vu juste gagnent en importance
 function mWeights(){ return Object.assign({knn:.4,ing:.3,fam:.22,dims:.15},S.mw||{}); }
 function learnFrom(id, rating){

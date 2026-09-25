@@ -7,7 +7,7 @@ const pool=RECS.filter(r=>!r.na);
 for(const adapt of [false,true]){ const agg={};
  for(const [un,f] of Object.entries(users)){ const pv=pool.map(r=>f(profileR(r))), mean=pv.reduce((a,b)=>a+b,0)/pv.length;
   const truth=r=>Math.max(1,Math.min(5,Math.round(3+ (f(profileR(r))-mean)*1.4 + (hrand(r.id+un)-.5)*0.9)));
-  for(let seed=1;seed<=6;seed++){ let rng=seed*977; const rnd=()=>{ rng=(rng*16807)%2147483647; return rng/2147483647; };
+  for(let seed=1;seed<=6;seed++){ let rng=(seed+6*((+process.env.SEED||1)-1))*977; const rnd=()=>{ rng=(rng*16807)%2147483647; return rng/2147483647; };
    for(const n of [5,10,20]){ S.ratings={}; S.mw=null; S.mwN=0; S.quiz=null; MODEL=null; const sh=pool.slice().sort(()=>rnd()-.5); const train=sh.slice(0,n), test=sh.slice(n,n+100);
     train.forEach(r=>{ const t=truth(r); if(adapt) learnFrom(r.id,t); S.ratings[r.id]=t; MODEL=null; });
     const pr=test.map(r=>predict(r)), tr=test.map(truth); const top=test.map((r,i)=>[pr[i],tr[i]]).sort((a,b)=>b[0]-a[0]).slice(0,10);
