@@ -31,7 +31,7 @@ function chalCheck(c,A,SC){ const res=c.c.map(([n,f])=>{ let ok=false; try{ ok=!
 function chalCards(){
   const W=weekChallenges(), LV=["","Facile","Moyen","Difficile"];
   const days=7-((new Date().getDay()+6)%7);
-  return `<h2 class="sh">Défis de la semaine<span class="more muted" style="font-size:14px">encore ${days} jour${days>1?"s":""}</span></h2><div class="scroller chal-row">${W.map(c=>{ const done=chalDone(c.key), on=S.chalOn===c.key; return `<button class="chal lv${c.lvl} ${on?"on":""} ${done?"done":""}" data-a="chal" data-k="${c.key}"><span class="ch-lv">${LV[c.lvl]}</span><b>${esc(c.t)}</b><span class="ch-d">${esc(c.d)}</span><span class="ch-f">${done?`${IC.check} Réussi, ${done}/100`:on?"Défi en cours":"Relever le défi"}</span></button>`; }).join("")}</div>`;
+  return `<h2 class="sh">Défis de la semaine<span class="more muted" style="font-size:calc(14rem / 17)">encore ${days} jour${days>1?"s":""}</span></h2><div class="scroller chal-row">${W.map(c=>{ const done=chalDone(c.key), on=S.chalOn===c.key; return `<button class="chal lv${c.lvl} ${on?"on":""} ${done?"done":""}" data-a="chal" data-k="${c.key}"><span class="ch-lv">${LV[c.lvl]}</span><b>${esc(c.t)}</b><span class="ch-d">${esc(c.d)}</span><span class="ch-f">${done?`${IC.check} Réussi, ${done}/100`:on?"Défi en cours":"Relever le défi"}</span></button>`; }).join("")}</div>`;
 }
 function chalBanner(A,SC){
   const c=chalActive(); if(!c) return ""; const R=chalCheck(c,A||null,SC);

@@ -558,7 +558,8 @@ function bottleSVG(id, level, big, shine){
 }
 function radarSVG(vals, cmp, size=150){
   const n=8,c=size/2,R=size/2-24; const pt=(i,v)=>[c+Math.sin(i/n*2*Math.PI)*R*v, c-Math.cos(i/n*2*Math.PI)*R*v];
-  let s=`<svg class="radar" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`;
+  const lvl=v=>v>=0.66?"marqué":v>=0.33?"moyen":"léger", desc=DIMS.map((d,i)=>d.toLowerCase()+" "+lvl(vals[i]||0)).join(", ");
+  let s=`<svg class="radar" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profil de goût : ${desc}">`;
   [0.33,0.66,1].forEach(r=>s+=`<polygon points="${[...Array(n)].map((_,i)=>pt(i,r).join(",")).join(" ")}" fill="none" stroke="var(--sep)" stroke-width="1"/>`);
   for(let i=0;i<n;i++){ const [x,y]=pt(i,1); s+=`<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" stroke="var(--sep)" stroke-width=".7"/>`;
     const [lx,ly]=pt(i,1.24); s+=`<text x="${lx}" y="${ly+3.5}" text-anchor="middle" font-size="9.5" fill="var(--label2)" font-family="-apple-system,sans-serif">${DIMS[i]}</text>`; }

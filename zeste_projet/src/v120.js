@@ -189,7 +189,7 @@ const QITEM={love:[1.5,0.35],bof:[0,0.25],no:[-1.5,0.35]};
 const _paintQuiz=paintQuiz; paintQuiz=function(){
   const q=QUIZ[QZ.i]; if(!q||q.type!=="items") return _paintQuiz();
   const n=QUIZ.length, cur=QZ.a.items||{}, ov=$("#overlay");
-  ov.innerHTML=`<div class="ov-top"><button class="close-x" data-a="qzskip" aria-label="Passer">${IC.x}</button><div class="qz-prog">${QUIZ.map((_,k)=>`<i class="${k<QZ.i?"done":k===QZ.i?"now":""}"></i>`).join("")}</div><button class="link" data-a="qzskip" style="font-size:15px">Passer</button></div>
+  ov.innerHTML=`<div class="ov-top"><button class="close-x" data-a="qzskip" aria-label="Passer">${IC.x}</button><div class="qz-prog">${QUIZ.map((_,k)=>`<i class="${k<QZ.i?"done":k===QZ.i?"now":""}"></i>`).join("")}</div><button class="link" data-a="qzskip" style="font-size:calc(15rem / 17)">Passer</button></div>
   <div class="ov-body qz ${QZ.dir}"><div class="bm-count">Question ${QZ.i+1} sur ${n}</div><div class="qz-q">${esc(q.q)}</div><div class="muted" style="margin-top:6px">${esc(q.sub)}</div>
   <div class="qz-items">${q.items.map((id,k)=>{ const r=RMAP[id], v=cur[id]; return `<div class="qzi" style="animation-delay:${60+k*40}ms"><span class="qzi-g">${glassThumb(r)}</span><b>${esc(r.n)}</b><div class="qzi-b">${[["love","J’aime"],["bof","Bof"],["no","Pas pour moi"]].map(([k2,l])=>`<button class="${v===k2?"on "+k2:""}" data-a="qzitem" data-id="${id}" data-v="${k2}">${l}</button>`).join("")}</div></div>`; }).join("")}</div></div>
   <div class="ov-bottom">${QZ.i>0?`<button class="btn gray" data-a="qznav" data-d="-1" style="flex:0 0 34%">Retour</button>`:""}<button class="btn" data-a="qznav" data-d="1">${Object.keys(cur).length?"Terminer":"Je n’en connais aucun"}</button></div>`;
