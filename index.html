@@ -2930,21 +2930,17 @@ function filtered(ignoreMain){
   else L.sort((a,b)=>(status(b).ok-status(a).ok)||(score(b)-score(a)));
   return L;
 }
-function vCocktails(){
+// Rendu de la liste et de la barre d'outils uniquement (pas la recherche) : reconstruit à chaque frappe,
+// sans jamais toucher au champ de recherche lui-même (le recréer pendant la saisie fait sauter des lettres sur iOS).
+function cocktailsResults(){
   const L=filtered(), nf=nFilters();
-  let o=nav("Cocktails")+`<div class="content"><h1 class="lt">Cocktails</h1>`;
-  o+=`<div class="seg c-modes" data-k="cmodes">${[["list","Liste"],["radar","Radar"],["tree","Lignées"],["world","Monde"]].map(([k,n])=>`<button class="${CF.mode===k?"on":""}" data-a="cmode2" data-v="${k}">${n}</button>`).join("")}</div><div class="sp8"></div>`;
-  if(CF.mode==="radar") return o+radarView()+`<div class="sp24"></div></div>`;
-  if(CF.mode==="tree") return o+treeView()+`<div class="sp24"></div></div>`;
-  if(CF.mode==="world") return o+worldView()+`<div class="sp24"></div></div>`;
-  o+=`<label class="search">${IC.search}<input id="cq" type="search" placeholder="Nom ou ingrédient" value="${esc(CF.q)}" autocomplete="off"></label>`;
-  o+=`<div class="toolbar"><div class="seg small4">${[["","Tous"],["ok","Faisables"],["fav","Favoris"],["na","0 %"]].map(([k,n])=>`<button class="${CF.main===k?"on":""}" data-a="cmain" data-v="${k}">${n}</button>`).join("")}</div><button class="fbtn" data-a="filters">${IC.filter}Filtres${nf?`<b>${nf}</b>`:""}</button></div>`;
+  let o=`<div class="toolbar"><div class="seg small4">${[["","Tous"],["ok","Faisables"],["fav","Favoris"],["na","0 %"]].map(([k,n])=>`<button class="${CF.main===k?"on":""}" data-a="cmain" data-v="${k}">${n}</button>`).join("")}</div><button class="fbtn" data-a="filters">${IC.filter}Filtres${nf?`<b>${nf}</b>`:""}</button></div>`;
   if(nf){ const chips=[...(CF.type||[]).map(k=>["type",k,CTYPES.find(x=>x[0]===k)[1]]),...CF.fam.map(k=>["fam",k,FAMILIES[k]]),...CF.base.map(k=>["base",k,BASE_LABEL[k]]),...CF.x.map(k=>["x",k,XF.find(x=>x[0]===k)[1]])];
     if(CF.sort==="az") chips.push(["sort","az","A à Z"]);
     o+=`<div class="active-f">${chips.map(([g,k,n])=>`<button data-a="unf" data-g="${g}" data-k="${k}">${esc(n)}${IC.x}</button>`).join("")}</div>`; }
   if(CF.mode==="map") CF.mode="list";
-  if(CF.mode==="map"){ o+=`<h2 class="sh" style="margin-top:16px">Carte des saveurs</h2><div class="sh-sub">Chaque point est un cocktail. Touche-en un pour l’ouvrir.</div>`+flavorMap(L); return o+`<div class="sp24"></div></div>`; }
-  if(!L.length) return o+`<div class="empty"><b>Aucun cocktail</b>Essaie d’enlever un filtre ou de changer ta recherche.</div></div>`;
+  if(CF.mode==="map"){ o+=`<h2 class="sh" style="margin-top:16px">Carte des saveurs</h2><div class="sh-sub">Chaque point est un cocktail. Touche-en un pour l’ouvrir.</div>`+flavorMap(L); return o; }
+  if(!L.length) return o+`<div class="empty"><b>Aucun cocktail</b>Essaie d’enlever un filtre ou de changer ta recherche.</div>`;
   if(CF.main==="na") o+=`<div class="na-banner"><b>Zéro degré, plein de goût</b><span>Des recettes équilibrées comme de vrais cocktails, pour conduire, faire une pause ou les potes qui ne boivent pas.</span></div>`;
   const sectioned = CF.sort!=="az" && !CF.main && !CF.q;
   if(sectioned){
@@ -2958,6 +2954,16 @@ function vCocktails(){
     CF.lim=CF.lim||{}; const lim=CF.lim.all||40;
     o+=`<div class="list-h"><b>${L.length} cocktail${L.length>1?"s":""}</b><span></span></div><div class="group">${L.slice(0,lim).map(r=>recRow(r)).join("")}${L.length>lim?`<button class="row tap more-row" data-a="listmore" data-k="all">Afficher ${Math.min(60,L.length-lim)} de plus (${L.length-lim} restants)</button>`:""}</div>`;
   }
+  return o;
+}
+function vCocktails(){
+  let o=nav("Cocktails")+`<div class="content"><h1 class="lt">Cocktails</h1>`;
+  o+=`<div class="seg c-modes" data-k="cmodes">${[["list","Liste"],["radar","Radar"],["tree","Lignées"],["world","Monde"]].map(([k,n])=>`<button class="${CF.mode===k?"on":""}" data-a="cmode2" data-v="${k}">${n}</button>`).join("")}</div><div class="sp8"></div>`;
+  if(CF.mode==="radar") return o+radarView()+`<div class="sp24"></div></div>`;
+  if(CF.mode==="tree") return o+treeView()+`<div class="sp24"></div></div>`;
+  if(CF.mode==="world") return o+worldView()+`<div class="sp24"></div></div>`;
+  o+=`<label class="search">${IC.search}<input id="cq" type="search" placeholder="Nom ou ingrédient" value="${esc(CF.q)}" autocomplete="off"></label>`;
+  o+=`<div id="cx-res">${cocktailsResults()}</div>`;
   return o+`<div class="sp24"></div></div>`;
 }
 function filterSheet(){
@@ -3303,15 +3309,16 @@ function ingSheet(id){
 let AS="spirit";
 function addSheet(){
   let qq="";
-  const sh=openSheet(()=>{ let b=`<label class="search">${IC.search}<input id="aq" type="search" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label>`;
-    if(!qq) b+=segChips(AS,"as",false);
+  // Résultats seuls (sans le champ de recherche) : reconstruits à chaque frappe sans recréer le champ,
+  // qui perdrait sinon des lettres en tapant vite sur iOS.
+  const results=()=>{ let b=""; if(!qq) b+=segChips(AS,"as",false);
     const L=Object.values(ING).filter(i=>i.id!=="eau"&&!i.al&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===AS)).sort((a,c)=>a.n.localeCompare(c.n,"fr"));
     const bas=L.filter(i=>i.basic), oth=L.filter(i=>!i.basic);
     if(oth.length) b+=`<div class="group" style="margin-top:8px">${oth.map(i=>{ const on=inBar(i.id)&&(tracked(i.id)?S.stock[i.id]>0:S.stock[i.id]===1); return `<button class="row tap" data-a="addtoggle" data-id="${i.id}"><div class="grow"><div class="t">${esc(i.n)}</div>${qq?`<div class="s">${SEGS.find(s=>s[0]===segOf(i.id))[1]}</div>`:""}</div><span style="color:${on?"var(--tint)":"var(--label3)"};width:26px;height:26px;display:grid;place-items:center">${on?IC.checkc.replace("<svg","<svg width='24' height='24'"):IC.plus.replace("<svg","<svg width='22' height='22'")}</span></button>`; }).join("")}</div>`;
     if(bas.length) b+=`<div class="gh">Toujours à portée de main</div><div class="group">${bas.map(i=>`<div class="row"><div class="grow"><div class="t">${esc(i.n)}</div></div><span class="badge ${has(i.id)?"green":""}">${has(i.id)?"Compté":"Désactivé"}</span></div>`).join("")}</div><div class="gf">Ces basiques sont comptés automatiquement. <button class="link" data-a="basics">Modifier</button></div>`;
     if(!L.length) b+=`<div class="empty">Aucun ingrédient trouvé.</div>`;
-    return {title:"Ajouter au bar",body:b,right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,after:el=>{ const inp=el.querySelector("#aq"); inp.oninput=()=>{ qq=inp.value; const pos=inp.selectionStart; paintSheet(sh); const n=sh.el.querySelector("#aq"); n.focus(); n.setSelectionRange(pos,pos); }; }};
-  });
+    return b; };
+  const sh=openSheet(()=>({title:"Ajouter au bar",body:`<label class="search">${IC.search}<input id="aq" type="search" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label><div id="aq-res">${results()}</div>`,right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,after:el=>{ const inp=el.querySelector("#aq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#aq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
 }
 function basicsSheet(){
   openSheet(()=>({title:"Contenu additionnel",body:`<p class="body" style="margin-bottom:12px">Ces ingrédients sont considérés comme toujours disponibles. Désactive ceux que tu n’as jamais sous la main.</p><div class="group">${BASICS.filter(id=>ING[id]&&!ING[id].al).map(id=>`<div class="row"><div class="grow"><div class="t">${esc(ING[id].n)}</div></div><button class="switch ${has(id)?"on":""}" data-a="nobasic" data-id="${id}" aria-label="${esc(ING[id].n)}"></button></div>`).join("")}</div>`}));
@@ -3319,12 +3326,12 @@ function basicsSheet(){
 let PS="spirit";
 function pickIngSheet(cb){
   let qq="";
-  const sh=openSheet(()=>{ const L=Object.values(ING).filter(i=>i.id!=="eau"&&!i.al&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===PS));
+  const results=()=>{ const L=Object.values(ING).filter(i=>i.id!=="eau"&&!i.al&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===PS));
     const mine=L.filter(i=>has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr")), rest=L.filter(i=>!has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr"));
     const rows=A=>A.map(i=>`<button class="row tap" data-a="pickit" data-id="${i.id}"><i style="width:8px;height:8px;border-radius:4px;background:${SEGCOL[segOf(i.id)]};flex:none"></i><div class="grow"><div class="t">${esc(i.n)}</div></div>${IC.plus.replace("<svg","<svg width='20' height='20' style='color:var(--tint)'")}</button>`).join("");
-    return {title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label>${qq?"":segChips(PS,"ps",false)}${mine.length?`<div class="gh">Disponible chez toi</div><div class="group">${rows(mine)}</div>`:""}${rest.length?`<div class="gh">À acheter</div><div class="group">${rows(rest)}</div>`:""}`,
-      after:el=>{ const inp=el.querySelector("#pq"); inp.oninput=()=>{ qq=inp.value; const pos=inp.selectionStart; paintSheet(sh); const n=sh.el.querySelector("#pq"); n.focus(); n.setSelectionRange(pos,pos); }; }};
-  });
+    return `${qq?"":segChips(PS,"ps",false)}${mine.length?`<div class="gh">Disponible chez toi</div><div class="group">${rows(mine)}</div>`:""}${rest.length?`<div class="gh">À acheter</div><div class="group">${rows(rest)}</div>`:""}`; };
+  const sh=openSheet(()=>({title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label><div id="pq-res">${results()}</div>`,
+      after:el=>{ const inp=el.querySelector("#pq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#pq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
   sh.cb=cb;
 }
 
@@ -3539,7 +3546,7 @@ document.addEventListener("touchstart",e=>{ const t=e.target.closest(".tile,.duo
 document.addEventListener("touchend",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
 document.addEventListener("touchcancel",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
 document.addEventListener("input",e=>{
-  if(e.target.id==="cq"){ CF.q=e.target.value; clearTimeout(window._cqT); window._cqT=setTimeout(()=>{ const n0=$("#cq"), pos=n0?n0.selectionStart:CF.q.length; renderView("cocktails"); const n=$("#cq"); if(n){ n.focus(); n.setSelectionRange(pos,pos); } },140); }
+  if(e.target.id==="cq"){ CF.q=e.target.value; clearTimeout(window._cqT); window._cqT=setTimeout(()=>{ const res=$("#cx-res"); if(res&&TAB==="cocktails"){ res.innerHTML=cocktailsResults(); animateSegs(res); } else renderView("cocktails"); },70); }
 });
 document.addEventListener("change",e=>{
   const t=e.target;
@@ -4423,7 +4430,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.23";
+const APP_VERSION="1.24";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -4982,7 +4989,8 @@ let RIO=null;
 function revealIn(v){
   if(!FX("reveal")||!("IntersectionObserver" in window)) return;
   if(!RIO) RIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); RIO.unobserve(e.target); } }),{threshold:0.08});
-  v.querySelectorAll(".content > h2.sh, .content > .sh-sub, .content > .scroller, .content > .card, .content > .group, .content > .duo, .content > .dishes, .content > .rw-card, .content > .disc, .content > .stat-grid, .content > .trophies, .content > .remind").forEach((el,i)=>{ el.classList.remove("in"); el.classList.add("rv"); el.style.setProperty("--rd",Math.min(i,6)*40+"ms"); RIO.observe(el); });
+  // #cx-res (résultats de la recherche cocktails) est un niveau plus profond que .content : mêmes classes, ciblées aussi à cet endroit.
+  v.querySelectorAll(".content > h2.sh, .content > .sh-sub, .content > .scroller, .content > .card, .content > .group, .content > .duo, .content > .dishes, .content > .rw-card, .content > .disc, .content > .stat-grid, .content > .trophies, .content > .remind, #cx-res > h2.sh, #cx-res > .sh-sub, #cx-res > .group").forEach((el,i)=>{ el.classList.remove("in"); el.classList.add("rv"); el.style.setProperty("--rd",Math.min(i,6)*40+"ms"); RIO.observe(el); });
 }
 
 // ---------- Verre du labo ----------

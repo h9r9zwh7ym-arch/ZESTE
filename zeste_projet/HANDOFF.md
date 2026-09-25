@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.23**. Chaque mise à jour livrée incrémente : 1.21, 1.22, 1.23… La constante est `APP_VERSION` dans `src/v117.js`.
+- **Numérotation des versions** : la version actuelle est **1.24**. Chaque mise à jour livrée incrémente : 1.21, 1.22, 1.23, 1.24… La constante est `APP_VERSION` dans `src/v117.js`.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -82,6 +82,7 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 11. **Tailles de police en `rem`** (1 rem = 17 px à la taille standard) : la racine suit Dynamic Type ou le réglage « Taille du texte ». Ne plus écrire de `font-size` en px ; prévoir que les libellés peuvent passer sur deux lignes (`.txt-big`).
 12. **Tubes shell** : `node tests/v.js | tail -1` masque un échec ; utiliser `tests/all.sh` (`set -e`) ou `set -o pipefail`.
 8. **Performances** : la liste des cocktails s’affiche par paquets (bouton « Afficher plus ») ; les dessins de verres sont mis en cache (`GFULL`, `THUMB`) et invalidés dans `buildRecipes`. Toute nouvelle vue lourde doit suivre le même principe.
+13. **Ne jamais recréer un `<input>` pendant qu’on y tape** (corrigé en 1.24) : les trois champs de recherche (`#cq` cocktails, `#aq` bar, `#pq` labo) régénéraient tout leur conteneur (`renderView`/`paintSheet`) à chaque frappe, puis refocalisaient l’élément à la main. Sur iOS Safari, détruire/recréer le champ focalisé pendant la saisie désynchronise le clavier et fait sauter des lettres à frappe rapide. Le bon principe : le champ de recherche ne doit **jamais** être régénéré une fois affiché ; seul le conteneur de résultats à côté (`#cx-res`, `#aq-res`, `#pq-res`) est repeint à chaque frappe (`element.innerHTML=...`, sans toucher au `<input>` ni au focus). `revealIn()` (apparition au défilement) a dû être mis à jour car il ciblait `.content > .group` : ces lignes sont maintenant sous `#cx-res`.
 
 ## 5. Ce qui existe (résumé)
 
