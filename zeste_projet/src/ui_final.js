@@ -96,7 +96,8 @@ let RIO=null;
 function revealIn(v){
   if(!FX("reveal")||!("IntersectionObserver" in window)) return;
   if(!RIO) RIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); RIO.unobserve(e.target); } }),{threshold:0.08});
-  v.querySelectorAll(".content > h2.sh, .content > .sh-sub, .content > .scroller, .content > .card, .content > .group, .content > .duo, .content > .dishes, .content > .rw-card, .content > .disc, .content > .stat-grid, .content > .trophies, .content > .remind").forEach((el,i)=>{ el.classList.remove("in"); el.classList.add("rv"); el.style.setProperty("--rd",Math.min(i,6)*40+"ms"); RIO.observe(el); });
+  // #cx-res (résultats de la recherche cocktails) est un niveau plus profond que .content : mêmes classes, ciblées aussi à cet endroit.
+  v.querySelectorAll(".content > h2.sh, .content > .sh-sub, .content > .scroller, .content > .card, .content > .group, .content > .duo, .content > .dishes, .content > .rw-card, .content > .disc, .content > .stat-grid, .content > .trophies, .content > .remind, #cx-res > h2.sh, #cx-res > .sh-sub, #cx-res > .group").forEach((el,i)=>{ el.classList.remove("in"); el.classList.add("rv"); el.style.setProperty("--rd",Math.min(i,6)*40+"ms"); RIO.observe(el); });
 }
 
 // ---------- Verre du labo ----------
