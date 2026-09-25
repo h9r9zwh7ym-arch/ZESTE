@@ -1,0 +1,10 @@
+const fs=require('fs');const h=fs.readFileSync('dist/zeste.html','utf8');let js=h.split('<script>')[1].split('</script>')[0];
+global.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement:()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},setAttribute(){},appendChild(){}}),getElementById:()=>null,body:{appendChild(){},prepend(){},classList:{add(){},remove(){},toggle(){}}},documentElement:{dataset:{}}};global.localStorage={getItem:()=>null,setItem(){}};global.window={addEventListener(){}};global.matchMedia=()=>({matches:false,addEventListener(){}});global.setInterval=()=>0;global.setTimeout=()=>0;global.requestAnimationFrame=()=>0;
+js=js.replace(/\ninit\(\);[\s\S]*$/,'\n'); eval(js+`REC_RAW.forEach(r=>{ if(r[9]&&r[9].n){ r[9].tip=r[9].n; delete r[9].n; } }); buildRecipes([]);
+const texts=[]; RECS.forEach(r=>{ texts.push(['nom '+r.id,r.n],['gar '+r.id,r.gar||''],['hist '+r.id,r.h||''],['tip '+r.id,r.tip||'']); buildSteps(r).forEach((s,k)=>texts.push(['étape '+r.id+k,s.t])); });
+Object.values(ING).forEach(i=>texts.push(['ing '+i.id,i.n],['conseil '+i.id,i.tip||'']));
+TECH.forEach(t=>{ texts.push(['tech '+t.id,t.d],['cons '+t.id,t.k]); t.st.forEach(x=>texts.push(['techst '+t.id,x])); });
+TERMS.forEach(t=>texts.push(['terme '+t[0],t[3]]));
+const rules=[[/  /,'double espace'],[/ [,.]/,'espace avant ponctuation'],[/[a-zéè][.!?][A-ZÉ]/,'espace manquant après point'],[/\\?\\?/,'??'],[/'/,"apostrophe droite"],[/"/,'guillemet droit'],[/ :(?! )/,'deux-points collé'],[/[a-zé]:/,'deux-points sans espace'],[/\\bde le\\b|\\bde les\\b|\\bà le\\b/,'contraction'],[/\\bla [aeiouéè]/i,'élision manquante (la)'],[/\\ble [aeiouéè]/i,'élision manquante (le)'],[/\\bde [aeiouéè]/i,'élision manquante (de)'],[/undefined|NaN/,'undefined']];
+const out={}; texts.forEach(([k,t])=>rules.forEach(([re,n])=>{ if(re.test(t)){ (out[n]=out[n]||[]).push(k+' → '+t.slice(Math.max(0,t.search(re)-25),t.search(re)+30)); } }));
+for(const n in out){ console.log('== '+n+' ('+out[n].length+')'); out[n].slice(0,14).forEach(x=>console.log('  '+x)); }`);
