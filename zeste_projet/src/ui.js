@@ -227,7 +227,7 @@ function vBar(){
   const out=ids.filter(id=>tracked(id)&&S.stock[id]===0&&inSeg(id));
   if(out.length) o+=`<h2 class="sh">À racheter</h2><div class="sh-sub">Bouteilles vides</div><div class="group">${out.map(id=>`<div class="row" style="--inset:58px"><div class="thumb" style="width:30px;height:44px">${bottleSVG(id,0)}</div><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(ING[id].n)}</div><div class="s">${usedIn(id)} recettes l’utilisent</div></button><button class="btn small sec" data-a="refill" data-id="${id}">Racheté</button></div>`).join("")}</div>`;
   SEGS.forEach(([sg,sn])=>{ if(BF&&BF!==sg) return;
-    if(sg==="add"){ const on=BASICS.filter(id=>ING[id]&&has(id)), extra=ids.filter(id=>segOf(id)==="add");
+    if(sg==="add"){ const on=BASICS.filter(id=>ING[id]&&!ING[id].al&&has(id)), extra=ids.filter(id=>segOf(id)==="add");
       o+=`<h2 class="sh">${sn}</h2><div class="sh-sub">Toujours à portée de main, compté automatiquement</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:calc(16rem / 17)">${on.length} basiques</b><button class="link" data-a="basics">Modifier</button></div><div class="basics">${on.map(id=>`<span>${esc(shortN(id))}</span>`).join("")}</div></div>`;
       if(extra.length) o+=`<div class="sp8"></div><div class="group">${extra.map(stockRow).join("")}</div>`; return; }
     const L=ids.filter(id=>segOf(id)===sg && !(tracked(id)&&S.stock[id]===0)).sort((a,b)=>ING[a].n.localeCompare(ING[b].n,"fr")); if(!L.length) return;
@@ -528,7 +528,7 @@ function addSheet(){
   let qq="";
   const sh=openSheet(()=>{ let b=`<label class="search">${IC.search}<input id="aq" type="search" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label>`;
     if(!qq) b+=segChips(AS,"as",false);
-    const L=Object.values(ING).filter(i=>i.id!=="eau"&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===AS)).sort((a,c)=>a.n.localeCompare(c.n,"fr"));
+    const L=Object.values(ING).filter(i=>i.id!=="eau"&&!i.al&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===AS)).sort((a,c)=>a.n.localeCompare(c.n,"fr"));
     const bas=L.filter(i=>i.basic), oth=L.filter(i=>!i.basic);
     if(oth.length) b+=`<div class="group" style="margin-top:8px">${oth.map(i=>{ const on=inBar(i.id)&&(tracked(i.id)?S.stock[i.id]>0:S.stock[i.id]===1); return `<button class="row tap" data-a="addtoggle" data-id="${i.id}"><div class="grow"><div class="t">${esc(i.n)}</div>${qq?`<div class="s">${SEGS.find(s=>s[0]===segOf(i.id))[1]}</div>`:""}</div><span style="color:${on?"var(--tint)":"var(--label3)"};width:26px;height:26px;display:grid;place-items:center">${on?IC.checkc.replace("<svg","<svg width='24' height='24'"):IC.plus.replace("<svg","<svg width='22' height='22'")}</span></button>`; }).join("")}</div>`;
     if(bas.length) b+=`<div class="gh">Toujours à portée de main</div><div class="group">${bas.map(i=>`<div class="row"><div class="grow"><div class="t">${esc(i.n)}</div></div><span class="badge ${has(i.id)?"green":""}">${has(i.id)?"Compté":"Désactivé"}</span></div>`).join("")}</div><div class="gf">Ces basiques sont comptés automatiquement. <button class="link" data-a="basics">Modifier</button></div>`;
@@ -537,12 +537,12 @@ function addSheet(){
   });
 }
 function basicsSheet(){
-  openSheet(()=>({title:"Contenu additionnel",body:`<p class="body" style="margin-bottom:12px">Ces ingrédients sont considérés comme toujours disponibles. Désactive ceux que tu n’as jamais sous la main.</p><div class="group">${BASICS.filter(id=>ING[id]).map(id=>`<div class="row"><div class="grow"><div class="t">${esc(ING[id].n)}</div></div><button class="switch ${has(id)?"on":""}" data-a="nobasic" data-id="${id}" aria-label="${esc(ING[id].n)}"></button></div>`).join("")}</div>`}));
+  openSheet(()=>({title:"Contenu additionnel",body:`<p class="body" style="margin-bottom:12px">Ces ingrédients sont considérés comme toujours disponibles. Désactive ceux que tu n’as jamais sous la main.</p><div class="group">${BASICS.filter(id=>ING[id]&&!ING[id].al).map(id=>`<div class="row"><div class="grow"><div class="t">${esc(ING[id].n)}</div></div><button class="switch ${has(id)?"on":""}" data-a="nobasic" data-id="${id}" aria-label="${esc(ING[id].n)}"></button></div>`).join("")}</div>`}));
 }
 let PS="spirit";
 function pickIngSheet(cb){
   let qq="";
-  const sh=openSheet(()=>{ const L=Object.values(ING).filter(i=>i.id!=="eau"&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===PS));
+  const sh=openSheet(()=>{ const L=Object.values(ING).filter(i=>i.id!=="eau"&&!i.al&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===PS));
     const mine=L.filter(i=>has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr")), rest=L.filter(i=>!has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr"));
     const rows=A=>A.map(i=>`<button class="row tap" data-a="pickit" data-id="${i.id}"><i style="width:8px;height:8px;border-radius:4px;background:${SEGCOL[segOf(i.id)]};flex:none"></i><div class="grow"><div class="t">${esc(i.n)}</div></div>${IC.plus.replace("<svg","<svg width='20' height='20' style='color:var(--tint)'")}</button>`).join("");
     return {title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label>${qq?"":segChips(PS,"ps",false)}${mine.length?`<div class="gh">Disponible chez toi</div><div class="group">${rows(mine)}</div>`:""}${rest.length?`<div class="gh">À acheter</div><div class="group">${rows(rest)}</div>`:""}`,

@@ -1,17 +1,17 @@
 // ---- v1.21 : alignement sur les recettes officielles de l’IBA (iba-world.com, relevé d’août 2025) ----
 ING_RAW.push(
-["sucre_poudre","Sucre en poudre","frais",0,160,0,"",{u:"bs",bsml:2.5,tip:"Du sucre fin : il se dissout plus vite que le sucre cristallisé. Une cuillère à café pèse environ 4 g."}],
+["sucre_poudre","Sucre en poudre","frais",0,160,0,"",{al:"sucre",u:"bs",bsml:2.5,tip:"Du sucre fin : il se dissout plus vite que le sucre cristallisé. Une cuillère à café pèse environ 4 g."}],
 ["sucre_vanille","Sucre vanillé","frais",0,160,0,"k2",{u:"bs",bsml:2.5,tip:"En sachets, au rayon pâtisserie."}],
 ["miel","Miel","frais",0,115,0,"l1",{col:"#E8B84A",tip:"Un miel liquide de fleurs, au goût neutre."}],
 ["sel","Sel","frais",0,0,0,"",{u:"u",uL:["pincée","pincées"]}],
-["citron_vert_fr","Citron vert en quartiers","jus",0,1.6,6,"f2",{u:"u",uL:["fruit","fruits"],yml:25,col:"#E4EDB0",tip:"Un citron vert entier, coupé en quartiers et pilé : le zeste libère ses huiles parfumées."}],
-["citron_fr","Citron frais","jus",0,2.5,6,"f1",{u:"u",uL:["quart de rondelle","quarts de rondelle"],yml:3,col:"#F4EFA8"}],
-["orange_fr","Orange fraîche","jus",0,9,0.8,"f2",{u:"u",uL:["quart de rondelle","quarts de rondelle"],yml:5,col:"#F5A93A"}],
-["ananas_fr","Ananas frais","jus",0,10,0.8,"f3",{u:"u",uL:["morceau","morceaux"],yml:10,col:"#F5DB7A"}],
+["citron_vert_fr","Citron vert en quartiers","jus",0,1.6,6,"f2",{al:"citron_vert",u:"u",uL:["fruit","fruits"],yml:25,col:"#E4EDB0",tip:"Un citron vert entier, coupé en quartiers et pilé : le zeste libère ses huiles parfumées."}],
+["citron_fr","Citron frais","jus",0,2.5,6,"f1",{al:"citron",u:"u",uL:["quart de rondelle","quarts de rondelle"],yml:3,col:"#F4EFA8"}],
+["orange_fr","Orange fraîche","jus",0,9,0.8,"f2",{al:"orange",u:"u",uL:["quart de rondelle","quarts de rondelle"],yml:5,col:"#F5A93A"}],
+["ananas_fr","Ananas frais","jus",0,10,0.8,"f3",{al:"ananas",u:"u",uL:["morceau","morceaux"],yml:10,col:"#F5DB7A"}],
 ["gingembre","Gingembre frais","frais",0,0,0,"e3",{u:"u",uL:["tranche","tranches"],col:"#E8D8A0",tip:"Une racine ferme et lisse ; inutile de l’éplucher pour la piler."}],
 ["clou_girofle","Clous de girofle","frais",0,0,0,"e3w1",{u:"u",uL:["clou","clous"],col:"#6A4030"}],
 ["vanille","Extrait de vanille","frais",0,0,0,"k2",{u:"gt",col:"#5A3A20",tip:"Un extrait naturel, au rayon pâtisserie. Quelques gouttes suffisent."}],
-["jaune_oeuf","Jaune d’œuf","frais",0,0,0,"k3",{col:"#F2C84A"}],
+["jaune_oeuf","Jaune d’œuf","frais",0,0,0,"k3",{al:"oeuf",col:"#F2C84A"}],
 ["old_tom","Old Tom gin","spirit",40,1,0,"h2f1k1",{col:"#E8ECE4",subs:["gin"],tip:"Un gin légèrement adouci, dans le style du XIXe siècle. Hayman’s Old Tom est le plus facile à trouver."}],
 ["vodka_vanille","Vodka vanille","spirit",38,0,0,"k2",{col:"#EEE8DA",subs:["vodka"],tip:"Une vodka aromatisée à la vanille, comme Absolut Vanilia, ou une vodka où a infusé une gousse fendue."}],
 ["passion_puree","Purée de fruit de la passion","jus",0,11,3.5,"f3",{col:"#F2B830",tip:"Au rayon surgelé ou chez les grossistes. À défaut, la pulpe de fruits frais passée au tamis."}],
@@ -22,6 +22,7 @@ ING_RAW.push(
 ["cordial_camomille","Cordial de camomille","sirop",0,55,0.5,"l2",{col:"#F0E4A0",tip:"Rare dans le commerce : fais infuser de la camomille dans un sirop de sucre, avec un peu de jus de citron."}]
 );
 BASICS.push("sucre_poudre","miel","sel","citron_vert_fr","citron_fr","jaune_oeuf");
+// les formes « al » (citron en quartiers, jaune d’œuf…) suivent la disponibilité de leur produit et restent hors des listes du bar
 SPIRIT_GROUP.old_tom="gin"; SPIRIT_GROUP.vodka_vanille="vodka";
 REC_RAW.push(
 ["angel_face","Angel Face","stirred","shake","coupe","none","#E8A860",[["gin",30],["abricot",30],["calvados",30]],"Aucune",{c:1,h:"Publié en 1930 dans le Savoy Cocktail Book de Harry Craddock. Trois spiritueux à parts égales : il est bien plus fort que son nom ne le laisse croire."}],
