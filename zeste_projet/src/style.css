@@ -1410,7 +1410,7 @@ svg.live.again1 .ice>g.cube{animation:icebob_b 4.5s ease-in-out var(--b) 3}
 svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
 @media (prefers-reduced-motion:reduce){svg.live.again1 *,svg.live.again2 *{animation:none!important}}
 /* zones de toucher d’au moins 44 pt (recommandation d’Apple), sans changer l’apparence */
-.close-x,.icon-btn,.stars button{position:relative}
+:where(.close-x,.icon-btn,.stars button){position:relative} /* priorité nulle : .rw-x, .sv-x… gardent leur position */
 .close-x::after,.icon-btn::after{content:"";position:absolute;inset:-6px}
 .stars button::after{content:"";position:absolute;inset:-5px 0}
 /* grands textes : les boutons grandissent au lieu de laisser déborder leur libellé */
