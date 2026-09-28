@@ -1,13 +1,7 @@
 // ================= V10 =================
 const DEFAULT_HOME=[["suggest",1],["duo",1],["table",1],["rewind",1],["na",1],["disc",1],["season",1],["prep",1]];
 const HOME_N={suggest:"Aussi pour toi",duo:"Surprends-moi et achat malin",table:"À table : accords mets",rewind:"Ton Zeste Rewind",na:"Sans alcool",disc:"Le saviez-vous ?",season:"De saison",prep:"Préparations à surveiller"};
-function fixState(){
-  S.settings=Object.assign({unit:"cl",nobasic:[],na:false,wow:true,splash:true,ambiance:true,moment:"auto"},S.settings||{});
-  if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[];
-  let H=Array.isArray(S.settings.home)?S.settings.home.filter(x=>HOME_N[x[0]]):[];
-  DEFAULT_HOME.forEach(d=>{ if(!H.some(x=>x[0]===d[0])) H.push(d.slice()); }); S.settings.home=H;
-  S.price=S.price||{};
-}
+// (fixState : remplacée plus loin, voir ui_final.js)
 function WOW(){ return FX("stream"); }
 function ctxInfo(){ const h=new Date().getHours(), m=new Date().getMonth()+1;
   const auto= momentForHour(h);
@@ -46,6 +40,10 @@ function vToday(){
   if(empty){
     o+=`<div class="hero"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #E8A84A44, transparent 65%)"></div><div class="hg" data-a="jiggle">${glassSVG(RMAP.negroni,{pour:HERO_LAST!=="_w",live:1,stream:HERO_LAST!=="_w"&&WOW()})}</div><div class="hn">Bienvenue au bar</div><div class="hr">Dis-moi quelles bouteilles tu as. Sucre, œufs, agrumes et autres basiques sont déjà comptés.</div><div class="btn-row"><button class="btn" data-a="quickadd">Remplir mon bar</button></div></div>`;
     HERO_LAST="_w";
+  } else if(mo==="matin"){
+    // le matin, pas de cocktail mis en avant : un état du bar, et de quoi préparer la soirée
+    const n=makeable(); HERO_LAST="_m";
+    o+=`<div class="hero still"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #FFD44740, transparent 62%)"></div><div class="hg">${glassSVG({id:"_matin",g:"coupe",col:"#F6EEDD",ing:[],ice:"none",gar:""},{fill:0,garnish:false})}</div><div class="kick">Ce matin</div><div class="hn">Le bar se repose</div><div class="hr">${n?`${n} cocktail${n>1?"s":""} faisable${n>1?"s":""} avec ton bar, pour ce soir.`:"Rien n’est encore faisable avec ton bar : c’est le bon moment pour le compléter."}</div><div class="btn-row"><button class="btn sec" data-a="tab" data-t="cocktails">Voir la carte</button><button class="btn sec" data-a="tab" data-t="bar">Mon bar</button></div></div>`;
   } else if(list.length){
     const r=list[0], anim=HERO_LAST!==r.id; HERO_LAST=r.id; const m=metricsR(r);
     S.heroLog=S.heroLog||[]; const dsd=daySeed(); if(!S.heroLog.some(x=>x.id===r.id&&x.d===dsd)){ S.heroLog.push({id:r.id,d:dsd}); S.heroLog=S.heroLog.slice(-30); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
@@ -60,9 +58,9 @@ function vToday(){
   return o+`<div class="sp24"></div></div>`;
 }
 const HOME_SEC={
-  suggest:({list})=> list.length>1? `<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">${list.length} cocktails possibles, variés et classés selon tes goûts</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>` : "",
+  suggest:({list})=> list.length>1? `<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">Faisables avec ton bar, variés et classés selon tes goûts</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>` : "",
   duo:({list,empty})=>{ const br=!empty&&(bottleRecs().find(b=>tracked(b.id))||bottleRecs()[0]);
-    return `<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?list.length+" possibles":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`; },
+    return `<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?"Au hasard parmi tes idées":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`; },
   table:()=>`<h2 class="sh">À table</h2><div class="sh-sub">Tu manges quoi ? Je te dis quoi boire avec</div><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${d.e}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
   rewind:()=> rewindEligible()? `<button class="rw-card" data-a="rewind"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">${rewindData().count} verres, ${rewindData().distinct} recettes. Revis tout ça en quelques histoires.</div></div><div class="rw-play">${IC.play}</div></button>` : "",
   na:()=>{ const naL=RECS.filter(r=>r.na&&status(r).ok).sort((a,b)=>score(b)-score(a)).slice(0,8);
@@ -168,7 +166,7 @@ async function rwSave(){
     <text x="540" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#fff">${new Date().getFullYear()}</text>${g}
     ${top?`<text x="540" y="880" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#fff">${esc(top.n)}</text><text x="540" y="935" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">mon cocktail de l’année</text>`:""}
     ${st(200,1110,D.count,"verres")}${st(420,1110,D.distinct,"recettes")}${st(640,1110,D.fams.length,"familles")}${st(860,1110,D.tro,"trophées")}
-    <text x="540" y="1270" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="44" fill="rgba(255,255,255,.9)">Zeste</text></svg>`;
+    ${(typeof zesteMark==="function"?zesteMark({round:true}).replace(/ class="[^"]*"/g,"").replace(/ aria-hidden="true"/,"").replace("<svg",'<svg x="444" y="1222" width="64" height="64"'):"")}<text x="${typeof zesteMark==="function"?522:540}" y="1270" text-anchor="${typeof zesteMark==="function"?"start":"middle"}" font-family="Georgia,serif" font-weight="700" font-size="44" fill="rgba(255,255,255,.9)">Zeste</text></svg>`;
   try{
     const img=new Image(); img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); await img.decode();
     const cv=document.createElement("canvas"); cv.width=W; cv.height=H; cv.getContext("2d").drawImage(img,0,0);

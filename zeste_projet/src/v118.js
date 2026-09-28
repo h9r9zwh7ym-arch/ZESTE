@@ -29,16 +29,7 @@ const PERISH={prosecco:[0,3,"avant qu’il perde ses bulles"],champagne:[0,3,"av
 function perishing(r){ const T=S.opened||{}, now=Date.now(); let best=null; for(const it of r.ing){ const p=PERISH[it.id]; if(!p||!T[it.id]||!(S.stock[it.id]>0)) continue; const d=(now-T[it.id])/864e5; if(d>=p[0]&&d<=p[1]&&(!best||p[1]<best[2])) best=[it.id,p[2],p[1]]; } return best; }
 (function(){ const W=k=>{ const g=ACT[k]; if(!g) return; ACT[k]=(d,t)=>{ const had=d&&d.id&&has(d.id); const r=g(d,t); if(d&&d.id&&!had&&has(d.id)) { markBought(d.id); save(); } return r; }; }; ["toggle","addtoggle","pickit","refill","setlvl","lvl"].forEach(W); })();
 const _reasons=reasons; reasons=function(r){ const rt=S.ratings[r.id]; if(!(rt>=4)){ const p=perishing(r); if(p){ const n=lc(shortN(p[0])); return "Pour finir "+(/^[aeiouyéèêàâîïôœ]/i.test(n)?"ton ":FEM.test(n)?"ta ":"ton ")+n+" ouvert"+(FEM.test(n)?"e":"")+" "+p[1]; } } return _reasons(r); };
-// ---------- Étagère 2.0 ----------
-function shelfView(ids){
-  const segs=[["spirit","Spiritueux"],["liq","Liqueurs et amers"],["vin","Vins et vermouths"],["sirop","Sirops"],["soft","Softs et jus"]], LV=["Vide","¼","½","¾","Pleine"];
-  const tot=ids.length, empty=ids.filter(id=>tracked(id)&&S.stock[id]===0).length;
-  let o=`<div class="bar2"><div class="b2-glow"></div><div class="b2-head"><b>${tot} bouteille${tot>1?"s":""}</b>${empty?`<span class="b2-warn">${empty} à racheter</span>`:""}</div>`, k=0;
-  segs.forEach(([sg,n])=>{ const L=ids.filter(id=>segOf(id)===sg).sort((a,b)=>(S.stock[b]>0)-(S.stock[a]>0)||ING[a].n.localeCompare(ING[b].n,"fr")); if(!L.length) return;
-    o+=`<div class="b2-shelf"><div class="b2-lab">${esc(n)}<i>${L.length}</i></div><div class="b2-row">${L.map(id=>{ const tr=tracked(id), v=S.stock[id], lv=tr?v:(v===1?4:0), idx=k++;
-      return `<button class="b2-b ${lv===0?"vide":""}" data-a="shelfpick" data-id="${id}" style="--i:${idx};--d:${(idx%9)*0.7}s"><span class="b2-svg">${bottleSVG(id,lv,false,FX("live")?((idx%9)*0.8).toFixed(1):0)}</span><span class="b2-tag"><span class="b2-n">${esc(shortN(id))}</span>${tr?`<span class="b2-l l${lv}">${LV[lv]}</span>`:""}</span></button>`; }).join("")}</div><div class="b2-board"><i></i></div></div>`; });
-  return o+`</div><div class="gf" style="margin-top:10px">Touche une bouteille pour changer son niveau, son prix ou voir ce qu’elle permet de faire.</div>`;
-}
+// (shelfView : remplacée plus loin, voir v125.js)
 Object.assign(ACT,{ shelfpick:(d,t)=>{ if(t){ t.classList.add("lift"); } if(typeof SND!=="undefined") SND.pop(0.9); setTimeout(()=>{ if(t) t.classList.remove("lift"); ingSheet(d.id); },170); } });
 
 // ---------- Débouchage détecté automatiquement ----------

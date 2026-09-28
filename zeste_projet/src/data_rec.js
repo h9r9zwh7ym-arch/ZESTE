@@ -119,4 +119,4 @@ const FAMILIES = {
   sour:"Sours", stirred:"Mélangés au verre", highball:"Highballs", herbes:"Herbes fraîches",
   bulles:"Spritz & bulles", tiki:"Tiki", dessert:"Café & dessert", chaud:"Chauds"
 };
-const GLASSES = {coupe:"une coupe", martini:"un verre à martini", rocks:"un verre old fashioned", highball:"un verre highball", flute:"une flûte", vin:"un verre à vin", mug:"un mug en cuivre", tasse:"un verre à Irish coffee"};
+const GLASSES = {coupe:"une coupe", martini:"un verre à martini", rocks:"un tumbler", highball:"un verre highball", flute:"une flûte", vin:"un verre à vin", mug:"un mug en cuivre", tasse:"un verre à Irish coffee", shot:"un verre à shot"};

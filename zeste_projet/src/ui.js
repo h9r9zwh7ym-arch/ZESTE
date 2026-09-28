@@ -3,7 +3,7 @@ const KEY="zeste.v1";
 const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
 function loadLocal(){ try{ const j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){} return DEF(); }
 S=loadLocal();
-function fixState(){ S.settings=Object.assign({unit:"cl",nobasic:[]},S.settings||{}); if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[]; }
+// (fixState : remplacée plus loin, voir ui_final.js)
 let DB=null, DOC=null, saveTimer=null, saving=false, pending=false;
 function save(){
   STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
@@ -34,7 +34,7 @@ let POP=null; // dernière interaction animée
 function toast(t,opt={}){
   const el=$("#toast"); el.className=""; el.innerHTML=(opt.icon||"")+`<span>${esc(t)}</span>`+(opt.action?`<button class="tbtn">${esc(opt.action.label)}</button>`:"");
   if(opt.action) el.querySelector(".tbtn").onclick=()=>{ opt.action.fn(); el.classList.remove("show"); };
-  void el.offsetWidth; el.classList.add("show"); if(opt.trophy) el.classList.add("trophy");
+  void el.offsetWidth; el.classList.add("show"); if(opt.trophy) el.classList.add("t-tro");
   clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("show"), opt.action?4200:2400);
 }
 // L'écran sous une fiche ou une fenêtre n'est redessiné qu'à sa fermeture : moins de travail pendant qu'on interagit
@@ -61,8 +61,19 @@ function pendingRatings(){ const now=Date.now(), sn=S.snooze||{}, seen=new Set()
   return out; }
 function remindCard(){ const P=pendingRatings(); if(!P.length) return ""; const h=P[0], r=RMAP[h.id];
   return `<div class="remind"><div class="rm-in"><div class="rm-g">${glassSVG(r)}</div><div class="grow"><div class="rm-k">${rel(h.t)==="Aujourd’hui"?"Tout à l’heure":rel(h.t)}${P.length>1?` <span class="rm-n">+${P.length-1}</span>`:""}</div><div class="rm-t">Alors, ce ${esc(r.n)} ?</div><div class="stars">${[1,2,3,4,5].map(n=>`<button data-a="remind" data-id="${r.id}" data-n="${n}" aria-label="${n} étoiles">${IC.star}</button>`).join("")}</div></div><button class="rm-x" data-a="snooze" data-id="${r.id}" aria-label="Plus tard">${IC.x}</button></div><div class="rm-done">${IC.checkc}<span>Merci, c’est noté</span></div></div>`; }
+// Masque le nom du cocktail dans son histoire (carte « Le saviez-vous ? ») en gardant une phrase correcte :
+// « du Negroni » devient « de ce cocktail », « le Negroni » « ce cocktail », « au Negroni » « à ce cocktail »…
+function maskName(h,n){
+  const N=n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"), C=s=>s.charAt(0).toUpperCase()+s.slice(1);
+  const rules=[[/\b(du|Du)\s+/,"de ce cocktail"],[/\b(au|Au)\s+/,"à ce cocktail"],[/\b(des|Des)\s+/,"de ces cocktails"],[/\b(le|Le|la|La|les|Les|un|Un|une|Une)\s+/,"ce cocktail"],[/\b([dD])[’']\s*/,"de ce cocktail"],[/\b([lL])[’']\s*/,"ce cocktail"]];
+  // nom de personne (« Camillo Negroni ») : on garde l'initiale plutôt que « Camillo ce cocktail »
+  let out=h.replace(new RegExp("([A-ZÀ-Ý][a-zà-ÿ]+)\\s+"+N+"\\b","g"),(m,w)=>/^(Le|La|Les|Du|Au|Un|Une|Des|En|À|Et|Mais|Ce|Son|Sa|Ses)$/.test(w)?m:w+" "+n.charAt(0)+".");
+  rules.forEach(([pre,rep])=>{ out=out.replace(new RegExp(pre.source+N,"g"),(m,w)=>/^[A-Z]/.test(w)?C(rep):rep); });
+  out=out.replace(new RegExp(N,"g"),"ce cocktail");
+  return out.replace(/(^|[.!?]\s+)ce cocktail/g,(m,a)=>a+"Ce cocktail");
+}
 function discoveryCard(){ const L=RECS.filter(r=>r.h&&!madeCount(r.id)); if(!L.length) return ""; const r=L[Math.floor(hrand("d"+daySeed())*L.length)];
-  return `<h2 class="sh">Le saviez-vous ?</h2><div class="sh-sub">Une histoire de cocktail par jour</div><div class="disc" data-a="flip"><div class="disc-in"><div class="disc-f"><div class="disc-q">“</div><p>${esc(r.h.split(r.n).join("ce cocktail"))}</p><div class="disc-hint">${IC.sparkle}Touche pour découvrir lequel</div></div><div class="disc-b" style="--c:${r.col}"><div class="disc-g">${glassSVG(r)}</div><div class="disc-n">${esc(r.n)}</div><div class="disc-s">${status(r).ok?"Tu peux le faire maintenant":"Il te manque "+esc(status(r).miss.map(x=>lc(shortN(x))).join(", "))}</div><button class="btn small" data-a="rec" data-id="${r.id}">Voir la recette</button></div></div></div>`; }
+  return `<h2 class="sh">Le saviez-vous ?</h2><div class="sh-sub">Une histoire de cocktail par jour</div><div class="disc" data-a="flip"><div class="disc-in"><div class="disc-f"><div class="disc-q">“</div><p>${esc(maskName(r.h,r.n))}</p><div class="disc-hint">${IC.sparkle}Touche pour découvrir lequel</div></div><div class="disc-b" style="--c:${r.col}"><div class="disc-g">${glassSVG(r)}</div><div class="disc-n">${esc(r.n)}</div><div class="disc-s">${status(r).ok?"Tu peux le faire maintenant":"Il te manque "+esc(status(r).miss.map(x=>lc(shortN(x))).join(", "))}</div><button class="btn small" data-a="rec" data-id="${r.id}">Voir la recette</button></div></div></div>`; }
 function tileLite(r){ return `<button class="tile lite" data-a="rec" data-id="${r.id}"><div class="tg" style="background:radial-gradient(circle at 50% 60%, ${r.col}40, transparent 70%)">${glassThumb(r)}</div><div class="tn">${esc(r.n)}</div><div class="ts">${esc(ingList(r))}</div></button>`; }
 function tile(r, sub){
   return `<button class="tile" data-a="rec" data-id="${r.id}">${hasTaste()&&!S.ratings[r.id]&&matchPct(r)>=65?`<span class="tmatch">${matchPct(r)} %</span>`:""}<div class="tg" style="background:radial-gradient(circle at 50% 60%, ${r.col}55, transparent 70%)">${glassSVG(r)}</div><div class="tn">${esc(r.n)}</div><div class="ts">${esc(sub||ingList(r))}</div></button>`;
@@ -96,34 +107,7 @@ function onScroll(){ this.classList.toggle("scrolled", this.scrollTop>34);
   if(this.id==="v-today"){ const g=this.querySelector(".hero .hg"), y=this.scrollTop; if(g){ g.style.transform=y>0?`scale(${Math.max(0.7,1-y/650).toFixed(3)})`:""; g.style.opacity=y>0?Math.max(0.2,1-y/500):""; } const gl=this.querySelector(".hero .glow"); if(gl) gl.style.opacity=Math.max(0,0.55-y/600); } }
 
 let HERO_LAST=null;
-function vToday(){
-  const c=ctxInfo(), h=new Date().getHours(), nm=(S.settings.name||"").trim();
-  const title= nm? (h>=18||h<4?"Bonsoir ":h<12?"Bonjour ":"Salut ")+nm : (h>=17||h<4? "Ce soir" : "Aujourd’hui");
-  const list=tonight(), empty=!barCount(), taste=hasTaste();
-  let o=nav(title)+`<div class="content"><div class="eyebrow">${dateLabel()}</div><h1 class="lt">${title}</h1>`;
-  if(empty){
-    o+=`<div class="hero"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #E8A84A44, transparent 65%)"></div><div class="hg">${glassSVG(RMAP.negroni,{pour:HERO_LAST!=="_w"})}</div><div class="hn">Bienvenue au bar</div><div class="hr">Dis-moi quelles bouteilles tu as. Sucre, œufs, agrumes et autres basiques sont déjà comptés.</div><div class="btn-row"><button class="btn" data-a="quickadd">Remplir mon bar</button></div></div>`;
-    HERO_LAST="_w";
-  } else if(list.length){
-    const r=list[0], anim=HERO_LAST!==r.id; HERO_LAST=r.id; const m=metricsR(r);
-    S.heroLog=S.heroLog||[]; const dsd=daySeed(); if(!S.heroLog.some(h=>h.id===r.id&&h.d===dsd)){ S.heroLog.push({id:r.id,d:dsd}); S.heroLog=S.heroLog.slice(-30); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
-    o+=`<div class="hero ${anim?"":"still"}"><div class="glow" style="background:radial-gradient(circle at 50% 36%, ${r.col}70, transparent 62%)"></div><div class="hg" data-a="jiggle">${glassSVG(r,{pour:anim,live:1})}</div><div class="kick">${esc(c.label)}</div><div class="hn">${esc(r.n)}</div><div class="hr">${esc(reasons(r))}</div><div class="pills">${S.ratings[r.id]?`<span class="pill match">Noté ${S.ratings[r.id]} sur 5</span>`:taste&&matchPct(r)>=62?`<span class="pill match">${matchPct(r)} % pour toi</span>`:`<span class="pill">${esc(FAMILIES[r.fam])}</span>`}<span class="pill">${Math.round(m.abv)} % d’alcool</span></div><div class="btn-row"><button class="btn sec" data-a="rec" data-id="${r.id}">Voir la recette</button><button class="btn" data-a="barmode" data-id="${r.id}">${IC.play}Préparer</button></div></div>`;
-  } else {
-    o+=`<div class="hero"><div class="hg">${glassSVG({g:"coupe",col:"#D8D0C0",ing:[]})}</div><div class="hn">Presque !</div><div class="hr">Rien n’est encore faisable avec ton bar, mais il manque souvent une seule bouteille.</div><div class="btn-row"><button class="btn sec" data-a="tab" data-t="bar">Voir les achats malins</button></div></div>`;
-  }
-  o+=remindCard();
-  if(list.length>1){ o+=`<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">${list.length} cocktails possibles, variés et classés selon tes goûts</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>`; }
-  const br=!empty&&(bottleRecs().find(b=>tracked(b.id))||bottleRecs()[0]);
-  o+=`<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?list.length+" possibles":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`;
-  const naL=RECS.filter(r=>r.na&&status(r).ok).sort((a,b)=>score(b)-score(a)).slice(0,8);
-  if(naL.length) o+=`<h2 class="sh">Sans alcool<button class="more" data-a="nafilter">Tout voir</button></h2><div class="sh-sub">Tout le plaisir, zéro degré</div><div class="scroller">${naL.map(r=>tile(r)).join("")}</div>`;
-  o+=discoveryCard();
-  const mo=new Date().getMonth()+1, se=SEASON[mo];
-  o+=`<h2 class="sh">De saison</h2><div class="sh-sub">${esc(se.p.charAt(0).toUpperCase()+se.p.slice(1))}</div><div class="card season"><div class="sp">${esc(se.t)}</div><div class="mini-list">${se.r.map(id=>RMAP[id]).filter(Boolean).map(r=>`<button class="mini" data-a="rec" data-id="${r.id}">${glassSVG(r)}<div class="mn">${esc(r.n)}</div></button>`).join("")}</div></div>`;
-  const exp=(S.preps||[]).filter(p=>daysLeft(p)<=3);
-  if(exp.length) o+=`<h2 class="sh">À surveiller</h2><div class="sh-sub">Préparations maison bientôt périmées</div><div class="group">${exp.map(p=>prepRow(p)).join("")}</div>`;
-  return o+`<div class="sp24"></div></div>`;
-}
+// (vToday : remplacée plus loin, voir ui10.js)
 let CF={q:"",main:"",fam:[],base:[],x:[],mode:"list",sort:"score",all:0};
 const XF=[["swiss","Suisses"],["new","Jamais faits"],["mine","Mes créations"],["crea","Créations à tester"],["classic","Grands classiques"]];
 function nFilters(){ return CF.fam.length+CF.base.length+CF.x.length+(CF.sort==="az"?1:0); }
@@ -284,7 +268,7 @@ function vPreps(){
 }
 
 function mixItems(){ S.mix.items=(S.mix.items||[]).filter(i=>i&&ING[i.id]); return S.mix.items.map(it=>({id:it.id,q:it.q,u:unitOf(it.id),r:ING[it.id].fizz&&S.mix.m!=="build"?"top":""})); }
-function mixIce(){ return S.mix.m==="build"?"cubes":"none"; }
+// (mixIce : remplacée plus loin, voir labo2.js)
 function analyze(){
   const items=mixItems(), m=S.mix.m; if(!items.length) return null;
   const met=calc(items,m,mixIce()), st=labStyle(items,m), z=ZONES[st]||ZONES.sour, ratio=met.sug/Math.max(.05,met.acid*10);
@@ -323,26 +307,7 @@ function nearest(items){
   const a=vec(items); const cs=(x,y)=>{ let d=0,nx=0,ny=0; for(const k in x){ nx+=x[k]*x[k]; if(y[k]) d+=x[k]*y[k]; } for(const k in y) ny+=y[k]*y[k]; return d/Math.sqrt(nx*ny||1); };
   return RECS.map(r=>[r,cs(a,vec(r.ing))]).filter(x=>x[1]>0.62).sort((p,q2)=>q2[1]-p[1]).slice(0,3);
 }
-function vCompose(){
-  const items=S.mix.items; let o=`<div class="sp16"></div><div class="seg">${[["shake","Shaker"],["stir","Verre à mélange"],["build","Construit"]].map(([k,n])=>`<button class="${S.mix.m===k?"on":""}" data-a="mm" data-m="${k}">${n}</button>`).join("")}</div>`;
-  o+=`<div class="gh">Ton mélange</div><div class="group">`;
-  if(!items.length) o+=`<div class="empty" style="padding:22px 24px 16px"><b>Compose librement</b>Par exemple rhum et ginger beer : l’app calcule le sucre, l’acidité et l’alcool, et te dit quoi ajouter.<div class="starter">${["daiquiri","negroni","moscow_mule","whisky_sour"].map(id=>`<button class="chip" data-a="tolab" data-id="${id}">Partir d’un ${esc(RMAP[id].n)}</button>`).join("")}</div></div>`;
-  items.forEach((it,k)=>{ o+=`<div class="mix-row"><button class="rm" data-a="mixrm" data-k="${k}" aria-label="Retirer">${IC.x}</button><div class="n"><i style="display:inline-block;width:8px;height:8px;border-radius:4px;background:${SEGCOL[segOf(it.id)]};margin-right:8px"></i>${esc(ING[it.id].n)}</div><div class="stepper"><button data-a="mixq" data-k="${k}" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${fmtQ({q:it.q,u:unitOf(it.id)}).replace(" traits","").replace(" trait","").replace(" feuilles","")}</span><button data-a="mixq" data-k="${k}" data-d="1" aria-label="Plus">${IC.plus}</button></div></div>`; });
-  o+=`<button class="row tap" data-a="mixadd" style="color:var(--tint)">${IC.plus.replace("<svg","<svg width='20' height='20'")}<div class="grow">Ajouter un ingrédient</div></button></div>`;
-  const A=analyze(); if(!A) return o;
-  const {met,st,z}=A;
-  o+=`<div class="gh">Analyse, profil ${esc(STYLE_N[st])}</div><div class="card"><div class="mixglass">${mixGlass(A)}</div><div class="metrics"><div class="metric"><b>${num(Math.round(met.abv*10)/10)} %</b><span>alcool</span>${zoneBar(met.abv,z.abv,40)}</div><div class="metric"><b>${num(Math.round(met.sug*10)/10)}</b><span>sucre g/100 ml</span>${zoneBar(met.sug,z.sug,16)}</div><div class="metric"><b>${num(Math.round(met.acid*100)/100)} %</b><span>acidité</span>${zoneBar(met.acid,z.acid,1.6)}</div></div>`;
-  const p=profileOf(A.items,met);
-  o+=`<div class="sp16"></div><div class="prof">${radarSVG(p)}<div class="muted" style="font-size:calc(14rem / 17)">Environ ${fmtMl(met.vol)} dans le verre après ${S.mix.m==="build"?"la fonte de la glace":"dilution"}. La zone verte montre la plage des classiques du même style.${hasPrices()?(()=>{ const c=costOf(A.items); return c.miss.length?"":" Coût : environ "+chf(c.tot)+"."; })():""}</div></div></div>`;
-  o+=`<div class="gh">Diagnostic</div><div class="group">${A.diag.map((d,k)=>`<div class="diag"><div class="di ${d.warn?"warn":"ok"}">${d.warn?IC.warn:IC.checkc}</div><div class="dt"><b>${esc(d.t)}</b>${esc(d.why)}${d.fix?`<br><button class="btn small sec" data-a="mixfix" data-id="${d.fix.id}" data-q="${d.fix.q}">Ajouter ${esc(fmtQ({q:d.fix.q,u:unitOf(d.fix.id)}))} ${esc(de(lc(shortN(d.fix.id))).replace(/^de |^d’/,m=>m==="de "?"de ":"d’"))}</button>`:""}</div></div>`).join("")}</div>`;
-  const pa=pairings(A.items);
-  if(pa.length) o+=`<div class="gh">Pour aller plus loin</div><div class="group">${pa.map(id=>`<div class="pair"><div class="grow"><div class="pn">${esc(ING[id].n)} ${has(id)?`<span class="badge green">${ING[id].basic?"Toujours là":"Dans ton bar"}</span>`:`<span class="badge">À acheter</span>`}</div><div class="pr">Apporte ${esc(ROLE[id]||"de la complexité")}.</div></div><button class="btn small sec" data-a="mixadd1" data-id="${id}">Ajouter</button></div>`).join("")}</div>`;
-  const nr=nearest(A.items);
-  if(nr.length) o+=`<div class="gh">Ça ressemble à</div><div class="group">${nr.map(([r,s])=>recRow(r, s>0.9?"Presque identique":"Proche à "+Math.round(s*100)+" %")).join("")}</div>`;
-  o+=`<div class="sp16"></div><div class="btn-row"><button class="btn" data-a="aiprompt">${IC.copy}Copier le prompt pour une IA</button></div><div class="gf">Colle-le dans ChatGPT, Claude ou une autre IA : il contient ton mélange, l’analyse, ton bar et tes goûts.</div>`;
-  o+=`<div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="mixsave">Enregistrer</button><button class="btn gray" data-a="mixclear">Vider</button></div>`;
-  return o;
-}
+// (vCompose : remplacée plus loin, voir labo2.js)
 function defaultQ(id){ const i=ING[id], u=unitOf(id); if(u==="d") return 2; if(u==="f") return 6; if(u==="u") return 1; if(u==="bs") return 1; if(u==="br") return 2; if(u==="gt") return 3;
   if(id==="blanc_oeuf") return 20; if(i.fizz) return 100; return {spirit:45,liqueur:15,amaro:22.5,vin:30,sirop:15,jus:(i.ac>3?22.5:60),frais:30}[i.cat]||30; }
 function stepQ(q,u,d){ if(u==="d"||u==="f"||u==="u"||u==="bs"||u==="br"||u==="gt") return Math.max(1,q+d); const st=q<30||(q===30&&d<0)?2.5:q<100||(q===100&&d<0)?5:10; return Math.max(2.5,Math.round((q+d*st)*10)/10); }
@@ -389,15 +354,8 @@ const TROPHIES=[
  ["night","Noctambule","Un cocktail entre minuit et 4 h",1,()=>S.hist.filter(h=>{const x=new Date(h.t).getHours();return x<4;}).length]
 ];
 function distinct(){ return [...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id]); }
-function medal(k,on){ const id="m"+(++GID); const c1=on?"#F7D57A":"#D4D0CA", c2=on?"#C98A1E":"#A8A29A";
-  const glyphs={first:"1",ten:"10",fifty:"50",hundred:"100",d10:"10",d30:"30",fam:"8",sour:"S",stir:"M",tiki:"T",swiss:"+",bitter:"A",hist:"H",critic:"★",palate:"★",bar15:"15",bar30:"30",alch:"⚗",crea:"✦",loyal:"∞",roul:"?",night:"☾",zero:"0",labpro:"90",lab10:"10"};
-  const g=glyphs[k]||"•", small=g.length>2;
-  return `<svg viewBox="0 0 56 56"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><circle cx="28" cy="28" r="25" fill="url(#${id})"/><circle cx="28" cy="28" r="20" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>${k==="swiss"?`<rect x="24.5" y="17" width="7" height="22" rx="1" fill="#fff"/><rect x="17" y="24.5" width="22" height="7" rx="1" fill="#fff"/>`:`<text x="28" y="${small?33:35}" text-anchor="middle" font-size="${small?15:20}" font-weight="800" fill="#fff" font-family="ui-rounded,-apple-system,sans-serif">${g}</text>`}</svg>`; }
-function checkTrophies(){
-  S.tro=S.tro||[]; let nw=null;
-  TROPHIES.forEach(([k,n,,g,f])=>{ if(!S.tro.includes(k) && f()>=g){ S.tro.push(k); nw=n; } });
-  if(nw){ save(); const k=S.tro[S.tro.length-1]; setTimeout(()=>{ toast("Trophée débloqué : "+nw,{icon:medal(k,true),trophy:1}); confetti(innerWidth/2,innerHeight-120); },350); dirty.profil=1; }
-}
+// (medal : remplacée plus loin, voir trophies.js)
+// (checkTrophies : remplacée plus loin, voir trophies.js)
 function vProfil(){
   let o=nav("Profil",`<button class="icon-btn" data-a="settings" aria-label="Paramètres">${IC.gear}</button>`)+`<div class="content"><h1 class="lt">Profil</h1>`;
   o+=`<div class="stat-grid"><div class="stat"><b>${S.hist.length}</b><span>préparés</span></div><div class="stat"><b>${distinct().length}</b><span>recettes</span></div><div class="stat t"><b>${rated().length}</b><span>notés</span></div></div>`;
@@ -788,34 +746,8 @@ async function exportData(){
   try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:name,data:json}); return; } }catch(e){ if(e&&e.code&&e.code!=="unavailable") return; }
   textSheet("Sauvegarde",json);
 }
-function importData(){
-  const inp=document.createElement("input"); inp.type="file"; inp.accept=".json,application/json";
-  inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const d=JSON.parse(rd.result); if(!d||typeof d.stock!=="object") throw 0; S=Object.assign(DEF(),d); fixState(); buildRecipes(S.custom); changed(); toast("Sauvegarde importée"); }catch(e){ toast("Ce fichier n’est pas une sauvegarde Zeste"); } }; rd.readAsText(f); };
-  inp.click();
-}
-
-
-// ================= LANCEMENT =================
-function splash(){
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return 0;
-  const r=splashPick(), col=r.col, light=mix(col,"#ffffff",.3), deep=mix(col,"#000000",.12);
-  const el=document.createElement("div"); el.id="splash"; el.style.setProperty("--c",col);
-  const bub=[...Array(9)].map((_,k)=>`<circle cx="${34+hrand("s"+k)*52}" cy="${60+hrand("t"+k)*14}" r="${1+hrand("u"+k)*1.4}" fill="#fff" style="animation-delay:${1.35+k*0.12}s"/>`).join("");
-  el.innerHTML=`<div class="sp-glow"></div><div class="sp-stage"><svg class="sp-glass" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" overflow="visible">
-    <defs><clipPath id="spk"><path d="M14 30H106C106 64 88 78 60 78C32 78 14 64 14 30Z"/></clipPath><linearGradient id="spl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${light}"/><stop offset="1" stop-color="${deep}"/></linearGradient></defs>
-    <g clip-path="url(#spk)"><g class="sp-liq"><rect x="0" y="38" width="120" height="60" fill="url(#spl)"/><path class="sp-wave" d="M-60 38${" q7.5 -3 15 0 t15 0".repeat(12)}V60H-60Z" fill="${light}"/><path class="sp-wave2" d="M-60 38.5${" q7.5 -2 15 0 t15 0".repeat(12)}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.4"/></g><g class="sp-bub">${bub}</g></g>
-    <path class="sp-draw" d="M14 30H106C106 64 88 78 60 78C32 78 14 64 14 30Z" fill="none" stroke="var(--glass-stroke)" stroke-width="2.6" stroke-linejoin="round" pathLength="100"/>
-    <path class="sp-draw d2" d="M60 78V124" stroke="var(--glass-stroke)" stroke-width="2.8" pathLength="100"/><path class="sp-draw d3" d="M38 126H82" stroke="var(--glass-stroke)" stroke-width="3.6" stroke-linecap="round" pathLength="100"/>
-    <path class="sp-shine" d="M21 36Q23 54 34 62" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>
-    <g class="sp-lemon"><g class="sp-spin"><circle cx="0" cy="0" r="13" fill="#F2D84A" stroke="#C8A820" stroke-width="1.6"/><circle cx="0" cy="0" r="9.8" fill="#FBEFA8"/>${[0,1,2,3,4,5,6,7].map(k=>{ const a=k*Math.PI/4; return `<path d="M0 0L${(Math.cos(a)*9.4).toFixed(2)} ${(Math.sin(a)*9.4).toFixed(2)}" stroke="#F2D84A" stroke-width="1.2"/>`; }).join("")}<circle r="1.6" fill="#F2D84A"/></g></g>
-    ${[[18,8],[104,70],[8,58]].map(([x,y],k)=>`<path class="sp-star" style="animation-delay:${1.55+k*0.12}s;transform-origin:${x}px ${y}px" d="M${x} ${y-6}L${x+1.6} ${y-1.6}L${x+6} ${y}L${x+1.6} ${y+1.6}L${x} ${y+6}L${x-1.6} ${y+1.6}L${x-6} ${y}L${x-1.6} ${y-1.6}Z" fill="var(--tint)"/>`).join("")}
-  </svg><div class="sp-title">${"Zeste".split("").map((ch,k)=>`<span style="animation-delay:${1.05+k*0.07}s">${ch}</span>`).join("")}</div><div class="sp-sub">Ton bar, tes cocktails</div></div>`;
-  document.body.appendChild(el);
-  if(typeof SND!=="undefined") SND.jingleSplash(()=>!gone);
-  const T=2350; let gone=false;
-  const out=()=>{ if(gone) return; gone=true; el.classList.add("out"); HERO_LAST=null; dirty.today=1; if(TAB==="today") renderView("today"); setTimeout(()=>el.remove(),650); };
-  el.addEventListener("click",out); setTimeout(out,T); return T;
-}
+// (importData : remplacée plus loin, voir v120.js)
+// (splash : remplacée plus loin, voir v127.js)
 // ================= ONGLETS & DÉMARRAGE =================
 function switchTab(t){
   const prev=TAB; TAB=t; document.querySelectorAll(".view").forEach(v=>{ v.classList.toggle("active",v.id==="v-"+t); if(v.id==="v-"+t && prev!==t){ const order=["today","cocktails","bar","labo","profil"], dir=order.indexOf(t)>order.indexOf(prev)?"from-r":"from-l"; v.classList.remove("enter","from-r","from-l"); void v.offsetWidth; v.classList.add("enter"); if(FX("slide")) v.classList.add(dir); } });
