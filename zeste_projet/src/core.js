@@ -620,7 +620,7 @@ function dishPicks(d){
     const pk=d.picks.indexOf(r.id); if(pk>=0) s+=3-pk*0.25;
     if(d.base.includes(baseGroup(r))) s+=0.4;
     if(status(r).ok) s+=0.7; s+=(predict(r)-3)*0.35; if(r.na&&!S.settings.na) s-=1.2;
-    let why=best?PAIR_WHY[best]:PAIR_WHY.light; if((d.id==="fondue"||d.id==="raclette")&&["kirsch","williamine","pflumli","abricotine","trasch","genepi"].includes(r.base)) why=PAIR_WHY.trad;
+    let why=best?PAIR_WHY[best]:PAIR_WHY.light;
     return {r,s,why}; }).sort((a,b)=>b.s-a.s);
   const res=[]; for(const x of out){ if(res.length>=7) break; if(res.some(y=>cos(fvec(y.r),fvec(x.r))>0.97)) continue; res.push(x); } return res;
 }

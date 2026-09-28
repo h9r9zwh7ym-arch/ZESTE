@@ -2142,8 +2142,6 @@ const TERMS=[
 // ---------- ACCORDS METS ET COCKTAILS ----------
 // want : ce que le plat appelle (acid, bitter, fizz, herbal, fruity, woody, spicy, sweet, cream, strong : de -1 à 1)
 const DISHES=[
- {id:"fondue",ic:"cooking-pot",n:"Fondue",why:"Le fromage fondu appelle de l’acidité, de l’amertume ou des bulles pour couper le gras. Et la tradition suisse veut un petit kirsch.",want:{acid:1,bitter:.8,fizz:.8,herbal:.4,sweet:-.8,cream:-1,strong:-.2},base:["eaux"],picks:["kirsch_sour","gespritzter","williams_tonic","chasselas_spritz","suze_tonic","genepi_tonic","kirsch_of"]},
- {id:"raclette",ic:"raclette",n:"Raclette",why:"Fromage, pommes de terre et charcuterie : il faut du frais, du sec et un peu d’amertume pour garder l’appétit jusqu’au bout.",want:{acid:.8,bitter:.9,fizz:.8,herbal:.5,sweet:-.8,cream:-1},base:["eaux","amer"],picks:["gespritzter","chasselas_spritz","williams_tonic","americano","jura_negroni","genepi_tonic","suze_spritz"]},
  {id:"pizza",ic:"pizza",n:"Pizza",why:"Tomate, herbes et fromage s’accordent avec l’amertume et les bulles des apéritifs italiens.",want:{bitter:1,fizz:.8,herbal:.4,sweet:-.3,cream:-.8},base:["amer","gin"],picks:["aperol_spritz","americano","negroni","sbagliato","campari_spritz","gin_tonic","bicicletta"]},
  {id:"grill",ic:"hamburger",n:"Grillades et burger",why:"Le grillé et le fumé répondent aux spiritueux boisés, et l’acidité rafraîchit entre deux bouchées.",want:{woody:1,acid:.6,spicy:.4,strong:.4,cream:-.6},base:["whisky","agave"],picks:["old_fashioned","whisky_sour","paloma","dark_stormy","mezcal_mule","michelada","kentucky_mule"]},
  {id:"sushi",ic:"sushi",n:"Sushi",why:"Le poisson cru et le riz vinaigré demandent de la délicatesse : agrumes, bulles fines, gingembre et peu de sucre.",want:{acid:.8,fizz:.9,herbal:.6,fruity:.2,sweet:-.6,strong:-.6,woody:-.6},base:["gin","vodka"],picks:["gin_tonic","french75","hugo","gimlet","whisky_highball","moscow_mule","ranch_water"]},
@@ -2153,13 +2151,12 @@ const DISHES=[
  {id:"pates",ic:"pasta",n:"Pâtes et italien",why:"L’Italie à table appelle l’Italie dans le verre : amers, vermouths et bulles.",want:{bitter:.8,fizz:.6,fruity:.3,sweet:-.2},base:["amer"],picks:["negroni","americano","aperol_spritz","bellini","limoncello_spritz","hugo","sbagliato"]},
  {id:"salade",ic:"salad",n:"Salade et légumes",why:"Un repas léger et vert s’accorde avec les herbes fraîches et le concombre.",want:{herbal:1,acid:.6,fizz:.4,strong:-.5,woody:-.8,cream:-.8},base:["gin"],picks:["gin_basil_smash","southside","eastside","hugo","gin_tonic","virgin_mule","sureau_fizz"]},
  {id:"apero",ic:"olive",n:"Apéro et charcuterie",why:"Olives, jambon cru et chips ouvrent l’appétit avec des apéritifs amers et peu alcoolisés.",want:{bitter:1,fizz:.6,strong:-.6,sweet:-.4},base:["amer"],picks:["americano","aperol_spritz","vermouth_soda","adonis","bamboo","suze_tonic","negroni"]},
- {id:"fromages",ic:"cheese",n:"Plateau de fromages",why:"Les fromages affinés aiment la rondeur des vins mutés, du vermouth et des whiskys.",want:{woody:.8,sweet:.4,fruity:.4,strong:.3,acid:-.3},base:["whisky","brandy"],picks:["manhattan","porto_flip","adonis","boulevardier","sherry_cobbler","vieux_carre","rob_roy"]},
  {id:"chocolat",ic:"chocolate",n:"Chocolat",why:"Le cacao appelle le café, le boisé des spiritueux vieillis et un peu de crème.",want:{woody:1,cream:.8,sweet:.5,strong:.3,acid:-1,fizz:-.6},base:["whisky","brandy","rhum"],picks:["espresso_martini","black_russian","brandy_alexander","rum_of","manhattan","grasshopper","irish_coffee"]},
  {id:"dessert",ic:"cake-slice",n:"Dessert fruité",why:"Une tarte aux fruits ou une salade de fruits se marie aux bulles et aux fruits rouges.",want:{fruity:1,fizz:.8,sweet:.3,acid:.4,woody:-.6,strong:-.5},base:[],picks:["bellini","kir_royal","clover_club","bramble","mimosa","french75","framboise_lemonade"]},
  {id:"brunch",ic:"croissant",n:"Brunch",why:"Le brunch a ses classiques : bulles et agrumes, ou le Bloody Mary pour les plus salés.",want:{fizz:.8,fruity:.6,acid:.4,strong:-.8},base:[],picks:["mimosa","bloody_mary","bellini","bucks_fizz","ramos","arnold_palmer","virgin_mary"]},
  {id:"asiat",ic:"soup",n:"Wok et asiatique",why:"Sauce soja, gingembre et citronnelle aiment le gingembre et les highballs légers.",want:{spicy:.6,fizz:.9,acid:.6,herbal:.4,strong:-.6,cream:-.8},base:["whisky","gin"],picks:["whisky_highball","moscow_mule","gin_gin_mule","hugo","paloma","sureau_tonic","virgin_mule"]}
 ];
-const PAIR_WHY={acid:"L’acidité coupe le gras et réveille le palais",bitter:"L’amertume ouvre l’appétit et nettoie la bouche",fizz:"Les bulles rafraîchissent entre deux bouchées",herbal:"Les herbes apportent de la fraîcheur",fruity:"Le fruit apaise et accompagne",woody:"Le boisé répond au grillé et au cacao",spicy:"Les épices font écho au plat",sweet:"Un peu de douceur arrondit l’ensemble",cream:"Sa rondeur accompagne la gourmandise",strong:"Un spiritueux bien présent tient tête au plat",light:"Léger, il laisse le plat au premier plan",trad:"La tradition suisse à table"};
+const PAIR_WHY={acid:"L’acidité coupe le gras et réveille le palais",bitter:"L’amertume ouvre l’appétit et nettoie la bouche",fizz:"Les bulles rafraîchissent entre deux bouchées",herbal:"Les herbes apportent de la fraîcheur",fruity:"Le fruit apaise et accompagne",woody:"Le boisé répond au grillé et au cacao",spicy:"Les épices font écho au plat",sweet:"Un peu de douceur arrondit l’ensemble",cream:"Sa rondeur accompagne la gourmandise",strong:"Un spiritueux bien présent tient tête au plat",light:"Léger, il laisse le plat au premier plan"};
 // ---------- EXTENSION FINALE ----------
 ING_RAW.push(
 ["piment","Piment frais","frais",0,0,0,"e3",{}],
@@ -2872,7 +2869,7 @@ function dishPicks(d){
     const pk=d.picks.indexOf(r.id); if(pk>=0) s+=3-pk*0.25;
     if(d.base.includes(baseGroup(r))) s+=0.4;
     if(status(r).ok) s+=0.7; s+=(predict(r)-3)*0.35; if(r.na&&!S.settings.na) s-=1.2;
-    let why=best?PAIR_WHY[best]:PAIR_WHY.light; if((d.id==="fondue"||d.id==="raclette")&&["kirsch","williamine","pflumli","abricotine","trasch","genepi"].includes(r.base)) why=PAIR_WHY.trad;
+    let why=best?PAIR_WHY[best]:PAIR_WHY.light;
     return {r,s,why}; }).sort((a,b)=>b.s-a.s);
   const res=[]; for(const x of out){ if(res.length>=7) break; if(res.some(y=>cos(fvec(y.r),fvec(x.r))>0.97)) continue; res.push(x); } return res;
 }
@@ -2931,7 +2928,6 @@ const LU={
  "info":`<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>`,
  "weight":`<circle cx="12" cy="5" r="3"/><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/>`,
  "person-standing":`<circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/>`,
- "cooking-pot":`<path d="M2 12h20"/><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="m4 8 16-4"/><path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8"/>`,
  "pizza":`<path d="m12 14-1 1"/><path d="m13.75 18.25-1.25 1.42"/><path d="M17.775 5.654a15.68 15.68 0 0 0-12.121 12.12"/><path d="M18.8 9.3a1 1 0 0 0 2.1 7.7"/><path d="M21.964 20.732a1 1 0 0 1-1.232 1.232l-18-5a1 1 0 0 1-.695-1.232A19.68 19.68 0 0 1 15.732 2.037a1 1 0 0 1 1.232.695z"/>`,
  "hamburger":`<path d="M12 16H4a2 2 0 1 1 0-4h16a2 2 0 1 1 0 4h-4.25"/><path d="M5 12a2 2 0 0 1-2-2 9 7 0 0 1 18 0 2 2 0 0 1-2 2"/><path d="M5 16a2 2 0 0 0-2 2 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 2 2 0 0 0-2-2q0 0 0 0"/><path d="m6.67 12 6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2"/>`,
  "shrimp":`<path d="M10 2a3.28 3.28 0 003.227 1.798l6.17-.561A1 1 0 1119.614 8H8.5a6.44 6.44 0 00-5.63 9.75A6.5 6.5 0 008.5 21c1.38 0 2-.5 2.5-1"/><path d="M10 8a8.5 8.5 0 000 8"/><path d="M11 22c-.5-.5-1.12-1-2.5-1a1 1 0 010-5H12a7 7 0 007-7V8"/><path d="M13 12h.01"/><path d="M8 16c-2 0-4.5-4-4-6"/>`,
@@ -2952,8 +2948,6 @@ const LU={
  "thumbs-up":`<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/><path d="M7 10v12"/>`,
  "wrench":`<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/>`,
  "wine":`<path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/>`,
- "cheese":`<path d="M3 12.5 16.5 5 21 12.5"/><rect x="3" y="12.5" width="18" height="7" rx="1.5"/><circle cx="8" cy="16" r="1.2"/><circle cx="15" cy="15.6" r="1.5"/><circle cx="12.6" cy="9.6" r=".9"/>`,
- "raclette":`<path d="M4 14.5c0 3.6 3.6 6 8 6s8-2.4 8-6"/><path d="M4 14c1-3.6 4.4-5.8 8-5.8s7 2.2 8 5.8c-.8.7-2 .6-2.5-.4-.7 1.7-2.8 1.8-3.5.2-.9 1.8-3.1 1.8-4 0-.7 1.6-2.8 1.5-3.5-.2-.5 1-1.7 1.1-2.5.4z"/><path d="M12 8.2V6.5c0-1.2.8-2.2 2-2.7"/>`,
  "taco":`<path d="M2.5 17.5a9.5 9.5 0 0 1 19 0z"/><path d="M6.5 17.5a5.5 5.5 0 0 1 11 0"/><path d="M4.2 11.2c1-.2 1.6.8 2.6.3s1-1.7 2.2-1.9 1.6.9 2.8.6 1.5-1.4 2.7-1.2 1.4 1.3 2.5 1.4 1.8-.3 2.6.6"/>`,
  "sushi":`<ellipse cx="12" cy="8.5" rx="7.5" ry="3.5"/><path d="M4.5 8.5v7c0 1.9 3.4 3.5 7.5 3.5s7.5-1.6 7.5-3.5v-7"/><ellipse cx="12" cy="8.5" rx="3" ry="1.3"/>`,
  "pepper":`<path d="M13.5 8.5c3.5.3 5.8 2.3 5.5 5.2-.5 4.8-7.5 8-14.5 7.3 4-1.7 6-5.2 6.2-9.3.1-1.8 1.2-3.3 2.8-3.2z"/><path d="M13.5 8.5c0-2.2 1.2-3.8 3.5-4.5"/>`,
@@ -3853,7 +3847,7 @@ function flipRows(sh, mutate){
 
 // ---------- Accords mets ----------
 function dishSheet(id){
-  const d=DISHES.find(x=>x.id===id);
+  const d=DISHES.find(x=>x.id===id); if(!d) return; // plat retiré (fondue, raclette, fromages en 1.32)
   openSheet(()=>{ const P=dishPicks(d);
     return {title:"",body:`<div class="dish-hero"><div class="dish-e">${lu(d.ic)}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Classés selon l’accord, ton bar et tes goûts. Point vert : tu peux le faire maintenant.</div>`}; });
 }
@@ -4574,7 +4568,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.31";
+const APP_VERSION="1.32";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
