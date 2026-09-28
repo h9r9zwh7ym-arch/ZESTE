@@ -1,31 +1,35 @@
-// ================= 1.28 : identité visuelle =================
-// Le logo de Zeste : une coupe dont le verre est une demi-rondelle d'agrume (le « zeste »), sur un fond ambré
-// qui reprend la teinte de l'app. Une seule source SVG sert à l'écran de lancement, aux réglages, à « À propos »
-// et à la carte Rewind ; l'icône d'écran d'accueil (apple-touch-icon.png) en est un rendu à 180 px.
-const ZESTE_BRAND={orange:"#E0701F",deep:"#9E3B13",light:"#F7A03A",cream:"#FFF6E3",fruit:"#FFD447"};
-function zesteMark(opt={}){
-  const id="zm"+(++GID), r=opt.round===false?0:230, cls=opt.cls||"";
-  return `<svg class="zmark ${cls}" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"${opt.label?` role="img" aria-label="${esc(opt.label)}"`:` aria-hidden="true"`}>
-  <defs><linearGradient id="${id}b" x1=".15" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#F7A03A"/><stop offset=".58" stop-color="#D5661F"/><stop offset="1" stop-color="#9E3B13"/></linearGradient>
-  <linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
-  <linearGradient id="${id}f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE266"/><stop offset="1" stop-color="#FFC93A"/></linearGradient>
-  <clipPath id="${id}c"><rect width="1024" height="1024" rx="${r}"/></clipPath></defs>
-  <g clip-path="url(#${id}c)"><g class="zm-tile"><rect width="1024" height="1024" fill="url(#${id}b)"/><rect width="1024" height="1024" fill="url(#${id}s)"/></g>
-  <g class="zm-slice" transform="translate(512 318)"><g class="zm-fill"><path d="M-306 0A306 306 0 0 0 306 0Z" fill="#FFF6E3"/><path d="M-266 0A266 266 0 0 0 266 0Z" fill="url(#${id}f)"/></g>
-  <g class="zm-seg" stroke="#FFF6E3" stroke-width="17" stroke-linecap="round"><path d="M0 18V236" pathLength="1"/><path d="M-22 16L-182 170" pathLength="1"/><path d="M22 16L182 170" pathLength="1"/></g>
-  <path class="zm-rim" d="M-326 0H326" stroke="#FFF6E3" stroke-width="30" stroke-linecap="round"/></g>
-  <path class="zm-stem" d="M512 622V770" stroke="#FFF6E3" stroke-width="32" stroke-linecap="round"/>
-  <path class="zm-foot" d="M392 792H632" stroke="#FFF6E3" stroke-width="38" stroke-linecap="round"/>${opt.sheen?`<rect class="zm-sheen" x="-400" y="-100" width="260" height="1300" fill="#fff" opacity=".22" transform="skewX(-18)"/>`:""}</g></svg>`;
+// ================= 1.29 : identité visuelle « le ruban » =================
+// Le logo de Zeste : un ruban d'écorce levé d'un geste, qui dessine un Z. Il se vrille à chaque angle et montre sa
+// face intérieure, couleur citron ; un liseré clair sous l'écorce rappelle l'épaisseur du zeste. Une seule source
+// sert à l'écran de lancement, aux réglages, à « À propos », à l'accueil du premier lancement et à la carte Rewind ;
+// assets/zeste-logo.svg et les icônes PNG en sont des rendus.
+const ZESTE_BRAND={leaf:"#1F5A3D",leafDeep:"#174731",zest:"#F5C518",cream:"#F7F1E3",ink:"#1F2A22"};
+const ZR={
+  top:"M15.1 30.2C22 28.2 29.2 30.2 36 31.3C43.9 32.2 51.7 33.7 59.6 33.6C68.2 33.4 77.1 30.9 83.5 24.9L82.5 23.1C75.3 24.6 67.9 22.8 60.8 21.5C52.9 20.2 44.9 18.9 36.9 18.9C28.5 19.3 19.9 22.9 14.9 29.8Z",
+  dia:"M82.4 23.5C74.3 26 67.1 31.2 59.8 35.4C51.4 40.6 43.4 46.3 35.9 52.7C28.8 59.3 20.9 66.2 17.4 75.4L18.6 76.6C27.3 73.5 35.2 67.9 43.2 63.3C51.6 58.1 59.7 52.4 67.1 45.9C73.5 39.8 81.1 33.4 83.6 24.5Z",
+  bot:"M18.5 76.9C25.6 75.1 32.9 76.6 39.9 78C47.4 79.4 55 80.8 62.6 80.8C71.1 80.6 79.6 76.8 85.1 70.2L84.9 69.8C77.8 71.7 70.6 69.8 63.7 68.5C56.2 67.5 48.7 65.9 41.2 66C32.5 66.1 23.8 69.1 17.5 75.1Z"
+};
+// Le ruban seul (sans fond), à placer dans un viewBox 0 0 100 100. `pith:false` retire le liseré (petites tailles).
+function zesteRibbon(bar,diag,pith){
+  return `${pith===false?"":`<g class="zr-pith" transform="translate(.6 1.8)" fill="${pith||diag}"><path d="${ZR.top}"/><path d="${ZR.bot}"/></g>`}<path class="zr-top" d="${ZR.top}" fill="${bar}"/><path class="zr-bot" d="${ZR.bot}" fill="${bar}"/><path class="zr-dia" d="${ZR.dia}" fill="${diag}"/>`;
 }
-// Écran de lancement : le logo se construit (verre, agrume, pied), puis le nom apparaît.
+// zesteMark : l'icône (carré vert arrondi) ou, avec {bare:true}, le ruban seul.
+function zesteMark(opt={}){
+  const id="zm"+(++GID), cls=opt.cls||"", a=opt.label?` role="img" aria-label="${esc(opt.label)}"`:` aria-hidden="true"`;
+  if(opt.bare) return `<svg class="zmark bare ${cls}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"${a}>${zesteRibbon(opt.bar||ZESTE_BRAND.cream,ZESTE_BRAND.zest,opt.pith)}</svg>`;
+  const r=opt.round===false?0:22.4;
+  return `<svg class="zmark ${cls}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"${a}><defs><linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#236846"/><stop offset="1" stop-color="${ZESTE_BRAND.leafDeep}"/></linearGradient></defs><rect width="100" height="100" rx="${r}" fill="url(#${id}b)"/><g transform="translate(50 50) scale(.82) translate(-50 -50)">${zesteRibbon(ZESTE_BRAND.cream,ZESTE_BRAND.zest)}</g></svg>`;
+}
+// Écran de lancement : sur le vert de la marque, la barre du haut se déroule, la diagonale se retourne,
+// la barre du bas se pose, puis le nom apparaît.
 function splash(){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return 0;
-  const el=document.createElement("div"); el.id="splash"; el.style.setProperty("--c",ZESTE_BRAND.orange);
-  el.innerHTML=`<div class="sp-glow"></div><div class="sp-stage"><div class="sp-logo">${zesteMark({cls:"sp-mark",sheen:true})}</div><div class="sp-title">${"Zeste".split("").map((ch,k)=>`<span style="animation-delay:${.95+k*.06}s">${ch}</span>`).join("")}</div><div class="sp-sub">Ton bar, tes cocktails</div></div>`;
+  const el=document.createElement("div"); el.id="splash";
+  el.innerHTML=`<div class="sp-stage"><div class="sp-logo">${zesteMark({bare:true,cls:"sp-mark"})}</div><div class="sp-title">${"zeste".split("").map((ch,k)=>`<span style="animation-delay:${.72+k*.06}s">${ch}</span>`).join("")}</div><div class="sp-sub">Ton bar, tes cocktails</div></div>`;
   document.body.appendChild(el);
   let gone=false;
   if(typeof SND!=="undefined") SND.jingleSplash(()=>!gone);
-  const T=2200;
+  const T=2000;
   const out=()=>{ if(gone) return; gone=true; el.classList.add("out"); HERO_LAST=null; dirty.today=1; if(TAB==="today") renderView("today"); setTimeout(()=>el.remove(),600); };
   el.addEventListener("click",out); setTimeout(out,T); return T;
 }

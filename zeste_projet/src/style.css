@@ -1,33 +1,36 @@
 :root{
-  --bg:#F2F2F7; --bg2:#FFFFFF; --bg3:#F7F7FA; --fill:rgba(120,120,128,.12); --fill2:rgba(120,120,128,.07);
-  --label:#000; --label2:rgba(60,60,67,.76); --label3:rgba(60,60,67,.32); --sep:rgba(60,60,67,.22);
-  --tint:#8F5000; --tint-bg:rgba(143,80,0,.1); --on-tint:#fff;
+  --bg:#F7F1E3; --bg2:#FFFDF8; --bg3:#FBF6EC; --fill:rgba(107,94,70,.12); --fill2:rgba(107,94,70,.07);
+  --label:#1F2A22; --label2:rgba(52,44,30,.76); --label3:rgba(79,70,52,.34); --sep:rgba(79,70,52,.2);
+  --tint:#1F5A3D; --tint-bg:rgba(31,90,61,.1); --on-tint:#FBF6EC;
+  --zest:#F5C518; --on-zest:#1F2A22;
   --green:#1E7B34; --red:#D70015; --orange:#B25000;
-  --bar:rgba(248,248,250,.82); --glass-stroke:rgba(0,0,0,.34); --glass-fill:rgba(255,255,255,.55);
-  --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
-  --serif:ui-serif,"New York","Iowan Old Style","Palatino",Georgia,serif;
-  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --rounded:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,sans-serif;
+  --bar:rgba(247,241,227,.84); --glass-stroke:rgba(31,42,34,.34); --glass-fill:rgba(255,253,248,.55);
+  --shadow:0 1px 2px rgba(60,48,20,.05),0 8px 24px rgba(60,48,20,.07);
+  --serif:ZesteSerif,ui-serif,"New York",Georgia,serif;
+  --sans:ZesteSans,-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
+  --rounded:ZesteSans,ui-rounded,"SF Pro Rounded",-apple-system,sans-serif;
   color-scheme:light dark;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#000; --bg2:#1C1A18; --bg3:#262320; --fill:rgba(128,120,110,.26); --fill2:rgba(128,120,110,.14);
-    --label:#fff; --label2:rgba(240,232,222,.62); --label3:rgba(240,232,222,.3); --sep:rgba(120,110,100,.42);
-    --tint:#FFB340; --tint-bg:rgba(255,179,64,.14); --on-tint:#1A1206;
+    --bg:#0E1410; --bg2:#18211B; --bg3:#212B24; --fill:rgba(150,165,140,.22); --fill2:rgba(150,165,140,.11);
+    --label:#F2EDE0; --label2:rgba(242,237,224,.64); --label3:rgba(242,237,224,.3); --sep:rgba(150,165,140,.3);
+    --tint:#F5C518; --tint-bg:rgba(245,197,24,.14); --on-tint:#14231A;
+    --zest:#F5C518; --on-zest:#14231A;
     --green:#30D158; --red:#FF453A; --orange:#FF9F0A;
-    --bar:rgba(22,20,18,.8); --glass-stroke:rgba(255,245,230,.5); --glass-fill:rgba(255,245,230,.06);
+    --bar:rgba(14,20,16,.82); --glass-stroke:rgba(242,237,224,.5); --glass-fill:rgba(242,237,224,.06);
     --shadow:none;
   }
 }
 :root[data-theme="dark"]{
-    --bg:#000; --bg2:#1C1A18; --bg3:#262320; --fill:rgba(128,120,110,.26); --fill2:rgba(128,120,110,.14);
-    --label:#fff; --label2:rgba(240,232,222,.62); --label3:rgba(240,232,222,.3); --sep:rgba(120,110,100,.42);
-    --tint:#FFB340; --tint-bg:rgba(255,179,64,.14); --on-tint:#1A1206;
+    --bg:#0E1410; --bg2:#18211B; --bg3:#212B24; --fill:rgba(150,165,140,.22); --fill2:rgba(150,165,140,.11);
+    --label:#F2EDE0; --label2:rgba(242,237,224,.64); --label3:rgba(242,237,224,.3); --sep:rgba(150,165,140,.3);
+    --tint:#F5C518; --tint-bg:rgba(245,197,24,.14); --on-tint:#14231A;
+    --zest:#F5C518; --on-zest:#14231A;
     --green:#30D158; --red:#FF453A; --orange:#FF9F0A;
-    --bar:rgba(22,20,18,.8); --glass-stroke:rgba(255,245,230,.5); --glass-fill:rgba(255,245,230,.06);
+    --bar:rgba(14,20,16,.82); --glass-stroke:rgba(242,237,224,.5); --glass-fill:rgba(242,237,224,.06);
     --shadow:none;
 }
 *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -1438,19 +1441,8 @@ svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
 
 /* 1.28 — logo Zeste et écran de lancement */
 .zmark{display:block;width:100%;height:auto}
-.sp-logo{width:132px;height:132px;filter:drop-shadow(0 18px 30px rgba(158,59,19,.35));animation:splogo .75s cubic-bezier(.3,1.45,.5,1) both}
-@keyframes splogo{from{opacity:0;transform:scale(.55) rotate(-9deg)}to{opacity:1;transform:none}}
-.sp-mark .zm-rim{transform-box:fill-box;transform-origin:center;transform:scaleX(0);animation:zmrim .45s cubic-bezier(.3,1.2,.5,1) .3s forwards}
-.sp-mark .zm-fill{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:zmfill .6s cubic-bezier(.25,.9,.3,1.1) .48s forwards}
-.sp-mark .zm-seg path{stroke-dasharray:1;stroke-dashoffset:1;animation:zmseg .38s ease-out .9s forwards}
-.sp-mark .zm-seg path:nth-child(2){animation-delay:.96s}.sp-mark .zm-seg path:nth-child(3){animation-delay:1.02s}
-.sp-mark .zm-stem{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:zmfill .32s cubic-bezier(.3,1,.5,1) .62s forwards}
-.sp-mark .zm-foot{transform-box:fill-box;transform-origin:center;transform:scaleX(0);animation:zmrim .36s cubic-bezier(.3,1.4,.5,1) .82s forwards}
-.sp-mark .zm-sheen{animation:zmsheen 1s cubic-bezier(.4,0,.2,1) 1.25s both}
-@keyframes zmrim{to{transform:scaleX(1)}}@keyframes zmfill{to{transform:scaleY(1)}}@keyframes zmseg{to{stroke-dashoffset:0}}
-@keyframes zmsheen{from{transform:skewX(-18deg) translateX(0)}to{transform:skewX(-18deg) translateX(1700px)}}
 #splash .sp-title{margin-top:18px}
-.set-logo .zmark,.af-logo .zmark{border-radius:22.4%;box-shadow:0 4px 12px rgba(158,59,19,.22)}
+.set-logo .zmark,.af-logo .zmark{border-radius:22.4%;box-shadow:0 4px 12px rgba(23,71,49,.24)}
 .set-logo.brand{width:58px;height:58px}.af-logo.brand{width:64px;height:64px;margin-bottom:10px}
 .set-logo .zmark,.af-logo .zmark{border-radius:22.4%}
 /* 1.28 — noms sur deux lignes plutôt que tronqués (« Pomme d’a… ») */
@@ -1465,7 +1457,7 @@ svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
 .tier-steps .row{--inset:54px}
 /* 1.28 — accueil du premier lancement */
 .qz-intro{align-items:center;justify-content:center;text-align:center}
-.qi-logo{width:92px;height:92px;margin-bottom:18px;filter:drop-shadow(0 12px 22px rgba(158,59,19,.3));animation:splogo .7s cubic-bezier(.3,1.45,.5,1) both}
+.qi-logo{width:92px;height:92px;margin-bottom:18px;filter:drop-shadow(0 12px 22px rgba(23,71,49,.3));animation:splogo .7s cubic-bezier(.3,1.45,.5,1) both}
 .qi-logo .zmark{border-radius:22.4%}
 .qi-t{font-family:var(--serif);font-size:calc(32rem / 17);line-height:1.1;margin:0;animation:vin .6s cubic-bezier(.2,.8,.2,1) .1s both}
 .qi-s{color:var(--label2);margin:6px 0 26px;animation:vin .6s cubic-bezier(.2,.8,.2,1) .15s both}
@@ -1475,3 +1467,37 @@ svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
 .qi-ic svg{width:22px;height:22px}
 .qi-pt b{display:block;font-size:calc(16rem / 17)}.qi-pt span{font-size:calc(14rem / 17);color:var(--label2)}
 .qi-f{text-align:center;font-size:calc(13rem / 17);color:var(--label2);margin:0 0 calc(6px + env(safe-area-inset-bottom,0px))}
+
+/* 1.29 — identité « le ruban » : écran de lancement sur le vert de la marque */
+#splash{background:#1F5A3D;color:#F7F1E3}
+#splash .sp-title{margin-top:10px;color:#F7F1E3;font-weight:600;letter-spacing:-.02em}
+#splash .sp-sub{color:#D5E3D9}
+.sp-logo{width:150px;height:150px}
+.sp-mark path,.sp-mark g{transform-box:fill-box}
+.sp-mark .zr-top{clip-path:inset(0 100% 0 0);animation:zrwipe .42s cubic-bezier(.55,0,.25,1) .1s forwards}
+.sp-mark .zr-dia{transform-origin:100% 0;transform:scale(.2,.2) rotate(-35deg);opacity:0;animation:zrflip .5s cubic-bezier(.3,1.35,.5,1) .38s forwards}
+.sp-mark .zr-bot{clip-path:inset(0 100% 0 0);animation:zrwipe .38s cubic-bezier(.55,0,.25,1) .66s forwards}
+.sp-mark .zr-pith{opacity:0;animation:spfade .3s ease .95s forwards}
+@keyframes zrwipe{to{clip-path:inset(0 0 0 0)}}
+@keyframes zrflip{60%{opacity:1}to{opacity:1;transform:none}}
+#splash.out .sp-stage{transform:translateY(-4vh) scale(1.6)}
+.zmark.bare{overflow:visible}
+/* 1.29 — ciel d'ambiance accordé à la palette (teintes plus douces, fondu vers la crème ou le vert nuit) */
+:root[data-moment="matin"] .amb-sky{background:linear-gradient(180deg,#F9DEC0 0%,#F8E9D2 38%,rgba(247,241,227,0) 100%)}
+:root[data-moment="aprem"] .amb-sky{background:linear-gradient(180deg,#DCEADF 0%,#E9EFE0 42%,rgba(247,241,227,0) 100%)}
+:root[data-moment="apero"] .amb-sky{background:linear-gradient(180deg,#F8CF95 0%,#F8DFB9 32%,#F7EAD3 58%,rgba(247,241,227,0) 100%)}
+:root[data-moment="soir"] .amb-sky{background:linear-gradient(180deg,#E6D6DF 0%,#EFE4E0 42%,rgba(247,241,227,0) 100%)}
+:root[data-moment="nuit"] .amb-sky{background:linear-gradient(180deg,#D3DAE0 0%,#E4E6E1 42%,rgba(247,241,227,0) 100%)}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme="light"])[data-moment="matin"] .amb-sky{background:linear-gradient(180deg,#3A2C1C 0%,#1C1B13 45%,rgba(14,20,16,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="aprem"] .amb-sky{background:linear-gradient(180deg,#1C3328 0%,#122019 45%,rgba(14,20,16,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="apero"] .amb-sky{background:linear-gradient(180deg,#4A2E0E 0%,#2A1D0C 35%,#16160E 60%,rgba(14,20,16,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="soir"] .amb-sky{background:linear-gradient(180deg,#2A2231 0%,#17161A 45%,rgba(14,20,16,0) 100%)}
+ :root:not([data-theme="light"])[data-moment="nuit"] .amb-sky{background:linear-gradient(180deg,#111C2C 0%,#0C1418 45%,rgba(14,20,16,0) 100%)}
+}
+:root[data-theme="dark"][data-moment="matin"] .amb-sky{background:linear-gradient(180deg,#3A2C1C 0%,#1C1B13 45%,rgba(14,20,16,0) 100%)}
+:root[data-theme="dark"][data-moment="aprem"] .amb-sky{background:linear-gradient(180deg,#1C3328 0%,#122019 45%,rgba(14,20,16,0) 100%)}
+:root[data-theme="dark"][data-moment="apero"] .amb-sky{background:linear-gradient(180deg,#4A2E0E 0%,#2A1D0C 35%,#16160E 60%,rgba(14,20,16,0) 100%)}
+:root[data-theme="dark"][data-moment="soir"] .amb-sky{background:linear-gradient(180deg,#2A2231 0%,#17161A 45%,rgba(14,20,16,0) 100%)}
+:root[data-theme="dark"][data-moment="nuit"] .amb-sky{background:linear-gradient(180deg,#111C2C 0%,#0C1418 45%,rgba(14,20,16,0) 100%)}
+#splash .sp-sub{animation-delay:1.05s}
