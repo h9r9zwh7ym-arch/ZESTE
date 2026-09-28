@@ -124,11 +124,11 @@ p.body{margin:0 20px;color:var(--label2);font-size:calc(15rem / 17)}
 .tile .tn{font-family:var(--serif);font-weight:600;font-size:calc(16rem / 17);line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tile .ts{font-size:calc(13rem / 17);color:var(--label2);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tile:active{transform:scale(.98)}
-.dice-btn{margin:22px 16px 0;height:64px;border-radius:20px;background:var(--bg2);box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;padding:0 18px;width:calc(100% - 32px);text-align:left}
-.dice-btn .di{width:38px;height:38px;border-radius:11px;background:var(--tint);color:var(--on-tint);display:grid;place-items:center;flex:none}
-.dice-btn .di svg{width:22px;height:22px}
-.dice-btn .dt{font-weight:600}
-.dice-btn .ds{font-size:calc(14rem / 17);color:var(--label2)}
+
+
+
+
+
 .buy{display:flex;gap:14px;align-items:center}
 .buy .bb{width:46px;height:70px;flex:none}
 .buy .bt{font-weight:600;font-size:calc(17rem / 17)}
@@ -365,19 +365,18 @@ h2.sh{font-size:calc(22rem / 17);margin:34px 20px 4px}
 .basics{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .basics span{height:28px;padding:0 10px;border-radius:14px;background:var(--fill2);font-size:calc(13rem / 17);display:inline-flex;align-items:center;color:var(--label2)}
 .starter{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
-.last-row .s{font-variant-numeric:tabular-nums}
+
 #toast{display:flex;align-items:center;gap:10px}
 #toast svg{width:30px;height:30px;flex:none}
 #toast .tbtn{color:var(--tint);font-weight:700;padding:0 2px 0 6px;pointer-events:auto}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #toast .tbtn{color:#A15A00}}
 #toast.show.t-tro{animation:tpop .5s cubic-bezier(.3,1.5,.5,1)}
 @keyframes tpop{0%{transform:translate(-50%,30px) scale(.8)}100%{transform:translate(-50%,0) scale(1)}}
 
 /* mouvements */
 .view.enter{animation:vin .32s cubic-bezier(.2,.8,.2,1)}
 @keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.btn,.tile,.chip,.mini,.dice-btn,.fbtn,.card.buy,.stars button,.icon-btn{transition:transform .18s cubic-bezier(.3,.7,.4,1),opacity .18s,background .2s}
-.btn:active,.tile:active,.chip:active,.mini:active,.dice-btn:active,.fbtn:active,.card.buy:active{transform:scale(.965)}
+.btn,.tile,.chip,.mini,.fbtn,.card.buy,.stars button,.icon-btn{transition:transform .18s cubic-bezier(.3,.7,.4,1),opacity .18s,background .2s}
+.btn:active,.tile:active,.chip:active,.mini:active,.fbtn:active,.card.buy:active{transform:scale(.965)}
 .row.tap{transition:background .15s}
 svg.pour .liq{animation:pour 1.25s cubic-bezier(.22,.8,.25,1) .12s both}
 @keyframes pour{from{transform:translateY(62px)}to{transform:none}}
@@ -649,28 +648,28 @@ svg.live .garn{transform-box:fill-box;transform-origin:50% 100%}
 
 /* ===== Lancement ===== */
 #splash{position:fixed;inset:0;z-index:300;background:var(--bg);display:grid;place-items:center;overflow:hidden;transition:opacity .55s ease .05s}
-#splash .sp-glow{position:absolute;width:140vmax;height:140vmax;left:50%;top:44%;margin:-70vmax 0 0 -70vmax;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 42%,transparent) 0%,transparent 42%);transform:scale(.2);opacity:0;animation:spglow 1.6s cubic-bezier(.2,.8,.2,1) .5s forwards}
-@keyframes spglow{to{transform:scale(1);opacity:1}}
+
+
 .sp-stage{position:relative;display:flex;flex-direction:column;align-items:center;transform:translateY(-4vh)}
-.sp-glass{width:200px;height:auto;overflow:visible}
-.sp-draw{stroke-dasharray:100;stroke-dashoffset:100;animation:spdraw .7s cubic-bezier(.6,0,.3,1) forwards}
-.sp-draw.d2{animation-delay:.45s;animation-duration:.35s}.sp-draw.d3{animation-delay:.62s;animation-duration:.3s}
-@keyframes spdraw{to{stroke-dashoffset:0}}
-.sp-liq{transform:translateY(46px);animation:spfill 1s cubic-bezier(.25,.8,.25,1) .55s forwards}
-@keyframes spfill{0%{transform:translateY(46px) rotate(-4deg)}60%{transform:translateY(-2px) rotate(2deg)}80%{transform:translateY(1px) rotate(-.8deg)}100%{transform:none}}
-.sp-liq{transform-box:view-box;transform-origin:60px 60px}
-.sp-wave{animation:spwave 1.2s linear infinite}.sp-wave2{animation:spwave 1.6s linear infinite}
-@keyframes spwave{to{transform:translateX(30px)}}
-.sp-bub circle{opacity:0;animation:spbub 1.4s ease-in infinite}
-@keyframes spbub{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-26px);opacity:0}}
-.sp-shine{opacity:0;animation:spfade .4s ease 1.2s forwards}
+
+
+
+
+
+
+
+
+
+
+
+
 @keyframes spfade{to{opacity:1}}
-.sp-lemon{animation:splemon .8s cubic-bezier(.3,1.35,.55,1) .9s both}
-@keyframes splemon{0%{transform:translate(104px,-150px);opacity:0}25%{opacity:1}100%{transform:translate(102px,30px);opacity:1}}
-.sp-spin{animation:spspin .75s cubic-bezier(.3,1.2,.55,1) .95s both}
-@keyframes spspin{from{transform:rotate(-220deg)}to{transform:none}}
-.sp-star{opacity:0;transform:scale(0);transform-box:view-box;animation:spstar .6s cubic-bezier(.3,1.8,.5,1) forwards}
-@keyframes spstar{0%{opacity:0;transform:scale(0) rotate(-45deg)}60%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:scale(1) rotate(0)}}
+
+
+
+
+
+
 .sp-title{font-family:var(--serif);font-weight:700;font-size:calc(52rem / 17);letter-spacing:-.01em;margin-top:6px;display:flex}
 .sp-title span{display:inline-block;opacity:0;transform:translateY(18px) scale(.8);animation:spletter .55s cubic-bezier(.3,1.5,.5,1) forwards}
 @keyframes spletter{to{opacity:1;transform:none}}
@@ -990,8 +989,8 @@ body.sheet-open #ambient *{animation-play-state:paused!important}
 .lab-more[open] summary .chev{transform:rotate(90deg)}
 .lab-start{text-align:center}.lab-start b{display:block;font-family:var(--serif);font-size:calc(19rem / 17)}.lab-start span{font-size:calc(14rem / 17);color:var(--label2)}
 /* animations du labo */
-svg .liq.rise{animation:rise .7s cubic-bezier(.25,.8,.3,1) both!important}
-@keyframes rise{from{transform:translateY(var(--from))}to{transform:none}}
+
+
 .lab-stage.shake-no .lab-glass{animation:nope .5s cubic-bezier(.3,1.5,.5,1)}
 .lab-stage.shake-no .lab-gbar i{background:var(--red)}
 @keyframes nope{0%,100%{transform:none}20%{transform:translateX(-10px) rotate(-3deg)}40%{transform:translateX(9px) rotate(3deg)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
@@ -1025,8 +1024,8 @@ svg .liq.rise{animation:rise .7s cubic-bezier(.25,.8,.3,1) both!important}
 #serve.p2 .sv-tool{opacity:0;transform:translateY(-60px) scale(.6)}
 .sv-shaker{width:140px;height:140px;color:#fff;animation:shaking .15s ease-in-out infinite alternate;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35))}
 .sv-shaker svg{width:100%;height:100%}
-.sv-spoon{position:relative;width:120px;height:160px;border-radius:0 0 30px 30px;border:3px solid rgba(255,255,255,.7);border-top:0}
-.sv-spoon i{position:absolute;left:50%;top:-30px;width:5px;height:180px;margin-left:-2.5px;border-radius:3px;background:#fff;transform-origin:50% 100%;animation:stirr .4s ease-in-out infinite alternate}
+
+
 .sv-res{display:flex;align-items:center;gap:18px;margin-top:4px;opacity:0;transform:translateY(20px);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
 #serve.p3 .sv-res{opacity:1;transform:none}
 .sv-ring{position:relative;width:120px;height:120px;flex:none}
@@ -1168,20 +1167,20 @@ svg.medal.t-gold.on{filter:drop-shadow(0 2px 6px rgba(242,182,50,.45))}
 /* lignées */
 .lin-chips{margin-bottom:10px}
 .lin-card{padding:12px 16px}.lin-card b{display:block;font-family:var(--serif);font-size:calc(19rem / 17)}.lin-card span{font-size:calc(14rem / 17);color:var(--label2)}
-.tree-wrap{overflow-x:auto;margin-top:12px;padding:6px 16px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.tree-wrap::-webkit-scrollbar{display:none}
+
+
 .tree{position:relative;margin:0 auto}
-.tree-links{position:absolute;inset:0;overflow:visible}
-.tree-links path{fill:none;stroke:color-mix(in srgb,var(--tint) 55%,transparent);stroke-width:2;stroke-dasharray:100;stroke-dashoffset:100;animation:treeline .7s ease forwards}
-@keyframes treeline{to{stroke-dashoffset:0}}
-.tnode{position:absolute;width:92px;height:86px;border-radius:16px;background:var(--bg2);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 4px 4px;animation:tnodein .55s cubic-bezier(.3,1.5,.5,1) both;transition:transform .2s cubic-bezier(.3,1.4,.5,1)}
-.tnode:active{transform:scale(.93)}
+
+
+
+
+
 @keyframes tnodein{from{opacity:0;transform:translateY(-12px) scale(.85)}to{opacity:1;transform:none}}
-.tnode .tg{width:30px;height:38px;display:grid}.tnode .tg svg{width:100%;height:100%}
-.tnode b{font-family:var(--serif);font-size:calc(11.5rem / 17);line-height:1.15;text-align:center;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.tnode i{font-style:normal;font-family:var(--rounded);font-size:calc(10rem / 17);font-weight:700;color:var(--tint);margin-top:auto}
-.tnode.made{box-shadow:inset 0 0 0 2px #E8B040,var(--shadow)}
-.tnode.ok::after{content:"";position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:4px;background:var(--green)}
+
+
+
+
+
 /* radar inversé */
 .rad-card{display:flex;justify-content:center;padding:10px}
 .rad-edit{width:100%;max-width:330px;height:auto;touch-action:none;overflow:visible}
@@ -1192,21 +1191,21 @@ svg.medal.t-gold.on{filter:drop-shadow(0 2px 6px rgba(242,182,50,.45))}
 .rad-h{fill:var(--bg2);stroke:var(--tint);stroke-width:3;cursor:grab;transition:r .2s}
 .rad-h.drag{r:15;fill:var(--tint)}
 /* étagère */
-.bar-shelves{position:relative;margin:0 16px;padding:16px 10px 6px;border-radius:22px;background:linear-gradient(180deg,#2A1C12,#1A120C);box-shadow:inset 0 0 0 .5px rgba(255,220,180,.08),0 10px 30px rgba(0,0,0,.18);overflow:hidden}
-.bar-lamp{position:absolute;left:10%;right:10%;top:-80px;height:170px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,120,.38),transparent);pointer-events:none;animation:lamp 6s ease-in-out infinite}
+
+
 @keyframes lamp{0%,100%{opacity:.85}50%{opacity:1}}
-.shelf-row{position:relative;margin-bottom:18px}
-.shelf-lab{font-size:calc(11.5rem / 17);font-weight:800;color:rgba(255,225,190,.7);margin:0 6px 4px;letter-spacing:.02em}
-.shelf-bottles{display:flex;gap:4px;overflow-x:auto;padding:4px 4px 0;scrollbar-width:none;align-items:flex-end;min-height:108px}
-.shelf-bottles::-webkit-scrollbar{display:none}
-.sbottle{flex:none;width:58px;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;animation:bdrop .6s cubic-bezier(.3,1.5,.5,1) both;transition:transform .25s cubic-bezier(.3,1.5,.5,1);--glass-stroke:rgba(255,240,220,.55);--glass-fill:rgba(255,240,220,.08);--label3:rgba(255,230,200,.4)}
-.sbottle svg{width:44px;height:74px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))}
-.sbottle span{font-size:calc(10.5rem / 17);font-weight:600;color:rgba(255,235,210,.85);text-align:center;line-height:1.1;height:24px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.sbottle:active{transform:translateY(-10px) rotate(-4deg)}
-.sbottle.empty svg{opacity:.45}
-.sbottle em{position:absolute;top:24px;font-style:normal;font-size:calc(9rem / 17);font-weight:800;background:#FF453A;color:#fff;border-radius:6px;padding:1px 4px}
-@keyframes bdrop{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:none}}
-.shelf-board{height:12px;margin:-2px 0 0;border-radius:3px;background:linear-gradient(180deg,#8A5A32,#5A3820);box-shadow:0 6px 10px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,220,180,.35)}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ===== DÉFIS ===== */
 .chal-row{padding-top:4px;padding-bottom:10px}
@@ -1254,7 +1253,7 @@ svg.medal.t-gold.on{filter:drop-shadow(0 2px 6px rgba(242,182,50,.45))}
 .tt2 b{display:block;font-family:var(--serif);font-size:calc(16rem / 17)}
 .tt2 span{display:block;font-size:calc(12.5rem / 17);color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ty{font-style:normal;font-family:var(--rounded);font-size:calc(12rem / 17);font-weight:800;color:var(--tint);background:var(--tint-bg);border-radius:8px;padding:2px 7px;flex:none}
-.tcard.made{box-shadow:inset 0 0 0 2px #E8B040,var(--shadow)}
+.tcard.made{box-shadow:inset 0 0 0 2px var(--zest),var(--shadow)}
 .tok{position:absolute;top:7px;left:7px;width:8px;height:8px;border-radius:4px;background:var(--green);box-shadow:0 0 0 2px var(--bg2)}
 
 /* ===== 1.17 ===== */
@@ -1349,7 +1348,7 @@ button.goal:not(.ok){box-shadow:inset 0 0 0 1px currentColor}
 .b2-svg{position:relative;display:block;width:48px;height:86px}
 .b2-svg svg{width:100%;height:100%;filter:drop-shadow(0 6px 8px rgba(0,0,0,.5))}
 
-@keyframes b2shine{0%,78%{left:-60%}100%{left:130%}}
+
 .b2-b.vide .b2-svg{opacity:.4}
 .b2-tag{width:100%;height:52px;padding:5px 4px 4px;justify-content:center;border-radius:8px;background:#F6EEE2;color:#2A1C12;box-shadow:0 3px 6px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;gap:3px;transform:rotate(-1deg)}
 .b2-b:nth-child(2n) .b2-tag{transform:rotate(1deg)}
@@ -1524,3 +1523,19 @@ svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
 #toast .tbtn{color:#F5C518}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #toast .tbtn{color:#1F5A3D}}
 :root[data-theme="dark"] #toast .tbtn{color:#1F5A3D}
+/* 1.34 — zones de toucher : « Tout voir », petits boutons et champ de recherche atteignent 44 pt sans changer d'apparence */
+:where(h2.sh .more,.btn.small,.bac-add){position:relative}
+h2.sh .more::after{content:"";position:absolute;inset:-12px -8px}
+.btn.small::after{content:"";position:absolute;inset:-8px -2px}
+.search input{align-self:stretch}
+/* 1.34 — « Contenance » : le sélecteur passe à la ligne s'il manque de place, au lieu de chevaucher le libellé */
+.vol-row{flex-wrap:wrap;row-gap:8px}
+.vol-l{flex:1 0 auto}
+/* 1.34 — grands textes : le texte des sélecteurs segmentés est plafonné (comme iOS) pour que les options ne se touchent pas */
+.txt-big .seg button{font-size:min(calc(14rem / 17),15px);white-space:nowrap;padding:0 3px}
+.txt-big .seg.small4 button{font-size:min(calc(13rem / 17),14px)}
+/* 1.34 — cartes Rewind aux couleurs de Zeste (elles gardaient le dégradé orange-violet d'avant 1.29) */
+.rw-card{background:linear-gradient(125deg,#34774F,#1F5A3D 45%,#0F2E20);background-size:200% 200%;box-shadow:0 10px 30px rgba(23,71,49,.28)}
+.rw-card .rw-play{color:#1F5A3D}
+.rw-card.month{background:linear-gradient(125deg,#806410,#4E6A2A 50%,#1F5A3D);background-size:200% 200%}
+.rw-card.month .rw-play{color:#4E6A2A}

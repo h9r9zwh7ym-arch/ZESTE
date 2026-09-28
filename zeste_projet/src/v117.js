@@ -1,5 +1,5 @@
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.33";
+const APP_VERSION="1.34";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -110,11 +110,4 @@ Object.assign(ACT,{
   maprec:(d)=>mfClose(()=>recSheet(d.id))
 });
 
-// ---------- Lancement : un cocktail différent à chaque ouverture ----------
-function splashPick(){
-  const last=S.lastSplash; let pool=barCount()? tonight().slice(0,14) : [];
-  if(pool.length<4) pool=POPULAR.slice(0,40).map(id=>RMAP[id]).filter(Boolean);
-  pool=pool.filter(r=>r.id!==last&&r.g!=="mug"); const r=pool[Math.floor(Math.random()*pool.length)]||RMAP.negroni;
-  S.lastSplash=r.id; try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} return r;
-}
 Object.assign(ACT,{ famgo:(d)=>{ CF.fam=[d.f]; CF.main=""; CF.q=""; CF.mode="list"; dirty.cocktails=1; switchTab("cocktails"); toast("Famille : "+FAMILIES[d.f]); } });

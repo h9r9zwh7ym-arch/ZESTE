@@ -22,8 +22,8 @@ function sanitizeBackup(d){
   if(Array.isArray(d.custom)) out.custom=d.custom.filter(r=>r&&typeof r.id==="string"&&typeof r.n==="string"&&Array.isArray(r.ing)&&r.ing.every(i=>i&&ING[i.id]&&num(i.q)));
   if(isObj(d.settings)) out.settings=Object.assign({},out.settings,d.settings);
   // champs simples conservés tels quels s'ils ont le bon type
-  ["quiz","adj","notes","price","stockT","opened","opens","mw","skips","chal","dishes","troT","rt","mix","heroLog","tierSeen"].forEach(k=>{ if(isObj(d[k])) out[k]=d[k]; });
-  ["tro","preps","citiesSeen","linSeen","drinks"].forEach(k=>{ if(Array.isArray(d[k])) out[k]=d[k]; });
+  ["quiz","adj","notes","price","stockT","opened","opens","mw","skips","chal","dishes","troT","rt","mix","tierSeen"].forEach(k=>{ if(isObj(d[k])) out[k]=d[k]; });
+  ["tro","preps","citiesSeen","linSeen","drinks","heroLog"].forEach(k=>{ if(Array.isArray(d[k])) out[k]=d[k]; });
   ["quizSkip","roul","labBest","labServes","mwN","prepCount","bmDone","chalHard"].forEach(k=>{ if(num(d[k])||typeof d[k]==="boolean") out[k]=d[k]; });
   return out;
 }
@@ -117,7 +117,7 @@ function rewindRange(from,to){
 const JOURS=["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
 function momentOfHour(h){ return ({matin:"le matin",aprem:"l’après-midi",apero:"à l’heure de l’apéro",soir:"en soirée",nuit:"tard dans la nuit"})[momentForHour(h+1)]; }
 function openMonthRewind(y,m){
-  const [from,to]=monthRange(y,m), D=rewindRange(from,to), top=D.top&&RMAP[D.top.id], best=D.best&&RMAP[D.best], col=top?top.col:"#E8A84A", label=MOIS[m]+" "+y;
+  const [from,to]=monthRange(y,m), D=rewindRange(from,to), top=D.top&&RMAP[D.top.id], best=D.best&&RMAP[D.best], col=top?top.col:"#2E7A52", label=MOIS[m]+" "+y;
   const slides=[];
   slides.push({c:[col,"#1A1020"],h:`<div class="rw-small">Ton mois de ${esc(label)}</div><div class="rw-big" data-count="${D.count}">0</div><div class="rw-mid">cocktail${D.count>1?"s":""} préparé${D.count>1?"s":""}</div><div class="rw-note">${D.distinct} recette${D.distinct>1?"s":""} différente${D.distinct>1?"s":""}${D.discoveries.length?`, dont ${D.discoveries.length} découverte${D.discoveries.length>1?"s":""}`:""}</div>`});
   if(top) slides.push({c:[top.col,mix(top.col,"#000000",.6)],h:`<div class="rw-small">Ton cocktail du mois</div><div class="rw-glass">${glassSVG(top,{pour:true,live:1})}</div><div class="rw-name">${esc(top.n)}</div><div class="rw-note">préparé ${D.top.n} fois</div>`});
