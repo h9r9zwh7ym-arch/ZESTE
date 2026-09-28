@@ -84,7 +84,7 @@ function flipRows(sh, mutate){
 
 // ---------- Accords mets ----------
 function dishSheet(id){
-  const d=DISHES.find(x=>x.id===id);
+  const d=DISHES.find(x=>x.id===id); if(!d) return; // plat retiré (fondue, raclette, fromages en 1.32)
   openSheet(()=>{ const P=dishPicks(d);
     return {title:"",body:`<div class="dish-hero"><div class="dish-e">${lu(d.ic)}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Classés selon l’accord, ton bar et tes goûts. Point vert : tu peux le faire maintenant.</div>`}; });
 }

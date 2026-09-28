@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.31**. Chaque mise à jour livrée incrémente : 1.21 → 1.31… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.32**. Chaque mise à jour livrée incrémente : 1.21 → 1.32… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -185,6 +185,11 @@ Choisie par le propriétaire parmi trois directions présentées sur un canevas 
 - **`src/v130.js`** (chargé en dernier) : inscrit le service worker (seulement en https ou localhost, jamais sur claude.ai ni en fichier local), affiche « Nouvelle version de Zeste prête » avec **Recharger** quand l'écran est libre (une seule fois par session), et **revérifie au retour au premier plan** (au plus toutes les 30 min, seulement en ligne) : utile pour l'app installée sur l'écran d'accueil, qui reste ouverte des jours. `toast()` accepte `ms` (durée).
 - Corrigé au passage : le bouton des notifications (« Annuler », « Ajuster », « Recharger ») était vert foncé sur la bulle sombre depuis la palette 1.29 ; il est citron (9,1:1) en clair et vert feuille en sombre.
 - Test : `tests/features/update_test.js` (serveur local, publication simulée, coupure réseau, retour au premier plan).
+
+### Fait en 1.32 (accords mets : plats incohérents retirés)
+
+- Retirés de « À table » (`DISHES`, `data_food.js`) à la demande du propriétaire : **fondue**, **raclette** (qui se boivent au vin blanc, pas en cocktail) et **plateau de fromages** (vin, porto), même logique. Supprimés avec eux : l'exception « kirsch » de `dishPicks` (`core.js`), `PAIR_WHY.trad`, et les icônes `cooking-pot`, `raclette`, `cheese`. Restent 13 plats (pizza, grillades, sushi, mexicain, curry, poisson, pâtes, salade, apéro, chocolat, dessert, snacks, asiatique).
+- `dishSheet` ignore un identifiant inconnu (ancien lien) ; le trophée « Fin gourmet » (6 accords) reste atteignable, les accords déjà vus restent comptés. Le fuzz ouvre désormais la fiche de chaque plat.
 
 ## 7. Autres chantiers proposés (après la vérification)
 
