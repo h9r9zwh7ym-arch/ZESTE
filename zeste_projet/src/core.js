@@ -225,10 +225,7 @@ function learnFrom(id, rating){
 function score(r){ return S.ratings[r.id] ? S.ratings[r.id]+0.01 : predict(r); }
 function matchPct(r){ const x=score(r); return Math.round(Math.max(5,Math.min(98, 50+ (x-3)*28 ))); }
 function hasTaste(){ return getModel().n>=2; }
-function ctxInfo(){ const h=new Date().getHours(), m=new Date().getMonth()+1;
-  const moment= momentForHour(h);
-  const saison= [12,1,2].includes(m)?"hiver":[11,3].includes(m)?"frais":[6,7,8].includes(m)?"ete":"doux";
-  return {moment,saison,label:{matin:"Pour ce matin",aprem:"Pour cet après-midi",apero:"Pour l’apéro",soir:"Pour ce soir",nuit:"Pour finir la soirée"}[moment]}; }
+// (ctxInfo : remplacée plus loin, voir ui10.js)
 function ctxBonus(r, c){ c=c||ctxInfo(); const m=metricsR(r), f=r.fam; let b=0;
   if(c.moment==="apero"){ if((f==="bulles"||f==="highball")&&m.abv<14) b+=0.3; if(f==="dessert"||f==="chaud") b-=0.3; }
   if(c.moment==="soir"){ if(f==="stirred"||f==="sour"||f==="tiki") b+=0.15; }

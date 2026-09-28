@@ -117,14 +117,7 @@ document.addEventListener("pointermove",e=>{ if(RADDRAG==null) return; const svg
   document.getElementById("radpoly").setAttribute("points",RAD.map((vv,j)=>pt(j,Math.max(0.03,vv)).join(",")).join(" ")); const h=svg.querySelector(`.rad-h[data-ax="${i}"]`), p=pt(i,Math.max(0.03,RAD[i])); h.setAttribute("cx",p[0]); h.setAttribute("cy",p[1]);
   clearTimeout(RADT); RADT=setTimeout(()=>{ const el=document.getElementById("radres"); if(el) el.innerHTML=radarResults(); },90); });
 document.addEventListener("pointerup",()=>{ if(RADDRAG==null) return; document.querySelectorAll(".rad-h.drag").forEach(h=>h.classList.remove("drag")); RADDRAG=null; const el=document.getElementById("radres"); if(el) el.innerHTML=radarResults(); if(typeof SND!=="undefined") SND.select(); });
-// ---------- Étagère du bar ----------
-function shelfView(ids){
-  const segs=[["spirit","Spiritueux"],["liq","Liqueurs et amers"],["vin","Vins et vermouths"],["sirop","Sirops"],["soft","Softs et jus"]];
-  let o=`<div class="bar-shelves"><div class="bar-lamp"></div>`;
-  segs.forEach(([sg,n])=>{ const L=ids.filter(id=>segOf(id)===sg).sort((a,b)=>(S.stock[b]>0)-(S.stock[a]>0)||ING[a].n.localeCompare(ING[b].n,"fr")); if(!L.length) return;
-    o+=`<div class="shelf-row"><div class="shelf-lab">${esc(n)}</div><div class="shelf-bottles">${L.map((id,k)=>{ const v=S.stock[id], lv=tracked(id)?v:(v===1?4:0); return `<button class="sbottle ${lv===0?"empty":""}" data-a="ing" data-id="${id}" style="animation-delay:${k*45}ms">${bottleSVG(id,lv)}<span>${esc(shortN(id))}</span>${lv===0?`<em>À racheter</em>`:""}</button>`; }).join("")}</div><div class="shelf-board"></div></div>`; });
-  return o+`</div>`;
-}
+// (shelfView : remplacée plus loin, voir v125.js)
 Object.assign(ACT,{
   cmode2:(d)=>{ if(d.v==="world"&&CF.mode!=="world") WORLD_FIRST=true; CF.mode=d.v; renderView("cocktails"); },
   region:(d)=>{ if(WORLD_R===d.r) return; animateRegion(d.r); document.querySelectorAll('[data-a="region"]').forEach(b=>b.classList.toggle("on",b.dataset.r===d.r)); },

@@ -1,10 +1,10 @@
 // ================= 1.27 : étagère, accueil du matin =================
 // ---------- Étagère : raccourcis de rayon, indication claire pour les basiques/softs, effet de profondeur ----------
 function shelfView(ids){
-  const segs=[["spirit","Spiritueux"],["liq","Liqueurs et amers"],["vin","Vins et vermouths"],["sirop","Sirops"],["soft","Softs et jus"]], LV=["Vide","¼","½","¾","Pleine"];
+  const segs=SEGS.filter(([k])=>k!=="add"), LV=["Vide","¼","½","¾","Pleine"];
   const present=segs.filter(([sg])=>ids.some(id=>segOf(id)===sg));
   const tot=ids.length, empty=ids.filter(id=>tracked(id)&&S.stock[id]===0).length;
-  let o=`<div class="bar2"><div class="b2-glow"></div><div class="b2-head"><b>${tot} bouteille${tot>1?"s":""}</b>${empty?`<span class="b2-warn">${empty} à racheter</span>`:""}</div>`;
+  let o=`<div class="bar2"><div class="b2-glow"></div><div class="b2-head"><b>${barCount()} bouteille${barCount()>1?"s":""} ouverte${barCount()>1?"s":""}</b>${empty?`<span class="b2-warn">${empty} à racheter</span>`:""}</div>`;
   if(present.length>1) o+=`<div class="b2-jump">${present.map(([sg,n])=>`<button data-a="shelfjump" data-sg="${sg}"><i style="background:${SEGCOL[sg]}"></i>${esc(n)}</button>`).join("")}</div>`;
   let k=0;
   present.forEach(([sg,n])=>{ const L=ids.filter(id=>segOf(id)===sg).sort((a,b)=>(S.stock[b]>0)-(S.stock[a]>0)||ING[a].n.localeCompare(ING[b].n,"fr"));
@@ -20,3 +20,5 @@ Object.assign(ACT,{ shelfjump:(d)=>{ const el=document.getElementById("b2-sg-"+d
 // Le reste (préparation qui périme, mets, etc.) continue de s'afficher normalement.
 const _suggestMorning=HOME_SEC.suggest;
 HOME_SEC.suggest=(ctx)=>{ if(ctxInfo().moment==="matin") return ""; return _suggestMorning(ctx); };
+const _naMorning=HOME_SEC.na;
+HOME_SEC.na=(ctx)=>{ if(ctxInfo().moment==="matin") return ""; return _naMorning(ctx); };

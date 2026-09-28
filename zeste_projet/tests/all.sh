@@ -14,6 +14,9 @@ echo "— Chromium";     node tests/smoke.js | tail -2
 echo "— contraste";    node tests/contrast.js | grep -c "0 problème" | sed 's/$/ vues sans problème de contraste sur 12/'
 echo "— VoiceOver";    node tests/a11y.js | grep -c '"sansNom":{}' | sed 's/$/ vues sans élément muet sur 6/'
 if command -v WebKitWebDriver >/dev/null 2>&1; then echo "— WebKit"; node tests/webkit.js | tail -1; else echo "— WebKit : non installé, test sauté"; fi
-echo "— fuzz";         $PY tests/fuzz.py | tr -d '\n '; echo
+echo "— fonctionnalités"; for t in tests/features/*.js; do O=$(node "$t" 2>&1) || { echo "$O"; echo "Échec : $t"; exit 1; }; echo "$O" | head -1; done
+echo "— fuzz";         F=$($PY tests/fuzz.py | tr -d '\n '); echo "$F"
+# le fuzz renvoie des listes d'erreurs par catégorie : la moindre entrée non vide fait échouer la suite
+echo "$F" | $PY -c 'import sys,json; d=json.loads(sys.stdin.read()); bad={k:v for k,v in d.items() if v}; sys.exit(1 if bad else 0)' || { echo "Échec du fuzz"; exit 1; }
 cp dist/zeste.html ../index.html
 echo "Tout est passé. ../index.html est à jour."

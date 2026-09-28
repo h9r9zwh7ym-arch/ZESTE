@@ -22,7 +22,7 @@ function sanitizeBackup(d){
   if(Array.isArray(d.custom)) out.custom=d.custom.filter(r=>r&&typeof r.id==="string"&&typeof r.n==="string"&&Array.isArray(r.ing)&&r.ing.every(i=>i&&ING[i.id]&&num(i.q)));
   if(isObj(d.settings)) out.settings=Object.assign({},out.settings,d.settings);
   // champs simples conservés tels quels s'ils ont le bon type
-  ["quiz","adj","notes","price","stockT","opened","opens","mw","skips","chal","dishes","troT","rt","mix","heroLog"].forEach(k=>{ if(isObj(d[k])) out[k]=d[k]; });
+  ["quiz","adj","notes","price","stockT","opened","opens","mw","skips","chal","dishes","troT","rt","mix","heroLog","tierSeen"].forEach(k=>{ if(isObj(d[k])) out[k]=d[k]; });
   ["tro","preps","citiesSeen","linSeen","drinks"].forEach(k=>{ if(Array.isArray(d[k])) out[k]=d[k]; });
   ["quizSkip","roul","labBest","labServes","mwN","prepCount","bmDone","chalHard"].forEach(k=>{ if(num(d[k])||typeof d[k]==="boolean") out[k]=d[k]; });
   return out;
@@ -192,7 +192,7 @@ const _paintQuiz=paintQuiz; paintQuiz=function(){
   ov.innerHTML=`<div class="ov-top"><button class="close-x" data-a="qzskip" aria-label="Passer">${IC.x}</button><div class="qz-prog">${QUIZ.map((_,k)=>`<i class="${k<QZ.i?"done":k===QZ.i?"now":""}"></i>`).join("")}</div><button class="link" data-a="qzskip" style="font-size:calc(15rem / 17)">Passer</button></div>
   <div class="ov-body qz ${QZ.dir}"><div class="bm-count">Question ${QZ.i+1} sur ${n}</div><div class="qz-q">${esc(q.q)}</div><div class="muted" style="margin-top:6px">${esc(q.sub)}</div>
   <div class="qz-items">${q.items.map((id,k)=>{ const r=RMAP[id], v=cur[id]; return `<div class="qzi" style="animation-delay:${60+k*40}ms"><span class="qzi-g">${glassThumb(r)}</span><b>${esc(r.n)}</b><div class="qzi-b">${[["love","J’aime"],["bof","Bof"],["no","Pas pour moi"]].map(([k2,l])=>`<button class="${v===k2?"on "+k2:""}" data-a="qzitem" data-id="${id}" data-v="${k2}">${l}</button>`).join("")}</div></div>`; }).join("")}</div></div>
-  <div class="ov-bottom">${QZ.i>0?`<button class="btn gray" data-a="qznav" data-d="-1" style="flex:0 0 34%">Retour</button>`:""}<button class="btn" data-a="qznav" data-d="1">${Object.keys(cur).length?"Terminer":"Je n’en connais aucun"}</button></div>`;
+  <div class="ov-bottom">${QZ.i>0?`<button class="btn gray" data-a="qznav" data-d="-1" style="flex:0 0 34%">Retour</button>`:""}<button class="btn" data-a="qznav" data-d="1">${Object.keys(cur).length?"Terminer":"Continuer"}</button></div>`;
   QZ.dir="";
 };
 ACT.qzitem=(d)=>{ QZ.a.items=QZ.a.items||{}; if(QZ.a.items[d.id]===d.v) delete QZ.a.items[d.id]; else QZ.a.items[d.id]=d.v; paintQuiz(); };
