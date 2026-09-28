@@ -12,21 +12,36 @@ const SND=(()=>{
     // la réverbération est préparée juste après, sans bloquer le geste en cours
     setTimeout(()=>{ try{ const len=Math.floor(ctx.sampleRate*0.9), ir=ctx.createBuffer(2,len,ctx.sampleRate); const a=ir.getChannelData(0), b=ir.getChannelData(1); for(let i=0;i<len;i++){ const e=Math.pow(1-i/len,3.2); a[i]=(Math.random()*2-1)*e; b[i]=(Math.random()*2-1)*e; } const conv=ctx.createConvolver(); conv.buffer=ir; rev.connect(conv); conv.connect(comp); }catch(e){} },60);
   }
-  function ac(){ if(!on()) return null; try{ if(!ctx) build(); }catch(e){ return null; } out.gain.value=vol()*0.9; if(ctx.state==="suspended") ctx.resume().catch(()=>{}); return ctx; }
+  // iOS met l'audio en pause quand on quitte l'app (état « suspended » ou « interrupted », propre à Safari) et ne le relance
+  // pas seul : on relance depuis tout état « pas en marche », et on recrée le contexte s'il a été fermé.
+  function ac(){ if(!on()) return null; try{ if(!ctx||ctx.state==="closed") build(); }catch(e){ return null; } out.gain.value=vol()*0.9; if(ctx.state!=="running") ctx.resume().catch(()=>{}); return ctx; }
+  // un son n'est joué que si l'audio tourne vraiment : sinon il serait mis en file et partirait en rafale au redémarrage
+  function live(){ const c=ac(); return c&&c.state==="running"?c:null; }
   // iOS ne débloque l'audio qu'à la fin d'un geste : touchend et click, avec un son muet
-  function unlock(){ if(unlocked||!on()) return; const c=ac(); if(!c) return; try{ const b=c.createBuffer(1,1,22050), s=c.createBufferSource(); s.buffer=b; s.connect(c.destination); s.start(0); }catch(e){} c.resume().then(()=>{ if(c.state==="running") unlocked=true; }).catch(()=>{}); }
+  // iOS ne débloque l'audio qu'à la fin d'un geste : touchend et click, avec un son muet. À refaire après chaque retour
+  // dans l'app ; si le contexte reste coincé malgré le geste (cas connu de Safari après une interruption), on en crée un neuf,
+  // que le geste suivant débloquera.
+  let stuck=0;
+  function unlock(){ if(!on()) return; if(unlocked&&ctx&&ctx.state==="running") return; const c=ac(); if(!c) return;
+    try{ const b=c.createBuffer(1,1,22050), s=c.createBufferSource(); s.buffer=b; s.connect(c.destination); s.start(0); }catch(e){}
+    c.resume().then(()=>{ if(c.state==="running"){ unlocked=true; stuck=0; } }).catch(()=>{});
+    setTimeout(()=>{ if(c!==ctx||c.state==="running"||document.visibilityState!=="visible") return; if(++stuck>=2){ stuck=0; try{ c.close(); }catch(e){} ctx=null; try{ build(); out.gain.value=vol()*0.9; }catch(e){} } },500); }
   ["touchend","click","keydown"].forEach(ev=>document.addEventListener(ev,unlock,{capture:true,passive:true}));
+  // au retour dans l'app : on redemande le déblocage au prochain geste, et on tente de relancer tout de suite
+  const wake=()=>{ if(document.visibilityState!=="visible") return; unlocked=false; if(ctx&&ctx.state!=="running"&&ctx.state!=="closed") ctx.resume().catch(()=>{}); };
+  document.addEventListener("visibilitychange",wake); window.addEventListener("pageshow",wake); window.addEventListener("focus",wake);
   // le contexte audio est créé en tâche de fond après le démarrage (il reste en veille jusqu'au premier geste)
   setTimeout(()=>{ if(on()&&!ctx){ const go=()=>{ try{ build(); out.gain.value=vol()*0.9; }catch(e){} }; (window.requestIdleCallback||setTimeout)(go,{timeout:2000}); } },2600);
   const T=t=>ctx.currentTime+(t||0);
-  function osc(type,f,t,dur,v,o={}){ const c=ac(); if(!c) return; const {f2,wet=0,att=0.004}=o; const n=c.createOscillator(), g=c.createGain(); g.gain.value=0.0001; n.type=type; n.frequency.setValueAtTime(f,T(t)); if(f2) n.frequency.exponentialRampToValueAtTime(f2,T(t)+dur*0.9);
+  function osc(type,f,t,dur,v,o={}){ const c=live(); if(!c) return; const {f2,wet=0,att=0.004}=o; const n=c.createOscillator(), g=c.createGain(); g.gain.value=0.0001; n.type=type; n.frequency.setValueAtTime(f,T(t)); if(f2) n.frequency.exponentialRampToValueAtTime(f2,T(t)+dur*0.9);
     g.gain.setValueAtTime(0.0001,T(t)); g.gain.exponentialRampToValueAtTime(v,T(t)+att); g.gain.exponentialRampToValueAtTime(0.0001,T(t)+dur); n.connect(g); g.connect(out); if(wet){ const w=c.createGain(); w.gain.value=wet; g.connect(w); w.connect(rev); } n.start(T(t)); n.stop(T(t)+dur+0.05); }
-  function noise(t,dur,v,o={}){ const c=ac(); if(!c) return; const {type="bandpass",f=1000,q=1,f2,wet=0,att=0.01}=o; const s=c.createBufferSource(); s.buffer=noiseBuf; const fl=c.createBiquadFilter(); fl.type=type; fl.frequency.setValueAtTime(f,T(t)); if(f2) fl.frequency.exponentialRampToValueAtTime(f2,T(t)+dur); fl.Q.value=q; const g=c.createGain(); g.gain.value=0.0001;
+  function noise(t,dur,v,o={}){ const c=live(); if(!c) return; const {type="bandpass",f=1000,q=1,f2,wet=0,att=0.01}=o; const s=c.createBufferSource(); s.buffer=noiseBuf; const fl=c.createBiquadFilter(); fl.type=type; fl.frequency.setValueAtTime(f,T(t)); if(f2) fl.frequency.exponentialRampToValueAtTime(f2,T(t)+dur); fl.Q.value=q; const g=c.createGain(); g.gain.value=0.0001;
     g.gain.setValueAtTime(0.0001,T(t)); g.gain.exponentialRampToValueAtTime(v,T(t)+att); g.gain.exponentialRampToValueAtTime(0.0001,T(t)+dur); s.connect(fl); fl.connect(g); g.connect(out); if(wet){ const w=c.createGain(); w.gain.value=wet; g.connect(w); w.connect(rev); } s.start(T(t),Math.random()*0.8); s.stop(T(t)+dur+0.05); }
   function glass(f,t,v,wet=0.5){ [[1,1,0.9],[2.32,0.45,0.55],[4.25,0.25,0.3],[6.63,0.12,0.18]].forEach(([m,a,d])=>osc("sine",f*m,t,d,v*a,{wet})); }
   function bell(f,t,v,d=1.2,wet=0.6){ osc("sine",f,t,d,v,{wet}); osc("sine",f*2.01,t,d*0.5,v*0.3,{wet}); osc("sine",f*3.02,t,d*0.25,v*0.12,{wet}); }
   let lastDet=-1, lastT=0;
   const api={
+    _ctx(){ return ctx; }, // pour les tests
     tap(){ osc("sine",1250,0,0.045,0.06,{f2:820,att:0.002}); },
     select(){ osc("sine",880,0,0.06,0.05,{f2:1100,att:0.002}); osc("sine",1320,0.03,0.08,0.03,{wet:0.3}); },
     toggle(onOff){ if(onOff){ osc("sine",660,0,0.07,0.06,{att:0.002}); osc("sine",990,0.055,0.09,0.06,{att:0.002}); } else { osc("sine",880,0,0.07,0.05,{att:0.002}); osc("sine",590,0.055,0.09,0.05,{att:0.002}); } },
@@ -39,7 +54,7 @@ const SND=(()=>{
     remove(){ osc("sine",420,0,0.12,0.08,{f2:180}); },
     clink(){ glass(2350,0,0.07); glass(3120,0.018,0.05); },
     ice(){ for(let k=0;k<3;k++){ const t=k*0.06+Math.random()*0.025; glass(2600+Math.random()*1800,t,0.035,0.35); noise(t,0.03,0.03,{type:"highpass",f:5000}); } },
-    pour(d=0.6){ const c=ac(); if(!c) return; const s=c.createBufferSource(); s.buffer=noiseBuf; const bp=c.createBiquadFilter(); bp.type="bandpass"; bp.Q.value=2.2; bp.frequency.value=800; const lfo=c.createOscillator(), lg=c.createGain(); lfo.frequency.value=7+Math.random()*4; lg.gain.value=320; lfo.connect(lg); lg.connect(bp.frequency);
+    pour(d=0.6){ const c=live(); if(!c) return; const s=c.createBufferSource(); s.buffer=noiseBuf; const bp=c.createBiquadFilter(); bp.type="bandpass"; bp.Q.value=2.2; bp.frequency.value=800; const lfo=c.createOscillator(), lg=c.createGain(); lfo.frequency.value=7+Math.random()*4; lg.gain.value=320; lfo.connect(lg); lg.connect(bp.frequency);
       const g=c.createGain(); g.gain.value=0.0001; g.gain.setValueAtTime(0.0001,T()); g.gain.exponentialRampToValueAtTime(0.14,T()+0.06); g.gain.setValueAtTime(0.14,T()+d*0.7); g.gain.exponentialRampToValueAtTime(0.0001,T()+d); s.connect(bp); bp.connect(g); g.connect(out); s.start(T(),Math.random()*0.6); s.stop(T()+d+0.05); lfo.start(T()); lfo.stop(T()+d+0.05);
       for(let k=0;k<Math.round(d*9);k++) osc("sine",500+Math.random()*700,k*0.1+Math.random()*0.05,0.05,0.025,{f2:1300+Math.random()*600}); },
     shake(d=1.2){ const n=Math.round(d/0.14); for(let k=0;k<n;k++){ const t=k*0.14, a=k%2?0.7:1; noise(t,0.1,0.16*a,{f:3200,q:1.6,att:0.004}); noise(t,0.06,0.06*a,{type:"highpass",f:6000,att:0.002}); if(k%2===0) glass(2800+Math.random()*1400,t+0.02,0.018,0.1); } },

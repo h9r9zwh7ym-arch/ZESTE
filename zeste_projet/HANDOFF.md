@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.32**. Chaque mise à jour livrée incrémente : 1.21 → 1.32… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.33**. Chaque mise à jour livrée incrémente : 1.21 → 1.33… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -190,6 +190,12 @@ Choisie par le propriétaire parmi trois directions présentées sur un canevas 
 
 - Retirés de « À table » (`DISHES`, `data_food.js`) à la demande du propriétaire : **fondue**, **raclette** (qui se boivent au vin blanc, pas en cocktail) et **plateau de fromages** (vin, porto), même logique. Supprimés avec eux : l'exception « kirsch » de `dishPicks` (`core.js`), `PAIR_WHY.trad`, et les icônes `cooking-pot`, `raclette`, `cheese`. Restent 13 plats (pizza, grillades, sushi, mexicain, curry, poisson, pâtes, salade, apéro, chocolat, dessert, snacks, asiatique).
 - `dishSheet` ignore un identifiant inconnu (ancien lien) ; le trophée « Fin gourmet » (6 accords) reste atteignable, les accords déjà vus restent comptés. Le fuzz ouvre désormais la fiche de chaque plat.
+
+### Fait en 1.33 (son muet après un passage en arrière-plan)
+
+- **Cause** : en quittant l'app, iOS met l'`AudioContext` dans l'état `interrupted` (propre à Safari). `ac()` ne relançait que depuis `suspended`, et `unlock()` ne s'exécutait qu'une fois par session (`unlocked=true`) : plus aucun son au retour. Les sons demandés pendant la pause étaient en plus mis en file et partaient en rafale au redémarrage.
+- **Correctif** (`src/sound.js`) : relance depuis tout état autre que `running` ; contexte `closed` recréé ; `unlocked` remis à zéro au retour (`visibilitychange`, `pageshow`, `focus`), donc le premier geste redébloque ; si le contexte reste coincé après deux gestes, il est fermé et remplacé par un neuf ; `osc`, `noise` et `pour` passent par `live()` et ne jouent rien tant que l'audio ne tourne pas (plus de rafale). `SND._ctx()` expose le contexte aux tests.
+- Test : `tests/features/sound_test.js` (pause simulée, aucun son en file, contexte fermé, contexte coincé) ; il échoue sur l'ancien code. L'état `interrupted` lui-même n'existe pas dans Chromium : à confirmer sur iPhone.
 
 ## 7. Autres chantiers proposés (après la vérification)
 
