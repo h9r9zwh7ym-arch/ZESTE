@@ -4,7 +4,7 @@ const LCAP=Object.fromEntries(LGLASS.map(x=>[x[0],x[2]]));
 const LICE=[["none","Sans",0],["cubes","Glaçons",0.35],["big","Gros glaçon",0.42],["pilee","Pilée",0.45]];
 const ICESHARE=Object.fromEntries(LICE.map(x=>[x[0],x[2]]));
 const LTYPE=[["auto","Je ne sais pas"],["court","Cocktail court"],["sec","Sec et fort"],["long","Long drink"],["spritz","Spritz"],["shot","Shot"]];
-const LGAR=[["zeste_c","🍋","Zeste de citron"],["cv","🍈","Rondelle de citron vert"],["rc","🟡","Rondelle de citron"],["or","🍊","Rondelle d’orange"],["zo","🟠","Zeste d’orange"],["menthe","🌿","Branche de menthe"],["basilic","🌱","Feuille de basilic"],["olive","🫒","Olives vertes"],["cerise","🍒","Cerise"],["sel","🧂","Bord de sel"],["sucre","🍬","Bord sucré"],["concombre","🥒","Rondelle de concombre"],["fraise","🍓","Framboises"],["ananas","🍍","Quartier d’ananas"],["paille","🥤","Paille"],["cannelle","🪵","Bâton de cannelle"],["cafe","☕","Grains de café"],["muscade","🌰","Muscade râpée"]];
+const LGAR=[["zeste_c","twist","Zeste de citron"],["cv","citrus","Rondelle de citron vert"],["rc","lemon","Rondelle de citron"],["or","orange-slice","Rondelle d’orange"],["zo","peel","Zeste d’orange"],["menthe","mint","Branche de menthe"],["basilic","leaf","Feuille de basilic"],["olive","olive","Olives vertes"],["cerise","cherry","Cerise"],["sel","rim-salt","Bord de sel"],["sucre","rim-sugar","Bord sucré"],["concombre","cucumber","Rondelle de concombre"],["fraise","raspberry","Framboises"],["ananas","pineapple","Quartier d’ananas"],["paille","straw","Paille"],["cannelle","cinnamon","Bâton de cannelle"],["cafe","bean","Grains de café"],["muscade","nut","Muscade râpée"]];
 const LGARTXT=Object.fromEntries(LGAR.map(x=>[x[0],x[2]]));
 function mixState(){ const M=S.mix; M.items=(M.items||[]).filter(i=>i&&ING[i.id]); M.t=M.t||"auto"; M.gar=Array.isArray(M.gar)?M.gar:[]; if(!M.m) M.m="shake"; return M; }
 // Style réellement visé : celui choisi, ou deviné d'après le mélange
@@ -60,7 +60,7 @@ function labScore(A){
   const score=Math.round(goals.reduce((a,x)=>a+x[2]*x[3],0));
   return {score,goals,fill,avail,sug};
 }
-function labGrade(s){ return s>=90?["Digne d’un chef de bar","🏆"]:s>=78?["Très bon","🥂"]:s>=60?["Pas mal du tout","👍"]:s>=40?["À retravailler","🔧"]:["Continue tes essais","🧪"]; }
+function labGrade(s){ return s>=90?["Digne d’un chef de bar","trophy"]:s>=78?["Très bon","medal"]:s>=60?["Pas mal du tout","thumbs-up"]:s>=40?["À retravailler","wrench"]:["Continue tes essais","flask-conical"]; }
 let LAB_LASTY=null, LAB_SERVE=null;
 function labBlendCol(items){ let V=0,rr=0,gg=0,bb=0; items.forEach(i=>{ if(i.u==="f"||i.u==="u"||i.u==="br") return; const ml=Math.max(mlOf(i),0.5), c=colOf(i.id); V+=ml; rr+=parseInt(c.slice(1,3),16)*ml; gg+=parseInt(c.slice(3,5),16)*ml; bb+=parseInt(c.slice(5,7),16)*ml; }); return V? "#"+[rr,gg,bb].map(x=>Math.round(x/V).toString(16).padStart(2,"0")).join("") : "#E8D8B0"; }
 function labGlassSVG(big){
@@ -82,7 +82,7 @@ function vCompose(){
     <div class="lab-gauge"><div class="lab-gbar"><i style="width:${Math.min(100,fill*100).toFixed(0)}%"></i></div><span>${fmtMl(vol)} versés sur ${fmtMl(avail)} disponibles${ICESHARE[ice]?", glace déduite":""}</span></div>
     ${SC?`<div class="lab-goals">${SC.goals.map(([k,n,v])=>`<span class="goal ${v>=0.85?"ok":k==="gar"?"bonus":v>=0.5?"mid":""}"><i>${v>=0.85?IC.check:k==="gar"?"+":v>=0.5?"~":"·"}</i>${n}</span>`).join("")}</div>`:`<div class="lab-hint">Choisis un style, un verre, puis verse tes ingrédients.</div>`}
   </div>`;
-  if(served&&SC){ const [gt,ge]=labGrade(SC.score); o+=`<div class="lab-verdict"><span class="lv-e">${ge}</span><div class="grow"><b>${esc(gt)}</b><span>${esc(labSummary(A,SC))}</span></div></div>`; }
+  if(served&&SC){ const [gt,ge]=labGrade(SC.score); o+=`<div class="lab-verdict"><span class="lv-e">${lu(ge)}</span><div class="grow"><b>${esc(gt)}</b><span>${esc(labSummary(A,SC))}</span></div></div>`; }
   // ---- étape 1 : style ----
   o+=`<h2 class="sh lab-h"><span class="lab-n">1</span>Le style</h2><div class="chips lab-chips">${LTYPE.map(([k,n])=>`<button class="chip ${M.t===k?"on":""}" data-a="mixtype" data-v="${k}">${n}</button>`).join("")}</div>`;
   // ---- étape 2 : verre ----
@@ -94,7 +94,7 @@ function vCompose(){
   if(items.length) o+=`<div class="sp8"></div><div class="group">${items.map((it,k)=>`<div class="mix-row"><button class="rm" data-a="mixrm" data-k="${k}" aria-label="Retirer">${IC.x}</button><div class="n"><i style="display:inline-block;width:9px;height:9px;border-radius:5px;background:${colOf(it.id)};margin-right:9px;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.2)"></i>${esc(ING[it.id].n)}</div><div class="stepper"><button data-a="mixq" data-k="${k}" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${fmtQ({q:it.q,u:unitOf(it.id)}).replace(/ (traits?|feuilles|rondelles?|morceaux?)$/,"")}</span><button data-a="mixq" data-k="${k}" data-d="1" aria-label="Plus">${IC.plus}</button></div></div>`).join("")}</div>`;
   // ---- étape 4 : glace et décor ----
   o+=`<h2 class="sh lab-h"><span class="lab-n">4</span>Glace et décor</h2><div class="seg lab-ice" data-k="labice">${LICE.map(([k,n])=>`<button class="${ice===k?"on":""}" data-a="mixice" data-v="${k}">${n}</button>`).join("")}</div>
-    <div class="sp8"></div><div class="lab-gars">${LGAR.map(([k,e,n])=>{ const on=M.gar.includes(k), sug=SC&&SC.sug.includes(k); return `<button class="lgar ${on?"on":""} ${sug&&!on?"sug":""}" data-a="mixgar" data-v="${k}"><span>${e}</span><b>${esc(n.replace(/^(Rondelle|Branche|Feuille|Quartier|Bâton|Grains) (de |d’)/,"").replace(/^Bord /,"Bord ").replace(/^./,c=>c.toUpperCase()))}</b></button>`; }).join("")}</div>`;
+    <div class="sp8"></div><div class="lab-gars">${LGAR.map(([k,e,n])=>{ const on=M.gar.includes(k), sug=SC&&SC.sug.includes(k); return `<button class="lgar ${on?"on":""} ${sug&&!on?"sug":""}" data-a="mixgar" data-v="${k}"><span>${lu(e)}</span><b>${esc(n.replace(/^(Rondelle|Branche|Feuille|Quartier|Bâton|Grains) (de |d’)/,"").replace(/^Bord /,"Bord ").replace(/^./,c=>c.toUpperCase()))}</b></button>`; }).join("")}</div>`;
   // ---- étape 5 : méthode et service ----
   o+=`<h2 class="sh lab-h"><span class="lab-n">5</span>La méthode</h2><div class="seg" data-k="labm">${[["shake","Shaker"],["stir","Verre à mélange"],["build","Construit"]].map(([k,n])=>`<button class="${M.m===k?"on":""}" data-a="mm" data-m="${k}">${n}</button>`).join("")}</div>`;
   // ---- conseils ----
@@ -106,7 +106,7 @@ function vCompose(){
     if(fill>1.02) tips.unshift(`<div class="tip-r bad">${IC.warn}<div class="grow"><b>Ça déborde !</b><span>Il faut environ ${fmtMl(vol-avail)} de place en plus.</span><button class="btn small sec" data-a="mixfit">Ajuster au verre</button></div></div>`);
     else if(fill<0.42) tips.push(`<div class="tip-r">${IC.warn}<div class="grow"><b>Le verre paraît vide</b><span>Ajoute du volume ou choisis un verre plus petit.</span><button class="btn small sec" data-a="mixfit">Ajuster au verre</button></div></div>`);
     if(tips.length) o+=`<h2 class="sh">Conseils du barman</h2><div class="group lab-tips">${tips.slice(0,4).join("")}</div>`;
-    o+=`<div class="sp16"></div><div class="btn-row"><button class="btn lab-serve" data-a="mixserve">${M.m==="shake"?"🍸 Secouer et servir":M.m==="stir"?"🥄 Remuer et servir":"🥂 Servir"}</button></div>`;
+    o+=`<div class="sp16"></div><div class="btn-row"><button class="btn lab-serve" data-a="mixserve">${M.m==="shake"?lu("shaker")+"Secouer et servir":M.m==="stir"?lu("barspoon")+"Remuer et servir":lu("wine")+"Servir"}</button></div>`;
     // ---- détails ----
     const p=profileOf(A.items,A.met), pa=pairings(A.items), nr=nearest(A.items);
     o+=`<details class="lab-more"><summary>Voir l’analyse détaillée${IC.chev}</summary><div class="card" style="margin-top:8px"><div class="metrics"><div class="metric"><b>${num(Math.round(A.met.abv*10)/10)} %</b><span>alcool</span>${zoneBar(A.met.abv,A.z.abv,40)}</div><div class="metric"><b>${num(Math.round(A.met.sug*10)/10)}</b><span>sucre g/100 ml</span>${zoneBar(A.met.sug,A.z.sug,16)}</div><div class="metric"><b>${num(Math.round(A.met.acid*100)/100)} %</b><span>acidité</span>${zoneBar(A.met.acid,A.z.acid,1.6)}</div></div><div class="sp16"></div><div class="prof">${radarSVG(p)}<div class="muted" style="font-size:calc(14rem / 17)">La zone verte montre la plage des classiques du même style.${hasPrices()?(()=>{ const c=costOf(A.items); return c.miss.length?"":" Coût : environ "+chf(c.tot)+"."; })():""}</div></div></div>
@@ -175,7 +175,7 @@ function openServe(){
     <div class="sv-glass"><div class="sv-g">${glassSVG(r,{fill,smilFrom:Math.max(20,(GLASS_SHAPES[g]||GLASS_SHAPES.rocks).bot-8),smilDur:1.1})}</div><div class="sv-tool">${tool}</div></div>
     <div class="sv-res">
       <div class="sv-ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="10"/><circle class="sv-arc" cx="60" cy="60" r="52" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 ${C}" transform="rotate(-90 60 60)"/></svg><div class="sv-num"><b>0</b><span>/100</span></div></div>
-      <div class="sv-grade"><span class="sv-e">${ge}</span><b>${esc(gt)}</b>${record?`<em>Nouveau record !</em>`:""}</div>
+      <div class="sv-grade"><span class="sv-e">${lu(ge)}</span><b>${esc(gt)}</b>${record?`<em>Nouveau record !</em>`:""}</div>
     </div>
     <div class="sv-goals">${SC.goals.map(([k,n,v],i)=>`<div class="sv-goal ${v>=0.85?"ok":k==="gar"?"bonus":v>=0.5?"mid":"ko"}" style="--i:${i}"><span class="sv-gi">${v>=0.85?IC.check:k==="gar"?"+":v>=0.5?"~":"!"}</span><div class="grow"><b>${GL[k]}</b><i><u style="--w:${Math.round(v*100)}%"></u></i></div></div>`).join("")}</div>
     <p class="sv-sum">${esc(labSummary(A,SC))}</p>

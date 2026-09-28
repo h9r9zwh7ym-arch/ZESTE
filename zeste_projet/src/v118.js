@@ -1,10 +1,8 @@
 // ================= ZESTE 1.18 =================
-// ---------- À table : chips et snacks à la place du brunch, emojis corrigés ----------
+// ---------- À table : chips et snacks à la place du brunch, icônes dans icons.js ----------
 (function(){
   const i=DISHES.findIndex(d=>d.id==="brunch");
-  if(i>=0) DISHES[i]={id:"snacks",e:"🥨",n:"Chips et snacks",why:"Le sel des chips, des bretzels et des cacahuètes appelle des bulles, de l’amertume et de l’acidité : tout ce qui rafraîchit et donne envie d’une autre poignée.",want:{fizz:1,acid:.6,bitter:.6,sweet:-.5,strong:-.3,cream:-1},base:["amer","agave"],picks:["michelada","aperol_spritz","gin_tonic","paloma","margarita","whisky_highball","americano","vermouth_soda"]};
-  const E={raclette:"🥔",fromages:"🧀",grill:"🍔",asiat:"🍜"}; DISHES.forEach(d=>{ if(E[d.id]) d.e=E[d.id]; });
-  const g=LGAR.find(x=>x[0]==="cv"); if(g) g[1]="🍋‍🟩";
+  if(i>=0) DISHES[i]={id:"snacks",ic:"pretzel",n:"Chips et snacks",why:"Le sel des chips, des bretzels et des cacahuètes appelle des bulles, de l’amertume et de l’acidité : tout ce qui rafraîchit et donne envie d’une autre poignée.",want:{fizz:1,acid:.6,bitter:.6,sweet:-.5,strong:-.3,cream:-1},base:["amer","agave"],picks:["michelada","aperol_spritz","gin_tonic","paloma","margarita","whisky_highball","americano","vermouth_soda"]};
 })();
 // ---------- Lignées vérifiées ----------
 (function(){

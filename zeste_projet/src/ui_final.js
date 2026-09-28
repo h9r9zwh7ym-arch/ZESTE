@@ -56,6 +56,10 @@ const ICS={ // pastilles de couleur façon réglages iOS
  star:["#FFCC00",IC.star],
  info:["#8E8E93",`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"/><path d="M12 11v6" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.3" fill="#fff"/></svg>`]
 };
+// 1.30 : pastilles des réglages en icônes Lucide, dans la teinte de la marque (une seule couleur, calme et lisible) ;
+// seule la suppression garde le rouge. sic() lit ICS[k][0] comme fond : les teintes suivent le thème clair/sombre.
+{ const M={user:"user-round",quiz:"sparkles",txt:"a-large-small",theme:"contrast",sky:"sun",clock:"clock",snd:"volume-2",anim:"wand-sparkles",home:"house",reco:"dice-5",ctx:"moon",na:"glass-water",brain:"rotate-ccw",unit:"beaker",money:"coins",basics:"shopping-basket",up:"upload",down:"download",trash:"trash-2",star:"star",info:"info",weight:"weight",sex:"person-standing"};
+  for(const k in M) ICS[k]=k==="trash"?["color-mix(in srgb,var(--red) 14%,transparent)",lu(M[k]).replace("<svg",'<svg style="color:var(--red)"')]:["var(--tint-bg)",lu(M[k])]; }
 const sic=k=>`<span class="set-ic" style="background:${ICS[k][0]}">${ICS[k][1]}</span>`;
 const srow=(k,label,right,act,extra="")=>`<${act?`button class="row tap" data-a="${act}" ${extra}`:`div class="row" ${extra}`} style="--inset:58px">${sic(k)}<div class="grow">${label}</div>${right||""}${act?IC.chev:""}</${act?"button":"div"}>`;
 const sw=(on,act,label,extra="")=>`<button class="switch ${on?"on":""}" data-a="${act}" ${extra} role="switch" aria-checked="${on}" aria-label="${esc(label)}"></button>`;
