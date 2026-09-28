@@ -54,7 +54,6 @@ function adjCard(r){
   const pk=POP&&POP.k&&POP.k.startsWith("adj"+r.id)&&Date.now()-POP.t<700?POP.k.slice(-1):"";
   return `<h2 class="sh">Ta version${getAdj(r.id)?`<button class="more" data-a="adjreset" data-id="${r.id}">Réinitialiser</button>`:""}</h2><div class="sh-sub">Ajuste à ton goût : les quantités suivent, et l’app s’en souvient.</div><div class="card adj">${rows.map(([k,n,lo,hi])=>{ const v=a[k]||0; return `<div class="adj-row"><div class="adj-l"><b>${n}</b><span>${v<0?lo:v>0?hi:"Comme l’original"}</span></div><div class="adj-dots">${[-2,-1,0,1,2].map(x=>`<button class="${x===v?"on":""} ${x===0?"zero":""} ${pk===k&&x===v?"pop":""}" data-a="adj" data-id="${r.id}" data-k="${k}" data-v="${x}" aria-label="${n} ${x}"><i></i></button>`).join("")}</div></div>`; }).join("")}</div>`;
 }
-const TERMRE=null;
 function termify(html){ let out=html; TERMS.forEach(([k,re])=>{ let done=false; out=out.replace(new RegExp(re.source,re.flags.replace("g","")),m=>{ if(done) return m; done=true; return `<span class="term" role="button" tabindex="0" data-a="term" data-k="${k}">${m}</span>`; }); }); return out; }
 function pendingRatings(){ const now=Date.now(), sn=S.snooze||{}, seen=new Set(), out=[];
   for(let k=S.hist.length-1;k>=0;k--){ const h=S.hist[k]; if(now-h.t>6*864e5) break; if(seen.has(h.id)||!RMAP[h.id]||S.ratings[h.id]) continue; seen.add(h.id); if(sn[h.id]&&sn[h.id]>h.t) continue; out.push(h); }
@@ -605,7 +604,7 @@ function bubbles(x,y){ const box=document.createElement("div"); box.className="b
 function markBought(id){ S.stockT=S.stockT||{}; S.stockT[id]=Date.now(); }
 function confetti(x,y,col){
   if(typeof FX==="function"&&!FX("confetti")) return;
-  const L=["#F2C94C","#F29A30","#E8584A","#9CCB4A","#F4EFA8",col||"#FFB340"]; const box=document.createElement("div"); box.className="confetti"; document.body.appendChild(box);
+  const L=["#F2C94C","#F29A30","#E8584A","#9CCB4A","#F4EFA8",col||"#F5C518"]; const box=document.createElement("div"); box.className="confetti"; document.body.appendChild(box);
   for(let k=0;k<34;k++){ const s=document.createElement("i"); const a=Math.random()*Math.PI*2, v=90+Math.random()*170;
     s.style.cssText=`left:${x}px;top:${y}px;background:${L[k%L.length]};--x:${Math.cos(a)*v}px;--y:${Math.sin(a)*v-120}px;--r:${Math.random()*720-360}deg;animation-delay:${Math.random()*60}ms;${k%3?"border-radius:50%;width:9px;height:9px":""}`; box.appendChild(s); }
   setTimeout(()=>box.remove(),1500);

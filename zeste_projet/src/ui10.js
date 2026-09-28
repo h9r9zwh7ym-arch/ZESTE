@@ -38,7 +38,7 @@ function vToday(){
   const list=tonight(), empty=!barCount(), taste=hasTaste();
   let o=nav(title)+`<div class="content"><div class="eyebrow mo-eyebrow"><span class="mo-ic mo-${mo}">${MO_IC[mo]}</span>${dateLabel()}<span class="mo-k">${esc(MOMENTS[mo].k)}</span></div><h1 class="lt">${esc(title)}</h1>`;
   if(empty){
-    o+=`<div class="hero"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #E8A84A44, transparent 65%)"></div><div class="hg" data-a="jiggle">${glassSVG(RMAP.negroni,{pour:HERO_LAST!=="_w",live:1,stream:HERO_LAST!=="_w"&&WOW()})}</div><div class="hn">Bienvenue au bar</div><div class="hr">Dis-moi quelles bouteilles tu as. Sucre, œufs, agrumes et autres basiques sont déjà comptés.</div><div class="btn-row"><button class="btn" data-a="quickadd">Remplir mon bar</button></div></div>`;
+    o+=`<div class="hero"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #F5C51838, transparent 65%)"></div><div class="hg" data-a="jiggle">${glassSVG(RMAP.negroni,{pour:HERO_LAST!=="_w",live:1,stream:HERO_LAST!=="_w"&&WOW()})}</div><div class="hn">Bienvenue au bar</div><div class="hr">Dis-moi quelles bouteilles tu as. Sucre, œufs, agrumes et autres basiques sont déjà comptés.</div><div class="btn-row"><button class="btn" data-a="quickadd">Remplir mon bar</button></div></div>`;
     HERO_LAST="_w";
   } else if(mo==="matin"){
     // le matin, pas de cocktail mis en avant : un état du bar, et de quoi préparer la soirée
@@ -100,7 +100,7 @@ function priceBlock(id){
   const i=ING[id]; if(i.basic) return `<div class="gf">Coût estimé automatiquement (environ ${chf((BASIC_COST[id]||0)*(["menthe","basilic","oeuf","sucre","concombre","worcestershire","tabasco","fleur_oranger","marmelade"].includes(id)?1:10))} ${["menthe","basilic"].includes(id)?"la feuille":id==="oeuf"?"l’œuf":id==="sucre"?"le morceau":id==="concombre"?"la rondelle":["worcestershire","tabasco","fleur_oranger"].includes(id)?"le trait":id==="marmelade"?"la cuillère":"les 10 ml"}).</div>`;
   const p=(S.price||{})[id]||{}, v=p.v||DEFVOL[i.cat]||700, sizes=i.cat==="bitters"?[100,200,500]:[200,500,700,750,1000];
   const up=unitPrice(id);
-  return `<div class="gh">Prix</div><div class="group"><label class="row"><div class="grow">Prix de la bouteille</div><input class="price-in" type="number" inputmode="decimal" step="0.05" min="0" data-price="${id}" value="${p.p!=null?p.p:""}" placeholder="0,00"><span class="muted">CHF</span></label><div class="row"><div class="grow">Contenance</div><div class="seg" data-k="vol" style="margin:0;width:${sizes.length*50}px">${sizes.map(s=>`<button class="${v===s?"on":""}" data-a="setvol" data-id="${id}" data-v="${s}">${s>=1000?"1 l":s/10}</button>`).join("")}</div></div></div><div class="gf">${up!=null?`Soit ${chf(up*10)} le cl. `:""}Sert à calculer le coût de chaque cocktail et la valeur de ton bar.</div>`;
+  return `<div class="gh">Prix</div><div class="group"><label class="row"><div class="grow">Prix de la bouteille</div><input class="price-in" type="number" inputmode="decimal" step="0.05" min="0" data-price="${id}" value="${p.p!=null?p.p:""}" placeholder="0,00"><span class="muted">${(S.settings.cur||"CHF")==="EUR"?"€":"CHF"}</span></label><div class="row vol-row"><div class="vol-l">Contenance</div><div class="seg" data-k="vol" style="margin:0;flex:1 1 ${sizes.length*46}px;max-width:${sizes.length*56}px">${sizes.map(s=>`<button class="${v===s?"on":""}" data-a="setvol" data-id="${id}" data-v="${s}">${s>=1000?"1 l":s/10}</button>`).join("")}</div></div></div><div class="gf">${up!=null?`Soit ${chf(up*10)} le cl. `:""}Sert à calculer le coût de chaque cocktail et la valeur de ton bar.</div>`;
 }
 
 // ---------- Zeste Rewind ----------
@@ -122,7 +122,7 @@ function rewindEligible(){ return S.hist.filter(h=>RMAP[h.id]).length>=3; }
 let RW=null;
 function openRewind(){
   const D=rewindData(), top=D.top&&RMAP[D.top.id], best=D.best&&RMAP[D.best];
-  const col=top?top.col:"#E8A84A";
+  const col=top?top.col:"#2E7A52";
   const slides=[];
   slides.push({c:[col,"#1A1020"],h:`<div class="rw-small">Ton année Zeste</div><div class="rw-big" data-count="${D.count}">0</div><div class="rw-mid">cocktails préparés</div><div class="rw-note">dont ${D.distinct} recettes différentes</div>`});
   if(top) slides.push({c:[top.col,mix(top.col,"#000000",.6)],h:`<div class="rw-small">Ton cocktail de l’année</div><div class="rw-glass">${glassSVG(top,{pour:true,live:1})}</div><div class="rw-name">${esc(top.n)}</div><div class="rw-note">préparé ${D.top.n} fois${S.ratings[top.id]?", noté "+S.ratings[top.id]+" sur 5":""}</div>`});
@@ -158,7 +158,7 @@ function rwGo(d){ if(!RW) return; const n=RW.i+d; if(n<0) return rwShow(0); if(n
 function rwClose(){ if(RW) cancelAnimationFrame(RW.timer); RW=null; const el=document.getElementById("rewind"); if(el){ el.classList.remove("open"); setTimeout(()=>{ el.innerHTML=""; },350); } }
 function svgStandalone(s){ return s.replace(/var\(--glass-stroke\)/g,"rgba(255,245,230,.7)").replace(/var\(--glass-fill\)/g,"rgba(255,255,255,.08)").replace(/ class="[^"]*"/g,"").replace(/ style="[^"]*"/g,""); }
 async function rwSave(){
-  const D=RW&&RW.D; if(!D) return; const top=D.top&&RMAP[D.top.id], col=top?top.col:"#E8A84A";
+  const D=RW&&RW.D; if(!D) return; const top=D.top&&RMAP[D.top.id], col=top?top.col:"#2E7A52";
   const W=1080,H=1350; const g=top? svgStandalone(glassSVG(top)).replace("<svg",`<svg x="340" y="300" width="400" height="500"`) : "";
   const st=(x,y,v,l)=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="92" fill="#fff">${v}</text><text x="${x}" y="${y+48}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">${l}</text>`;
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><radialGradient id="bg" cx="50%" cy="32%" r="80%"><stop offset="0" stop-color="${col}"/><stop offset=".55" stop-color="${mix(col,"#000000",.65)}"/><stop offset="1" stop-color="#0C0810"/></radialGradient></defs><rect width="${W}" height="${H}" fill="url(#bg)"/>

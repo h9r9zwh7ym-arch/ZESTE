@@ -19,8 +19,41 @@ function fxPreset(){ const f=S.settings.fx||{}; for(const [n,p] of Object.entrie
 const ID_ALIAS={airmail:"air_mail",harvey_wallbanger:"harvey"};
 function migrateIds(){ const t=JSON.stringify(S); let n=t; for(const a in ID_ALIAS) n=n.split('"'+a+'"').join('"'+ID_ALIAS[a]+'"');
   if(n!==t){ S=JSON.parse(n); if(Array.isArray(S.fav)) S.fav=[...new Set(S.fav)]; } }
+// 1.34 : les données enregistrées sont vérifiées champ par champ avant usage. Une sauvegarde abîmée, une
+// synchronisation incomplète ou une recette supprimée ne doivent jamais empêcher l'app de démarrer : ce qui a
+// le mauvais type est remis à zéro, les identifiants inconnus sont ignorés, les nombres sont bornés.
+function healState(){
+  const obj=x=>x&&typeof x==="object"&&!Array.isArray(x), num=x=>typeof x==="number"&&isFinite(x), str=x=>typeof x==="string"&&x.length>0;
+  const D=DEF(); if(!obj(S)) S=D;
+  for(const k of ["stock","ratings","notes","price","quiz","adj","stockT","opened","opens","mw","skips","chal","troT","rt","tierSeen"]) if(k in S&&!obj(S[k])) S[k]=D[k]||{};
+  for(const k of ["fav","hist","preps","custom","tro","citiesSeen","linSeen","drinks","dishes","heroLog"]) if(k in S&&!Array.isArray(S[k])) S[k]=D[k]||[];
+  if(!obj(S.settings)) S.settings=D.settings;
+  const stock={}; for(const [id,v] of Object.entries(S.stock)) if(ING[id]&&num(v)) stock[id]=Math.max(0,Math.min(4,Math.round(v))); S.stock=stock;
+  // recettes perso : seulement celles dont tous les ingrédients existent encore
+  S.custom=S.custom.filter(r=>obj(r)&&str(r.id)&&Array.isArray(r.ing)&&r.ing.length&&r.ing.every(i=>obj(i)&&ING[i.id]&&num(i.q))).map(r=>Object.assign(r,{n:str(r.n)?r.n:"Ma création",fam:str(r.fam)?r.fam:"sour",m:str(r.m)?r.m:"shake",g:str(r.g)?r.g:"coupe"}));
+  const known=new Set(REC_RAW.map(r=>r[0]).concat(S.custom.map(r=>r.id)));
+  const ratings={}; for(const [id,v] of Object.entries(S.ratings)) if(num(v)&&v>=1&&v<=5) ratings[id]=Math.round(v); S.ratings=ratings;
+  const soon=Date.now()+864e5;
+  S.hist=S.hist.filter(h=>obj(h)&&str(h.id)&&known.has(h.id)&&num(h.t)&&h.t>0&&h.t<soon);
+  S.fav=[...new Set(S.fav.filter(x=>str(x)&&known.has(x)))];
+  S.tro=S.tro.filter(str); S.dishes=(S.dishes||[]).filter(str);
+  S.drinks=(S.drinks||[]).filter(x=>obj(x)&&num(x.t)&&num(x.ml)&&x.ml>0&&x.ml<5000&&num(x.abv)&&x.abv>=0&&x.abv<=100);
+  S.preps=S.preps.filter(x=>obj(x)&&str(x.id)&&str(x.tpl));
+  if(!obj(S.mix)) S.mix=D.mix;
+  S.mix.items=Array.isArray(S.mix.items)?S.mix.items.filter(i=>obj(i)&&ING[i.id]&&num(i.q)&&i.q>=0):[];
+  if(!["shake","stir","build"].includes(S.mix.m)) S.mix.m="shake";
+  S.mix.gar=Array.isArray(S.mix.gar)?S.mix.gar.filter(g=>LGAR.some(x=>x[0]===g)):[];
+  const st=S.settings;
+  if(!(num(st.weightKg)&&st.weightKg>=30&&st.weightKg<=250)) delete st.weightKg;
+  if(st.sex!=="h"&&st.sex!=="f") delete st.sex;
+  if(!["auto","1","1.15","1.3"].includes(String(st.txt||"auto"))) st.txt="auto";
+  if(st.unit!=="cl"&&st.unit!=="ml") st.unit="cl";
+  if(st.vol!=null&&!(num(st.vol)&&st.vol>=0&&st.vol<=1)) delete st.vol;
+  if(st.fx!=null&&!obj(st.fx)) st.fx={};
+}
 function fixState(){
   migrateIds();
+  healState();
   S.settings=Object.assign({unit:"cl",nobasic:[],na:false,ambiance:true,moment:"auto",theme:"auto",cur:"CHF",explore:1,ctx:true},S.settings||{});
   if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[];
   let H=Array.isArray(S.settings.home)?S.settings.home.filter(x=>HOME_N[x[0]]):[];
@@ -104,14 +137,6 @@ function revealIn(v){
   v.querySelectorAll(".content > h2.sh, .content > .sh-sub, .content > .scroller, .content > .card, .content > .group, .content > .duo, .content > .dishes, .content > .rw-card, .content > .disc, .content > .stat-grid, .content > .trophies, .content > .remind, #cx-res > h2.sh, #cx-res > .sh-sub, #cx-res > .group").forEach((el,i)=>{ el.classList.remove("in"); el.classList.add("rv"); el.style.setProperty("--rd",Math.min(i,6)*40+"ms"); RIO.observe(el); });
 }
 
-// ---------- Verre du labo ----------
-function mixGlass(A){
-  const items=A.items; let V=0,rr=0,gg=0,bb=0; items.forEach(i=>{ const ml=Math.max(mlOf(i),1), c=colOf(i.id); V+=ml; rr+=parseInt(c.slice(1,3),16)*ml; gg+=parseInt(c.slice(3,5),16)*ml; bb+=parseInt(c.slice(5,7),16)*ml; });
-  const col="#"+[rr,gg,bb].map(x=>Math.round(x/(V||1)).toString(16).padStart(2,"0")).join("");
-  const st=A.st, m=S.mix.m, g= st==="stirred"?"rocks": st==="long"?"highball": st==="spritz"?"vin": m==="build"?"rocks":"coupe";
-  const ice= st==="stirred"?"big": (st==="long"||st==="spritz"||m==="build")?"cubes":"none";
-  return glassSVG({id:"mix"+items.length,g,col,ice,ing:items,gar:""},{live:1});
-}
 
 // ---------- Cœurs ----------
 function hearts(x,y){ if(!FX("confetti")) return; const box=document.createElement("div"); box.className="hearts"; document.body.appendChild(box);

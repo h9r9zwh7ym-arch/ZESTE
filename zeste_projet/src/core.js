@@ -285,7 +285,6 @@ function tonightRaw(){
     slots.forEach((pos,k)=>{ const ex=exs[k]; if(!ex) return; const i=out.indexOf(ex[0]); if(i>=0) out.splice(i,1); out.splice(pos,0,ex[0]); EXPLORE.add(ex[0].id); }); }
   return out.concat(pool.map(x=>x[0]), cand.slice(40).map(x=>x[0]));
 }
-function almost(){ return RECS.map(r=>[r,status(r)]).filter(([r,s])=>!s.ok && s.miss.length===1).sort((a,b)=>score(b[0])-score(a[0])); }
 function bottleRecs(){ return memo("bottles",bottleRecsRaw); }
 function bottleRecsRaw(){
   const cand={};
