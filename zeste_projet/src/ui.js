@@ -35,7 +35,7 @@ function toast(t,opt={}){
   const el=$("#toast"); el.className=""; el.innerHTML=(opt.icon||"")+`<span>${esc(t)}</span>`+(opt.action?`<button class="tbtn">${esc(opt.action.label)}</button>`:"");
   if(opt.action) el.querySelector(".tbtn").onclick=()=>{ opt.action.fn(); el.classList.remove("show"); };
   void el.offsetWidth; el.classList.add("show"); if(opt.trophy) el.classList.add("t-tro");
-  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("show"), opt.action?4200:2400);
+  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("show"), opt.ms||(opt.action?4200:2400));
 }
 // L'écran sous une fiche ou une fenêtre n'est redessiné qu'à sa fermeture : moins de travail pendant qu'on interagit
 function covered(){ return SHEETS.length>0||document.getElementById("serve")||document.getElementById("mapfs")||(document.getElementById("overlay")||{}).classList?.contains("open"); }

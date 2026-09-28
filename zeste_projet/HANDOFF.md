@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.30**. Chaque mise à jour livrée incrémente : 1.21 → 1.30… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.31**. Chaque mise à jour livrée incrémente : 1.21 → 1.31… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js ui_final.js v126.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js ui_final.js v126.js v130.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -178,6 +178,13 @@ Choisie par le propriétaire parmi trois directions présentées sur un canevas 
 - **`IC` passe à Lucide** (mêmes clés, `Object.assign` dans `icons.js`) : barre d'onglets (le premier tracé porte `fillme`), chevrons, étoiles, cœur, recherche, filtres, partage, etc. **Réglages** (`ICS`, fin du bloc dans `ui_final.js`) : icônes Lucide sur une pastille teintée de la marque (`--tint-bg` / `--tint`), la suppression en rouge. **Icônes du moment** (`MO_IC`, `ui10.js`) : sunrise/sun/sunset/moon/moon-star, rayons et étoile toujours animés.
 - **Données** : les plats (`DISHES`, `data_food.js` et `v118.js`) et les occasions (`OCCASIONS`, `v123.js`) ont un champ `ic` (nom d'icône) au lieu de `e` (emoji) ; les garnitures (`LGAR`, `labo2.js`) ont un nom d'icône en 2e position ; `labGrade` renvoie un nom d'icône. Rendus : tuile de plat (icône 30 px teintée), fiche plat/occasion (pastille ronde 88 px), carte d'occasion (icône blanche en ligne), garnitures, verdict et fenêtre de service du labo, bouton « Secouer/Remuer/Servir ».
 - Vérifié : captures iPhone clair/sombre (accueil, À table, fiche plat, Noël, garnitures, service, verdict, réglages), suite complète verte (WebKit relancé seul : l'échec « fetch failed » venait du pilote au démarrage).
+
+### Fait en 1.31 (vérification des mises à jour, reprise d'ASCEN)
+
+- **`sw.js`** (source dans `zeste_projet/sw.js`, copié à la racine du dépôt à côté d'`index.html` par `tests/all.sh` ; **à publier avec index.html**) : même stratégie qu'ASCEN, « cache d'abord, mise à jour en arrière-plan ». L'app s'ouvre depuis la copie locale, avec ou sans réseau ; la dernière version est téléchargée discrètement, et si son empreinte (ETag, sinon Last-Modified, sinon taille) a changé, le service worker envoie `zeste-updated` à la page. Hors réseau, tout échoue en silence. Cache `zeste-v1`.
+- **`src/v130.js`** (chargé en dernier) : inscrit le service worker (seulement en https ou localhost, jamais sur claude.ai ni en fichier local), affiche « Nouvelle version de Zeste prête » avec **Recharger** quand l'écran est libre (une seule fois par session), et **revérifie au retour au premier plan** (au plus toutes les 30 min, seulement en ligne) : utile pour l'app installée sur l'écran d'accueil, qui reste ouverte des jours. `toast()` accepte `ms` (durée).
+- Corrigé au passage : le bouton des notifications (« Annuler », « Ajuster », « Recharger ») était vert foncé sur la bulle sombre depuis la palette 1.29 ; il est citron (9,1:1) en clair et vert feuille en sombre.
+- Test : `tests/features/update_test.js` (serveur local, publication simulée, coupure réseau, retour au premier plan).
 
 ## 7. Autres chantiers proposés (après la vérification)
 
