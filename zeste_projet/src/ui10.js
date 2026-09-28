@@ -166,7 +166,7 @@ async function rwSave(){
     <text x="540" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#fff">${new Date().getFullYear()}</text>${g}
     ${top?`<text x="540" y="880" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#fff">${esc(top.n)}</text><text x="540" y="935" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">mon cocktail de l’année</text>`:""}
     ${st(200,1110,D.count,"verres")}${st(420,1110,D.distinct,"recettes")}${st(640,1110,D.fams.length,"familles")}${st(860,1110,D.tro,"trophées")}
-    ${(typeof zesteMark==="function"?zesteMark({round:true}).replace(/ class="[^"]*"/g,"").replace(/ aria-hidden="true"/,"").replace("<svg",'<svg x="444" y="1222" width="64" height="64"'):"")}<text x="${typeof zesteMark==="function"?522:540}" y="1270" text-anchor="${typeof zesteMark==="function"?"start":"middle"}" font-family="Georgia,serif" font-weight="700" font-size="44" fill="rgba(255,255,255,.9)">Zeste</text></svg>`;
+    ${(typeof zesteMark==="function"?zesteMark({round:true}).replace(/ class="[^"]*"/g,"").replace(/ aria-hidden="true"/,"").replace("<svg",'<svg x="444" y="1222" width="64" height="64"'):"")}<text x="${typeof zesteMark==="function"?522:540}" y="1270" text-anchor="${typeof zesteMark==="function"?"start":"middle"}" font-family="Georgia,serif" font-weight="700" font-size="44" fill="rgba(255,255,255,.9)">zeste</text></svg>`;
   try{
     const img=new Image(); img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); await img.decode();
     const cv=document.createElement("canvas"); cv.width=W; cv.height=H; cv.getContext("2d").drawImage(img,0,0);
