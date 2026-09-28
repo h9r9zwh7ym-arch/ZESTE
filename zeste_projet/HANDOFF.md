@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.29**. Chaque mise à jour livrée incrémente : 1.21 → 1.29… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.30**. Chaque mise à jour livrée incrémente : 1.21 → 1.30… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js ui_final.js v126.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js ui_final.js v126.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -170,6 +170,14 @@ Choisie par le propriétaire parmi trois directions présentées sur un canevas 
 - **Typographie** : titres en Fraunces (axe « Soft » figé au maximum, graisses 500–700, tailles optiques 14–72), texte et chiffres en Figtree (400–800). Sous-ensemble latin, WOFF2 dans `assets/fonts/` (licence OFL jointe), incluses en base64 par `build.sh` sous les noms `ZesteSerif` / `ZesteSans` (≈ 70 Ko en tout) : l'app reste un fichier unique qui marche hors ligne. Repli sur les polices système.
 - Carte Rewind : logotype « zeste » en minuscules.
 - Vérifié : rendu réel Chromium clair/sombre (iPhone 390 px et ordinateur 1280 px), animation de lancement image par image, icônes en 180/32/16 px, suite complète verte (contraste 12/12 vues, VoiceOver, WebKit, fonctionnalités, fuzz).
+
+### Fait en 1.30 (système d'icônes, plus aucun emoji)
+
+- **Plus un seul emoji dans l'app** (vérifié sur `dist/zeste.html` : 55 remplacés). Les caractères typographiques (→, ©) restent ; la coche ✓ du minuteur et des étapes cochées est devenue une icône.
+- **`src/icons.js`** (chargé juste après `core.js`) : `LU` (tracés) et `lu(nom, classe)` → SVG 24×24, `currentColor`, trait 1,75 arrondi. Fonctionnelles : sous-ensemble **Lucide** extrait de `lucide-static` (licence ISC dans `assets/icons/LICENSE-lucide.txt`), seuls les tracés utilisés sont inclus, aucune dépendance au lancement. Culinaires et garnitures absentes de Lucide dessinées au même trait : cheese, raclette, taco, sushi, pepper, pasta, olive, chocolate, pretzel, twist, peel, lemon, orange-slice, mint, cucumber, raspberry, pineapple, straw, cinnamon, rim-salt, rim-sugar, barspoon, shaker, pumpkin. Pour en ajouter une : une entrée dans `LU` (grille 24, traits seulement).
+- **`IC` passe à Lucide** (mêmes clés, `Object.assign` dans `icons.js`) : barre d'onglets (le premier tracé porte `fillme`), chevrons, étoiles, cœur, recherche, filtres, partage, etc. **Réglages** (`ICS`, fin du bloc dans `ui_final.js`) : icônes Lucide sur une pastille teintée de la marque (`--tint-bg` / `--tint`), la suppression en rouge. **Icônes du moment** (`MO_IC`, `ui10.js`) : sunrise/sun/sunset/moon/moon-star, rayons et étoile toujours animés.
+- **Données** : les plats (`DISHES`, `data_food.js` et `v118.js`) et les occasions (`OCCASIONS`, `v123.js`) ont un champ `ic` (nom d'icône) au lieu de `e` (emoji) ; les garnitures (`LGAR`, `labo2.js`) ont un nom d'icône en 2e position ; `labGrade` renvoie un nom d'icône. Rendus : tuile de plat (icône 30 px teintée), fiche plat/occasion (pastille ronde 88 px), carte d'occasion (icône blanche en ligne), garnitures, verdict et fenêtre de service du labo, bouton « Secouer/Remuer/Servir ».
+- Vérifié : captures iPhone clair/sombre (accueil, À table, fiche plat, Noël, garnitures, service, verdict, réglages), suite complète verte (WebKit relancé seul : l'échec « fetch failed » venait du pilote au démarrage).
 
 ## 7. Autres chantiers proposés (après la vérification)
 

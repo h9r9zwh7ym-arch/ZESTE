@@ -566,7 +566,7 @@ function paintBM(){
 function bmTimer(sec){
   clearInterval(BM.timer); const t0=Date.now(); BM.tleft=sec;
   setTimeout(()=>{ const tm=document.querySelector(".timer"); if(tm) tm.classList.add("run"); },20);
-  BM.timer=setInterval(()=>{ BM.tleft=Math.max(0,sec-(Date.now()-t0)/1000); const v=$("#tval"), rg=$("#tring"); if(v) v.textContent=Math.ceil(BM.tleft); if(rg){ const C=2*Math.PI*96; rg.setAttribute("stroke-dasharray",`${C*(BM.tleft/sec)} ${C}`);} if(BM.tleft<=0){ clearInterval(BM.timer); BM.timer=null; if(navigator.vibrate) navigator.vibrate(200); if(v) v.textContent="✓"; const tm=document.querySelector(".timer"); if(tm){ tm.classList.remove("run"); tm.classList.add("done"); } } },100);
+  BM.timer=setInterval(()=>{ BM.tleft=Math.max(0,sec-(Date.now()-t0)/1000); const v=$("#tval"), rg=$("#tring"); if(v) v.textContent=Math.ceil(BM.tleft); if(rg){ const C=2*Math.PI*96; rg.setAttribute("stroke-dasharray",`${C*(BM.tleft/sec)} ${C}`);} if(BM.tleft<=0){ clearInterval(BM.timer); BM.timer=null; if(navigator.vibrate) navigator.vibrate(200); if(v) v.innerHTML=IC.check; const tm=document.querySelector(".timer"); if(tm){ tm.classList.remove("run"); tm.classList.add("done"); } } },100);
   paintBM();
 }
 function closeOverlay(){ setTimeout(()=>{ if(dirty[TAB]&&!covered()) renderView(TAB); },0); if(BM&&BM.timer) clearInterval(BM.timer); BM=null; $("#overlay").classList.remove("open"); $("#overlay").innerHTML=""; }

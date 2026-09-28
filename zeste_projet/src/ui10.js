@@ -10,12 +10,12 @@ function ctxInfo(){ const h=new Date().getHours(), m=new Date().getMonth()+1;
   return {moment,saison,label:{matin:"Pour ce matin",aprem:"Pour cet après-midi",apero:"Pour l’apéro",soir:"Pour ce soir",nuit:"Pour finir la soirée"}[moment]}; }
 
 // ---------- Ambiance selon l'heure ----------
-const MO_IC={
- matin:`<svg viewBox="0 0 24 24"><path d="M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 18a5 5 0 0 1 10 0" fill="currentColor" opacity=".9"/><g class="rays" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 7v2"/><path d="M5.6 10.6l1.4 1.4"/><path d="M18.4 10.6L17 12"/></g></svg>`,
- aprem:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g class="rays" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>`,
- apero:`<svg viewBox="0 0 24 24"><path d="M2.5 17.5h19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 17.5a6 6 0 0 1 12 0" fill="currentColor"/><path d="M5 20.5h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".5"/></svg>`,
- soir:`<svg viewBox="0 0 24 24"><path d="M15.5 3.5a8.5 8.5 0 1 0 5 13.6A7 7 0 0 1 15.5 3.5z" fill="currentColor"/></svg>`,
- nuit:`<svg viewBox="0 0 24 24"><path d="M14 4a7.5 7.5 0 1 0 6 11.5A6 6 0 0 1 14 4z" fill="currentColor"/><path class="tw" d="M19 3l.6 1.4L21 5l-1.4.6L19 7l-.6-1.4L17 5l1.4-.6z" fill="currentColor"/><path class="tw t2" d="M21.5 9l.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4z" fill="currentColor"/></svg>`
+const MO_IC={ // Lucide (sunrise, sun, sunset, moon, moon-star) ; les rayons et l'étoile restent animables
+ matin:lu("sunrise").replace('<path d="m4.93','<g class="rays"><path d="m4.93').replace('<path d="M22 22H2"/>','</g><path d="M22 22H2"/>'),
+ aprem:lu("sun").replace('<path d="M12 2v2"/>','<g class="rays"><path d="M12 2v2"/>').replace('</svg>','</g></svg>'),
+ apero:lu("sunset"),
+ soir:lu("moon"),
+ nuit:lu("moon-star").replace('<path d="M18 5h4"/><path d="M20 3v4"/>','<g class="tw"><path d="M18 5h4"/><path d="M20 3v4"/></g>')
 };
 let AMB_M=null;
 function applyAmbient(){
@@ -61,7 +61,7 @@ const HOME_SEC={
   suggest:({list})=> list.length>1? `<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">Faisables avec ton bar, variés et classés selon tes goûts</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>` : "",
   duo:({list,empty})=>{ const br=!empty&&(bottleRecs().find(b=>tracked(b.id))||bottleRecs()[0]);
     return `<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?"Au hasard parmi tes idées":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`; },
-  table:()=>`<h2 class="sh">À table</h2><div class="sh-sub">Tu manges quoi ? Je te dis quoi boire avec</div><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${d.e}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
+  table:()=>`<h2 class="sh">À table</h2><div class="sh-sub">Tu manges quoi ? Je te dis quoi boire avec</div><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${lu(d.ic)}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
   rewind:()=> rewindEligible()? `<button class="rw-card" data-a="rewind"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">${rewindData().count} verres, ${rewindData().distinct} recettes. Revis tout ça en quelques histoires.</div></div><div class="rw-play">${IC.play}</div></button>` : "",
   na:()=>{ const naL=RECS.filter(r=>r.na&&status(r).ok).sort((a,b)=>score(b)-score(a)).slice(0,8);
     return naL.length? `<h2 class="sh">Sans alcool<button class="more" data-a="nafilter">Tout voir</button></h2><div class="sh-sub">Tout le plaisir, zéro degré</div><div class="scroller">${naL.map(r=>tile(r)).join("")}</div>` : ""; },
@@ -86,7 +86,7 @@ function flipRows(sh, mutate){
 function dishSheet(id){
   const d=DISHES.find(x=>x.id===id);
   openSheet(()=>{ const P=dishPicks(d);
-    return {title:"",body:`<div class="dish-hero"><div class="dish-e">${d.e}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Classés selon l’accord, ton bar et tes goûts. Point vert : tu peux le faire maintenant.</div>`}; });
+    return {title:"",body:`<div class="dish-hero"><div class="dish-e">${lu(d.ic)}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Classés selon l’accord, ton bar et tes goûts. Point vert : tu peux le faire maintenant.</div>`}; });
 }
 
 // ---------- Coût par verre ----------
