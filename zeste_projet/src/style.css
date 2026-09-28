@@ -1519,3 +1519,8 @@ svg.live.again2 .ice>g.cube{animation:icebob 4.5s ease-in-out var(--b) 3}
 .rw-ic{width:1.05em;height:1.05em;vertical-align:-.16em;margin-right:6px}
 .mo-ic svg{stroke-width:2}
 #tval svg{width:.62em;height:.62em;stroke-width:2.4}
+#toast .t-ic{width:22px;height:22px;stroke-width:1.9}
+/* 1.30 — bouton des notifications lisible avec la palette 1.29 : citron sur la bulle sombre, vert feuille sur la bulle claire */
+#toast .tbtn{color:#F5C518}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #toast .tbtn{color:#1F5A3D}}
+:root[data-theme="dark"] #toast .tbtn{color:#1F5A3D}

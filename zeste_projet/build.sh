@@ -13,7 +13,7 @@ echo '<title>Zeste</title><style>'
 echo "@font-face{font-family:ZesteSerif;src:url(data:font/woff2;base64,$FSERIF) format('woff2');font-weight:500 700;font-display:swap}@font-face{font-family:ZesteSans;src:url(data:font/woff2;base64,$FSANS) format('woff2');font-weight:400 800;font-display:swap}"
 cat src/style.css
 echo '</style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>'
-cd src; cat data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js ui_final.js v126.js; cd ..
+cd src; cat data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js ui_final.js v126.js v130.js; cd ..
 echo '</script></body></html>'
 } > dist/zeste.html
 echo "dist/zeste.html : $(wc -c < dist/zeste.html) octets"

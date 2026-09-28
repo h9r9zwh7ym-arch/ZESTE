@@ -18,5 +18,5 @@ echo "— fonctionnalités"; for t in tests/features/*.js; do O=$(node "$t" 2>&1
 echo "— fuzz";         F=$($PY tests/fuzz.py | tr -d '\n '); echo "$F"
 # le fuzz renvoie des listes d'erreurs par catégorie : la moindre entrée non vide fait échouer la suite
 echo "$F" | $PY -c 'import sys,json; d=json.loads(sys.stdin.read()); bad={k:v for k,v in d.items() if v}; sys.exit(1 if bad else 0)' || { echo "Échec du fuzz"; exit 1; }
-cp dist/zeste.html ../index.html
+cp dist/zeste.html ../index.html; cp sw.js ../sw.js
 echo "Tout est passé. ../index.html est à jour."
