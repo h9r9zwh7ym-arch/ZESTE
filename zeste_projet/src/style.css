@@ -1550,3 +1550,11 @@ input,textarea,select{font-size:max(16px,1em)}
 textarea.note{font-size:max(16px,calc(16rem / 17))!important}
 #nm{font-size:max(16px,calc(17rem / 17))!important}
 .empty.fail svg{width:44px;height:44px;color:var(--label3)}
+/* 1.36 — « Réduire les animations » s'applique aussi aux pseudo-éléments (flottements décoratifs, fond du service) */
+@media (prefers-reduced-motion:reduce){*::before,*::after{transition:none!important;animation:none!important}}
+/* 1.36 — l'écran qui arrive en glissant dépassait un instant à droite : sur mobile (Safari compris), la page entière
+   s'élargissait (425 px au lieu de 390), ce qui décalait la pastille des onglets et pouvait faire « respirer » la page.
+   L'app coupe désormais tout débordement horizontal. */
+html{overflow:hidden;width:100%}
+#app{overflow:hidden;overflow:clip;width:100%}
+#ambient{overflow:hidden;overflow:clip}
