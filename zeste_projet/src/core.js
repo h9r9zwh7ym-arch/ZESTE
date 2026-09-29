@@ -146,7 +146,10 @@ function cos(a,b){ let d=0,x=0,y=0; for(let i=0;i<a.length;i++){d+=a[i]*b[i];x+=
 function rated(){ return Object.entries(S.ratings).filter(([id])=>RMAP[id]); }
 let AVGP=null; function avgProfile(){ if(AVGP) return AVGP; const a=Array(8).fill(0); RECS.forEach(r=>profileR(r).slice(0,8).forEach((v,i)=>a[i]+=v/RECS.length)); return AVGP=a; }
 // ---- Modèle hybride : voisins + ingrédients + familles + profil de goût + signaux implicites ----
-let MODEL=null, MKEY="";
+let MODEL=null, MKEY="", MREV=-1, MOBJ=null;
+// 1.35 : version des données, incrémentée à chaque enregistrement (save) et à chaque réparation (fixState).
+// Tant qu'elle ne bouge pas, le modèle de goût et les comptes de l'historique sont réutilisés sans recalcul.
+let SREV=0;
 function shares(r){ if(r._sh) return r._sh; const w={}; let t=0;
   r.ing.forEach(it=>{ const i=ING[it.id]; if(!i||i.basic||it.id==="eau_gazeuse"||it.id==="eau") return; const e=Math.min(1.5, Math.max(mlOf(it),0.5)/(i.ref||30)); w[it.id]=(w[it.id]||0)+e; t+=e; });
   for(const k in w) w[k]/=t||1; return r._sh=w; }
@@ -161,6 +164,7 @@ function trainSet(){
   return T;
 }
 function getModel(){
+  if(MODEL&&MREV===SREV&&MOBJ===S) return MODEL; MREV=SREV; MOBJ=S;
   const k=JSON.stringify(S.ratings)+"|"+S.hist.length+"|"+S.fav.join(",")+"|"+RECS.length+"|"+JSON.stringify(S.quiz||0)+"|"+JSON.stringify(S.adj||0)+"|"+JSON.stringify(S.mw||0)+"|"+Object.keys(S.opens||{}).length;
   if(MODEL&&MKEY===k) return MODEL; MKEY=k;
   const T=trainSet(), ids=Object.keys(T), n=ids.reduce((a,id)=>a+T[id].w,0);
@@ -256,7 +260,8 @@ function reasons(r){
   return "Profil "+top.join(" et ");
 }
 function lcArt(id){ const n=lc(shortN(id)); if(/^[aeiouyéèêàâîïôœ]/i.test(n)) return "l’"+n; const fem=/^(Suze|Chartreuse|Bénédictine|crème|liqueur|grappa|vodka|tequila|cachaça|menthe|bière|sauce|marmelade|limonade|ginger|eau)/i.test(n); return (fem?"la ":"le ")+n; }
-function madeCount(id){ return S.hist.filter(h=>h.id===id).length; }
+let MC=null, MC_KEY="";
+function madeCount(id){ const k=SREV+"|"+S.hist.length; if(!MC||MC_KEY!==k||MC.S!==S){ MC={S,n:{}}; MC_KEY=k; S.hist.forEach(h=>{ MC.n[h.id]=(MC.n[h.id]||0)+1; }); } return MC.n[id]||0; }
 function lastMade(id){ const h=S.hist.filter(x=>x.id===id); return h.length? h[h.length-1].t : 0; }
 function daySeed(){ const d=new Date(); return d.getFullYear()*1e4+(d.getMonth()+1)*100+d.getDate(); }
 function hrand(s){ let h=2166136261; for(const c of s){h^=c.charCodeAt(0); h=Math.imul(h,16777619);} return ((h>>>0)%10000)/10000; }

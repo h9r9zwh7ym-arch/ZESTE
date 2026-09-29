@@ -10,10 +10,12 @@ const {chromium}=require('playwright'); const path=require('path');
   try{
     await tapTab(); if(await st()!=="running") fail.push("audio pas démarré au premier geste ("+await st()+")");
     // 1. l'app passe en arrière-plan : iOS met l'audio en pause
-    await p.evaluate(async()=>{ await SND._ctx().suspend(); document.dispatchEvent(new Event('visibilitychange')); });
+    // comme sur iOS, la relance sans geste est refusée pendant la pause (Chromium, lui, l'accepterait : test instable)
+    await p.evaluate(async()=>{ const c=SND._ctx(); await c.suspend(); c.__res=c.resume; c.resume=()=>Promise.resolve(); document.dispatchEvent(new Event('visibilitychange')); });
     // un son demandé pendant la pause ne doit pas être mis en file
     const queued=await p.evaluate(()=>{ const c=SND._ctx(); let n=0; const o=c.createOscillator.bind(c); c.createOscillator=()=>{ n++; return o(); }; SND.tap(); SND.check(); const r=n; c.createOscillator=o; return r; });
     if(queued) fail.push(queued+" son(s) mis en file pendant la pause (rafale au retour)");
+    await p.evaluate(()=>{ const c=SND._ctx(); c.resume=c.__res; delete c.__res; }); // le geste qui suit, lui, est autorisé
     await tapTab(); if(await st()!=="running") fail.push("audio pas relancé au retour ("+await st()+")");
     // 2. contexte fermé : il doit être recréé
     await p.evaluate(async()=>{ await SND._ctx().close(); }); await tapTab(); await tapTab();

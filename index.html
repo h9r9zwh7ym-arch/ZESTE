@@ -1543,6 +1543,17 @@ h2.sh .more::after{content:"";position:absolute;inset:-12px -8px}
 .rw-card .rw-play{color:#1F5A3D}
 .rw-card.month{background:linear-gradient(125deg,#806410,#4E6A2A 50%,#1F5A3D);background-size:200% 200%}
 .rw-card.month .rw-play{color:#4E6A2A}
+/* 1.35 — comportement d'app native : pas de zoom au double tap (le zoom à deux doigts reste possible, pour
+   l'accessibilité), pas de menu « copier / enregistrer l'image » ni de sélection de texte sur les commandes */
+html,body{touch-action:manipulation}
+button,.tabbar,.seg,.chip,.row.tap,svg,img,.dish,.tile,.mini,.lgar,.trophy{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* 1.35 — iOS zoome sur un champ dont le texte fait moins de 16 px : avec une petite taille de texte système (Zeste
+   descend jusqu'à 88 %), la recherche passait à ~15 px. Les champs ne descendent jamais sous 16 px. */
+input,textarea,select{font-size:max(16px,1em)}
+.search input,.price-in,.set-in{font-size:max(16px,calc(17rem / 17))!important}
+textarea.note{font-size:max(16px,calc(16rem / 17))!important}
+#nm{font-size:max(16px,calc(17rem / 17))!important}
+.empty.fail svg{width:44px;height:44px;color:var(--label3)}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -2169,7 +2180,6 @@ const DISHES=[
  {id:"chocolat",ic:"chocolate",n:"Chocolat",why:"Le cacao appelle le café, le boisé des spiritueux vieillis et un peu de crème.",want:{woody:1,cream:.8,sweet:.5,strong:.3,acid:-1,fizz:-.6},base:["whisky","brandy","rhum"],picks:["espresso_martini","black_russian","brandy_alexander","rum_of","manhattan","grasshopper","irish_coffee"]},
  {id:"dessert",ic:"cake-slice",n:"Dessert fruité",why:"Une tarte aux fruits ou une salade de fruits se marie aux bulles et aux fruits rouges.",want:{fruity:1,fizz:.8,sweet:.3,acid:.4,woody:-.6,strong:-.5},base:[],picks:["bellini","kir_royal","clover_club","bramble","mimosa","french75","framboise_lemonade"]},
  {id:"brunch",ic:"croissant",n:"Brunch",why:"Le brunch a ses classiques : bulles et agrumes, ou le Bloody Mary pour les plus salés.",want:{fizz:.8,fruity:.6,acid:.4,strong:-.8},base:[],picks:["mimosa","bloody_mary","bellini","bucks_fizz","ramos","arnold_palmer","virgin_mary"]},
- {id:"asiat",ic:"soup",n:"Wok et asiatique",why:"Sauce soja, gingembre et citronnelle aiment le gingembre et les highballs légers.",want:{spicy:.6,fizz:.9,acid:.6,herbal:.4,strong:-.6,cream:-.8},base:["whisky","gin"],picks:["whisky_highball","moscow_mule","gin_gin_mule","hugo","paloma","sureau_tonic","virgin_mule"]}
 ];
 const PAIR_WHY={acid:"L’acidité coupe le gras et réveille le palais",bitter:"L’amertume ouvre l’appétit et nettoie la bouche",fizz:"Les bulles rafraîchissent entre deux bouchées",herbal:"Les herbes apportent de la fraîcheur",fruity:"Le fruit apaise et accompagne",woody:"Le boisé répond au grillé et au cacao",spicy:"Les épices font écho au plat",sweet:"Un peu de douceur arrondit l’ensemble",cream:"Sa rondeur accompagne la gourmandise",strong:"Un spiritueux bien présent tient tête au plat",light:"Léger, il laisse le plat au premier plan"};
 // ---------- EXTENSION FINALE ----------
@@ -2410,7 +2420,10 @@ function cos(a,b){ let d=0,x=0,y=0; for(let i=0;i<a.length;i++){d+=a[i]*b[i];x+=
 function rated(){ return Object.entries(S.ratings).filter(([id])=>RMAP[id]); }
 let AVGP=null; function avgProfile(){ if(AVGP) return AVGP; const a=Array(8).fill(0); RECS.forEach(r=>profileR(r).slice(0,8).forEach((v,i)=>a[i]+=v/RECS.length)); return AVGP=a; }
 // ---- Modèle hybride : voisins + ingrédients + familles + profil de goût + signaux implicites ----
-let MODEL=null, MKEY="";
+let MODEL=null, MKEY="", MREV=-1, MOBJ=null;
+// 1.35 : version des données, incrémentée à chaque enregistrement (save) et à chaque réparation (fixState).
+// Tant qu'elle ne bouge pas, le modèle de goût et les comptes de l'historique sont réutilisés sans recalcul.
+let SREV=0;
 function shares(r){ if(r._sh) return r._sh; const w={}; let t=0;
   r.ing.forEach(it=>{ const i=ING[it.id]; if(!i||i.basic||it.id==="eau_gazeuse"||it.id==="eau") return; const e=Math.min(1.5, Math.max(mlOf(it),0.5)/(i.ref||30)); w[it.id]=(w[it.id]||0)+e; t+=e; });
   for(const k in w) w[k]/=t||1; return r._sh=w; }
@@ -2425,6 +2438,7 @@ function trainSet(){
   return T;
 }
 function getModel(){
+  if(MODEL&&MREV===SREV&&MOBJ===S) return MODEL; MREV=SREV; MOBJ=S;
   const k=JSON.stringify(S.ratings)+"|"+S.hist.length+"|"+S.fav.join(",")+"|"+RECS.length+"|"+JSON.stringify(S.quiz||0)+"|"+JSON.stringify(S.adj||0)+"|"+JSON.stringify(S.mw||0)+"|"+Object.keys(S.opens||{}).length;
   if(MODEL&&MKEY===k) return MODEL; MKEY=k;
   const T=trainSet(), ids=Object.keys(T), n=ids.reduce((a,id)=>a+T[id].w,0);
@@ -2520,7 +2534,8 @@ function reasons(r){
   return "Profil "+top.join(" et ");
 }
 function lcArt(id){ const n=lc(shortN(id)); if(/^[aeiouyéèêàâîïôœ]/i.test(n)) return "l’"+n; const fem=/^(Suze|Chartreuse|Bénédictine|crème|liqueur|grappa|vodka|tequila|cachaça|menthe|bière|sauce|marmelade|limonade|ginger|eau)/i.test(n); return (fem?"la ":"le ")+n; }
-function madeCount(id){ return S.hist.filter(h=>h.id===id).length; }
+let MC=null, MC_KEY="";
+function madeCount(id){ const k=SREV+"|"+S.hist.length; if(!MC||MC_KEY!==k||MC.S!==S){ MC={S,n:{}}; MC_KEY=k; S.hist.forEach(h=>{ MC.n[h.id]=(MC.n[h.id]||0)+1; }); } return MC.n[id]||0; }
 function lastMade(id){ const h=S.hist.filter(x=>x.id===id); return h.length? h[h.length-1].t : 0; }
 function daySeed(){ const d=new Date(); return d.getFullYear()*1e4+(d.getMonth()+1)*100+d.getDate(); }
 function hrand(s){ let h=2166136261; for(const c of s){h^=c.charCodeAt(0); h=Math.imul(h,16777619);} return ((h>>>0)%10000)/10000; }
@@ -2946,7 +2961,6 @@ const LU={
  "hamburger":`<path d="M12 16H4a2 2 0 1 1 0-4h16a2 2 0 1 1 0 4h-4.25"/><path d="M5 12a2 2 0 0 1-2-2 9 7 0 0 1 18 0 2 2 0 0 1-2 2"/><path d="M5 16a2 2 0 0 0-2 2 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 2 2 0 0 0-2-2q0 0 0 0"/><path d="m6.67 12 6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2"/>`,
  "shrimp":`<path d="M10 2a3.28 3.28 0 003.227 1.798l6.17-.561A1 1 0 1119.614 8H8.5a6.44 6.44 0 00-5.63 9.75A6.5 6.5 0 008.5 21c1.38 0 2-.5 2.5-1"/><path d="M10 8a8.5 8.5 0 000 8"/><path d="M11 22c-.5-.5-1.12-1-2.5-1a1 1 0 010-5H12a7 7 0 007-7V8"/><path d="M13 12h.01"/><path d="M8 16c-2 0-4.5-4-4-6"/>`,
  "salad":`<path d="M7 21h10"/><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-2.77 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1"/><path d="m13 12 4-4"/><path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2"/>`,
- "soup":`<path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M7 21h10"/><path d="M19.5 12 22 6"/><path d="M16.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.73 1.62"/><path d="M11.25 3c.27.1.8.53.74 1.36-.05.83-.93 1.2-.98 2.02-.06.78.33 1.24.72 1.62"/><path d="M6.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.74 1.62"/>`,
  "cake-slice":`<path d="M16 13H3"/><path d="M16 17H3"/><path d="m7.2 7.9-3.388 2.5A2 2 0 0 0 3 12.01V20a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-8.654c0-2-2.44-6.026-6.44-8.026a1 1 0 0 0-1.082.057L10.4 5.6"/><circle cx="9" cy="7" r="2"/>`,
  "croissant":`<path d="M10.2 18H4.774a1.5 1.5 0 0 1-1.352-.97 11 11 0 0 1 .132-6.487"/><path d="M18 10.2V4.774a1.5 1.5 0 0 0-.97-1.352 11 11 0 0 0-6.486.132"/><path d="M18 5a4 3 0 0 1 4 3 2 2 0 0 1-2 2 10 10 0 0 0-5.139 1.42"/><path d="M5 18a3 4 0 0 0 3 4 2 2 0 0 0 2-2 10 10 0 0 1 1.42-5.14"/><path d="M8.709 2.554a10 10 0 0 0-6.155 6.155 1.5 1.5 0 0 0 .676 1.626l9.807 5.42a2 2 0 0 0 2.718-2.718l-5.42-9.807a1.5 1.5 0 0 0-1.626-.676"/>`,
  "citrus":`<path d="M21.66 17.67a1.08 1.08 0 0 1-.04 1.6A12 12 0 0 1 4.73 2.38a1.1 1.1 0 0 1 1.61-.04z"/><path d="M19.65 15.66A8 8 0 0 1 8.35 4.34"/><path d="m14 10-5.5 5.5"/><path d="M14 17.85V10H6.15"/>`,
@@ -3012,7 +3026,7 @@ S=loadLocal();
 // (fixState : remplacée plus loin, voir ui_final.js)
 let DB=null, DOC=null, saveTimer=null, saving=false, pending=false;
 function save(){
-  STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+  SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
   clearTimeout(saveTimer); saveTimer=setTimeout(pushRemote,1200);
 }
 async function pushRemote(){
@@ -3174,7 +3188,7 @@ function vCocktails(){
   if(CF.mode==="radar") return o+radarView()+`<div class="sp24"></div></div>`;
   if(CF.mode==="tree") return o+treeView()+`<div class="sp24"></div></div>`;
   if(CF.mode==="world") return o+worldView()+`<div class="sp24"></div></div>`;
-  o+=`<label class="search">${IC.search}<input id="cq" type="search" placeholder="Nom ou ingrédient" value="${esc(CF.q)}" autocomplete="off"></label>`;
+  o+=`<label class="search">${IC.search}<input id="cq" type="search" enterkeyhint="search" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Nom ou ingrédient" value="${esc(CF.q)}" autocomplete="off"></label>`;
   o+=`<div id="cx-res">${cocktailsResults()}</div>`;
   return o+`<div class="sp24"></div></div>`;
 }
@@ -3358,7 +3372,8 @@ const TROPHIES=[
  ["zero","Zéro degré","3 recettes sans alcool",3,()=>distinct().filter(id=>RMAP[id].na).length],
  ["night","Noctambule","Un cocktail entre minuit et 4 h",1,()=>S.hist.filter(h=>{const x=new Date(h.t).getHours();return x<4;}).length]
 ];
-function distinct(){ return [...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id]); }
+let DST=null, DST_KEY="";
+function distinct(){ const k=SREV+"|"+S.hist.length+"|"+RECS.length; if(!DST||DST_KEY!==k||DST.S!==S){ DST={S,v:[...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id])}; DST_KEY=k; } return DST.v.slice(); }
 // (medal : remplacée plus loin, voir trophies.js)
 // (checkTrophies : remplacée plus loin, voir trophies.js)
 function vProfil(){
@@ -3504,7 +3519,7 @@ function addSheet(){
     if(bas.length) b+=`<div class="gh">Toujours à portée de main</div><div class="group">${bas.map(i=>`<div class="row"><div class="grow"><div class="t">${esc(i.n)}</div></div><span class="badge ${has(i.id)?"green":""}">${has(i.id)?"Compté":"Désactivé"}</span></div>`).join("")}</div><div class="gf">Ces basiques sont comptés automatiquement. <button class="link" data-a="basics">Modifier</button></div>`;
     if(!L.length) b+=`<div class="empty">Aucun ingrédient trouvé.</div>`;
     return b; };
-  const sh=openSheet(()=>({title:"Ajouter au bar",body:`<label class="search">${IC.search}<input id="aq" type="search" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label><div id="aq-res">${results()}</div>`,right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,after:el=>{ const inp=el.querySelector("#aq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#aq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
+  const sh=openSheet(()=>({title:"Ajouter au bar",body:`<label class="search">${IC.search}<input id="aq" type="search" enterkeyhint="search" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label><div id="aq-res">${results()}</div>`,right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,after:el=>{ const inp=el.querySelector("#aq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#aq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
 }
 function basicsSheet(){
   openSheet(()=>({title:"Contenu additionnel",body:`<p class="body" style="margin-bottom:12px">Ces ingrédients sont considérés comme toujours disponibles. Désactive ceux que tu n’as jamais sous la main.</p><div class="group">${BASICS.filter(id=>ING[id]&&!ING[id].al).map(id=>`<div class="row"><div class="grow"><div class="t">${esc(ING[id].n)}</div></div><button class="switch ${has(id)?"on":""}" data-a="nobasic" data-id="${id}" aria-label="${esc(ING[id].n)}"></button></div>`).join("")}</div>`}));
@@ -3516,7 +3531,7 @@ function pickIngSheet(cb){
     const mine=L.filter(i=>has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr")), rest=L.filter(i=>!has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr"));
     const rows=A=>A.map(i=>`<button class="row tap" data-a="pickit" data-id="${i.id}"><i style="width:8px;height:8px;border-radius:4px;background:${SEGCOL[segOf(i.id)]};flex:none"></i><div class="grow"><div class="t">${esc(i.n)}</div></div>${IC.plus.replace("<svg","<svg width='20' height='20' style='color:var(--tint)'")}</button>`).join("");
     return `${qq?"":segChips(PS,"ps",false)}${mine.length?`<div class="gh">Disponible chez toi</div><div class="group">${rows(mine)}</div>`:""}${rest.length?`<div class="gh">À acheter</div><div class="group">${rows(rest)}</div>`:""}`; };
-  const sh=openSheet(()=>({title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label><div id="pq-res">${results()}</div>`,
+  const sh=openSheet(()=>({title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" enterkeyhint="search" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label><div id="pq-res">${results()}</div>`,
       after:el=>{ const inp=el.querySelector("#pq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#pq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
   sh.cb=cb;
 }
@@ -3860,7 +3875,7 @@ function flipRows(sh, mutate){
 
 // ---------- Accords mets ----------
 function dishSheet(id){
-  const d=DISHES.find(x=>x.id===id); if(!d) return; // plat retiré (fondue, raclette, fromages en 1.32)
+  const d=DISHES.find(x=>x.id===id); if(!d) return; // plat retiré (fondue, raclette, fromages en 1.32, asiatique en 1.35)
   openSheet(()=>{ const P=dishPicks(d);
     return {title:"",body:`<div class="dish-hero"><div class="dish-e">${lu(d.ic)}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Classés selon l’accord, ton bar et tes goûts. Point vert : tu peux le faire maintenant.</div>`}; });
 }
@@ -4596,7 +4611,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.34";
+const APP_VERSION="1.35";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -5292,7 +5307,7 @@ function healState(){
   if(st.fx!=null&&!obj(st.fx)) st.fx={};
 }
 function fixState(){
-  migrateIds();
+  SREV++; migrateIds();
   healState();
   S.settings=Object.assign({unit:"cl",nobasic:[],na:false,ambiance:true,moment:"auto",theme:"auto",cur:"CHF",explore:1,ctx:true},S.settings||{});
   if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[];
@@ -5517,4 +5532,18 @@ if(SW_OK){
     });
   }catch(e){}
 }
+
+// ================= 1.35 : filet de sécurité et clavier =================
+// Si un écran ou une fiche ne peut pas se dessiner (donnée imprévue, cas limite), on affiche un message avec
+// « Réessayer » au lieu d'un écran vide ou figé. L'erreur est relancée à part : elle reste visible dans la
+// console et pour les tests, mais l'app continue de répondre.
+function failBox(retry){ return `<div class="empty fail">${lu("rotate-ccw")}<b>Cet écran n’a pas pu s’afficher</b>Réessaie ; si ça recommence, redémarre l’app.<div class="sp16"></div><button class="btn small sec" ${retry}>Réessayer</button></div>`; }
+function rethrow(e){ setTimeout(()=>{ throw e; }); }
+const _renderViewSafe=renderView;
+renderView=function(t){ try{ return _renderViewSafe(t); }catch(e){ const el=document.getElementById("v-"+t); if(el) el.innerHTML=failBox(`data-a="retryview" data-t="${t}"`); dirty[t]=1; rethrow(e); } };
+const _paintSheetSafe=paintSheet;
+paintSheet=function(sh){ try{ return _paintSheetSafe(sh); }catch(e){ sh.el.innerHTML=`<div class="sheet-head"><div class="sl"></div><div class="st"></div><div class="sr"><button class="close-x" data-a="closesheet" aria-label="Fermer">${IC.x}</button></div></div><div class="sheet-body">${failBox('data-a="retrysheet"')}</div>`; rethrow(e); } };
+Object.assign(ACT,{ retryview:(d)=>{ dirty[d.t]=1; renderView(d.t); }, retrysheet:()=>{ const sh=SHEETS[SHEETS.length-1]; if(sh) paintSheet(sh); } });
+// « Entrée » / « Rechercher » sur un champ d'une ligne : on referme le clavier (le résultat est déjà à l'écran)
+document.addEventListener("keydown",e=>{ const t=e.target; if(e.key==="Enter"&&t&&t.tagName==="INPUT"&&!e.isComposing){ e.preventDefault(); t.blur(); } });
 </script></body></html>

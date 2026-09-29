@@ -25,3 +25,17 @@ if(SW_OK){
     });
   }catch(e){}
 }
+
+// ================= 1.35 : filet de sécurité et clavier =================
+// Si un écran ou une fiche ne peut pas se dessiner (donnée imprévue, cas limite), on affiche un message avec
+// « Réessayer » au lieu d'un écran vide ou figé. L'erreur est relancée à part : elle reste visible dans la
+// console et pour les tests, mais l'app continue de répondre.
+function failBox(retry){ return `<div class="empty fail">${lu("rotate-ccw")}<b>Cet écran n’a pas pu s’afficher</b>Réessaie ; si ça recommence, redémarre l’app.<div class="sp16"></div><button class="btn small sec" ${retry}>Réessayer</button></div>`; }
+function rethrow(e){ setTimeout(()=>{ throw e; }); }
+const _renderViewSafe=renderView;
+renderView=function(t){ try{ return _renderViewSafe(t); }catch(e){ const el=document.getElementById("v-"+t); if(el) el.innerHTML=failBox(`data-a="retryview" data-t="${t}"`); dirty[t]=1; rethrow(e); } };
+const _paintSheetSafe=paintSheet;
+paintSheet=function(sh){ try{ return _paintSheetSafe(sh); }catch(e){ sh.el.innerHTML=`<div class="sheet-head"><div class="sl"></div><div class="st"></div><div class="sr"><button class="close-x" data-a="closesheet" aria-label="Fermer">${IC.x}</button></div></div><div class="sheet-body">${failBox('data-a="retrysheet"')}</div>`; rethrow(e); } };
+Object.assign(ACT,{ retryview:(d)=>{ dirty[d.t]=1; renderView(d.t); }, retrysheet:()=>{ const sh=SHEETS[SHEETS.length-1]; if(sh) paintSheet(sh); } });
+// « Entrée » / « Rechercher » sur un champ d'une ligne : on referme le clavier (le résultat est déjà à l'écran)
+document.addEventListener("keydown",e=>{ const t=e.target; if(e.key==="Enter"&&t&&t.tagName==="INPUT"&&!e.isComposing){ e.preventDefault(); t.blur(); } });

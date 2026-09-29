@@ -1539,3 +1539,14 @@ h2.sh .more::after{content:"";position:absolute;inset:-12px -8px}
 .rw-card .rw-play{color:#1F5A3D}
 .rw-card.month{background:linear-gradient(125deg,#806410,#4E6A2A 50%,#1F5A3D);background-size:200% 200%}
 .rw-card.month .rw-play{color:#4E6A2A}
+/* 1.35 — comportement d'app native : pas de zoom au double tap (le zoom à deux doigts reste possible, pour
+   l'accessibilité), pas de menu « copier / enregistrer l'image » ni de sélection de texte sur les commandes */
+html,body{touch-action:manipulation}
+button,.tabbar,.seg,.chip,.row.tap,svg,img,.dish,.tile,.mini,.lgar,.trophy{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* 1.35 — iOS zoome sur un champ dont le texte fait moins de 16 px : avec une petite taille de texte système (Zeste
+   descend jusqu'à 88 %), la recherche passait à ~15 px. Les champs ne descendent jamais sous 16 px. */
+input,textarea,select{font-size:max(16px,1em)}
+.search input,.price-in,.set-in{font-size:max(16px,calc(17rem / 17))!important}
+textarea.note{font-size:max(16px,calc(16rem / 17))!important}
+#nm{font-size:max(16px,calc(17rem / 17))!important}
+.empty.fail svg{width:44px;height:44px;color:var(--label3)}

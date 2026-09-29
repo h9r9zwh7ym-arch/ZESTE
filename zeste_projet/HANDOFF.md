@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.34**. Chaque mise à jour livrée incrémente : 1.21 → 1.34… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.35**. Chaque mise à jour livrée incrémente : 1.21 → 1.35… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -188,7 +188,7 @@ Choisie par le propriétaire parmi trois directions présentées sur un canevas 
 
 ### Fait en 1.32 (accords mets : plats incohérents retirés)
 
-- Retirés de « À table » (`DISHES`, `data_food.js`) à la demande du propriétaire : **fondue**, **raclette** (qui se boivent au vin blanc, pas en cocktail) et **plateau de fromages** (vin, porto), même logique. Supprimés avec eux : l'exception « kirsch » de `dishPicks` (`core.js`), `PAIR_WHY.trad`, et les icônes `cooking-pot`, `raclette`, `cheese`. Restent 13 plats (pizza, grillades, sushi, mexicain, curry, poisson, pâtes, salade, apéro, chocolat, dessert, snacks, asiatique).
+- Retirés de « À table » (`DISHES`, `data_food.js`) à la demande du propriétaire : **fondue**, **raclette** (qui se boivent au vin blanc, pas en cocktail) et **plateau de fromages** (vin, porto), même logique. Supprimés avec eux : l'exception « kirsch » de `dishPicks` (`core.js`), `PAIR_WHY.trad`, et les icônes `cooking-pot`, `raclette`, `cheese`. Restent 13 plats (12 depuis 1.35, asiatique retiré).
 - `dishSheet` ignore un identifiant inconnu (ancien lien) ; le trophée « Fin gourmet » (6 accords) reste atteignable, les accords déjà vus restent comptés. Le fuzz ouvre désormais la fiche de chaque plat.
 
 ### Fait en 1.33 (son muet après un passage en arrière-plan)
@@ -207,6 +207,16 @@ Choisie par le propriétaire parmi trois directions présentées sur un canevas 
 - **Identité** : cartes Rewind (année et mois) aux couleurs de Zeste au lieu de l'ancien dégradé orange-violet (contraste du petit texte ≥ 5:1) ; restes ambrés remplacés (anneau des lignées, lueur du héros vide, confettis, couleur de secours de Rewind).
 - **Mesures** (processeur ralenti ×4) : démarrage ~1 s (≈ 590 ms de lecture du fichier, ≈ 250 ms de premier rendu), onglets 60–140 ms, fiche ~90 ms, frappe de recherche 2 ms. Pas de minification : aucun outil installé et gain faible. Aucun avertissement ni erreur console sur SE, standard, Max et très grand texte.
 - **Audit de cohérence (`tests/audit2.js`, 10 points) : particularités réelles, acceptées** : Gibson = Martini à l'oignon ; Ti' Punch sans glace (tradition) ; tiki (Painkiller, Zombie, Navy Grog, Fog Cutter, Scorpion, Rum Swizzle, Tiki IBA) servis dans de grands verres de glace pilée, au-delà de la contenance nominale du modèle ; Kamikaze partagé en plusieurs shots.
+
+### Fait en 1.35 (double tap, plat retiré, deuxième passe robustesse/optimisation/ergonomie)
+
+- **Pas de zoom au double tap** : `touch-action:manipulation` sur `html,body` (le pincement reste possible, pour l'accessibilité). Commandes (boutons, onglets, puces, tuiles, illustrations) : ni sélection de texte ni menu d'appui long.
+- **Zoom automatique d'iOS sur les champs** : avec une petite taille de texte système, Zeste descend à 88 % et la recherche passait à ~15 px, ce qui fait zoomer iOS. Tous les champs restent ≥ 16 px. Champs de recherche : touche « Rechercher », sans correction ni majuscule automatique ; « Entrée » referme le clavier.
+- **Plat retiré** : « Wok et asiatique » (et l'icône `soup`). Restent 12 plats.
+- **Filet de sécurité** (`v130.js`) : `renderView` et `paintSheet` enveloppés ; en cas d'erreur, l'écran ou la fiche affiche « Cet écran n'a pas pu s'afficher » + **Réessayer** (`retryview`, `retrysheet`) au lieu de rester vide. L'erreur est relancée à part (`setTimeout`) : elle reste visible en console et pour les tests.
+- **Performances avec beaucoup de données** (3 000 verres, 300 notes, 40 créations, bar plein) : `getModel` recalculait à chaque appel une clé en sérialisant toutes les notes (une fois par cocktail affiché), `madeCount` et `distinct` reparcouraient tout l'historique. Nouveau compteur `SREV` (incrémenté par `save()` et `fixState()`) : modèle, comptes et recettes distinctes réutilisés tant qu'il ne bouge pas (et que `S` et la longueur de l'historique sont les mêmes). Processeur ÷4 : cocktails 313 → 169 ms, bar 403 → 240 ms, accueil 217 → 73 ms, « Je l'ai fait » 393 → 217 ms ; prédictions strictement identiques (tests de prédiction inchangés). **Si une modification de notes, favoris ou historique n'appelle pas `save()`, appeler `SREV++`** (ou `MODEL=null`).
+- Vérifié : double appui sur une ligne → une seule fiche ; double appui sur « Je l'ai fait » → un seul verre.
+- Tests : `tests/features/safety_test.js` (secours + réparation, double tap, champs ≥ 16 px en petit texte, Entrée). `sound_test.js` rendu déterministe (la relance sans geste est refusée pendant la pause, comme sur iOS ; Chromium l'accepte, d'où un échec aléatoire).
 
 ## 7. Autres chantiers proposés (après la vérification)
 
