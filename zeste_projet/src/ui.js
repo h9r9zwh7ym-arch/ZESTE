@@ -6,7 +6,7 @@ S=loadLocal();
 // (fixState : remplacée plus loin, voir ui_final.js)
 let DB=null, DOC=null, saveTimer=null, saving=false, pending=false;
 function save(){
-  STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+  SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
   clearTimeout(saveTimer); saveTimer=setTimeout(pushRemote,1200);
 }
 async function pushRemote(){
@@ -168,7 +168,7 @@ function vCocktails(){
   if(CF.mode==="radar") return o+radarView()+`<div class="sp24"></div></div>`;
   if(CF.mode==="tree") return o+treeView()+`<div class="sp24"></div></div>`;
   if(CF.mode==="world") return o+worldView()+`<div class="sp24"></div></div>`;
-  o+=`<label class="search">${IC.search}<input id="cq" type="search" placeholder="Nom ou ingrédient" value="${esc(CF.q)}" autocomplete="off"></label>`;
+  o+=`<label class="search">${IC.search}<input id="cq" type="search" enterkeyhint="search" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Nom ou ingrédient" value="${esc(CF.q)}" autocomplete="off"></label>`;
   o+=`<div id="cx-res">${cocktailsResults()}</div>`;
   return o+`<div class="sp24"></div></div>`;
 }
@@ -352,7 +352,8 @@ const TROPHIES=[
  ["zero","Zéro degré","3 recettes sans alcool",3,()=>distinct().filter(id=>RMAP[id].na).length],
  ["night","Noctambule","Un cocktail entre minuit et 4 h",1,()=>S.hist.filter(h=>{const x=new Date(h.t).getHours();return x<4;}).length]
 ];
-function distinct(){ return [...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id]); }
+let DST=null, DST_KEY="";
+function distinct(){ const k=SREV+"|"+S.hist.length+"|"+RECS.length; if(!DST||DST_KEY!==k||DST.S!==S){ DST={S,v:[...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id])}; DST_KEY=k; } return DST.v.slice(); }
 // (medal : remplacée plus loin, voir trophies.js)
 // (checkTrophies : remplacée plus loin, voir trophies.js)
 function vProfil(){
@@ -498,7 +499,7 @@ function addSheet(){
     if(bas.length) b+=`<div class="gh">Toujours à portée de main</div><div class="group">${bas.map(i=>`<div class="row"><div class="grow"><div class="t">${esc(i.n)}</div></div><span class="badge ${has(i.id)?"green":""}">${has(i.id)?"Compté":"Désactivé"}</span></div>`).join("")}</div><div class="gf">Ces basiques sont comptés automatiquement. <button class="link" data-a="basics">Modifier</button></div>`;
     if(!L.length) b+=`<div class="empty">Aucun ingrédient trouvé.</div>`;
     return b; };
-  const sh=openSheet(()=>({title:"Ajouter au bar",body:`<label class="search">${IC.search}<input id="aq" type="search" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label><div id="aq-res">${results()}</div>`,right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,after:el=>{ const inp=el.querySelector("#aq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#aq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
+  const sh=openSheet(()=>({title:"Ajouter au bar",body:`<label class="search">${IC.search}<input id="aq" type="search" enterkeyhint="search" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Rechercher un ingrédient" value="${esc(qq)}" autocomplete="off"></label><div id="aq-res">${results()}</div>`,right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,after:el=>{ const inp=el.querySelector("#aq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#aq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
 }
 function basicsSheet(){
   openSheet(()=>({title:"Contenu additionnel",body:`<p class="body" style="margin-bottom:12px">Ces ingrédients sont considérés comme toujours disponibles. Désactive ceux que tu n’as jamais sous la main.</p><div class="group">${BASICS.filter(id=>ING[id]&&!ING[id].al).map(id=>`<div class="row"><div class="grow"><div class="t">${esc(ING[id].n)}</div></div><button class="switch ${has(id)?"on":""}" data-a="nobasic" data-id="${id}" aria-label="${esc(ING[id].n)}"></button></div>`).join("")}</div>`}));
@@ -510,7 +511,7 @@ function pickIngSheet(cb){
     const mine=L.filter(i=>has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr")), rest=L.filter(i=>!has(i.id)).sort((a,b)=>a.n.localeCompare(b.n,"fr"));
     const rows=A=>A.map(i=>`<button class="row tap" data-a="pickit" data-id="${i.id}"><i style="width:8px;height:8px;border-radius:4px;background:${SEGCOL[segOf(i.id)]};flex:none"></i><div class="grow"><div class="t">${esc(i.n)}</div></div>${IC.plus.replace("<svg","<svg width='20' height='20' style='color:var(--tint)'")}</button>`).join("");
     return `${qq?"":segChips(PS,"ps",false)}${mine.length?`<div class="gh">Disponible chez toi</div><div class="group">${rows(mine)}</div>`:""}${rest.length?`<div class="gh">À acheter</div><div class="group">${rows(rest)}</div>`:""}`; };
-  const sh=openSheet(()=>({title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label><div id="pq-res">${results()}</div>`,
+  const sh=openSheet(()=>({title:"Ajouter au mélange",body:`<label class="search">${IC.search}<input id="pq" type="search" enterkeyhint="search" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Rechercher" value="${esc(qq)}" autocomplete="off"></label><div id="pq-res">${results()}</div>`,
       after:el=>{ const inp=el.querySelector("#pq"); inp.oninput=()=>{ qq=inp.value; const res=el.querySelector("#pq-res"); if(res){ res.innerHTML=results(); animateSegs(res); } }; }}));
   sh.cb=cb;
 }

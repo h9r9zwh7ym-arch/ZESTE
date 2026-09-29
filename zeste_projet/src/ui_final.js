@@ -52,7 +52,7 @@ function healState(){
   if(st.fx!=null&&!obj(st.fx)) st.fx={};
 }
 function fixState(){
-  migrateIds();
+  SREV++; migrateIds();
   healState();
   S.settings=Object.assign({unit:"cl",nobasic:[],na:false,ambiance:true,moment:"auto",theme:"auto",cur:"CHF",explore:1,ctx:true},S.settings||{});
   if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[];
