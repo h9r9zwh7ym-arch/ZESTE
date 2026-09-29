@@ -39,3 +39,30 @@ paintSheet=function(sh){ try{ return _paintSheetSafe(sh); }catch(e){ sh.el.inner
 Object.assign(ACT,{ retryview:(d)=>{ dirty[d.t]=1; renderView(d.t); }, retrysheet:()=>{ const sh=SHEETS[SHEETS.length-1]; if(sh) paintSheet(sh); } });
 // « Entrée » / « Rechercher » sur un champ d'une ligne : on referme le clavier (le résultat est déjà à l'écran)
 document.addEventListener("keydown",e=>{ const t=e.target; if(e.key==="Enter"&&t&&t.tagName==="INPUT"&&!e.isComposing){ e.preventDefault(); t.blur(); } });
+
+// « Réduire les animations » (réglage iOS) : la mise en scène du service du labo saute directement au résultat,
+// au lieu de laisser ~5 s d'écran vide (ses animations étant coupées, seule l'attente restait).
+const _openServeRM=openServe;
+openServe=function(){ _openServeRM.apply(this,arguments); if(REDUCED.matches&&SV) requestAnimationFrame(()=>{ if(SV) svSkip(); }); };
+
+// ================= 1.36 : typographie française =================
+// Espaces insécables là où le français les demande, pour qu'un « ? », un « : » ou une unité ne se retrouve jamais seul
+// en début de ligne : fine insécable avant ? ! ; et après « / avant », insécable avant : et %, et entre un nombre et son
+// unité (6 cl, 23 %, 2 h). Appliqué au texte affiché (les données et le code restent écrits normalement), dès qu'il
+// apparaît à l'écran, jamais dans les champs de saisie.
+const FRTYPO=[[/(\S) ([?!;])/g,"$1 $2"],[/(\S) :(?=\s|$)/g,"$1 :"],[/« /g,"« "],[/ »/g," »"],[/(\d) %/g,"$1 %"],[/(\d) (cl|ml|l|h|min|s|g|kg|cm|°|‰|CHF|€|jours?|ans|fois|verres?|recettes?|cocktails?|bouteilles?)\b/g,"$1 $2"]];
+const FRTEST=/ [?!;:»%]|« |\d (cl|ml|l|h|min|s|g|kg|cm|°|‰|CHF|€|jours?|ans|fois|verres?|recettes?|cocktails?|bouteilles?)\b/;
+function frTypo(root){
+  if(!root) return; if(root.nodeType===3){ fixNode(root); return; } if(root.nodeType!==1||root.closest&&root.closest("textarea,input,[contenteditable],script,style")) return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); let n; while((n=w.nextNode())) fixNode(n);
+}
+function fixNode(n){ const t=n.data; if(t.length<3||!FRTEST.test(t)) return; const p=n.parentNode; if(!p||/^(TEXTAREA|SCRIPT|STYLE)$/.test(p.nodeName)) return;
+  let u=t; for(const [re,to] of FRTYPO) u=u.replace(re,to); if(u!==t) n.data=u; }
+try{ frTypo(document.body); new MutationObserver(ms=>{ for(const m of ms) m.addedNodes.forEach(frTypo); }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+
+// Pastille des onglets : position mesurée par rapport à la barre (et non à la page), puis vérifiée à la fin de
+// l'animation et à chaque changement de taille (rotation, clavier), pour qu'elle reste centrée sous l'onglet.
+moveTabInd=function(){ const tb=document.querySelector(".tabbar"), on=tb&&tb.querySelector("button.on"), ind=tb&&tb.querySelector(".tab-ind"); if(!on||!ind) return;
+  const a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(); ind.style.transform=`translateX(${Math.round(r.left-a.left+r.width/2-ind.offsetWidth/2)}px)`; };
+{ const _sw=switchTab; switchTab=function(){ const r=_sw.apply(this,arguments); setTimeout(moveTabInd,480); return r; };
+  let rz=0; const onRz=()=>{ clearTimeout(rz); rz=setTimeout(moveTabInd,120); }; addEventListener("resize",onRz); window.visualViewport&&visualViewport.addEventListener("resize",onRz); }
