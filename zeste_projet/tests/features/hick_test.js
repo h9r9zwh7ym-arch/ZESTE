@@ -19,9 +19,7 @@ const {chromium}=require('playwright'); const path=require('path');
   // Profil : trophées en résumé (6 au plus) puis la collection complète en feuille ; listes de 3 qui se déplient
   const prof=await p.evaluate(()=>({tro:document.querySelectorAll('#v-profil .trophies .trophy').length, best:document.querySelectorAll('#v-profil .group .row.tap[data-a="rec"]').length, more:document.querySelectorAll('#v-profil [data-a="more"]').length, guide:!!document.querySelector('#v-profil .gd-more[hidden]')}));
   if(prof.tro>6) fail.push('profil : '+prof.tro+' trophées affichés au lieu d’un résumé');
-  if(!prof.more) fail.push('profil : listes non repliées');
-  await p.click('#v-profil [data-a="more"][data-k="prof-last"]'); await p.waitForTimeout(400);
-  if(await p.evaluate(()=>!!document.querySelector('#v-profil [data-a="more"][data-k="prof-last"]'))) fail.push('profil : « Voir les N autres » ne déplie pas');
+  // (1.39 : mieux notés et historique sont dans « Ton carnet », en feuilles)
   await p.click('#v-profil [data-a="alltro"]'); await p.waitForTimeout(700);
   const all=await p.evaluate(()=>document.querySelectorAll('.sheet .trophies .trophy').length); if(all<20) fail.push('« Tous les trophées » : '+all+' trophées');
   await p.evaluate(()=>closeAll()); await p.waitForTimeout(500);
