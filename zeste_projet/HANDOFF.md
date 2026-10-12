@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.37**. Chaque mise à jour livrée incrémente : 1.21 → 1.37… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.38**. Chaque mise à jour livrée incrémente : 1.21 → 1.38… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js ui_final.js v126.js v130.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -267,6 +267,22 @@ Rien n'est supprimé : tout reste à un toucher. Code dans **`src/v137.js`**, ch
 - **Hiérarchie** : un seul bouton plein par écran (vérifié), la répétition « 43 trophées » / « 6 sur 55 » évitée, les listes longues derrière un bouton discret (`.more-btn`, teinte de l'accent, sans fond dans un groupe).
 - **Règle pour la suite** (reprise d'ASCEN) : avant d'ajouter un bouton à un écran, se demander ce qu'il remplace ; un réglage rare va dans un groupe des Paramètres, une liste longue derrière « Voir les N autres ». Le budget du test doit rester tenu.
 - Test : `tests/features/hick_test.js` (budgets de choix accueil 32, bar 45, labo 58, profil 32, réglages 14 ; listes qui se déplient ; jauge ≥ 44 px et niveau appliqué ; groupe Apparence, Retour et valeur affichée ; zéro identifiant SVG en double ; carrousel sur la marge ; aucun texte < 11 px).
+
+### Fait en 1.38 (chaque chose à sa place — même design)
+
+Demande de YaYa : vérifier la cohérence des pages, leur utilité, les doublons et leur place ; raccourcir les textes inutiles ; rendre l'app plus logique. Méthode : carte de toute l'app (chaque onglet, sous-vue et fiche avec ses titres, textes et actions, `scratchpad/ia_map.js`), puis **un rôle par onglet** :
+**Aujourd'hui** = que boire maintenant · **Cocktails** = chercher · **Bar** = ce que j'ai · **Labo** = créer et fabriquer · **Profil** = moi (goûts, historique, trophées, récaps). Une information à un seul endroit.
+
+Code dans **`src/v138.js`** (chargé après v137, avant `ui_final.js`), plus quelques retouches directes :
+- **Aujourd'hui** : le récap du mois (glissé dans « Aussi pour toi ») et le Rewind de décembre passent au Profil ; l'achat malin (doublon du premier « Achat malin » du Bar) quitte l'accueil : « Surprends-moi » devient une ligne pleine largeur. La carte du soir ne répète plus « Pour ce soir » sous le titre « Ce soir ».
+- **Cocktails** : la puce « 0 % » (exclusive avec Faisables, donc impossible de chercher « faisable et sans alcool ») est remplacée par le filtre **Style › Sans alcool**, combinable ; « Sans alcool » de l'accueil y mène (`nafilter`). Dans les filtres, « Type de cocktail » devient « Style » et la section Famille ne répète plus Spritz, Chauds et Shots (`FAM_AS_TYPE` : une famille de ce genre touchée depuis le Profil ouvre le style correspondant). Textes de Radar, Lignées et Monde raccourcis.
+- **Bar** : deux façons de voir le bar (Liste, Étagère). « Presque vides » n'était pas une vue mais un filtre : c'est une ligne avec le nombre, qui ouvre la liste en feuille (`lowsheet`). L'astuce permanente sur les prix est retirée (la fiche de la bouteille l'explique déjà), ainsi que la phrase d'aide de l'étagère.
+- **Labo** : « Techniques » et « Préparations » fusionnent en **« Fait maison »** (`homemadeView`) : En cours (préparations, avec la règle de sécurité), À faire soi-même (recettes qui lancent une préparation), Gestes de bar (dry shake, glace limpide), puis « Noter une autre préparation ». `LT` « tech » ou « prep » (anciens liens, tests) ouvre « Fait maison ». Les **défis de la semaine** passent sous l'atelier : le labo s'ouvre sur le verre.
+- **Profil** : « Ce qui guide tes suggestions » part dans **Paramètres › Suggestions** (`guideHTML()` dans ui.js), à côté des réglages qu'il explique. Nouvelle section **« Tes récaps »** (`recapCards` : le mois en cours, ou le mois écoulé, et le Rewind de l'année). Sous-titre des familles retiré (les tuiles disent déjà « préparée » ou « À découvrir »).
+- **Paramètres** : « Contenu additionnel » n'est plus réglable à deux endroits (il reste dans le Bar, section Additionnel). Textes d'Apparence et de Suggestions raccourcis.
+- **Fiche recette**, dans l'ordre d'usage : ingrédients, préparation, conseil, puis **« Ton avis »** (les étoiles et la note perso, réunies), « Ta version », histoire, « Profil de goût » (renommé : « Profil » se confondait avec l'onglet), bouteilles, variantes, labo. La ligne « Garniture : … » n'est plus affichée quand la dernière étape « Décore : … » la donne déjà ; l'aide « Touche une étape pour la cocher… » est retirée.
+- **Textes raccourcis** : « Faisables avec ton bar », « Le bon cocktail pour ton plat », « Toujours considérés comme disponibles », « Point vert : faisable maintenant », « Les quantités suivent, et l'app s'en souvient. », « Les bouteilles à moitié pleines ou moins. » (le tri de cette liste est alphabétique par niveau : ne pas écrire « les plus utiles d'abord »).
+- Test : `tests/features/ia_test.js` (accueil sans récap ni achat ; pas de « 0 % », sans alcool en filtre combinable ; filtres sans famille en double ; Bar Liste/Étagère + Presque vides ; Labo Composer/Fait maison et défis sous l'atelier ; récaps au Profil, explication dans Suggestions, pas de « Contenu additionnel » dans les réglages ; ordre de la fiche recette et garniture non répétée). `hick_test.js` adapté.
 
 ## 7. Autres chantiers proposés (après la vérification)
 

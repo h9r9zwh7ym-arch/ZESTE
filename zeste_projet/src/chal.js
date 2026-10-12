@@ -49,7 +49,8 @@ Object.assign(TRO_GLYPH,{chal1:"target",chalweek:"cal",chalhard:"star",chal10:"c
 // insertion dans le labo et dans la fenêtre de service
 const _vCompose=vCompose;
 vCompose=function(){ let h=_vCompose(); const M=mixState(); const A=M.items.length?analyze():null, SC=A?labScore(A):null;
-  h=h.replace('<div class="sp16"></div>',`<div class="sp8"></div>${chalCards()}<div class="sp16"></div>`);
+  // 1.38 : les défis passent sous l'atelier (le labo s'ouvre sur le verre, pas sur un carrousel)
+  h=h+chalCards();
   const ban=chalBanner(A,SC); if(ban) h=h.replace('<h2 class="sh lab-h"><span class="lab-n">1</span>',ban+'<h2 class="sh lab-h"><span class="lab-n">1</span>');
   return h; };
 const _openServe=openServe;
