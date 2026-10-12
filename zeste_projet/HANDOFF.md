@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.36**. Chaque mise à jour livrée incrémente : 1.21 → 1.36… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.37**. Chaque mise à jour livrée incrémente : 1.21 → 1.37… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js ui_final.js v126.js v130.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -233,6 +233,40 @@ Audit mené comme une recette avant mise en production. Mesures sous Chromium (P
 - **Données lourdes** (3 000 verres) : démarrage ~0,8 s, onglets 130–270 ms, « Je l'ai fait » ~250–340 ms au processeur ÷4 (mesures bruitées d'environ ±80 ms d'un passage à l'autre).
 - **Hors ligne / mise à jour** : service worker vérifié par `update_test.js` (ouverture hors réseau, notification de mise à jour, silence sans changement).
 - Tests ajoutés : `tests/features/reduced_test.js` (rien ne bouge, rien ne reste caché, résultat du labo immédiat), `tests/features/tabbar_test.js` (375 et 430 px : page jamais élargie, pastille centrée à 1 px près). Suite complète verte (le test WebKit peut échouer au démarrage du pilote, « fetch failed » : le relancer seul, il passe).
+
+### Fait en 1.37 (loi de Hick, harmonisation, lecture, hiérarchie — même design)
+
+Demande de YaYa : appliquer les règles de la refonte d'ASCEN (loi de Hick, harmonisation, facilité de lecture, hiérarchie visuelle) **sans refaire le design**. Mesure avant/après (`scratchpad/ux_audit.js`, utilisateur réaliste : 19 bouteilles, 34 verres, 8 notes ; nombre de boutons, interrupteurs et champs d'un écran entier, défilement compris) :
+
+| Écran | Choix avant → après | Hauteur avant → après |
+|---|---|---|
+| Profil | 62 → 30 | 5 377 → 3 251 px |
+| Bar | 80 → 43 | 2 306 → 2 056 px |
+| Labo | 68 → 57 | 2 130 → 1 972 px |
+| Accueil | 34 → 31 | — |
+| Paramètres | 44 → 11 | 3 240 → 1 258 px |
+| Fiche ingrédient | 42 → 18 | 3 153 → 1 387 px |
+
+Rien n'est supprimé : tout reste à un toucher. Code dans **`src/v137.js`**, chargé **avant `ui_final.js`** (c'est `ui_final.js` qui appelle `init()` et fait le premier rendu : un module chargé après ne s'appliquerait qu'au deuxième rendu). Styles dans le bloc « 1.37 » en fin de `style.css`.
+
+- **Défauts corrigés** :
+  - **verres vides** : `glassSVG` et `glassThumb` mettaient en cache le SVG avec ses identifiants (`g12k`…). Un même cocktail affiché sur deux écrans renvoyait vers la découpe de l'écran masqué (`display:none`) et s'affichait vide (Tes mieux notés, Derniers verres, fiches de plats : 66 verres touchés). `reidSVG` (core.js) donne des identifiants neufs à chaque insertion ;
+  - **carrousels** : avec l'aimantation `mandatory`, la première carte collait au bord de l'écran au lieu de la marge. `scroll-padding-inline:16px` sur `.scroller`.
+- **Loi de Hick** (`foldRows`, `moreBtn`, action `more`, `MORE_OPEN`) :
+  - **Profil** : nouvel ordre (goût, prochain coup de cœur, trophées, mieux notés, derniers verres, familles, spiritueux, ce qui guide les suggestions). **Trophées en résumé** : 3 derniers gagnés et prochains à portée (6 au plus), ligne « Tous les trophées » → feuille avec toute la collection (`allTrophiesSheet`). Mieux notés et Derniers verres : 3, puis « Voir les N autres ». « Ce qui guide tes suggestions » : la phrase et la barre, le détail sous « Voir le détail ». `vProfil` est enveloppé (sections réordonnées d'après leurs titres `h2.sh`) ;
+  - **Bar** : la jauge de niveau était 4 boutons de 13 × 32 px par bouteille (trop petits pour un doigt). C'est maintenant **un seul bouton de 44 px** (`lvlCtl`, action `lvlpick`) qui ouvre le choix du niveau en grand (`levelSheet`, comme la fiche) ; même comportement qu'avant (bouteille vide → « à racheter » avec Annuler). Les filtres par catégorie ne s'affichent qu'à partir de 24 bouteilles (les sections suffisent en dessous). Les basiques en une ligne (« Citron jaune, Citron vert… et 17 autres ») au lieu d'un nuage d'étiquettes ;
+  - **Labo** : 6 décors à la fois (choisis, conseillés, puis les plus courants), « Plus de décors (N) » ;
+  - **Accueil** : « Aussi pour toi » montre 8 idées (avant 11), « Tout voir » mène au reste ;
+  - **Fiche ingrédient** : « Utilisé dans N recettes » montre 5 recettes, les faisables et les mieux notées d'abord, puis « Voir les N autres » (toutes, avant : 30 au plus) ;
+  - **Paramètres** : « Toi » (prénom, poids, sexe, quiz) reste sur place ; Apparence, Sons et animations, Suggestions, Bar et recettes, Accueil et « Sauvegarde et réinitialisation » deviennent des lignes avec leur valeur, qui ouvrent une feuille avec **« ‹ Paramètres »** (`SET_GROUPS`, `subSheet`). Les actions de réglage sont inchangées (`refreshSheets` repeint aussi la feuille parente).
+- **Harmonisation** :
+  - **échelle de texte unique** : 11 · 12 · 13 · 14 · 15 · 16 · 17 · 20 · 22 · 28 · 34 (+ grands chiffres d'affichage). 48 tailles hors échelle ramenées (12,5 → 13, 11,5 → 12, 10,5 → 11, 15,5 → 15, 16,5 → 17, 18 → 17, 19 → 20, 21 → 22, 24 → 22, 25 et 30 → 28, 32 et 36 → 34). Graisse 800 → 700 (19 endroits) ;
+  - **rayons par rôle** (`--r-ctl` 10, `--r-tile` 14, `--r-card` 18, `--r-hero` 24) : avant, 20 valeurs différentes, et des tuiles voisines à 14, 16 et 17 px dans le Labo ;
+  - **espacements** sur la grille de 4 : titres de section 28/12, sous-titres −8/12, en-têtes et pieds de groupe 24/8 ; l'astuce du Bar alignée sur les titres.
+- **Lecture** : plus aucun texte sous 11 px (légendes du radar 9,5 → 11, en police Zeste ; trophées et familles 11 → 12, noms des trophées 12,5 → 13).
+- **Hiérarchie** : un seul bouton plein par écran (vérifié), la répétition « 43 trophées » / « 6 sur 55 » évitée, les listes longues derrière un bouton discret (`.more-btn`, teinte de l'accent, sans fond dans un groupe).
+- **Règle pour la suite** (reprise d'ASCEN) : avant d'ajouter un bouton à un écran, se demander ce qu'il remplace ; un réglage rare va dans un groupe des Paramètres, une liste longue derrière « Voir les N autres ». Le budget du test doit rester tenu.
+- Test : `tests/features/hick_test.js` (budgets de choix accueil 32, bar 45, labo 58, profil 32, réglages 14 ; listes qui se déplient ; jauge ≥ 44 px et niveau appliqué ; groupe Apparence, Retour et valeur affichée ; zéro identifiant SVG en double ; carrousel sur la marge ; aucun texte < 11 px).
 
 ## 7. Autres chantiers proposés (après la vérification)
 

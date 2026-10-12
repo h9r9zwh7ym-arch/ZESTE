@@ -492,10 +492,14 @@ function garnishSVG(r, sh, g){
   return s;
 }
 let THUMB={};
-function glassThumb(r){ return THUMB[r.id]||(THUMB[r.id]=glassSVG(r,{garnish:false})); }
+// Les dessins mis en cache gardent leurs identifiants SVG (dégradés, découpes) : chaque insertion reçoit des
+// identifiants neufs. Sinon, un même verre affiché sur deux écrans renvoie vers la découpe de l'écran masqué
+// (display:none) et s'affiche vide (1.37).
+function reidSVG(s){ const m=s.match(/id="(g\d+)[a-z]/); return m? s.split(m[1]).join("gz"+(++GID)+"_") : s; }
+function glassThumb(r){ return reidSVG(THUMB[r.id]||(THUMB[r.id]=glassSVG(r,{garnish:false}))); }
 let GFULL={};
 function glassSVG(r, opt={}){
-  if(r&&r.id&&RMAP[r.id]===r){ let plain=true; for(const k in opt){ plain=false; break; } if(plain) return GFULL[r.id]||(GFULL[r.id]=glassSVGRaw(r,opt)); }
+  if(r&&r.id&&RMAP[r.id]===r){ let plain=true; for(const k in opt){ plain=false; break; } if(plain) return reidSVG(GFULL[r.id]||(GFULL[r.id]=glassSVGRaw(r,opt))); }
   return glassSVGRaw(r,opt); }
 function glassSVGRaw(r, opt={}){
   if(typeof FX==="function"&&(opt.live||opt.stream)){ opt=Object.assign({},opt); if(!FX("live")) opt.live=0; if(!FX("stream")) opt.stream=0; }
@@ -560,10 +564,10 @@ function bottleSVG(id, level, big, shine){
 function radarSVG(vals, cmp, size=150){
   const n=8,c=size/2,R=size/2-24; const pt=(i,v)=>[c+Math.sin(i/n*2*Math.PI)*R*v, c-Math.cos(i/n*2*Math.PI)*R*v];
   const lvl=v=>v>=0.66?"marqué":v>=0.33?"moyen":"léger", desc=DIMS.map((d,i)=>d.toLowerCase()+" "+lvl(vals[i]||0)).join(", ");
-  let s=`<svg class="radar" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profil de goût : ${desc}">`;
+  let s=`<svg class="radar" viewBox="0 0 ${size} ${size}" overflow="visible" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profil de goût : ${desc}">`;
   [0.33,0.66,1].forEach(r=>s+=`<polygon points="${[...Array(n)].map((_,i)=>pt(i,r).join(",")).join(" ")}" fill="none" stroke="var(--sep)" stroke-width="1"/>`);
   for(let i=0;i<n;i++){ const [x,y]=pt(i,1); s+=`<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" stroke="var(--sep)" stroke-width=".7"/>`;
-    const [lx,ly]=pt(i,1.24); s+=`<text x="${lx}" y="${ly+3.5}" text-anchor="middle" font-size="9.5" fill="var(--label2)" font-family="-apple-system,sans-serif">${DIMS[i]}</text>`; }
+    const [lx,ly]=pt(i,1.2); s+=`<text x="${lx}" y="${ly+4}" text-anchor="middle" font-size="11" fill="var(--label2)" font-family="ZesteSans,-apple-system,sans-serif">${DIMS[i]}</text>`; }
   if(cmp) s+=`<polygon points="${cmp.slice(0,8).map((v,i)=>pt(i,Math.max(.04,v)).join(",")).join(" ")}" fill="none" stroke="var(--label3)" stroke-width="1.2" stroke-dasharray="3 3"/>`;
   s+=`<polygon points="${vals.slice(0,8).map((v,i)=>pt(i,Math.max(.04,v)).join(",")).join(" ")}" fill="var(--tint)" fill-opacity=".22" stroke="var(--tint)" stroke-width="1.8" stroke-linejoin="round"/>`;
   return s+`</svg>`;
