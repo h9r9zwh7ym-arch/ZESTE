@@ -1603,3 +1603,20 @@ h2.sh{margin:28px 20px 12px}
 .duo.one .dt{margin-top:0}
 .duo.one .grow{flex:1;min-width:0}
 .low-link{margin-top:12px}
+/* ================= 1.39 : hiérarchie visuelle (trois niveaux) ================= */
+/* niveau 3 : sous-réglages du labo et catégories du bar en en-têtes discrets */
+.lab-sub{display:flex;align-items:baseline;justify-content:space-between;margin:20px 20px 8px;font-size:calc(15rem / 17);font-weight:600;color:var(--label2)}
+.lab-sub .more{font-size:calc(14rem / 17)!important;font-weight:400}
+.lab-classics{margin:16px 16px 0;text-align:center}
+.lab-classics>span{font-size:calc(13rem / 17);color:var(--label2)}
+.lab-classics .starter{margin-top:8px}
+.lab-classics .starter .chip{background:var(--bg2);box-shadow:var(--shadow)}
+.cat-h{margin-top:24px}
+.cat-h b{display:flex;align-items:center;gap:8px;font-size:calc(15rem / 17);font-weight:600;color:var(--label2)}
+.cat-h b i{width:8px!important;height:8px!important}
+.cat-h:first-of-type{margin-top:16px}
+/* compteur « cocktails faisables » : il mène à la liste */
+button.stat{display:block;width:100%;text-align:left;font:inherit;color:inherit}
+button.stat:active{transform:scale(.97)}
+/* accueil : les accords mets sur une seule rangée */
+.dishes{grid-template-rows:auto}

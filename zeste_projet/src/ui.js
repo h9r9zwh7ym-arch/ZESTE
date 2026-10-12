@@ -223,7 +223,7 @@ function vBar(){
     o+=`<h2 class="sh"><span style="display:flex;align-items:center;gap:10px"><i style="width:10px;height:10px;border-radius:5px;background:${SEGCOL[sg]};display:block"></i>${sn}</span><span class="more" style="color:var(--label2)">${L.length}</span></h2><div class="sp8"></div><div class="group">${L.map(stockRow).join("")}</div>`;
   });
   if(!BF){ const br=bottleRecs().slice(0,3);
-    if(br.length) o+=`<h2 class="sh">Achats malins</h2><div class="sh-sub">Classés selon les cocktails que tu devrais aimer</div><div class="group">${br.map(b=>`<button class="row tap" data-a="ing" data-id="${b.id}" style="--inset:58px"><div class="thumb" style="width:30px;height:44px">${bottleSVG(b.id,4)}</div><div class="grow"><div class="t">${esc(ING[b.id].n)}</div><div class="s">+${b.rs.length} : ${esc(b.rs.slice(0,3).map(r=>r.n).join(", "))}</div></div>${IC.chev}</button>`).join("")}</div>`; }
+    if(br.length) o+=`<h2 class="sh">Achats malins</h2><div class="sh-sub">D’après tes goûts</div><div class="group">${br.map(b=>`<button class="row tap" data-a="ing" data-id="${b.id}" style="--inset:58px"><div class="thumb" style="width:30px;height:44px">${bottleSVG(b.id,4)}</div><div class="grow"><div class="t">${esc(ING[b.id].n)}</div><div class="s">+${b.rs.length} : ${esc(b.rs.slice(0,3).map(r=>r.n).join(", "))}</div></div>${IC.chev}</button>`).join("")}</div>`; }
   o+=`<div class="sp24"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">${IC.plus}Ajouter des ingrédients</button></div>`;
   return o+`<div class="sp24"></div></div>`;
 }

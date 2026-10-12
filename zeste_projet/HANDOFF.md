@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.38**. Chaque mise à jour livrée incrémente : 1.21 → 1.38… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.39**. Chaque mise à jour livrée incrémente : 1.21 → 1.39… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js ui_final.js v126.js v130.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -283,6 +283,21 @@ Code dans **`src/v138.js`** (chargé après v137, avant `ui_final.js`), plus que
 - **Fiche recette**, dans l'ordre d'usage : ingrédients, préparation, conseil, puis **« Ton avis »** (les étoiles et la note perso, réunies), « Ta version », histoire, « Profil de goût » (renommé : « Profil » se confondait avec l'onglet), bouteilles, variantes, labo. La ligne « Garniture : … » n'est plus affichée quand la dernière étape « Décore : … » la donne déjà ; l'aide « Touche une étape pour la cocher… » est retirée.
 - **Textes raccourcis** : « Faisables avec ton bar », « Le bon cocktail pour ton plat », « Toujours considérés comme disponibles », « Point vert : faisable maintenant », « Les quantités suivent, et l'app s'en souvient. », « Les bouteilles à moitié pleines ou moins. » (le tri de cette liste est alphabétique par niveau : ne pas écrire « les plus utiles d'abord »).
 - Test : `tests/features/ia_test.js` (accueil sans récap ni achat ; pas de « 0 % », sans alcool en filtre combinable ; filtres sans famille en double ; Bar Liste/Étagère + Presque vides ; Labo Composer/Fait maison et défis sous l'atelier ; récaps au Profil, explication dans Suggestions, pas de « Contenu additionnel » dans les réglages ; ordre de la fiche recette et garniture non répétée). `hick_test.js` adapté.
+
+### Fait en 1.39 (hiérarchie visuelle — même design)
+
+Retour de YaYa : « on est noyé sous plein d'infos, tout a l'air d'avoir la même importance » (Labo, Bar, Profil). Diagnostic sur captures pleine hauteur : le Profil alignait 10 sections avec le même titre de 22 px et la même carte blanche, et les deux grandes cartes vertes des récaps étaient les éléments les plus lourds de l'écran ; dans le Bar, les catégories (Spiritueux…) avaient le même titre que les vraies sections ; dans le Labo, les 5 étapes pesaient pareil alors que seuls les ingrédients sont indispensables (verre, style et méthode ont une valeur automatique), et « Pars d'un classique » était tout en bas.
+
+**Règle** (`src/v139.js`, bloc CSS « 1.39 ») : trois niveaux par écran, pas plus.
+1. **Un point focal** : le verre du soir, le verre du labo, les compteurs du bar, le profil de goût.
+2. **Sections principales** : titre de 22 px (`h2.sh`) et contenu en carte.
+3. **Le reste** : petits en-têtes de liste (`.list-h`, `.cat-h`, `.lab-sub`, 15 px demi-gras, gris), lignes qui ouvrent une feuille (`prow`). Jamais de grande carte pour une information secondaire.
+
+- **Profil** (3 149 → 1 774 px, 5 sections) : profil de goût, prochain coup de cœur, trophées (**3 médailles**, compteurs par métal dans la collection), **Tes récaps en lignes** (`recapRows`, plus de grandes cartes vertes), **Ton carnet** = Tes mieux notés, Historique (60 derniers verres), Familles explorées, Tes spiritueux, chacun en feuille (`carnetSheet`, `profPart` réutilise le rendu d'origine). Une famille touchée dans la feuille ferme la feuille et ouvre Cocktails.
+- **Bar** : les catégories et « À racheter » deviennent des en-têtes de liste ; « Additionnel » tient en une ligne (« Basiques toujours disponibles », 21, ouvre le réglage) ; le compteur « cocktails faisables › » mène à la liste des faisables (`gofaisables`). « Achats malins » : « D'après tes goûts ».
+- **Labo** (Composer) : le verre ; s'il est vide, « Ou pars d'un classique » juste en dessous ; **Les ingrédients** (seule étape en titre principal) ; puis **Le service** avec quatre sous-réglages : Verre, Glace et décor, Méthode, Style (les numéros 1 à 5 disparaissent). Indication du verre vide : « Verse tes ingrédients : le verre et le style se règlent tout seuls. » (vrai : verre choisi par le barman, style deviné).
+- **Accueil** : les accords mets tiennent sur une rangée qui défile (avant : deux rangées de 6).
+- Tests : `tests/features/hier_test.js` (profil ≤ 6 sections, pas de grande carte de récap, 3 médailles, carnet et ses feuilles ; bar sans titre de section pour les catégories ; « cocktails faisables » mène à la liste ; labo sans numéros, classiques avant les ingrédients, ingrédients avant le service, ordre des sous-réglages ; accords mets sur une rangée). `hick_test.js` adapté (Profil : 13 choix).
 
 ## 7. Autres chantiers proposés (après la vérification)
 

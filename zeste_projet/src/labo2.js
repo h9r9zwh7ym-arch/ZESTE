@@ -80,7 +80,7 @@ function vCompose(){
     <div class="lab-top"><span class="lab-chip">${esc(LTYPE.find(x=>x[0]===M.t)[1]==="Je ne sais pas"?(A?"Style deviné : "+{sour:"cocktail court",stirred:"sec et fort",long:"long drink",spritz:"spritz",cremeux:"crémeux"}[A.st]:"Style libre"):LTYPE.find(x=>x[0]===M.t)[1])}</span>${SC?`<span class="lab-score ${served?"shown":""}" data-a="mixserve"><b>${served?SC.score:"?"}</b><i>/100</i></span>`:""}</div>
     <div class="lab-glass" data-a="jiggle">${labGlassSVG(true)}<div class="lab-tool"></div></div>
     <div class="lab-gauge"><div class="lab-gbar"><i style="width:${Math.min(100,fill*100).toFixed(0)}%"></i></div><span>${fmtMl(vol)} versés sur ${fmtMl(avail)} disponibles${ICESHARE[ice]?", glace déduite":""}</span></div>
-    ${SC?`<div class="lab-goals">${SC.goals.map(([k,n,v])=>`<span class="goal ${v>=0.85?"ok":k==="gar"?"bonus":v>=0.5?"mid":""}"><i>${v>=0.85?IC.check:k==="gar"?"+":v>=0.5?"~":"·"}</i>${n}</span>`).join("")}</div>`:`<div class="lab-hint">Choisis un style, un verre, puis verse tes ingrédients.</div>`}
+    ${SC?`<div class="lab-goals">${SC.goals.map(([k,n,v])=>`<span class="goal ${v>=0.85?"ok":k==="gar"?"bonus":v>=0.5?"mid":""}"><i>${v>=0.85?IC.check:k==="gar"?"+":v>=0.5?"~":"·"}</i>${n}</span>`).join("")}</div>`:`<div class="lab-hint">Verse tes ingrédients : le verre et le style se règlent tout seuls.</div>`}
   </div>`;
   if(served&&SC){ const [gt,ge]=labGrade(SC.score); o+=`<div class="lab-verdict"><span class="lv-e">${lu(ge)}</span><div class="grow"><b>${esc(gt)}</b><span>${esc(labSummary(A,SC))}</span></div></div>`; }
   // ---- étape 1 : style ----
