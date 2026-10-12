@@ -1596,3 +1596,10 @@ h2.sh{margin:28px 20px 12px}
 .back-link .chev.back{transform:rotate(180deg);color:var(--tint);width:9px;height:15px}
 /* l'astuce sous les compteurs s'aligne sur les titres (20 px), pas sur le texte des listes */
 .stat-grid+.gf{margin-left:20px;margin-right:20px}
+/* 1.38 : « Surprends-moi » en une ligne pleine largeur, lien « Presque vides » du bar */
+.duo.one{grid-template-columns:1fr}
+.duo.one .duo-c{flex-direction:row;align-items:center;gap:14px;min-height:0;padding:14px 16px}
+.duo.one .di{margin-bottom:0;flex:none}
+.duo.one .dt{margin-top:0}
+.duo.one .grow{flex:1;min-width:0}
+.low-link{margin-top:12px}

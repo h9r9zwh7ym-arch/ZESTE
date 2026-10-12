@@ -56,7 +56,7 @@ function worldView(){
   const pins=CITIES.map((c,i)=>{ const [px,py]=cityXY(c[1],c[2]), ids=c[3].filter(id=>RMAP[id]), n=ids.length, made=ids.filter(id=>madeCount(id)).length, ok=ids.filter(id=>status(RMAP[id]).ok).length;
     return `<g class="pin ${made?"made":""} ${drop?"drop":""}" data-a="city" data-i="${i}" style="animation-delay:${(i%12)*30}ms"><circle class="pin-pulse" cx="${px}" cy="${py}" r="${(r*(1.6+Math.min(n,12)*0.14)).toFixed(2)}"/><circle class="pin-dot" cx="${px}" cy="${py}" r="${(r*(0.9+Math.min(n,12)*0.07)).toFixed(2)}"/>${WORLD_R!=="monde"?(()=>{ const pos=LABPOS[c[0]]||"r", fs=r*1.75; const [tx,ty,anc]= pos==="l"?[px-r*1.6,py+r*0.5,"end"]: pos==="u"?[px,py-r*1.6,"middle"]: pos==="d"?[px,py+r*2.6,"middle"]:[px+r*1.6,py+r*0.5,"start"]; return `<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" text-anchor="${anc}" font-size="${fs.toFixed(2)}" class="pin-t">${esc(c[0])}</text>`; })():""}${ok?`<circle cx="${px+r*0.9}" cy="${py-r*0.9}" r="${(r*0.45).toFixed(2)}" fill="var(--green)"/>`:""}</g>`; }).join("");
   const done=new Set(distinct().map(id=>CITIES.findIndex(c=>c[3].includes(id))).filter(i=>i>=0)).size;
-  return `<div class="sh-sub" style="margin-top:6px">Touche la carte pour l’ouvrir en grand, te balader et zoomer. Point vert : faisable avec ton bar.</div>
+  return `<div class="sh-sub" style="margin-top:6px">Touche la carte pour l’agrandir. Point vert : faisable avec ton bar.</div>
   <div class="chips" style="margin-bottom:8px">${Object.entries(REGIONS).map(([k,v])=>`<button class="chip ${WORLD_R===k?"on":""}" data-a="region" data-r="${k}">${v[0]}</button>`).join("")}</div>
   <div class="world ${WORLD_R==="monde"?"":"zoom"}" data-a="mapfs"><button class="world-open" data-a="mapfs" aria-label="Ouvrir la carte">${IC.map}Ouvrir la carte</button><svg id="worldsvg" viewBox="${vb}" preserveAspectRatio="xMidYMid meet"><rect x="-20" y="-20" width="400" height="200" class="sea"/><g class="grat">${[...Array(13)].map((_,k)=>`<path d="M${k*30} 0V180"/>`).join("")}${[...Array(7)].map((_,k)=>`<path d="M0 ${k*30}H360"/>`).join("")}</g><path class="land" d="${WORLD_PATH}"/>${pins}</svg></div>
   <div class="gf">Tu as goûté des cocktails de ${done} ville${done>1?"s":""} sur ${CITIES.length}.</div>`;
@@ -89,7 +89,7 @@ function treeView(){
   return `<div class="chips lin-chips" style="flex-wrap:nowrap">${LINEAGES.map((l,i)=>`<button class="chip ${i===TREE_I?"on":""}" data-a="lineage" data-i="${i}">${esc(l.n)}</button>`).join("")}</div>
   <div class="card lin-card"><b>${esc(L.n)}</b><span>${esc(L.d)}</span></div>
   <ul class="ttree">${node(L.t,0,true)}</ul>
-  <div class="gf">Chaque cocktail descend de celui du dessus. Touche-en un pour ouvrir sa fiche. Contour doré : déjà préparé ; point vert : faisable.</div>`;
+  <div class="gf">Contour doré : déjà préparé. Point vert : faisable.</div>`;
 }
 // ---------- Radar inversé ----------
 let RAD=null;
@@ -107,7 +107,7 @@ function radarEditor(){
 function radarResults(){ return radarMatches().map(([r,m])=>recRow(r,m+" % proche de ton goût")).join(""); }
 function radarView(){
   const P=[["Amer",[0.2,0.2,0.85,0.6,0.35,0.45,0.35,0.35]],["Frais",[0.35,0.7,0.1,0.3,0.55,0.6,0.15,0.1]],["Doux",[0.8,0.35,0.1,0.3,0.7,0.2,0.2,0.2]],["Fort",[0.3,0.1,0.35,0.95,0.2,0.3,0.4,0.7]],["Épicé",[0.4,0.4,0.3,0.55,0.3,0.25,0.9,0.45]],["Boisé",[0.3,0.15,0.3,0.8,0.25,0.2,0.4,0.9]]];
-  return `<div class="sh-sub" style="margin-top:6px">Dessine le goût que tu veux : fais glisser les points, et les cocktails qui y correspondent apparaissent.</div><div class="chips" style="margin-bottom:6px"><button class="chip" data-a="radmine">Mon profil</button>${P.map(([n,v])=>`<button class="chip" data-a="radpreset" data-v="${v.join(",")}">${n}</button>`).join("")}</div>
+  return `<div class="sh-sub" style="margin-top:6px">Fais glisser les points : les cocktails suivent le goût dessiné.</div><div class="chips" style="margin-bottom:6px"><button class="chip" data-a="radmine">Mon profil</button>${P.map(([n,v])=>`<button class="chip" data-a="radpreset" data-v="${v.join(",")}">${n}</button>`).join("")}</div>
   <div class="card rad-card">${radarEditor()}</div><div class="list-h"><b>Les plus proches</b><span></span></div><div class="group" id="radres">${radarResults()}</div>`;
 }
 let RADDRAG=null, RADT=null;

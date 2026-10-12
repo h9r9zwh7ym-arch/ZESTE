@@ -1600,6 +1600,13 @@ h2.sh{margin:28px 20px 12px}
 .back-link .chev.back{transform:rotate(180deg);color:var(--tint);width:9px;height:15px}
 /* l'astuce sous les compteurs s'aligne sur les titres (20 px), pas sur le texte des listes */
 .stat-grid+.gf{margin-left:20px;margin-right:20px}
+/* 1.38 : « Surprends-moi » en une ligne pleine largeur, lien « Presque vides » du bar */
+.duo.one{grid-template-columns:1fr}
+.duo.one .duo-c{flex-direction:row;align-items:center;gap:14px;min-height:0;padding:14px 16px}
+.duo.one .di{margin-bottom:0;flex:none}
+.duo.one .dt{margin-top:0}
+.duo.one .grow{flex:1;min-width:0}
+.low-link{margin-top:12px}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -3122,7 +3129,7 @@ function adjCard(r){
   const rows=[hasS&&["s","Sucre","Moins sucré","Plus sucré"],hasA&&["a","Acidité","Moins acide","Plus acide"],hasF&&["f","Force","Plus léger","Plus fort"]].filter(Boolean);
   if(!rows.length) return "";
   const pk=POP&&POP.k&&POP.k.startsWith("adj"+r.id)&&Date.now()-POP.t<700?POP.k.slice(-1):"";
-  return `<h2 class="sh">Ta version${getAdj(r.id)?`<button class="more" data-a="adjreset" data-id="${r.id}">Réinitialiser</button>`:""}</h2><div class="sh-sub">Ajuste à ton goût : les quantités suivent, et l’app s’en souvient.</div><div class="card adj">${rows.map(([k,n,lo,hi])=>{ const v=a[k]||0; return `<div class="adj-row"><div class="adj-l"><b>${n}</b><span>${v<0?lo:v>0?hi:"Comme l’original"}</span></div><div class="adj-dots">${[-2,-1,0,1,2].map(x=>`<button class="${x===v?"on":""} ${x===0?"zero":""} ${pk===k&&x===v?"pop":""}" data-a="adj" data-id="${r.id}" data-k="${k}" data-v="${x}" aria-label="${n} ${x}"><i></i></button>`).join("")}</div></div>`; }).join("")}</div>`;
+  return `<h2 class="sh">Ta version${getAdj(r.id)?`<button class="more" data-a="adjreset" data-id="${r.id}">Réinitialiser</button>`:""}</h2><div class="sh-sub">Les quantités suivent, et l’app s’en souvient.</div><div class="card adj">${rows.map(([k,n,lo,hi])=>{ const v=a[k]||0; return `<div class="adj-row"><div class="adj-l"><b>${n}</b><span>${v<0?lo:v>0?hi:"Comme l’original"}</span></div><div class="adj-dots">${[-2,-1,0,1,2].map(x=>`<button class="${x===v?"on":""} ${x===0?"zero":""} ${pk===k&&x===v?"pop":""}" data-a="adj" data-id="${r.id}" data-k="${k}" data-v="${x}" aria-label="${n} ${x}"><i></i></button>`).join("")}</div></div>`; }).join("")}</div>`;
 }
 function termify(html){ let out=html; TERMS.forEach(([k,re])=>{ let done=false; out=out.replace(new RegExp(re.source,re.flags.replace("g","")),m=>{ if(done) return m; done=true; return `<span class="term" role="button" tabindex="0" data-a="term" data-k="${k}">${m}</span>`; }); }); return out; }
 function pendingRatings(){ const now=Date.now(), sn=S.snooze||{}, seen=new Set(), out=[];
@@ -3142,7 +3149,7 @@ function maskName(h,n){
   return out.replace(/(^|[.!?]\s+)ce cocktail/g,(m,a)=>a+"Ce cocktail");
 }
 function discoveryCard(){ const L=RECS.filter(r=>r.h&&!madeCount(r.id)); if(!L.length) return ""; const r=L[Math.floor(hrand("d"+daySeed())*L.length)];
-  return `<h2 class="sh">Le saviez-vous ?</h2><div class="sh-sub">Une histoire de cocktail par jour</div><div class="disc" data-a="flip"><div class="disc-in"><div class="disc-f"><div class="disc-q">“</div><p>${esc(maskName(r.h,r.n))}</p><div class="disc-hint">${IC.sparkle}Touche pour découvrir lequel</div></div><div class="disc-b" style="--c:${r.col}"><div class="disc-g">${glassSVG(r)}</div><div class="disc-n">${esc(r.n)}</div><div class="disc-s">${status(r).ok?"Tu peux le faire maintenant":"Il te manque "+esc(status(r).miss.map(x=>lc(shortN(x))).join(", "))}</div><button class="btn small" data-a="rec" data-id="${r.id}">Voir la recette</button></div></div></div>`; }
+  return `<h2 class="sh">Le saviez-vous ?</h2><div class="disc" data-a="flip"><div class="disc-in"><div class="disc-f"><div class="disc-q">“</div><p>${esc(maskName(r.h,r.n))}</p><div class="disc-hint">${IC.sparkle}Touche pour découvrir lequel</div></div><div class="disc-b" style="--c:${r.col}"><div class="disc-g">${glassSVG(r)}</div><div class="disc-n">${esc(r.n)}</div><div class="disc-s">${status(r).ok?"Tu peux le faire maintenant":"Il te manque "+esc(status(r).miss.map(x=>lc(shortN(x))).join(", "))}</div><button class="btn small" data-a="rec" data-id="${r.id}">Voir la recette</button></div></div></div>`; }
 function tileLite(r){ return `<button class="tile lite" data-a="rec" data-id="${r.id}"><div class="tg" style="background:radial-gradient(circle at 50% 60%, ${r.col}40, transparent 70%)">${glassThumb(r)}</div><div class="tn">${esc(r.n)}</div><div class="ts">${esc(ingList(r))}</div></button>`; }
 function tile(r, sub){
   return `<button class="tile" data-a="rec" data-id="${r.id}">${hasTaste()&&!S.ratings[r.id]&&matchPct(r)>=65?`<span class="tmatch">${matchPct(r)} %</span>`:""}<div class="tg" style="background:radial-gradient(circle at 50% 60%, ${r.col}55, transparent 70%)">${glassSVG(r)}</div><div class="tn">${esc(r.n)}</div><div class="ts">${esc(sub||ingList(r))}</div></button>`;
@@ -3287,7 +3294,7 @@ function vBar(){
   if(out.length) o+=`<h2 class="sh">À racheter</h2><div class="sh-sub">Bouteilles vides</div><div class="group">${out.map(id=>`<div class="row" style="--inset:58px"><div class="thumb" style="width:30px;height:44px">${bottleSVG(id,0)}</div><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(ING[id].n)}</div><div class="s">${usedIn(id)} recettes l’utilisent</div></button><button class="btn small sec" data-a="refill" data-id="${id}">Racheté</button></div>`).join("")}</div>`;
   SEGS.forEach(([sg,sn])=>{ if(BF&&BF!==sg) return;
     if(sg==="add"){ const on=BASICS.filter(id=>ING[id]&&!ING[id].al&&has(id)), extra=ids.filter(id=>segOf(id)==="add");
-      o+=`<h2 class="sh">${sn}</h2><div class="sh-sub">Toujours à portée de main, compté automatiquement</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:calc(16rem / 17)">${on.length} basiques</b><button class="link" data-a="basics">Modifier</button></div><div class="basics">${on.map(id=>`<span>${esc(shortN(id))}</span>`).join("")}</div></div>`;
+      o+=`<h2 class="sh">${sn}</h2><div class="sh-sub">Toujours considérés comme disponibles</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:calc(16rem / 17)">${on.length} basiques</b><button class="link" data-a="basics">Modifier</button></div><div class="basics">${on.map(id=>`<span>${esc(shortN(id))}</span>`).join("")}</div></div>`;
       if(extra.length) o+=`<div class="sp8"></div><div class="group">${extra.map(stockRow).join("")}</div>`; return; }
     const L=ids.filter(id=>segOf(id)===sg && !(tracked(id)&&S.stock[id]===0)).sort((a,b)=>ING[a].n.localeCompare(ING[b].n,"fr")); if(!L.length) return;
     o+=`<h2 class="sh"><span style="display:flex;align-items:center;gap:10px"><i style="width:10px;height:10px;border-radius:5px;background:${SEGCOL[sg]};display:block"></i>${sn}</span><span class="more" style="color:var(--label2)">${L.length}</span></h2><div class="sp8"></div><div class="group">${L.map(stockRow).join("")}</div>`;
@@ -3436,25 +3443,13 @@ function vProfil(){
   else o+=`<div class="card muted" style="font-size:calc(15rem / 17)">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût. Plus tu notes, plus les suggestions deviennent justes.</div>`;
   if(hasTaste()){ const nx=RECS.filter(r=>!madeCount(r.id)&&!S.ratings[r.id]&&!r.na).map(r=>[r,predict(r)-0.22*status(r).miss.length]).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0];
     if(nx){ const ok=status(nx).ok; o+=`<h2 class="sh">Ton prochain coup de cœur</h2><div class="sh-sub">Jamais préparé, et c’est notre meilleur pari</div><button class="card buy" data-a="rec" data-id="${nx.id}" style="width:calc(100% - 32px);text-align:left"><div class="bb" style="width:56px;height:70px">${glassSVG(nx)}</div><div class="grow"><div class="bt" style="font-family:var(--serif)">${esc(nx.n)}</div><div class="bs">${matchPct(nx)} % pour toi. ${ok?"Tu peux le faire maintenant.":"Il te manque "+esc(status(nx).miss.map(x=>lc(shortN(x))).join(", "))+"."}</div></div>${IC.chev}</button>`; } }
-  if(getModel().n>=2){ const mw=Object.assign({},mWeights()); let tot=mw.knn+mw.ing+mw.fam+mw.dims;
-    // la régression (70 % de la prédiction) se répartit entre ton palais (profil) et tes styles (familles, alcools), selon ce qu'elle a appris
-    const RW=ridgeOf(getModel()); if(RW){ const e=RW.W.map(w=>w*w), ep=e.slice(0,9).reduce((a,b)=>a+b,0), ec=e.slice(9).reduce((a,b)=>a+b,0), et=ep+ec||1;
-      for(const k in mw) mw[k]=0.3*mw[k]/tot; mw.dims+=0.7*ep/et; mw.fam+=0.7*ec/et; tot=1; }
-    const L=[["knn","Tes coups de cœur","des cocktails qui ressemblent à ceux que tu as bien notés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs qui reviennent dans ce que tu aimes","#FF375F"],["fam","Tes styles","les familles (sours, spritz…) et les alcools que tu préfères","#5E5CE6"],["dims","Ton palais","ton goût pour l’amer, le sucré, l’acide, le fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
-    const top=L.slice().sort((a,b)=>b[4]-a[4])[0], pl=(n,a,b)=>n+" "+(n>1?b:a);
-    const src=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"]].filter(x=>x[0]).map(([n,a,b])=>pl(n,a,b)).concat(S.quiz?["quiz de goût"]:[]);
-    o+=`<h2 class="sh">Ce qui guide tes suggestions</h2><div class="sh-sub">Zeste apprend de toi. Voici sur quoi il s’appuie le plus pour te proposer des cocktails.</div>
-    <div class="card guide"><div class="gd-top">En ce moment, surtout <b>${esc(top[1].toLowerCase())}</b> : ${esc(top[2])}${/[.…]$/.test(top[2])?"":"."}</div>
-    <div class="gd-bar">${L.map(x=>`<i style="width:${x[4]}%;background:${x[3]}"></i>`).join("")}</div>
-    ${L.sort((a,b)=>b[4]-a[4]).map(x=>`<div class="gd-row"><span class="gd-dot" style="background:${x[3]}"></span><div class="grow"><b>${esc(x[1])}</b><span>${esc(x[2].charAt(0).toUpperCase()+x[2].slice(1))}</span></div><em>${x[4]} %</em></div>`).join("")}
-    <div class="gd-src"><span>Appris grâce à</span>${src.map(x=>`<i>${esc(x)}</i>`).join("")}</div>
-    <div class="gd-foot">Chaque nouvelle note renforce ce qui avait vu juste.</div></div>`; }
+  // (1.38 : « Ce qui guide tes suggestions » est passé dans Paramètres › Suggestions, voir guideHTML)
   const byBase={}; S.hist.forEach(h=>{ const r=RMAP[h.id]; if(!r) return; const b=BASE_LABEL[baseGroup(r)]; byBase[b]=(byBase[b]||0)+1; });
   const bb=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6);
   if(bb.length){ const mx=bb[0][1]; o+=`<h2 class="sh">Tes spiritueux</h2><div class="card bars" style="padding:10px 0">${bb.map(([n,c])=>`<div class="bar-row"><div class="bl">${esc(n)}</div><div class="bt"><i style="width:${c/mx*100}%"></i></div><div class="bn">${c}</div></div>`).join("")}</div>`; }
   const fams=Object.keys(FAMILIES), done=new Set(distinct().map(id=>RMAP[id].fam));
   const dl=distinct();
-  o+=`<h2 class="sh">Familles explorées<span class="more" style="color:var(--label2)">${done.size} sur ${fams.length}</span></h2><div class="sh-sub">${done.size?"En couleur : les familles dont tu as déjà préparé un cocktail.":"Prépare un cocktail pour colorier ta première famille."} Touche une famille pour la découvrir.</div><div class="fam-bar"><i style="width:${Math.round(done.size/fams.length*100)}%"></i></div><div class="fams">${fams.map(f=>{ const n=dl.filter(id=>RMAP[id].fam===f).length; return `<button class="famc ${n?"on":""}" data-a="famgo" data-f="${f}">${n?`<span class="fc-ic">${IC.check}</span>`:`<span class="fc-ic off"></span>`}<span class="fc-t"><span class="fc-n">${esc(FAMILIES[f])}</span><em>${n?n+" recette"+(n>1?"s":"")+" préparée"+(n>1?"s":""):"À découvrir"}</em></span></button>`; }).join("")}</div>`;
+  o+=`<h2 class="sh">Familles explorées<span class="more" style="color:var(--label2)">${done.size} sur ${fams.length}</span></h2>${done.size?"":`<div class="sh-sub">Prépare un cocktail pour colorier ta première famille.</div>`}<div class="fam-bar"><i style="width:${Math.round(done.size/fams.length*100)}%"></i></div><div class="fams">${fams.map(f=>{ const n=dl.filter(id=>RMAP[id].fam===f).length; return `<button class="famc ${n?"on":""}" data-a="famgo" data-f="${f}">${n?`<span class="fc-ic">${IC.check}</span>`:`<span class="fc-ic off"></span>`}<span class="fc-t"><span class="fc-n">${esc(FAMILIES[f])}</span><em>${n?n+" recette"+(n>1?"s":"")+" préparée"+(n>1?"s":""):"À découvrir"}</em></span></button>`; }).join("")}</div>`;
   const best=rated().filter(x=>x[1]>=4).sort((a,b)=>b[1]-a[1]).slice(0,5);
   if(best.length) o+=`<h2 class="sh">Tes mieux notés</h2><div class="group">${best.map(([id])=>recRow(RMAP[id])).join("")}</div>`;
   const last=S.hist.slice(-6).reverse().filter(h=>RMAP[h.id]);
@@ -3465,6 +3460,23 @@ function vProfil(){
   o+=`<div class="sp24"></div><div class="group"><button class="row tap" data-a="settings" style="--inset:62px"><span class="set-ic" style="background:#8E8E93">${IC.gear}</span><div class="grow">Paramètres</div>${IC.chev}</button></div>`;
   return o+`<div class="sp24"></div></div>`;
 }
+
+// Explication des suggestions (Paramètres › Suggestions depuis 1.38)
+function guideHTML(){ let o="";
+  if(getModel().n>=2){ const mw=Object.assign({},mWeights()); let tot=mw.knn+mw.ing+mw.fam+mw.dims;
+    // la régression (70 % de la prédiction) se répartit entre ton palais (profil) et tes styles (familles, alcools), selon ce qu'elle a appris
+    const RW=ridgeOf(getModel()); if(RW){ const e=RW.W.map(w=>w*w), ep=e.slice(0,9).reduce((a,b)=>a+b,0), ec=e.slice(9).reduce((a,b)=>a+b,0), et=ep+ec||1;
+      for(const k in mw) mw[k]=0.3*mw[k]/tot; mw.dims+=0.7*ep/et; mw.fam+=0.7*ec/et; tot=1; }
+    const L=[["knn","Tes coups de cœur","des cocktails qui ressemblent à ceux que tu as bien notés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs qui reviennent dans ce que tu aimes","#FF375F"],["fam","Tes styles","les familles (sours, spritz…) et les alcools que tu préfères","#5E5CE6"],["dims","Ton palais","ton goût pour l’amer, le sucré, l’acide, le fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
+    const top=L.slice().sort((a,b)=>b[4]-a[4])[0], pl=(n,a,b)=>n+" "+(n>1?b:a);
+    const src=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"]].filter(x=>x[0]).map(([n,a,b])=>pl(n,a,b)).concat(S.quiz?["quiz de goût"]:[]);
+    o+=`<div class="gh">Ce qui guide tes suggestions</div>
+    <div class="card guide"><div class="gd-top">En ce moment, surtout <b>${esc(top[1].toLowerCase())}</b> : ${esc(top[2])}${/[.…]$/.test(top[2])?"":"."}</div>
+    <div class="gd-bar">${L.map(x=>`<i style="width:${x[4]}%;background:${x[3]}"></i>`).join("")}</div>
+    ${L.sort((a,b)=>b[4]-a[4]).map(x=>`<div class="gd-row"><span class="gd-dot" style="background:${x[3]}"></span><div class="grow"><b>${esc(x[1])}</b><span>${esc(x[2].charAt(0).toUpperCase()+x[2].slice(1))}</span></div><em>${x[4]} %</em></div>`).join("")}
+    <div class="gd-src"><span>Appris grâce à</span>${src.map(x=>`<i>${esc(x)}</i>`).join("")}</div>
+    <div class="gd-foot">Chaque nouvelle note renforce ce qui avait vu juste.</div></div>`; }
+  return o; }
 
 
 // ================= FEUILLES =================
@@ -3506,9 +3518,6 @@ function recSheet(id){
     b+=`<div class="facts"><div><b>${Math.round(m.abv)} %</b><span>alcool</span></div><div><b>${fmtMl(m.vol*mult)}</b><span>volume</span></div><div><b>${esc(METH[r.m])}</b><span>méthode</span></div><div><b>${esc(GNAME[r.g]||"")}</b><span>verre</span></div></div>`+costLine(items,mult,id);
     if(st.ok) b+=`<div class="status ok">${IC.checkc}<span>Tu as tout ce qu’il faut.</span></div>`;
     else b+=`<div class="status no">${IC.warn}<span>${st.subOk?"Faisable en remplaçant ":"Il te manque "}${st.miss.map(x=>`<b>${esc(lc(shortN(x)))}</b>${st.subs[x]?" par "+esc(lc(shortN(st.subs[x]))):""}`).join(", ")}.</span></div>`;
-    const rp=popOn("rate"+id);
-    b+=`<div class="card rate-box" style="padding:6px 8px 6px 12px;margin-top:10px"><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${n<=rt?"on":""} ${rp&&n<=rt?"pop":""}" data-a="rate" data-id="${id}" data-n="${n}" aria-label="${n} étoiles">${IC.star}</button>`).join("")}</div><span class="muted" style="font-size:calc(14rem / 17);text-align:right;line-height:1.2">${rt?["","Pas pour moi","Bof","Correct","Très bon","Coup de cœur"][rt]:hasTaste()?`<b style="color:var(--tint);font-family:var(--rounded);font-size:calc(17rem / 17)">${matchPct(r)} %</b><br>pour toi`:"Pas encore noté"}</span></div>`;
-    b+=adjCard(r);
     b+=`<h2 class="sh">Ingrédients<span class="stepper" style="font-size:calc(15rem / 17)"><button data-a="mult" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${mult} verre${mult>1?"s":""}</span><button data-a="mult" data-d="1" aria-label="Plus">${IC.plus}</button></span></h2>${adj?`<div class="seg" data-k="ver" style="margin:8px 16px 0">${[["mine","Ta version"],["orig","Originale"]].map(([k,n])=>`<button class="${ver===k?"on":""}" data-a="ver" data-v="${k}">${n}</button>`).join("")}</div>`:""}<div class="sp8"></div><div class="group">`;
     SEGS.forEach(([sg,sn])=>{ const L=r.ing.filter(it=>segOf(it.id)===sg); if(!L.length) return;
       b+=`<div class="ing-sec"><i style="background:${SEGCOL[sg]}"></i>${sn}${sg==="add"?"<span>Toujours à portée de main</span>":""}</div>`;
@@ -3516,15 +3525,18 @@ function recSheet(id){
         const role={opt:"Facultatif",rinse:"Facultatif, pour parfumer le verre",top:"Pour compléter le verre",float:ING[it.id].sug>=40?"Versé en filet à la fin":ING[it.id].cat==="bitters"?"Quelques gouttes sur le dessus":"Versé en dernier, en surface",rinse:"Pour rincer le verre"}[it.r]||"";
         b+=`<button class="ing-line ${miss?"miss":""} ${bas&&!miss?"basic":""}" data-a="ing" data-id="${it.id}"><span class="q">${termify(esc(fmtQ(it,mult)))}${it.orig!=null&&ver==="mine"?`<span class="delta ${it.q>it.orig?"up":"down"}">${it.q>it.orig?"+":"−"}${esc(fmtQ({q:Math.abs(it.q-it.orig),u:it.u},mult).replace(/ (traits?|feuilles|morceaux?|brins?|gouttes?)$/,""))}</span>`:""}</span><span class="n">${esc(ING[it.id].n)}${role?`<small>${role}</small>`:""}</span>${miss?`<span class="badge red">Manque</span>`:""}</button>`; });
     });
-    b+=`</div><div class="gf">Garniture : ${esc(lc(r.gar||"aucune"))}.</div>`;
-    b+=`<h2 class="sh">Préparation</h2><div class="sp8"></div><div class="group"><ol class="steps tick-steps">${buildSteps(r).map(s=>`<li data-a="stepck">${termify(esc(s.t))}</li>`).join("")}</ol></div><div class="gf">Touche une étape pour la cocher, et un mot souligné pour son explication.</div>`;
+    b+=`</div>`+(buildSteps(r).some(x=>/^Décore/.test(x.t))?"":`<div class="gf">Garniture : ${esc(lc(r.gar||"aucune"))}.</div>`); // la dernière étape la donne déjà
+    b+=`<h2 class="sh">Préparation</h2><div class="sp8"></div><div class="group"><ol class="steps tick-steps">${buildSteps(r).map(s=>`<li data-a="stepck">${termify(esc(s.t))}</li>`).join("")}</ol></div>`;
     if(r.tip) b+=`<div class="sp8"></div><div class="card" style="font-size:calc(15rem / 17);display:flex;gap:10px"><span style="color:var(--tint);flex:none">${IC.sparkle.replace("<svg","<svg width='20' height='20'")}</span><span>${esc(r.tip)}</span></div>`;
+    const rp=popOn("rate"+id);
+    b+=`<h2 class="sh">Ton avis</h2><div class="card rate-box" style="padding:6px 8px 6px 12px"><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${n<=rt?"on":""} ${rp&&n<=rt?"pop":""}" data-a="rate" data-id="${id}" data-n="${n}" aria-label="${n} étoiles">${IC.star}</button>`).join("")}</div><span class="muted" style="font-size:calc(14rem / 17);text-align:right;line-height:1.2">${rt?["","Pas pour moi","Bof","Correct","Très bon","Coup de cœur"][rt]:hasTaste()?`<b style="color:var(--tint);font-family:var(--rounded);font-size:calc(17rem / 17)">${matchPct(r)} %</b><br>pour toi`:"Pas encore noté"}</span></div>`;
+    b+=`<div class="sp8"></div><div class="group"><textarea class="note" data-note="${id}" placeholder="Ce que tu as changé, ce que tu referais…">${esc(S.notes[id]||"")}</textarea></div>`;
+    b+=adjCard(r);
     if(r.h) b+=`<h2 class="sh">Histoire</h2><div class="sp8"></div><div class="card"><p class="hist">${esc(r.h)}</p></div>`;
-    b+=`<h2 class="sh">Profil</h2><div class="sp8"></div><div class="card"><div class="prof">${radarSVG(p,avgProfile())}<div style="font-size:calc(14rem / 17);color:var(--label2)">${esc(reasons(r))}.<div style="margin-top:8px;font-size:calc(12rem / 17)">La ligne pointillée montre la moyenne de la carte.</div></div></div></div>`;
+    b+=`<h2 class="sh">Profil de goût</h2><div class="sp8"></div><div class="card"><div class="prof">${radarSVG(p,avgProfile())}<div style="font-size:calc(14rem / 17);color:var(--label2)">${esc(reasons(r))}.<div style="margin-top:8px;font-size:calc(12rem / 17)">La ligne pointillée montre la moyenne de la carte.</div></div></div></div>`;
     const tips=[...new Set(r.ing.map(i=>i.id))].filter(x=>ING[x].tip&&["spirit","liqueur","amaro","vin","bitters"].includes(ING[x].cat));
     if(tips.length) b+=`<h2 class="sh">Quelle bouteille choisir</h2><div class="sp8"></div><div class="group">${tips.map(x=>`<details class="tip"><summary>${esc(ING[x].n)}${IC.chev}</summary><p>${esc(ING[x].tip)}</p></details>`).join("")}</div>`;
     if(r.v.length) b+=`<h2 class="sh">Variantes et cousins</h2><div class="sp8"></div><div class="scroller">${r.v.map(v=>RMAP[v]).filter(Boolean).map(v=>tileLite(v)).join("")}</div>`;
-    b+=`<h2 class="sh">Ma note perso</h2><div class="sp8"></div><div class="group"><textarea class="note" data-note="${id}" placeholder="Ce que tu as changé, ce que tu referais…">${esc(S.notes[id]||"")}</textarea></div>`;
     b+=`<div class="sp16"></div><div class="group"><button class="row tap" data-a="tolab" data-id="${id}"><span style="color:var(--tint)">${IC.flask.replace("<svg","<svg width='22' height='22'")}</span><div class="grow">Modifier dans le labo</div>${IC.chev}</button></div>`;
     if(r.mine) b+=`<div class="sp16"></div><div class="btn-row"><button class="btn danger" data-a="delcustom" data-id="${id}">Supprimer cette création</button></div>`;
     const hp=popOn("fav"+id);
@@ -3899,10 +3911,10 @@ function vToday(){
   return o+`<div class="sp24"></div></div>`;
 }
 const HOME_SEC={
-  suggest:({list})=> list.length>1? `<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">Faisables avec ton bar, variés et classés selon tes goûts</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>` : "",
+  suggest:({list})=> list.length>1? `<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">Faisables avec ton bar</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>` : "",
   duo:({list,empty})=>{ const br=!empty&&(bottleRecs().find(b=>tracked(b.id))||bottleRecs()[0]);
     return `<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?"Au hasard parmi tes idées":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`; },
-  table:()=>`<h2 class="sh">À table</h2><div class="sh-sub">Tu manges quoi ? Je te dis quoi boire avec</div><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${lu(d.ic)}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
+  table:()=>`<h2 class="sh">À table</h2><div class="sh-sub">Le bon cocktail pour ton plat</div><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${lu(d.ic)}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
   rewind:()=> rewindEligible()? `<button class="rw-card" data-a="rewind"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">${rewindData().count} verres, ${rewindData().distinct} recettes. Revis tout ça en quelques histoires.</div></div><div class="rw-play">${IC.play}</div></button>` : "",
   na:()=>{ const naL=RECS.filter(r=>r.na&&status(r).ok).sort((a,b)=>score(b)-score(a)).slice(0,8);
     return naL.length? `<h2 class="sh">Sans alcool<button class="more" data-a="nafilter">Tout voir</button></h2><div class="sh-sub">Tout le plaisir, zéro degré</div><div class="scroller">${naL.map(r=>tile(r)).join("")}</div>` : ""; },
@@ -3927,7 +3939,7 @@ function flipRows(sh, mutate){
 function dishSheet(id){
   const d=DISHES.find(x=>x.id===id); if(!d) return; // plat retiré (fondue, raclette, fromages en 1.32, asiatique en 1.35)
   openSheet(()=>{ const P=dishPicks(d);
-    return {title:"",body:`<div class="dish-hero"><div class="dish-e">${lu(d.ic)}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Classés selon l’accord, ton bar et tes goûts. Point vert : tu peux le faire maintenant.</div>`}; });
+    return {title:"",body:`<div class="dish-hero"><div class="dish-e">${lu(d.ic)}</div><h1>${esc(d.n)}</h1><p>${esc(d.why)}</p></div><h2 class="sh">Ce qui va bien avec</h2><div class="sp8"></div><div class="group">${P.map(x=>recRow(x.r,x.why)).join("")}</div><div class="gf">Point vert : faisable maintenant.</div>`}; });
 }
 
 // ---------- Coût par verre ----------
@@ -4412,7 +4424,7 @@ function worldView(){
   const pins=CITIES.map((c,i)=>{ const [px,py]=cityXY(c[1],c[2]), ids=c[3].filter(id=>RMAP[id]), n=ids.length, made=ids.filter(id=>madeCount(id)).length, ok=ids.filter(id=>status(RMAP[id]).ok).length;
     return `<g class="pin ${made?"made":""} ${drop?"drop":""}" data-a="city" data-i="${i}" style="animation-delay:${(i%12)*30}ms"><circle class="pin-pulse" cx="${px}" cy="${py}" r="${(r*(1.6+Math.min(n,12)*0.14)).toFixed(2)}"/><circle class="pin-dot" cx="${px}" cy="${py}" r="${(r*(0.9+Math.min(n,12)*0.07)).toFixed(2)}"/>${WORLD_R!=="monde"?(()=>{ const pos=LABPOS[c[0]]||"r", fs=r*1.75; const [tx,ty,anc]= pos==="l"?[px-r*1.6,py+r*0.5,"end"]: pos==="u"?[px,py-r*1.6,"middle"]: pos==="d"?[px,py+r*2.6,"middle"]:[px+r*1.6,py+r*0.5,"start"]; return `<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" text-anchor="${anc}" font-size="${fs.toFixed(2)}" class="pin-t">${esc(c[0])}</text>`; })():""}${ok?`<circle cx="${px+r*0.9}" cy="${py-r*0.9}" r="${(r*0.45).toFixed(2)}" fill="var(--green)"/>`:""}</g>`; }).join("");
   const done=new Set(distinct().map(id=>CITIES.findIndex(c=>c[3].includes(id))).filter(i=>i>=0)).size;
-  return `<div class="sh-sub" style="margin-top:6px">Touche la carte pour l’ouvrir en grand, te balader et zoomer. Point vert : faisable avec ton bar.</div>
+  return `<div class="sh-sub" style="margin-top:6px">Touche la carte pour l’agrandir. Point vert : faisable avec ton bar.</div>
   <div class="chips" style="margin-bottom:8px">${Object.entries(REGIONS).map(([k,v])=>`<button class="chip ${WORLD_R===k?"on":""}" data-a="region" data-r="${k}">${v[0]}</button>`).join("")}</div>
   <div class="world ${WORLD_R==="monde"?"":"zoom"}" data-a="mapfs"><button class="world-open" data-a="mapfs" aria-label="Ouvrir la carte">${IC.map}Ouvrir la carte</button><svg id="worldsvg" viewBox="${vb}" preserveAspectRatio="xMidYMid meet"><rect x="-20" y="-20" width="400" height="200" class="sea"/><g class="grat">${[...Array(13)].map((_,k)=>`<path d="M${k*30} 0V180"/>`).join("")}${[...Array(7)].map((_,k)=>`<path d="M0 ${k*30}H360"/>`).join("")}</g><path class="land" d="${WORLD_PATH}"/>${pins}</svg></div>
   <div class="gf">Tu as goûté des cocktails de ${done} ville${done>1?"s":""} sur ${CITIES.length}.</div>`;
@@ -4445,7 +4457,7 @@ function treeView(){
   return `<div class="chips lin-chips" style="flex-wrap:nowrap">${LINEAGES.map((l,i)=>`<button class="chip ${i===TREE_I?"on":""}" data-a="lineage" data-i="${i}">${esc(l.n)}</button>`).join("")}</div>
   <div class="card lin-card"><b>${esc(L.n)}</b><span>${esc(L.d)}</span></div>
   <ul class="ttree">${node(L.t,0,true)}</ul>
-  <div class="gf">Chaque cocktail descend de celui du dessus. Touche-en un pour ouvrir sa fiche. Contour doré : déjà préparé ; point vert : faisable.</div>`;
+  <div class="gf">Contour doré : déjà préparé. Point vert : faisable.</div>`;
 }
 // ---------- Radar inversé ----------
 let RAD=null;
@@ -4463,7 +4475,7 @@ function radarEditor(){
 function radarResults(){ return radarMatches().map(([r,m])=>recRow(r,m+" % proche de ton goût")).join(""); }
 function radarView(){
   const P=[["Amer",[0.2,0.2,0.85,0.6,0.35,0.45,0.35,0.35]],["Frais",[0.35,0.7,0.1,0.3,0.55,0.6,0.15,0.1]],["Doux",[0.8,0.35,0.1,0.3,0.7,0.2,0.2,0.2]],["Fort",[0.3,0.1,0.35,0.95,0.2,0.3,0.4,0.7]],["Épicé",[0.4,0.4,0.3,0.55,0.3,0.25,0.9,0.45]],["Boisé",[0.3,0.15,0.3,0.8,0.25,0.2,0.4,0.9]]];
-  return `<div class="sh-sub" style="margin-top:6px">Dessine le goût que tu veux : fais glisser les points, et les cocktails qui y correspondent apparaissent.</div><div class="chips" style="margin-bottom:6px"><button class="chip" data-a="radmine">Mon profil</button>${P.map(([n,v])=>`<button class="chip" data-a="radpreset" data-v="${v.join(",")}">${n}</button>`).join("")}</div>
+  return `<div class="sh-sub" style="margin-top:6px">Fais glisser les points : les cocktails suivent le goût dessiné.</div><div class="chips" style="margin-bottom:6px"><button class="chip" data-a="radmine">Mon profil</button>${P.map(([n,v])=>`<button class="chip" data-a="radpreset" data-v="${v.join(",")}">${n}</button>`).join("")}</div>
   <div class="card rad-card">${radarEditor()}</div><div class="list-h"><b>Les plus proches</b><span></span></div><div class="group" id="radres">${radarResults()}</div>`;
 }
 let RADDRAG=null, RADT=null;
@@ -4534,7 +4546,8 @@ Object.assign(TRO_GLYPH,{chal1:"target",chalweek:"cal",chalhard:"star",chal10:"c
 // insertion dans le labo et dans la fenêtre de service
 const _vCompose=vCompose;
 vCompose=function(){ let h=_vCompose(); const M=mixState(); const A=M.items.length?analyze():null, SC=A?labScore(A):null;
-  h=h.replace('<div class="sp16"></div>',`<div class="sp8"></div>${chalCards()}<div class="sp16"></div>`);
+  // 1.38 : les défis passent sous l'atelier (le labo s'ouvre sur le verre, pas sur un carrousel)
+  h=h+chalCards();
   const ban=chalBanner(A,SC); if(ban) h=h.replace('<h2 class="sh lab-h"><span class="lab-n">1</span>',ban+'<h2 class="sh lab-h"><span class="lab-n">1</span>');
   return h; };
 const _openServe=openServe;
@@ -4661,7 +4674,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.37";
+const APP_VERSION="1.38";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -4986,7 +4999,7 @@ function lowView(ids){
   let o="";
   [0,1,2].forEach(lv=>{ const G=L.filter(id=>S.stock[id]===lv); if(!G.length) return;
     o+=`<div class="list-h"><b>${LV[lv]}</b><span>${G.length}</span></div><div class="group">${G.map(id=>`<div class="row low-row"><button class="low-b" data-a="ing" data-id="${id}"><span class="low-svg">${bottleSVG(id,lv)}</span><span class="grow"><b>${esc(ING[id].n)}</b><span>${(()=>{ const n=RECS.filter(r=>r.ing.some(i=>i.id===id&&i.r!=="opt")).length; return n+" recette"+(n>1?"s":"")+" l’utilisent"; })()}</span></span></button>${lv===0?`<button class="btn small" data-a="refill" data-id="${id}">Racheté</button>`:`<span class="low-l l${lv}">${["","¼","½"][lv]}</span>`}</div>`).join("")}</div>`; });
-  return o+`<div class="gf">Les bouteilles au-dessus de la moitié ne sont pas affichées ici.</div>`;
+  return o+`<div class="gf">Les bouteilles à moitié pleines ou moins.</div>`;
 }
 
 // ---------- 8. Environnement selon l'heure locale de l'appareil ----------
@@ -5243,7 +5256,7 @@ function shelfView(ids){
     o+=`<div class="b2-shelf" id="b2-sg-${sg}"><div class="b2-lab">${esc(n)}<i>${L.length}</i></div><div class="b2-row">${L.map(id=>{ const tr=tracked(id), v=S.stock[id], lv=tr?v:(v===1?4:0), idx=k++;
       const tag= tr? `<span class="b2-l l${lv}">${LV[lv]}</span>` : `<span class="b2-l ${v===1?"l4":"l0"}">${v===1?"En stock":"À racheter"}</span>`;
       return `<button class="b2-b ${lv===0?"vide":""}" data-a="shelfpick" data-id="${id}" style="--i:${idx};--d:${(idx%9)*0.7}s"><span class="b2-svg">${bottleSVG(id,lv,false,FX("live")?((idx%9)*0.8).toFixed(1):0)}</span><span class="b2-tag"><span class="b2-n">${esc(shortN(id))}</span>${tag}</span></button>`; }).join("")}</div><div class="b2-board"><i></i></div></div>`; });
-  return o+`</div><div class="gf" style="margin-top:10px">Touche une bouteille pour changer son niveau, son prix ou voir ce qu’elle permet de faire.</div>`;
+  return o+`</div>`;
 }
 Object.assign(ACT,{ shelfjump:(d)=>{ const el=document.getElementById("b2-sg-"+d.sg); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); } });
 
@@ -5344,11 +5357,8 @@ Object.assign(ACT,{ alltro:()=>allTrophiesSheet() });
     const fold=(t,k)=>{ const p=sec[t]; if(!p) return; const a=p.indexOf('<div class="group">'); if(a<0) return; const inner=p.slice(a+19,p.lastIndexOf("</div>"));
       sec[t]=p.slice(0,a)+`<div class="group">${foldRows(k,splitRows(inner),3)}</div>`; };
     fold("Tes mieux notés","prof-best"); fold("Derniers verres","prof-last");
-    // ce qui guide les suggestions : la phrase et la barre, le détail sur demande
-    if(sec["Ce qui guide tes suggestions"]&&!MORE_OPEN.has("guide")) sec["Ce qui guide tes suggestions"]=sec["Ce qui guide tes suggestions"]
-      .replace(/(<div class="gd-bar">[\s\S]*?<\/div>)/,`$1<div class="gd-more" hidden>`).replace(/<\/div>\s*$/,`</div>${moreBtn("guide",0,"Voir le détail")}</div>`);
     sec["Trophées"]=trophySummary();
-    const order=["Ton profil de goût","Ton prochain coup de cœur","Trophées","Tes mieux notés","Derniers verres","Familles explorées","Tes spiritueux","Ce qui guide tes suggestions"];
+    const order=["Ton profil de goût","Ton prochain coup de cœur","Trophées","Tes mieux notés","Derniers verres","Familles explorées","Tes spiritueux"];
     const rest=Object.keys(sec).filter(k=>!order.includes(k));
     return head+order.concat(rest).map(k=>sec[k]||"").join("")+tail;
   };
@@ -5416,17 +5426,17 @@ Object.assign(ACT,{
 function subSheet(title,body,foot){ openSheet(()=>({title,left:`<button class="link back-link" data-a="closesheet">${IC.chev.replace('class="chev"','class="chev back"')}Paramètres</button>`,right:"",body:body()}),{child:true}); }
 const SET_GROUPS={
   look:["Apparence","theme",()=>{ const s=S.settings, MN={auto:"Auto",matin:"Matin",aprem:"Après-midi",apero:"Apéro",soir:"Soir",nuit:"Nuit"};
-    return `<div class="group">${srow("theme","Thème","")}<div class="row set-sub">${sseg("theme",s.theme||"auto",[["auto","Système"],["light","Clair"],["dark","Sombre"]],"settheme")}</div>${srow("txt","Taille du texte","")}<div class="row set-sub">${sseg("txt",String(s.txt||"auto"),[["auto","Système"],["1","Standard"],["1.15","Grand"],["1.3","Très grand"]],"settxt")}</div>${srow("sky","Ambiance selon l’heure",sw(s.ambiance!==false,"setamb","Ambiance selon l’heure"))}${s.ambiance!==false?srow("clock","Aperçu d’un moment",`<span class="val">${(s.moment||"auto")==="auto"?"Auto":MN[s.moment]}</span>`,"momentsheet"):""}</div><div class="gf">Le ciel de l’accueil suit l’heure de ton téléphone : matin, après-midi, heure de l’apéro, soirée et nuit. Un aperçu choisi ici ne dure que jusqu’à la prochaine ouverture de l’app.</div>`; },
+    return `<div class="group">${srow("theme","Thème","")}<div class="row set-sub">${sseg("theme",s.theme||"auto",[["auto","Système"],["light","Clair"],["dark","Sombre"]],"settheme")}</div>${srow("txt","Taille du texte","")}<div class="row set-sub">${sseg("txt",String(s.txt||"auto"),[["auto","Système"],["1","Standard"],["1.15","Grand"],["1.3","Très grand"]],"settxt")}</div>${srow("sky","Ambiance selon l’heure",sw(s.ambiance!==false,"setamb","Ambiance selon l’heure"))}${s.ambiance!==false?srow("clock","Aperçu d’un moment",`<span class="val">${(s.moment||"auto")==="auto"?"Auto":MN[s.moment]}</span>`,"momentsheet"):""}</div><div class="gf">Le ciel de l’accueil suit l’heure de ton téléphone. Un aperçu dure jusqu’à la prochaine ouverture.</div>`; },
     ()=>({auto:"Système",light:"Clair",dark:"Sombre"})[S.settings.theme||"auto"]],
   snd:["Sons et animations","snd",()=>{ const s=S.settings, PN={complet:"Complet",standard:"Standard",reduit:"Réduit",perso:"Personnalisé"};
     return `<div class="gh">Sons</div><div class="group">${srow("snd","Sons",sw(s.sound!==false,"setsound","Sons"))}${s.sound!==false?`${srow("snd","Volume","")}<div class="row set-sub">${sseg("vol",String(s.vol??0.7),[["0.35","Doux"],["0.7","Normal"],["1","Fort"]],"sndvol")}</div><button class="row tap" data-a="soundtest" style="--inset:58px">${sic("snd")}<div class="grow">Écouter un exemple</div></button>`:""}</div><div class="gf">Glaçons, shaker, versement, trophées… Si ton iPhone est en mode silencieux, les sons restent coupés.</div>
     <div class="gh">Animations</div><div class="group">${srow("anim","Niveau","")}<div class="row set-sub">${sseg("fxp",fxPreset(),[["complet","Complet"],["standard","Standard"],["reduit","Réduit"]],"setfxp")}</div>${srow("anim","Réglages détaillés",`<span class="val">${PN[fxPreset()]}</span>`,"fxsheet")}</div>${REDUCED.matches?`<div class="gf">Ton iPhone demande de réduire les animations : Zeste s’y conforme.</div>`:""}`; },
     ()=>S.settings.sound===false?"Sons coupés":({complet:"Complet",standard:"Standard",reduit:"Réduit",perso:"Personnalisé"})[fxPreset()]],
   reco:["Suggestions","reco",()=>{ const s=S.settings;
-    return `<div class="group">${srow("reco","Style","")}<div class="row set-sub">${sseg("explore",String(s.explore),[["0","Valeurs sûres"],["1","Équilibré"],["2","Aventurier"]],"setexplore")}</div>${srow("ctx","Selon le moment",sw(s.ctx!==false,"setctx","Suggestions selon le moment"))}${srow("na","Inclure le sans alcool",sw(!!s.na,"setna","Inclure le sans alcool"))}${srow("star","Rappels « Alors, ce … ? »",sw(s.remind!==false,"setremind","Rappels de note"))}${srow("quiz","Inclure les créations à tester",sw(s.untested!==false,"setuntested","Inclure les créations à tester"))}</div><div class="gf">${["Valeurs sûres : surtout des cocktails proches de ce que tu aimes déjà.","Équilibré : tes favoris, avec une découverte de temps en temps.","Aventurier : davantage de découvertes hors de tes habitudes."][s.explore]} « Selon le moment » favorise l’apéro, les cocktails chauds en hiver ou les recettes rapides en semaine.</div><div class="sp16"></div><div class="group">${srow("brain","Réinitialiser l’apprentissage","","resetlearn")}</div>`; },
+    return `<div class="group">${srow("reco","Style","")}<div class="row set-sub">${sseg("explore",String(s.explore),[["0","Valeurs sûres"],["1","Équilibré"],["2","Aventurier"]],"setexplore")}</div>${srow("ctx","Selon le moment",sw(s.ctx!==false,"setctx","Suggestions selon le moment"))}${srow("na","Inclure le sans alcool",sw(!!s.na,"setna","Inclure le sans alcool"))}${srow("star","Rappels « Alors, ce … ? »",sw(s.remind!==false,"setremind","Rappels de note"))}${srow("quiz","Inclure les créations à tester",sw(s.untested!==false,"setuntested","Inclure les créations à tester"))}</div><div class="gf">${["Valeurs sûres : surtout des cocktails proches de ce que tu aimes déjà.","Équilibré : tes favoris, avec une découverte de temps en temps.","Aventurier : davantage de découvertes hors de tes habitudes."][s.explore]}</div><div class="sp16"></div><div class="group">${srow("brain","Réinitialiser l’apprentissage","","resetlearn")}</div>`; },
     ()=>["Valeurs sûres","Équilibré","Aventurier"][S.settings.explore]||""],
   bar:["Bar et recettes","unit",()=>{ const s=S.settings;
-    return `<div class="group">${srow("unit","Unités","")}<div class="row set-sub">${sseg("unit",s.unit,[["cl","Centilitres"],["ml","Millilitres"]],"unit2")}</div>${srow("money","Devise","")}<div class="row set-sub">${sseg("cur",s.cur||"CHF",[["CHF","Franc suisse"],["EUR","Euro"]],"setcur")}</div>${srow("unit","Verres par défaut","")}<div class="row set-sub">${sseg("glasses",String(s.glasses||1),[["1","1 verre"],["2","2 verres"],["4","4 verres"]],"setglasses")}</div>${srow("clock","Écran allumé en préparation",sw(s.wake!==false,"setwake","Écran allumé en préparation"))}${srow("basics","Contenu additionnel",`<span class="val">${BASICS.filter(has).length} basiques</span>`,"basics")}</div>`; },
+    return `<div class="group">${srow("unit","Unités","")}<div class="row set-sub">${sseg("unit",s.unit,[["cl","Centilitres"],["ml","Millilitres"]],"unit2")}</div>${srow("money","Devise","")}<div class="row set-sub">${sseg("cur",s.cur||"CHF",[["CHF","Franc suisse"],["EUR","Euro"]],"setcur")}</div>${srow("unit","Verres par défaut","")}<div class="row set-sub">${sseg("glasses",String(s.glasses||1),[["1","1 verre"],["2","2 verres"],["4","4 verres"]],"setglasses")}</div>${srow("clock","Écran allumé en préparation",sw(s.wake!==false,"setwake","Écran allumé en préparation"))}</div>`; },
     ()=>S.settings.unit==="ml"?"Millilitres":"Centilitres"],
   data:["Données","up",()=>`<div class="group">${srow("up","Exporter une sauvegarde","","export")}${srow("down","Importer une sauvegarde","","import")}</div><div class="gf">Ton bar, tes notes et ton historique se synchronisent avec ton compte quand c’est possible, et restent aussi sur cet appareil.</div><div class="sp16"></div><div class="group">${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div>`,
     ()=>""]
@@ -5440,6 +5450,84 @@ Object.assign(ACT,{ setgroup:(d)=>{ const g=SET_GROUPS[d.g]; if(g) subSheet(g[0]
       return o; };
     paintSheet(sh); };
 }
+// ================= ZESTE 1.38 : chaque chose à sa place =================
+// Un rôle par onglet : Aujourd'hui = que boire maintenant ; Cocktails = chercher ; Bar = ce que j'ai ;
+// Labo = créer et fabriquer ; Profil = moi (goûts, historique, trophées, récaps). Une information à un seul endroit.
+
+// ---------- Aujourd'hui : plus de récap ni d'achat (ils vivent dans le Profil et le Bar) ----------
+{ const _sg=HOME_SEC.suggest; HOME_SEC.suggest=(ctx)=>{ const h=_sg(ctx), i=h.indexOf('<div class="rw-in-foryou">'); return i<0?h:h.slice(0,i); }; }
+HOME_SEC.duo=({list})=>`<div class="duo one"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="grow"><div class="dt">Surprends-moi</div><div class="ds">${list.length?"Un cocktail au hasard parmi tes idées":"Un cocktail au hasard dans toute la carte"}</div></div>${IC.chev}</button></div>`;
+HOME_N.duo="Surprends-moi";
+// le titre dit déjà « Ce soir » : la carte ne répète pas « Pour ce soir »
+{ const _vt=vToday; vToday=function(){ const h=_vt(); const t=(h.match(/<h1 class="lt">([^<]*)<\/h1>/)||[])[1], k=(h.match(/<div class="kick">([^<]*)<\/div>/)||[])[1];
+    return t&&k&&norm(k).includes(norm(t))? h.replace(`<div class="kick">${k}</div>`,"") : h; }; }
+
+// ---------- Cocktails : « Sans alcool » est un filtre (plus de « 0 % » à part), une famille n'apparaît plus deux fois ----------
+const FAM_AS_TYPE={bulles:"spritz",chaud:"chaud",shot:"shot",na:"sans"};
+function naToType(){ if(CF.main==="na"){ CF.main=""; CF.type=(CF.type||[]).filter(x=>x!=="sans").concat(["sans"]); } }
+{ const _cr=cocktailsResults;
+  cocktailsResults=function(){ naToType(); let h=_cr();
+    h=h.replace(/<button class="[^"]*" data-a="cmain" data-v="na">0 %<\/button>/,"").replace('class="seg small4"','class="seg small3"');
+    if(CF.type&&CF.type.length===1&&CF.type[0]==="sans"&&!/na-banner/.test(h)) h=h.replace(/(<\/div>)(<div class="list-h">|<div class="group">|<div class="empty">)/,`$1<div class="na-banner"><b>Zéro degré, plein de goût</b><span>Des recettes équilibrées comme de vrais cocktails.</span></div>$2`);
+    return h; };
+}
+Object.assign(ACT,{
+  nafilter:()=>{ CF.main=""; CF.type=["sans"]; CF.fam=[]; CF.q=""; CF.mode="list"; dirty.cocktails=1; switchTab("cocktails"); },
+  famgo:(d)=>{ const t=FAM_AS_TYPE[d.f]; CF.fam=t?[]:[d.f]; CF.type=t?[t]:[]; CF.main=""; CF.q=""; CF.mode="list"; dirty.cocktails=1; switchTab("cocktails"); toast("Famille : "+FAMILIES[d.f]); }
+});
+{ const _fs=filterSheet;
+  filterSheet=function(){ CF.fam=CF.fam.filter(f=>{ const t=FAM_AS_TYPE[f]; if(t&&!CF.type.includes(t)) CF.type.push(t); return !t; }); _fs();
+    const sh=SHEETS[SHEETS.length-1]; if(!sh) return; const r0=sh.render;
+    sh.render=()=>{ const o=r0(); o.body=o.body.replace(/<button class="chip[^"]*" data-a="tf" data-g="fam" data-k="(bulles|chaud|shot|na)">[^<]*<\/button>/g,"").replace('<div class="gh">Type de cocktail</div>','<div class="gh">Style</div>'); return o; };
+    paintSheet(sh); };
+}
+
+// ---------- Bar : deux façons de voir le bar (Liste, Étagère) ; « Presque vides » devient une ligne ----------
+const barIds=()=>Object.keys(S.stock).filter(id=>ING[id]&&!ING[id].basic);
+const lowCount=()=>barIds().filter(id=>tracked(id)&&S.stock[id]>0&&S.stock[id]<=2).length;
+{ const _vb=vBar;
+  vBar=function(){ if(S.settings.barView==="low") S.settings.barView="list"; let h=_vb();
+    h=h.replace(/<button class="[^"]*" data-a="barview" data-v="low">Presque vides<\/button>/,"")
+       .replace(/<div class="gf" style="margin-top:10px">Astuce : [^<]*<\/div>/,"");
+    const n=lowCount();
+    if(n&&(S.settings.barView||"list")==="list") h=h.replace(/(<div class="seg" data-k="barview"[^>]*>[\s\S]*?<\/div>)/,`$1<div class="group low-link"><button class="row tap" data-a="lowsheet" style="--inset:20px"><div class="grow">Presque vides</div><span class="val">${n}</span>${IC.chev}</button></div><div class="sp8"></div>`);
+    return h; };
+}
+Object.assign(ACT,{ lowsheet:()=>openSheet(()=>({title:"Presque vides",body:lowView(barIds())})) });
+
+// ---------- Labo : Composer | Fait maison (préparations en cours + recettes et techniques) ----------
+function homemadeView(){
+  const P=(S.preps||[]).slice().sort((a,b)=>daysLeft(a)-daysLeft(b)), withP=TECH.filter(t=>t.p&&t.p.length), gest=TECH.filter(t=>!t.p||!t.p.length);
+  const row=t=>`<button class="row tap" data-a="tech" data-id="${t.id}"><div class="grow"><div class="t">${esc(t.n)}</div><div class="s">${esc(t.t)}, ${esc(t.lvl.toLowerCase())}</div></div>${IC.chev}</button>`;
+  let o="";
+  if(P.length) o+=`<h2 class="sh">En cours</h2><div class="group">${P.map(prepRow).join("")}</div><div class="gf">Durées indicatives au frigo. Au moindre doute (trouble, odeur, moisissure), jette.</div>`;
+  o+=`<h2 class="sh">À faire soi-même</h2>${P.length?"":`<div class="sh-sub">Lance une recette : l’app te prévient avant que ça tourne.</div>`}<div class="group">${withP.map(row).join("")}</div>`;
+  if(gest.length) o+=`<h2 class="sh">Gestes de bar</h2><div class="group">${gest.map(row).join("")}</div>`;
+  return o+`<div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="newprep">${IC.plus}Noter une autre préparation</button></div>`;
+}
+vLabo=function(){ if(LT==="tech"||LT==="prep") LT="home";
+  let o=nav("Labo")+`<div class="content"><h1 class="lt">Labo</h1><div class="seg">${[["compose","Composer"],["home","Fait maison"]].map(([k,n])=>`<button class="${LT===k?"on":""}" data-a="lt" data-t="${k}">${n}</button>`).join("")}</div>`;
+  o+= LT==="home"? homemadeView() : vCompose();
+  return o+`<div class="sp24"></div></div>`; };
+
+// ---------- Profil : les récaps (mois et année) réunis au même endroit ----------
+function recapCards(){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth(), AM=availableMonths(), cur=AM.find(x=>x.y===y&&x.m===m), pY=m?y:y-1, pM=m?m-1:11, prev=AM.find(x=>x.y===pY&&x.m===pM), cards=[];
+  const card=(a,k,t,s,extra="")=>`<button class="rw-card month" data-a="${a}" ${extra}><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}${k}</div><div class="rw-t">${t}</div><div class="rw-s">${s}</div></div><div class="rw-play">${IC.play}</div></button>`;
+  if(cur&&cur.n>=3) cards.push(card("rwmonth","Ton mois en cours",`${MOIS[m].replace(/^./,c=>c.toUpperCase())}, jusqu’ici`,`${cur.n} cocktails depuis le 1er ${MOIS[m]}.`,`data-y="${y}" data-m="${m}"`));
+  else if(prev) cards.push(card("rwmonth","Récap du mois",`Ton mois de ${MOIS[pM]}`,`${prev.n} cocktail${prev.n>1?"s":""} préparé${prev.n>1?"s":""}.`,`data-y="${pY}" data-m="${pM}"`));
+  if(rewindEligible()) cards.push(`<button class="rw-card" data-a="rewind"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">Revis ton année et partage ta carte.</div></div><div class="rw-play">${IC.play}</div></button>`);
+  return cards.length? `<h2 class="sh">Tes récaps</h2>${cards.join('<div class="sp8"></div>')}` : "";
+}
+{ const _vp=vProfil;
+  vProfil=function(){ let h=_vp();
+    h=h.replace(/<div class="sp16"><\/div><button class="rw-card" data-a="rewind"[\s\S]*?<\/button>/,"");
+    const rc=recapCards(), at=h.indexOf('<div class="sp24"></div><div class="group"><button class="row tap" data-a="settings"');
+    return rc&&at>=0? h.slice(0,at)+rc+h.slice(at) : h; };
+}
+
+// ---------- Paramètres › Suggestions : l'explication rejoint les réglages qu'elle éclaire ----------
+{ const g=SET_GROUPS.reco, body=g[2]; g[2]=()=>body()+(typeof guideHTML==="function"?guideHTML():""); }
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],

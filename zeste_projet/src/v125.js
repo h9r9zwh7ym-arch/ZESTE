@@ -11,7 +11,7 @@ function shelfView(ids){
     o+=`<div class="b2-shelf" id="b2-sg-${sg}"><div class="b2-lab">${esc(n)}<i>${L.length}</i></div><div class="b2-row">${L.map(id=>{ const tr=tracked(id), v=S.stock[id], lv=tr?v:(v===1?4:0), idx=k++;
       const tag= tr? `<span class="b2-l l${lv}">${LV[lv]}</span>` : `<span class="b2-l ${v===1?"l4":"l0"}">${v===1?"En stock":"À racheter"}</span>`;
       return `<button class="b2-b ${lv===0?"vide":""}" data-a="shelfpick" data-id="${id}" style="--i:${idx};--d:${(idx%9)*0.7}s"><span class="b2-svg">${bottleSVG(id,lv,false,FX("live")?((idx%9)*0.8).toFixed(1):0)}</span><span class="b2-tag"><span class="b2-n">${esc(shortN(id))}</span>${tag}</span></button>`; }).join("")}</div><div class="b2-board"><i></i></div></div>`; });
-  return o+`</div><div class="gf" style="margin-top:10px">Touche une bouteille pour changer son niveau, son prix ou voir ce qu’elle permet de faire.</div>`;
+  return o+`</div>`;
 }
 Object.assign(ACT,{ shelfjump:(d)=>{ const el=document.getElementById("b2-sg-"+d.sg); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); } });
 

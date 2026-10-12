@@ -52,7 +52,7 @@ function adjCard(r){
   const rows=[hasS&&["s","Sucre","Moins sucré","Plus sucré"],hasA&&["a","Acidité","Moins acide","Plus acide"],hasF&&["f","Force","Plus léger","Plus fort"]].filter(Boolean);
   if(!rows.length) return "";
   const pk=POP&&POP.k&&POP.k.startsWith("adj"+r.id)&&Date.now()-POP.t<700?POP.k.slice(-1):"";
-  return `<h2 class="sh">Ta version${getAdj(r.id)?`<button class="more" data-a="adjreset" data-id="${r.id}">Réinitialiser</button>`:""}</h2><div class="sh-sub">Ajuste à ton goût : les quantités suivent, et l’app s’en souvient.</div><div class="card adj">${rows.map(([k,n,lo,hi])=>{ const v=a[k]||0; return `<div class="adj-row"><div class="adj-l"><b>${n}</b><span>${v<0?lo:v>0?hi:"Comme l’original"}</span></div><div class="adj-dots">${[-2,-1,0,1,2].map(x=>`<button class="${x===v?"on":""} ${x===0?"zero":""} ${pk===k&&x===v?"pop":""}" data-a="adj" data-id="${r.id}" data-k="${k}" data-v="${x}" aria-label="${n} ${x}"><i></i></button>`).join("")}</div></div>`; }).join("")}</div>`;
+  return `<h2 class="sh">Ta version${getAdj(r.id)?`<button class="more" data-a="adjreset" data-id="${r.id}">Réinitialiser</button>`:""}</h2><div class="sh-sub">Les quantités suivent, et l’app s’en souvient.</div><div class="card adj">${rows.map(([k,n,lo,hi])=>{ const v=a[k]||0; return `<div class="adj-row"><div class="adj-l"><b>${n}</b><span>${v<0?lo:v>0?hi:"Comme l’original"}</span></div><div class="adj-dots">${[-2,-1,0,1,2].map(x=>`<button class="${x===v?"on":""} ${x===0?"zero":""} ${pk===k&&x===v?"pop":""}" data-a="adj" data-id="${r.id}" data-k="${k}" data-v="${x}" aria-label="${n} ${x}"><i></i></button>`).join("")}</div></div>`; }).join("")}</div>`;
 }
 function termify(html){ let out=html; TERMS.forEach(([k,re])=>{ let done=false; out=out.replace(new RegExp(re.source,re.flags.replace("g","")),m=>{ if(done) return m; done=true; return `<span class="term" role="button" tabindex="0" data-a="term" data-k="${k}">${m}</span>`; }); }); return out; }
 function pendingRatings(){ const now=Date.now(), sn=S.snooze||{}, seen=new Set(), out=[];
@@ -72,7 +72,7 @@ function maskName(h,n){
   return out.replace(/(^|[.!?]\s+)ce cocktail/g,(m,a)=>a+"Ce cocktail");
 }
 function discoveryCard(){ const L=RECS.filter(r=>r.h&&!madeCount(r.id)); if(!L.length) return ""; const r=L[Math.floor(hrand("d"+daySeed())*L.length)];
-  return `<h2 class="sh">Le saviez-vous ?</h2><div class="sh-sub">Une histoire de cocktail par jour</div><div class="disc" data-a="flip"><div class="disc-in"><div class="disc-f"><div class="disc-q">“</div><p>${esc(maskName(r.h,r.n))}</p><div class="disc-hint">${IC.sparkle}Touche pour découvrir lequel</div></div><div class="disc-b" style="--c:${r.col}"><div class="disc-g">${glassSVG(r)}</div><div class="disc-n">${esc(r.n)}</div><div class="disc-s">${status(r).ok?"Tu peux le faire maintenant":"Il te manque "+esc(status(r).miss.map(x=>lc(shortN(x))).join(", "))}</div><button class="btn small" data-a="rec" data-id="${r.id}">Voir la recette</button></div></div></div>`; }
+  return `<h2 class="sh">Le saviez-vous ?</h2><div class="disc" data-a="flip"><div class="disc-in"><div class="disc-f"><div class="disc-q">“</div><p>${esc(maskName(r.h,r.n))}</p><div class="disc-hint">${IC.sparkle}Touche pour découvrir lequel</div></div><div class="disc-b" style="--c:${r.col}"><div class="disc-g">${glassSVG(r)}</div><div class="disc-n">${esc(r.n)}</div><div class="disc-s">${status(r).ok?"Tu peux le faire maintenant":"Il te manque "+esc(status(r).miss.map(x=>lc(shortN(x))).join(", "))}</div><button class="btn small" data-a="rec" data-id="${r.id}">Voir la recette</button></div></div></div>`; }
 function tileLite(r){ return `<button class="tile lite" data-a="rec" data-id="${r.id}"><div class="tg" style="background:radial-gradient(circle at 50% 60%, ${r.col}40, transparent 70%)">${glassThumb(r)}</div><div class="tn">${esc(r.n)}</div><div class="ts">${esc(ingList(r))}</div></button>`; }
 function tile(r, sub){
   return `<button class="tile" data-a="rec" data-id="${r.id}">${hasTaste()&&!S.ratings[r.id]&&matchPct(r)>=65?`<span class="tmatch">${matchPct(r)} %</span>`:""}<div class="tg" style="background:radial-gradient(circle at 50% 60%, ${r.col}55, transparent 70%)">${glassSVG(r)}</div><div class="tn">${esc(r.n)}</div><div class="ts">${esc(sub||ingList(r))}</div></button>`;
@@ -217,7 +217,7 @@ function vBar(){
   if(out.length) o+=`<h2 class="sh">À racheter</h2><div class="sh-sub">Bouteilles vides</div><div class="group">${out.map(id=>`<div class="row" style="--inset:58px"><div class="thumb" style="width:30px;height:44px">${bottleSVG(id,0)}</div><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(ING[id].n)}</div><div class="s">${usedIn(id)} recettes l’utilisent</div></button><button class="btn small sec" data-a="refill" data-id="${id}">Racheté</button></div>`).join("")}</div>`;
   SEGS.forEach(([sg,sn])=>{ if(BF&&BF!==sg) return;
     if(sg==="add"){ const on=BASICS.filter(id=>ING[id]&&!ING[id].al&&has(id)), extra=ids.filter(id=>segOf(id)==="add");
-      o+=`<h2 class="sh">${sn}</h2><div class="sh-sub">Toujours à portée de main, compté automatiquement</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:calc(16rem / 17)">${on.length} basiques</b><button class="link" data-a="basics">Modifier</button></div><div class="basics">${on.map(id=>`<span>${esc(shortN(id))}</span>`).join("")}</div></div>`;
+      o+=`<h2 class="sh">${sn}</h2><div class="sh-sub">Toujours considérés comme disponibles</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:calc(16rem / 17)">${on.length} basiques</b><button class="link" data-a="basics">Modifier</button></div><div class="basics">${on.map(id=>`<span>${esc(shortN(id))}</span>`).join("")}</div></div>`;
       if(extra.length) o+=`<div class="sp8"></div><div class="group">${extra.map(stockRow).join("")}</div>`; return; }
     const L=ids.filter(id=>segOf(id)===sg && !(tracked(id)&&S.stock[id]===0)).sort((a,b)=>ING[a].n.localeCompare(ING[b].n,"fr")); if(!L.length) return;
     o+=`<h2 class="sh"><span style="display:flex;align-items:center;gap:10px"><i style="width:10px;height:10px;border-radius:5px;background:${SEGCOL[sg]};display:block"></i>${sn}</span><span class="more" style="color:var(--label2)">${L.length}</span></h2><div class="sp8"></div><div class="group">${L.map(stockRow).join("")}</div>`;
@@ -366,25 +366,13 @@ function vProfil(){
   else o+=`<div class="card muted" style="font-size:calc(15rem / 17)">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût. Plus tu notes, plus les suggestions deviennent justes.</div>`;
   if(hasTaste()){ const nx=RECS.filter(r=>!madeCount(r.id)&&!S.ratings[r.id]&&!r.na).map(r=>[r,predict(r)-0.22*status(r).miss.length]).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0];
     if(nx){ const ok=status(nx).ok; o+=`<h2 class="sh">Ton prochain coup de cœur</h2><div class="sh-sub">Jamais préparé, et c’est notre meilleur pari</div><button class="card buy" data-a="rec" data-id="${nx.id}" style="width:calc(100% - 32px);text-align:left"><div class="bb" style="width:56px;height:70px">${glassSVG(nx)}</div><div class="grow"><div class="bt" style="font-family:var(--serif)">${esc(nx.n)}</div><div class="bs">${matchPct(nx)} % pour toi. ${ok?"Tu peux le faire maintenant.":"Il te manque "+esc(status(nx).miss.map(x=>lc(shortN(x))).join(", "))+"."}</div></div>${IC.chev}</button>`; } }
-  if(getModel().n>=2){ const mw=Object.assign({},mWeights()); let tot=mw.knn+mw.ing+mw.fam+mw.dims;
-    // la régression (70 % de la prédiction) se répartit entre ton palais (profil) et tes styles (familles, alcools), selon ce qu'elle a appris
-    const RW=ridgeOf(getModel()); if(RW){ const e=RW.W.map(w=>w*w), ep=e.slice(0,9).reduce((a,b)=>a+b,0), ec=e.slice(9).reduce((a,b)=>a+b,0), et=ep+ec||1;
-      for(const k in mw) mw[k]=0.3*mw[k]/tot; mw.dims+=0.7*ep/et; mw.fam+=0.7*ec/et; tot=1; }
-    const L=[["knn","Tes coups de cœur","des cocktails qui ressemblent à ceux que tu as bien notés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs qui reviennent dans ce que tu aimes","#FF375F"],["fam","Tes styles","les familles (sours, spritz…) et les alcools que tu préfères","#5E5CE6"],["dims","Ton palais","ton goût pour l’amer, le sucré, l’acide, le fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
-    const top=L.slice().sort((a,b)=>b[4]-a[4])[0], pl=(n,a,b)=>n+" "+(n>1?b:a);
-    const src=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"]].filter(x=>x[0]).map(([n,a,b])=>pl(n,a,b)).concat(S.quiz?["quiz de goût"]:[]);
-    o+=`<h2 class="sh">Ce qui guide tes suggestions</h2><div class="sh-sub">Zeste apprend de toi. Voici sur quoi il s’appuie le plus pour te proposer des cocktails.</div>
-    <div class="card guide"><div class="gd-top">En ce moment, surtout <b>${esc(top[1].toLowerCase())}</b> : ${esc(top[2])}${/[.…]$/.test(top[2])?"":"."}</div>
-    <div class="gd-bar">${L.map(x=>`<i style="width:${x[4]}%;background:${x[3]}"></i>`).join("")}</div>
-    ${L.sort((a,b)=>b[4]-a[4]).map(x=>`<div class="gd-row"><span class="gd-dot" style="background:${x[3]}"></span><div class="grow"><b>${esc(x[1])}</b><span>${esc(x[2].charAt(0).toUpperCase()+x[2].slice(1))}</span></div><em>${x[4]} %</em></div>`).join("")}
-    <div class="gd-src"><span>Appris grâce à</span>${src.map(x=>`<i>${esc(x)}</i>`).join("")}</div>
-    <div class="gd-foot">Chaque nouvelle note renforce ce qui avait vu juste.</div></div>`; }
+  // (1.38 : « Ce qui guide tes suggestions » est passé dans Paramètres › Suggestions, voir guideHTML)
   const byBase={}; S.hist.forEach(h=>{ const r=RMAP[h.id]; if(!r) return; const b=BASE_LABEL[baseGroup(r)]; byBase[b]=(byBase[b]||0)+1; });
   const bb=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6);
   if(bb.length){ const mx=bb[0][1]; o+=`<h2 class="sh">Tes spiritueux</h2><div class="card bars" style="padding:10px 0">${bb.map(([n,c])=>`<div class="bar-row"><div class="bl">${esc(n)}</div><div class="bt"><i style="width:${c/mx*100}%"></i></div><div class="bn">${c}</div></div>`).join("")}</div>`; }
   const fams=Object.keys(FAMILIES), done=new Set(distinct().map(id=>RMAP[id].fam));
   const dl=distinct();
-  o+=`<h2 class="sh">Familles explorées<span class="more" style="color:var(--label2)">${done.size} sur ${fams.length}</span></h2><div class="sh-sub">${done.size?"En couleur : les familles dont tu as déjà préparé un cocktail.":"Prépare un cocktail pour colorier ta première famille."} Touche une famille pour la découvrir.</div><div class="fam-bar"><i style="width:${Math.round(done.size/fams.length*100)}%"></i></div><div class="fams">${fams.map(f=>{ const n=dl.filter(id=>RMAP[id].fam===f).length; return `<button class="famc ${n?"on":""}" data-a="famgo" data-f="${f}">${n?`<span class="fc-ic">${IC.check}</span>`:`<span class="fc-ic off"></span>`}<span class="fc-t"><span class="fc-n">${esc(FAMILIES[f])}</span><em>${n?n+" recette"+(n>1?"s":"")+" préparée"+(n>1?"s":""):"À découvrir"}</em></span></button>`; }).join("")}</div>`;
+  o+=`<h2 class="sh">Familles explorées<span class="more" style="color:var(--label2)">${done.size} sur ${fams.length}</span></h2>${done.size?"":`<div class="sh-sub">Prépare un cocktail pour colorier ta première famille.</div>`}<div class="fam-bar"><i style="width:${Math.round(done.size/fams.length*100)}%"></i></div><div class="fams">${fams.map(f=>{ const n=dl.filter(id=>RMAP[id].fam===f).length; return `<button class="famc ${n?"on":""}" data-a="famgo" data-f="${f}">${n?`<span class="fc-ic">${IC.check}</span>`:`<span class="fc-ic off"></span>`}<span class="fc-t"><span class="fc-n">${esc(FAMILIES[f])}</span><em>${n?n+" recette"+(n>1?"s":"")+" préparée"+(n>1?"s":""):"À découvrir"}</em></span></button>`; }).join("")}</div>`;
   const best=rated().filter(x=>x[1]>=4).sort((a,b)=>b[1]-a[1]).slice(0,5);
   if(best.length) o+=`<h2 class="sh">Tes mieux notés</h2><div class="group">${best.map(([id])=>recRow(RMAP[id])).join("")}</div>`;
   const last=S.hist.slice(-6).reverse().filter(h=>RMAP[h.id]);
@@ -395,6 +383,23 @@ function vProfil(){
   o+=`<div class="sp24"></div><div class="group"><button class="row tap" data-a="settings" style="--inset:62px"><span class="set-ic" style="background:#8E8E93">${IC.gear}</span><div class="grow">Paramètres</div>${IC.chev}</button></div>`;
   return o+`<div class="sp24"></div></div>`;
 }
+
+// Explication des suggestions (Paramètres › Suggestions depuis 1.38)
+function guideHTML(){ let o="";
+  if(getModel().n>=2){ const mw=Object.assign({},mWeights()); let tot=mw.knn+mw.ing+mw.fam+mw.dims;
+    // la régression (70 % de la prédiction) se répartit entre ton palais (profil) et tes styles (familles, alcools), selon ce qu'elle a appris
+    const RW=ridgeOf(getModel()); if(RW){ const e=RW.W.map(w=>w*w), ep=e.slice(0,9).reduce((a,b)=>a+b,0), ec=e.slice(9).reduce((a,b)=>a+b,0), et=ep+ec||1;
+      for(const k in mw) mw[k]=0.3*mw[k]/tot; mw.dims+=0.7*ep/et; mw.fam+=0.7*ec/et; tot=1; }
+    const L=[["knn","Tes coups de cœur","des cocktails qui ressemblent à ceux que tu as bien notés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs qui reviennent dans ce que tu aimes","#FF375F"],["fam","Tes styles","les familles (sours, spritz…) et les alcools que tu préfères","#5E5CE6"],["dims","Ton palais","ton goût pour l’amer, le sucré, l’acide, le fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
+    const top=L.slice().sort((a,b)=>b[4]-a[4])[0], pl=(n,a,b)=>n+" "+(n>1?b:a);
+    const src=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"]].filter(x=>x[0]).map(([n,a,b])=>pl(n,a,b)).concat(S.quiz?["quiz de goût"]:[]);
+    o+=`<div class="gh">Ce qui guide tes suggestions</div>
+    <div class="card guide"><div class="gd-top">En ce moment, surtout <b>${esc(top[1].toLowerCase())}</b> : ${esc(top[2])}${/[.…]$/.test(top[2])?"":"."}</div>
+    <div class="gd-bar">${L.map(x=>`<i style="width:${x[4]}%;background:${x[3]}"></i>`).join("")}</div>
+    ${L.sort((a,b)=>b[4]-a[4]).map(x=>`<div class="gd-row"><span class="gd-dot" style="background:${x[3]}"></span><div class="grow"><b>${esc(x[1])}</b><span>${esc(x[2].charAt(0).toUpperCase()+x[2].slice(1))}</span></div><em>${x[4]} %</em></div>`).join("")}
+    <div class="gd-src"><span>Appris grâce à</span>${src.map(x=>`<i>${esc(x)}</i>`).join("")}</div>
+    <div class="gd-foot">Chaque nouvelle note renforce ce qui avait vu juste.</div></div>`; }
+  return o; }
 
 
 // ================= FEUILLES =================
@@ -436,9 +441,6 @@ function recSheet(id){
     b+=`<div class="facts"><div><b>${Math.round(m.abv)} %</b><span>alcool</span></div><div><b>${fmtMl(m.vol*mult)}</b><span>volume</span></div><div><b>${esc(METH[r.m])}</b><span>méthode</span></div><div><b>${esc(GNAME[r.g]||"")}</b><span>verre</span></div></div>`+costLine(items,mult,id);
     if(st.ok) b+=`<div class="status ok">${IC.checkc}<span>Tu as tout ce qu’il faut.</span></div>`;
     else b+=`<div class="status no">${IC.warn}<span>${st.subOk?"Faisable en remplaçant ":"Il te manque "}${st.miss.map(x=>`<b>${esc(lc(shortN(x)))}</b>${st.subs[x]?" par "+esc(lc(shortN(st.subs[x]))):""}`).join(", ")}.</span></div>`;
-    const rp=popOn("rate"+id);
-    b+=`<div class="card rate-box" style="padding:6px 8px 6px 12px;margin-top:10px"><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${n<=rt?"on":""} ${rp&&n<=rt?"pop":""}" data-a="rate" data-id="${id}" data-n="${n}" aria-label="${n} étoiles">${IC.star}</button>`).join("")}</div><span class="muted" style="font-size:calc(14rem / 17);text-align:right;line-height:1.2">${rt?["","Pas pour moi","Bof","Correct","Très bon","Coup de cœur"][rt]:hasTaste()?`<b style="color:var(--tint);font-family:var(--rounded);font-size:calc(17rem / 17)">${matchPct(r)} %</b><br>pour toi`:"Pas encore noté"}</span></div>`;
-    b+=adjCard(r);
     b+=`<h2 class="sh">Ingrédients<span class="stepper" style="font-size:calc(15rem / 17)"><button data-a="mult" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${mult} verre${mult>1?"s":""}</span><button data-a="mult" data-d="1" aria-label="Plus">${IC.plus}</button></span></h2>${adj?`<div class="seg" data-k="ver" style="margin:8px 16px 0">${[["mine","Ta version"],["orig","Originale"]].map(([k,n])=>`<button class="${ver===k?"on":""}" data-a="ver" data-v="${k}">${n}</button>`).join("")}</div>`:""}<div class="sp8"></div><div class="group">`;
     SEGS.forEach(([sg,sn])=>{ const L=r.ing.filter(it=>segOf(it.id)===sg); if(!L.length) return;
       b+=`<div class="ing-sec"><i style="background:${SEGCOL[sg]}"></i>${sn}${sg==="add"?"<span>Toujours à portée de main</span>":""}</div>`;
@@ -446,15 +448,18 @@ function recSheet(id){
         const role={opt:"Facultatif",rinse:"Facultatif, pour parfumer le verre",top:"Pour compléter le verre",float:ING[it.id].sug>=40?"Versé en filet à la fin":ING[it.id].cat==="bitters"?"Quelques gouttes sur le dessus":"Versé en dernier, en surface",rinse:"Pour rincer le verre"}[it.r]||"";
         b+=`<button class="ing-line ${miss?"miss":""} ${bas&&!miss?"basic":""}" data-a="ing" data-id="${it.id}"><span class="q">${termify(esc(fmtQ(it,mult)))}${it.orig!=null&&ver==="mine"?`<span class="delta ${it.q>it.orig?"up":"down"}">${it.q>it.orig?"+":"−"}${esc(fmtQ({q:Math.abs(it.q-it.orig),u:it.u},mult).replace(/ (traits?|feuilles|morceaux?|brins?|gouttes?)$/,""))}</span>`:""}</span><span class="n">${esc(ING[it.id].n)}${role?`<small>${role}</small>`:""}</span>${miss?`<span class="badge red">Manque</span>`:""}</button>`; });
     });
-    b+=`</div><div class="gf">Garniture : ${esc(lc(r.gar||"aucune"))}.</div>`;
-    b+=`<h2 class="sh">Préparation</h2><div class="sp8"></div><div class="group"><ol class="steps tick-steps">${buildSteps(r).map(s=>`<li data-a="stepck">${termify(esc(s.t))}</li>`).join("")}</ol></div><div class="gf">Touche une étape pour la cocher, et un mot souligné pour son explication.</div>`;
+    b+=`</div>`+(buildSteps(r).some(x=>/^Décore/.test(x.t))?"":`<div class="gf">Garniture : ${esc(lc(r.gar||"aucune"))}.</div>`); // la dernière étape la donne déjà
+    b+=`<h2 class="sh">Préparation</h2><div class="sp8"></div><div class="group"><ol class="steps tick-steps">${buildSteps(r).map(s=>`<li data-a="stepck">${termify(esc(s.t))}</li>`).join("")}</ol></div>`;
     if(r.tip) b+=`<div class="sp8"></div><div class="card" style="font-size:calc(15rem / 17);display:flex;gap:10px"><span style="color:var(--tint);flex:none">${IC.sparkle.replace("<svg","<svg width='20' height='20'")}</span><span>${esc(r.tip)}</span></div>`;
+    const rp=popOn("rate"+id);
+    b+=`<h2 class="sh">Ton avis</h2><div class="card rate-box" style="padding:6px 8px 6px 12px"><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${n<=rt?"on":""} ${rp&&n<=rt?"pop":""}" data-a="rate" data-id="${id}" data-n="${n}" aria-label="${n} étoiles">${IC.star}</button>`).join("")}</div><span class="muted" style="font-size:calc(14rem / 17);text-align:right;line-height:1.2">${rt?["","Pas pour moi","Bof","Correct","Très bon","Coup de cœur"][rt]:hasTaste()?`<b style="color:var(--tint);font-family:var(--rounded);font-size:calc(17rem / 17)">${matchPct(r)} %</b><br>pour toi`:"Pas encore noté"}</span></div>`;
+    b+=`<div class="sp8"></div><div class="group"><textarea class="note" data-note="${id}" placeholder="Ce que tu as changé, ce que tu referais…">${esc(S.notes[id]||"")}</textarea></div>`;
+    b+=adjCard(r);
     if(r.h) b+=`<h2 class="sh">Histoire</h2><div class="sp8"></div><div class="card"><p class="hist">${esc(r.h)}</p></div>`;
-    b+=`<h2 class="sh">Profil</h2><div class="sp8"></div><div class="card"><div class="prof">${radarSVG(p,avgProfile())}<div style="font-size:calc(14rem / 17);color:var(--label2)">${esc(reasons(r))}.<div style="margin-top:8px;font-size:calc(12rem / 17)">La ligne pointillée montre la moyenne de la carte.</div></div></div></div>`;
+    b+=`<h2 class="sh">Profil de goût</h2><div class="sp8"></div><div class="card"><div class="prof">${radarSVG(p,avgProfile())}<div style="font-size:calc(14rem / 17);color:var(--label2)">${esc(reasons(r))}.<div style="margin-top:8px;font-size:calc(12rem / 17)">La ligne pointillée montre la moyenne de la carte.</div></div></div></div>`;
     const tips=[...new Set(r.ing.map(i=>i.id))].filter(x=>ING[x].tip&&["spirit","liqueur","amaro","vin","bitters"].includes(ING[x].cat));
     if(tips.length) b+=`<h2 class="sh">Quelle bouteille choisir</h2><div class="sp8"></div><div class="group">${tips.map(x=>`<details class="tip"><summary>${esc(ING[x].n)}${IC.chev}</summary><p>${esc(ING[x].tip)}</p></details>`).join("")}</div>`;
     if(r.v.length) b+=`<h2 class="sh">Variantes et cousins</h2><div class="sp8"></div><div class="scroller">${r.v.map(v=>RMAP[v]).filter(Boolean).map(v=>tileLite(v)).join("")}</div>`;
-    b+=`<h2 class="sh">Ma note perso</h2><div class="sp8"></div><div class="group"><textarea class="note" data-note="${id}" placeholder="Ce que tu as changé, ce que tu referais…">${esc(S.notes[id]||"")}</textarea></div>`;
     b+=`<div class="sp16"></div><div class="group"><button class="row tap" data-a="tolab" data-id="${id}"><span style="color:var(--tint)">${IC.flask.replace("<svg","<svg width='22' height='22'")}</span><div class="grow">Modifier dans le labo</div>${IC.chev}</button></div>`;
     if(r.mine) b+=`<div class="sp16"></div><div class="btn-row"><button class="btn danger" data-a="delcustom" data-id="${id}">Supprimer cette création</button></div>`;
     const hp=popOn("fav"+id);
