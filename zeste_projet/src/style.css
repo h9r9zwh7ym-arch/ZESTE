@@ -1688,3 +1688,13 @@ button.stat:active{transform:scale(.97)}
 .shelf .sh-n,.lg b,.dish .dn,.lab-chip{font-size:calc(13rem / 17);font-weight:600}
 .season .sm{font-family:var(--sans);font-size:calc(17rem / 17);font-weight:600}
 .hist,.disc-f p{font-family:var(--serif);font-size:calc(17rem / 17);font-weight:400}
+
+/* ================= 1.41 : glace sous le verre, bar en une ligne par bouteille ================= */
+.lab-icerow{display:flex;align-items:center;gap:12px;margin:14px 16px 0}
+.lab-icerow .li-k{font-size:calc(15rem / 17);font-weight:600;color:var(--label2);flex:none}
+.lab-icerow .seg{flex:1;margin:0}
+svg.icedrop .ice>g.cube{animation:drop .55s cubic-bezier(.3,1.35,.55,1) calc(var(--d) - .72s) both!important}
+svg.icedrop .ice>circle{animation:drop .5s cubic-bezier(.3,1.35,.55,1) both!important}
+.bar-row{min-height:56px}
+.bar-row .lvl-txt{margin:0 4px 0 8px;font-size:calc(17rem / 17);color:var(--label2);white-space:nowrap;flex:none}
+.navbar .nb-right{display:flex;align-items:center;gap:2px}

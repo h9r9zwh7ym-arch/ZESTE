@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.40**. Chaque mise à jour livrée incrémente : 1.21 → 1.40… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.41**. Chaque mise à jour livrée incrémente : 1.21 → 1.41… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js ui_final.js v126.js v130.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -329,6 +329,24 @@ Code dans **`src/v140.js`** (après v139, avant `ui_final.js`), bloc CSS « 1.40
   - en mode réduit, les chiffres ne défilent pas.
 
   Tests adaptés : `hier_test.js` (lien basiques) et `v127_test.js`. Ce dernier cherche le palier « Habitué de bar » aussi dans « Tous les trophées » : lancé la nuit, il débloque des trophées horaires qui prennent les 3 places du résumé.
+
+### Fait en 1.41 (glace du labo, bar plus simple)
+
+Retour de YaYa : des bugs avec l'ajout et l'affichage des glaçons dans le labo, ce n'est pas naturel d'y jouer, et le bar n'est pas lisible d'un coup d'œil (appliquer plus la loi de Hick).
+
+Bugs reproduits avec de vrais touchers (`scratchpad/ice2.js`) :
+1. le choix de la glace était à ~700 px sous le verre : on ne voyait pas les glaçons arriver ;
+2. en verre « choisi par le barman », mettre des glaçons gardait la coupe (18 cl, 11,7 cl une fois la glace déduite), donc des glaçons dans une coupe ;
+3. du coup le 3ᵉ ingrédient d'un sour était **refusé** (« Plus de place dans ce verre ! ») et disparaissait du mélange ;
+4. « Avec cette glace, ça déborde un peu » restait affiché après être repassé à « Sans ».
+
+Code dans **`src/v141.js`** (après v140, avant `ui_final.js`) :
+- **`labGlass` enveloppé** : tant que le verre n'a pas été choisi à la main (`M.g` vide), le barman prend un verre qui accepte la glace (jamais coupe, martini ou flûte avec des glaçons) et qui contient le mélange, en montant d'un cran si besoin (`ICE_GLASS` : sour et stirred → tumbler puis highball ; long → highball puis verre à vin ; spritz → verre à vin puis highball). Ces verres sont tous « bons » pour le style dans `labScore`. Un verre choisi à la main n'est jamais changé : le refus « Plus de place » et « Ajuster » restent valables pour lui.
+- **La glace juste sous le verre** (`.lab-icerow`, « Sans glace · Glaçons · Gros glaçon · Pilée » sur toute la largeur) ; « Glace et décor » devient « Décor » dans « Le service ».
+- **Les glaçons tombent** dans le verre quand on les choisit (`ICE_DROP`, classe `icedrop`, animation `drop` existante, coupée par « Verres vivants » et « Réduire les animations »).
+- **Messages à jour** : `hideToast()` après un changement de glace ou un versement réussi ; `ACT.mixice` réécrit (le son reste).
+- **Bar (loi de Hick)** : plus de bascule Liste/Étagère au milieu de l'écran, l'étagère est à un toucher via l'icône en haut à droite (`barview`) ; chaque bouteille tient sur **une ligne** (`stockRow` réécrit : nom, niveau en clair « ¾ » à droite en 17 px comme toute valeur à droite, jauge). Le niveau garde la classe `.s` que `patchStock` met à jour.
+- Test : `tests/features/ice_test.js` (glace à moins de 220 px du verre et libellés sur une ligne ; les glaçons tombent ; pas de verre à pied avec des glaçons en automatique ; 3 versements acceptés ; plus de message périmé ; bar une ligne par bouteille, bascule en haut à droite qui ouvre l'étagère). `ia_test`, `hier_test`, `levels_test` adaptés.
 
 ## 7. Autres chantiers proposés (après la vérification)
 
