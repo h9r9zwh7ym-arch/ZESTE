@@ -35,7 +35,7 @@ const STATE=()=>{ const n=Date.now(), ids=["negroni","daiquiri","gin_tonic","mar
     await p.close(); }
   // typographie : un style par rôle
   { const p=await b.newPage({viewport:{width:390,height:844}}); p.on('pageerror',e=>errs.push(e.message)); await p.addInitScript(STATE); await p.goto(APP); await p.waitForTimeout(3000);
-    const roles={"en-tête de liste":".list-h b","titre de section":"h2.sh","ligne":".row .t:not(.serif)","sous-titre de ligne":".row .s","nom de cocktail (ligne)":".row .t.serif","titre de page":".lt"};
+    const roles={"en-tête de liste":".list-h b","titre de section":"h2.sh","ligne":".row .t:not(.serif)","sous-titre de ligne":".row .s:not(.lvl-txt)","valeur à droite":".row .val, .row .lvl-txt","nom de cocktail (ligne)":".row .t.serif","titre de page":".lt"};
     const seen={};
     for(const t of ["cocktails","bar","labo","profil"]){ await p.evaluate(t=>switchTab(t),t); await p.waitForTimeout(800);
       const r=await p.evaluate(R=>{ const o={}; for(const [k,s] of Object.entries(R)) o[k]=[...document.querySelectorAll('.view.active '+s)].filter(e=>e.getClientRects().length).map(e=>{ const c=getComputedStyle(e); return c.fontFamily.split(",")[0].replace(/"/g,"")+" "+Math.round(parseFloat(c.fontSize))+"/"+c.fontWeight; }); return o; },roles);

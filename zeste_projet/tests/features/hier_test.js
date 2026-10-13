@@ -24,7 +24,7 @@ const {chromium}=require('playwright'); const path=require('path');
   if(await q(()=>TAB!=="cocktails"||CF.main!=="ok")) fail.push('« cocktails faisables » ne mène pas à la liste');
   await q(()=>{ S.mix={m:"shake",items:[]}; LT="compose"; switchTab("labo"); dirty.labo=1; renderView("labo"); }); await p.waitForTimeout(600);
   const lab=await q(()=>{ const v=document.querySelector('#v-labo'), h=v.innerHTML; return {nums:v.querySelectorAll('.lab-n').length, classics:h.indexOf("lab-classics")>-1&&h.indexOf("lab-classics")<h.indexOf("Les ingrédients"), order:h.indexOf("Les ingrédients")<h.indexOf("Le service"), subs:[...v.querySelectorAll('.lab-sub')].map(e=>e.childNodes[0].textContent.trim())}; });
-  if(lab.nums||!lab.classics||!lab.order||lab.subs.join()!=="Verre,Glace et décor,Méthode,Style") fail.push('labo : '+JSON.stringify(lab));
+  if(lab.nums||!lab.classics||!lab.order||lab.subs.join()!=="Verre,Décor,Méthode,Style") fail.push('labo : '+JSON.stringify(lab));
   await p.click('#v-labo .lab-classics [data-a="tolab"]'); await p.waitForTimeout(700);
   if(await q(()=>!S.mix.items.length)) fail.push('labo : « pars d’un classique » ne charge rien');
   await q(()=>switchTab("today")); await p.waitForTimeout(500);

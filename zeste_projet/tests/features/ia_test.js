@@ -24,7 +24,7 @@ const {chromium}=require('playwright'); const path=require('path');
   // Bar : Liste et Étagère ; « Presque vides » en ligne qui ouvre la liste
   await q(()=>switchTab("bar")); await p.waitForTimeout(600);
   const bar=await q(()=>({seg:document.querySelectorAll('#v-bar [data-a="barview"]').length, low:!!document.querySelector('#v-bar [data-a="lowsheet"]'), tip:/Astuce/.test(document.querySelector('#v-bar').textContent)}));
-  if(bar.seg!==2||!bar.low||bar.tip) fail.push('bar : '+JSON.stringify(bar));
+  if(bar.seg!==1||!bar.low||bar.tip) fail.push('bar : '+JSON.stringify(bar));
   await p.click('#v-bar [data-a="lowsheet"]'); await p.waitForTimeout(500);
   if(!await q(()=>document.querySelectorAll('.sheet .low-row').length)) fail.push('bar : « Presque vides » vide'); await q(()=>closeAll()); await p.waitForTimeout(400);
   // Labo : Composer | Fait maison (préparations en cours et recettes réunies), défis sous l'atelier
