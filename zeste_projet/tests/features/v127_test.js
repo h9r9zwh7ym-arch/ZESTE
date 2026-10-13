@@ -40,7 +40,8 @@ const {chromium}=require('playwright'),path=require('path');
   // 5) trophées à paliers : présents dans le profil, avec le bon libellé de palier
   await p.evaluate(()=>{ closeAll(); S.hist=Array.from({length:12},(_,i)=>({id:'negroni',t:Date.now()-i*36e5})); checkTrophies(); switchTab('profil'); dirty.profil=1; renderView('profil'); });
   await p.waitForTimeout(300);
-  const tierTile=await p.evaluate(()=>{ const b=document.querySelector('[data-a="tiertrophy"][data-k="tier_verres"]'); return b&&b.querySelector('.tp')&&b.querySelector('.tp').textContent; });
+  // (1.37+ : le Profil résume 3 trophées, le palier peut ne figurer que dans « Tous les trophées », selon l'heure du test)
+  const tierTile=await p.evaluate(()=>{ let b=document.querySelector('[data-a="tiertrophy"][data-k="tier_verres"]'); if(!b&&typeof allTrophiesSheet==="function"){ allTrophiesSheet(); b=document.querySelector('.sheet [data-a="tiertrophy"][data-k="tier_verres"]'); } return b&&b.querySelector('.tp')&&b.querySelector('.tp').textContent; });
   if(!tierTile||!/Argent/.test(tierTile)) out.push('5) Le palier « Habitué de bar » n’affiche pas le bon niveau après 12 verres (obtenu : '+tierTile+').');
   const oldGoneOrHarder=await p.evaluate(()=>{ const tt=TIER_TROPHIES.find(x=>x.key==='tier_notes'); return tt.tiers[tt.tiers.length-1][1]; });
   if(!(oldGoneOrHarder>60)) out.push('5bis) Le palier le plus haut de « Palais averti » n’est pas plus long à débloquer qu’avant (60).');

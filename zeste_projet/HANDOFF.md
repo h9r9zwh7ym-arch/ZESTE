@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.39**. Chaque mise à jour livrée incrémente : 1.21 → 1.39… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.40**. Chaque mise à jour livrée incrémente : 1.21 → 1.40… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js ui_final.js v126.js v130.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -298,6 +298,37 @@ Retour de YaYa : « on est noyé sous plein d'infos, tout a l'air d'avoir la mê
 - **Labo** (Composer) : le verre ; s'il est vide, « Ou pars d'un classique » juste en dessous ; **Les ingrédients** (seule étape en titre principal) ; puis **Le service** avec quatre sous-réglages : Verre, Glace et décor, Méthode, Style (les numéros 1 à 5 disparaissent). Indication du verre vide : « Verse tes ingrédients : le verre et le style se règlent tout seuls. » (vrai : verre choisi par le barman, style deviné).
 - **Accueil** : les accords mets tiennent sur une rangée qui défile (avant : deux rangées de 6).
 - Tests : `tests/features/hier_test.js` (profil ≤ 6 sections, pas de grande carte de récap, 3 médailles, carnet et ses feuilles ; bar sans titre de section pour les catégories ; « cocktails faisables » mène à la liste ; labo sans numéros, classiques avant les ingrédients, ingrédients avant le service, ordre des sous-réglages ; accords mets sur une rangée). `hick_test.js` adapté (Profil : 13 choix).
+
+### Fait en 1.40 (hiérarchie « app pro », typographie unique, animations signées — même design)
+
+Objectif de YaYa : une app qui ressemble à une belle app faite par des pros, vendable sur l'App Store. Ses consignes : garder les cartes blanches pour ce qui compte (bouteilles, trophées), la carte verte seulement là où elle rend bien (jamais derrière une illustration colorée comme le verre du labo), pas de nombre de niveaux imposé, uniformiser la typographie sans toucher aux grands titres de page, et quelques animations sympas jamais cheap. Pistes comparées sur le canevas « Zeste — pistes sans conteneurs » (rangée « Retenu en 1.40 » = captures réelles).
+
+**Repères (apps de référence)** : les compteurs sont des chiffres posés sur le fond (Untappd, Apple Forme) ; ce qu'on possède reste en cartes (Vivino, Cartes) ; un grand visuel focal puis des listes, l'annexe en liens (Musique, Airbnb) ; un seul bloc de couleur pour un résumé personnel (Apple Forme).
+
+Code dans **`src/v140.js`** (après v139, avant `ui_final.js`), bloc CSS « 1.40 » en fin de `style.css` :
+- **Bar** : compteurs posés sur le fond (`.bar-head` : « 10 bouteilles ouvertes » en grand, « 19 cocktails faisables › » en vert qui mène aux faisables) ; les bouteilles restent en cartes blanches ; sous les listes, trois liens (`.open-links`) : presque vides (`lowsheet`), « Achats malins : Vermouth dry (+5) et N autres » (nouvelle feuille `buySheet`), « + 21 basiques toujours disponibles · Modifier ». Les `id` `st-b` / `st-m` sont gardés (`updateBarStats`).
+- **Profil** : **carte verte** `.focal-card` = « Ton profil de goût » (style en Fraunces, radar en jaune, phrase) avec les 3 compteurs en pied de carte (`focalTaste`). Les variables de couleur sont redéfinies dans la carte (`--label`, `--sep`, `--tint`…), donc le radar s'y adapte sans code. Contrastes : crème 7,9:1, vert pâle 5,9:1, jaune 6:1. Trophées : médailles et « Tous les trophées » dans une seule carte blanche (`.tro-card`).
+- **Labo** : la scène du verre reste claire ; tuiles du service sans ombre (sauf sélection et suggestion) ; Enregistrer et Prompt IA en liens (`.lab-links`).
+- **Accueil** : « Le saviez-vous » en citation posée sur le fond (le retournement marche toujours) ; « De saison » : texte sur le fond, ses cocktails en tuiles ; « Personnaliser l'accueil » en lien.
+- **Fiche recette** : Histoire, Profil de goût et Quelle bouteille posés sur le fond (`.card.open`, `.group.open`). La retouche passe par `NEXT_SHEET_XFORM` (enveloppe d'`openSheet`) **avant le premier dessin** : un second `paintSheet` couperait l'animation du verre qui se remplit (vérifié : même SVG, classe `pour`).
+- **Typographie, une règle par rôle** : Fraunces réservée aux titres de page (34/700, inchangés), aux noms de cocktail (34, 28, 17, 16 en 600) et aux citations (17/400). En-têtes de liste 15/600 gris partout (Cocktails compris) ; titres de carte et de défi en Figtree 17/600 (avant : Fraunces 17/700, Figtree 16/700…) ; états vides 20/700 ; valeur à droite 17 ; boutons segmentés 14 ; noms de petites tuiles 13/600.
+- **Animations** (langage existant, `transform`/`opacity` seulement, coupées par « Réduire les animations » et par « Apparition au défilement » `FX("reveal")`, pas de nouveau réglage) :
+  - les chiffres défilent jusqu'à leur valeur (`countUps`, attribut `data-ck`, une fois par valeur) ;
+  - le radar se déploie dans la carte verte, une fois par visite du Profil (Web Animations, pas de CSS dans le SVG à cause du piège Safari) ;
+  - les nouveaux blocs entrent dans la cascade existante (`revealIn` étendu) ;
+  - une médaille gagnée depuis la dernière visite rebondit (`zeste.troSeen` en local) ;
+  - la jauge et le liquide des bouteilles gardent leur transition.
+- Fluidité (Chromium, processeur ×1) : Profil 60 i/s, Bar 59, Labo 56, aucune saccade de plus de 50 ms à l'ouverture des onglets. Fiche recette : équivalente à la 1.39 (mesures alternées).
+- Tests : `tests/features/levels_test.js`, en clair et en sombre :
+  - une seule carte verte, et jamais sur le verre ;
+  - contraste ≥ 4,5:1 dans la carte ;
+  - compteurs du bar hors carte et justes ;
+  - bouteilles et trophées en cartes blanches avec ombre ;
+  - « Achats malins » ouvre sa feuille ;
+  - un style par rôle typographique, et Fraunces seulement à sa place ;
+  - en mode réduit, les chiffres ne défilent pas.
+
+  Tests adaptés : `hier_test.js` (lien basiques) et `v127_test.js`. Ce dernier cherche le palier « Habitué de bar » aussi dans « Tous les trophées » : lancé la nuit, il débloque des trophées horaires qui prennent les 3 places du résumé.
 
 ## 7. Autres chantiers proposés (après la vérification)
 
