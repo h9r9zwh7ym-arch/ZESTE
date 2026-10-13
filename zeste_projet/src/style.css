@@ -1620,3 +1620,71 @@ button.stat{display:block;width:100%;text-align:left;font:inherit;color:inherit}
 button.stat:active{transform:scale(.97)}
 /* accueil : les accords mets sur une seule rangée */
 .dishes{grid-template-rows:auto}
+
+/* ================= 1.40 : hiérarchie « app pro », typographie unique ================= */
+/* carte verte : un seul résumé personnel (profil de goût). Contrastes : crème 7,9:1, vert pâle 5,9:1, jaune 6:1 */
+.focal-card{margin:16px 16px 0;padding:20px;border-radius:var(--r-hero);background:#1F5A3D;color:#FBF6EC;box-shadow:0 10px 30px rgba(23,71,49,.25);
+  --label:#FBF6EC;--label2:#D3E6D7;--label3:rgba(251,246,236,.45);--sep:rgba(251,246,236,.24);--tint:#F5C518}
+.focal-card .fc-k{font-size:calc(13rem / 17);font-weight:600;color:#D3E6D7}
+.focal-card .fc-t{margin-top:4px;font-family:var(--serif);font-weight:700;font-size:calc(22rem / 17);line-height:1.2}
+.focal-card .prof{margin-top:12px}
+.focal-card .fc-txt{font-size:calc(15rem / 17);line-height:1.4;color:#EEF4EE}
+.focal-card .fc-note{display:block;margin-top:6px;font-size:calc(13rem / 17);color:#D3E6D7}
+.focal-card .fc-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:16px;padding-top:14px;border-top:1px solid rgba(251,246,236,.24)}
+.focal-card .fc-stats b{display:block;font-family:var(--rounded);font-size:calc(28rem / 17);font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.focal-card .fc-stats span{font-size:calc(13rem / 17);color:#D3E6D7}
+.focal-card svg.radar polygon:last-of-type{transform-box:view-box;transform-origin:50% 50%}
+:root[data-theme="dark"] .focal-card{box-shadow:none;outline:1px solid rgba(251,246,236,.08)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .focal-card{box-shadow:none;outline:1px solid rgba(251,246,236,.08)}}
+/* bar : compteurs posés sur le fond (pas dans des cartes) */
+.bar-head{display:flex;gap:0;margin:14px 20px 0}
+.bar-head .bh{display:flex;flex-direction:column;padding-right:20px;text-align:left}
+.bar-head .bh+.bh{padding:0 0 0 20px;border-left:1px solid var(--sep)}
+.bar-head b{font-family:var(--rounded);font-size:calc(34rem / 17);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.bar-head span{margin-top:4px;font-size:calc(14rem / 17);color:var(--label2)}
+.bar-head .go b{color:var(--tint)}
+.bar-head .go span{color:var(--tint);font-weight:600}
+.bar-head .go:active{opacity:.6}
+.bar-head+.gf{margin-left:20px;margin-right:20px}
+/* liens posés sur le fond (presque vides, achats malins, basiques) */
+.open-links{margin:20px 20px 0;border-top:1px solid var(--sep)}
+.open-link{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:10px 0;border-bottom:1px solid var(--sep);font-size:calc(15rem / 17);color:var(--label);text-align:left}
+.open-link .grow{flex:1;min-width:0}
+.open-link .chev{color:var(--label3)}
+.open-link .ol-act{color:var(--tint);font-weight:600}
+.open-link .ol-dot{width:8px;height:8px;border-radius:4px;background:var(--orange);flex:none}
+.open-link:active{opacity:.55}
+/* trophées : une seule carte blanche pour les médailles et « Tous les trophées » */
+.tro-card{padding:12px 0 0}
+.tro-card .trophies{margin:0 8px}
+.tro-card .trophy{background:transparent;box-shadow:none}
+.tro-card .row{margin-top:6px;box-shadow:inset 0 .5px 0 var(--sep);padding-left:16px;padding-right:16px}
+/* annexe posée sur le fond */
+.card.open,.group.open{background:transparent;box-shadow:none;margin-left:20px;margin-right:20px;padding-left:0;padding-right:0}
+.group.open details.tip summary{padding-left:0;padding-right:0}
+.group.open details.tip p{padding-left:0;padding-right:0}
+.disc-f,.disc-b{box-shadow:none}
+.disc-f{background:transparent;padding-left:4px;padding-right:4px}
+.disc-b{background:radial-gradient(circle at 50% 30%, color-mix(in srgb,var(--c) 40%,transparent), transparent 70%)}
+.card.season{background:transparent;box-shadow:none;padding:0;margin:0 20px}
+.card.season .mini-list{margin:0 -4px}
+.card.season .mini{background:var(--bg2);box-shadow:var(--shadow)}
+.btn.home-edit{background:transparent;color:var(--tint)}
+/* labo : les tuiles du service pèsent moins que les ingrédients ; actions secondaires en liens */
+.lab-glasses .lg:not(.on):not(.rec),.lab-gars .lgar:not(.on):not(.sug){box-shadow:none}
+.lab-links .btn{background:transparent;color:var(--tint);height:44px}
+/* toucher : léger enfoncement, comme sur iOS */
+.focal-card,.tro-card,.bar-head .bh{transition:transform .18s cubic-bezier(.3,.7,.4,1)}
+.tro-card .trophy:active{transform:scale(.96)}
+/* ---------- typographie : une règle par rôle ---------- */
+.list-h b{font-size:calc(15rem / 17);font-weight:600;color:var(--label2)}
+.list-h span{font-size:calc(15rem / 17);color:var(--label2)}
+.chal b,.cb-t b,.na-banner b,.lab-verdict b,.lin-card b,.adv-h b,.mf-top b,.tt2 b{font-family:var(--sans);font-size:calc(17rem / 17);font-weight:600}
+.empty b,.empty-low b{font-family:var(--sans);font-size:calc(20rem / 17);font-weight:700}
+.duo-c .dt{font-size:calc(17rem / 17);font-weight:600}
+.duo-c .ds{font-size:calc(14rem / 17)}
+.row .val{font-size:calc(17rem / 17)}
+.seg.small4 button,.c-modes button{font-size:calc(14rem / 17)}
+.shelf .sh-n,.lg b,.dish .dn,.lab-chip{font-size:calc(13rem / 17);font-weight:600}
+.season .sm{font-family:var(--sans);font-size:calc(17rem / 17);font-weight:600}
+.hist,.disc-f p{font-family:var(--serif);font-size:calc(17rem / 17);font-weight:400}

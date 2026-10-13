@@ -18,7 +18,7 @@ const {chromium}=require('playwright'); const path=require('path');
   await q(()=>{ carnetSheet("hist"); }); await p.waitForTimeout(400);
   if(await q(()=>document.querySelectorAll('.sheet .row.tap').length)<10) fail.push('carnet : historique incomplet'); await q(()=>closeAll()); await p.waitForTimeout(300);
   await q(()=>switchTab("bar")); await p.waitForTimeout(600);
-  const bar=await q(()=>{ const v=document.querySelector('#v-bar'); return {h2:[...v.querySelectorAll('h2.sh')].map(h=>h.textContent.trim()), cats:v.querySelectorAll('.cat-h').length, basicsRow:!!v.querySelector('.group [data-a="basics"]')}; });
+  const bar=await q(()=>{ const v=document.querySelector('#v-bar'); return {h2:[...v.querySelectorAll('h2.sh')].map(h=>h.textContent.trim()), cats:v.querySelectorAll('.cat-h').length, basicsRow:!!v.querySelector('.open-links [data-a="basics"]')}; });
   if(bar.h2.some(t=>/Spiritueux|Liqueurs|Additionnel/.test(t))||bar.cats<3||!bar.basicsRow) fail.push('bar : '+JSON.stringify(bar));
   await p.click('#v-bar [data-a="gofaisables"]'); await p.waitForTimeout(600);
   if(await q(()=>TAB!=="cocktails"||CF.main!=="ok")) fail.push('« cocktails faisables » ne mène pas à la liste');
