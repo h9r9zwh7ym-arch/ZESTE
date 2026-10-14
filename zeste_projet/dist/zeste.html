@@ -1328,42 +1328,11 @@ button.goal:not(.ok){box-shadow:inset 0 0 0 1px currentColor}
 .famc.on em{color:var(--tint)}
 
 /* ===== Étagère 2.0 ===== */
-.bar2{position:relative;margin:0 16px;padding:14px 0 8px;border-radius:24px;overflow:hidden;background:
   linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px) 0 0/24% 100%,
   linear-gradient(180deg,#241812 0%,#1A110C 55%,#140D09 100%);box-shadow:inset 0 0 0 .5px rgba(255,220,180,.1),0 14px 34px rgba(0,0,0,.22)}
-.bar2::before{content:"";position:absolute;inset:36px 12px 12px;border-radius:14px;background:linear-gradient(115deg,rgba(255,235,210,.07),rgba(255,235,210,0) 40%,rgba(255,235,210,.05) 60%,rgba(255,235,210,0));pointer-events:none}
-.b2-glow{position:absolute;left:8%;right:8%;top:-110px;height:200px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,190,110,.35),transparent);pointer-events:none;animation:lamp 7s ease-in-out infinite}
-.b2-head{position:relative;display:flex;justify-content:space-between;align-items:center;padding:0 16px 6px;color:rgba(255,232,205,.9)}
-.b2-head b{font-family:var(--serif);font-size:calc(17rem / 17)}
-.b2-warn{font-size:calc(12rem / 17);font-weight:700;color:#fff;background:#D6291E;border-radius:10px;padding:3px 9px}
-.b2-jump{display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none;position:relative}
-.b2-jump::-webkit-scrollbar{display:none}
-.b2-jump button{flex:none;height:26px;padding:0 11px 0 8px;border-radius:13px;background:rgba(255,222,185,.14);color:rgba(255,232,205,.85);font-size:calc(12rem / 17);font-weight:700;display:flex;align-items:center;gap:5px}
-.b2-jump button:active{background:rgba(255,222,185,.26)}
-.b2-jump button i{width:7px;height:7px;border-radius:4px;display:block;box-shadow:0 0 0 1.5px rgba(255,245,235,.4)}
-.b2-shelf{position:relative;margin-top:10px}
-.b2-shelf::after{content:"";position:absolute;right:0;top:10px;bottom:14px;width:26px;background:linear-gradient(90deg,transparent,#1A110C 75%);pointer-events:none}
-.b2-lab{display:flex;align-items:center;gap:6px;margin:0 16px 2px;font-size:calc(12rem / 17);font-weight:700;color:rgba(255,222,185,.75);letter-spacing:.02em}
-.b2-lab i{font-style:normal;font-family:var(--rounded);font-size:calc(11rem / 17);background:rgba(255,222,185,.14);border-radius:8px;padding:1px 7px}
-.b2-row{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 0;align-items:flex-start;scroll-snap-type:x proximity;scrollbar-width:none;min-height:150px}
-.b2-row::-webkit-scrollbar{display:none}
-.b2-b{flex:none;width:70px;display:flex;flex-direction:column;align-items:center;gap:6px;scroll-snap-align:start;animation:b2in .7s cubic-bezier(.3,1.5,.5,1) calc(var(--i)*35ms) both;transition:transform .22s cubic-bezier(.3,1.6,.5,1);--glass-stroke:rgba(255,240,220,.6);--glass-fill:rgba(255,240,220,.08);--label3:rgba(255,230,200,.45)}
 @keyframes b2in{0%{opacity:0;transform:translateY(-26px) rotate(-5deg)}100%{opacity:1;transform:none}}
-.b2-svg{position:relative;display:block;width:48px;height:86px}
-.b2-svg svg{width:100%;height:100%;filter:drop-shadow(0 6px 8px rgba(0,0,0,.5))}
 
 
-.b2-b.vide .b2-svg{opacity:.4}
-.b2-tag{width:100%;height:52px;padding:5px 4px 4px;justify-content:center;border-radius:8px;background:#F6EEE2;color:#2A1C12;box-shadow:0 3px 6px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;gap:3px;transform:rotate(-1deg)}
-.b2-b:nth-child(2n) .b2-tag{transform:rotate(1deg)}
-.b2-n{font-size:calc(11rem / 17);font-weight:700;line-height:1.12;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.b2-l{font-family:var(--rounded);font-size:calc(11rem / 17);font-weight:700;border-radius:6px;padding:1px 6px;color:#fff}
-.b2-l.l4,.b2-l.l3{background:#288742}.b2-l.l2{background:#9E6C12}.b2-l.l1{background:#C9501D}.b2-l.l0{background:#DF3333}
-.b2-b.lift{transform:translateY(-16px) rotate(-7deg)}
-.b2-b:active{transform:translateY(-8px)}
-.b2-board{position:relative;height:14px;margin:-4px 8px 0;border-radius:4px;background:linear-gradient(180deg,#9A6A3E,#64401F 70%,#4A2E15);box-shadow:0 8px 12px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,225,190,.4)}
-.b2-board i{position:absolute;left:6%;right:6%;top:100%;height:18px;background:radial-gradient(closest-side,rgba(255,180,90,.28),transparent);filter:blur(2px)}
-@media (prefers-reduced-motion:reduce){.b2-b,.b2-glow{animation:none!important}}
 .tile.lite .tg svg{height:62px;width:auto}
 
 /* ===== 1.20 ===== */
@@ -1570,7 +1539,7 @@ html{overflow:hidden;width:100%}
 /* les carrousels s'aimantent sur la marge (avant : la première carte collait au bord de l'écran) */
 .scroller{scroll-padding-inline:16px}
 .card,.group,.tile,.duo-c,.stat,.trophy,.dish,.fmap,.remind,.set-hero,.chal,.na-banner,.chal-ban,.lab-verdict{border-radius:var(--r-card)}
-.hero,.rw-card,.bar2,.lab-stage{border-radius:var(--r-hero)}
+.hero,.rw-card,.lab-stage{border-radius:var(--r-hero)}
 .lgar,.lg,.shelf,.mini,.famc,.lvl-big button,.tcard{border-radius:var(--r-tile)}
 .seg,.stepper,.search,.price-in,.fbtn{border-radius:var(--r-ctl)}
 .seg button,.seg-thumb{border-radius:calc(var(--r-ctl) - 2px)}
@@ -1702,6 +1671,49 @@ svg.icedrop .ice>circle{animation:drop .5s cubic-bezier(.3,1.35,.55,1) both!impo
 .bar-row{min-height:56px}
 .bar-row .lvl-txt{margin:0 4px 0 8px;font-size:calc(17rem / 17);color:var(--label2);white-space:nowrap;flex:none}
 .navbar .nb-right{display:flex;align-items:center;gap:2px}
+
+/* ================= 1.42 ================= */
+/* glace : le gros glaçon repose au fond (pas de flottement), la pilée tombe d'un bloc */
+svg.live:not(.pour) .ice>g.cube.big{animation:none}
+svg.pour .ice>g.crush{animation:drop .6s cubic-bezier(.3,1.35,.55,1) .8s both}
+svg.icedrop .ice>g.crush{animation:drop .5s cubic-bezier(.3,1.35,.55,1) both!important}
+@media (prefers-reduced-motion:reduce){svg .ice>g{animation:none!important}}
+/* ================= 1.42 ================= */
+/* bar : une seule ligne focale, « presque vides » en dessous, le reste replié en bas */
+.bar-head.one{margin-top:12px}
+.bar-head.one .bh{padding-right:0}
+.low-line{display:flex;align-items:center;gap:8px;margin:10px 20px 0;min-height:32px;font-size:calc(15rem / 17);font-weight:600;color:var(--orange);text-align:left}
+.low-line .ol-dot{width:8px;height:8px;border-radius:4px;background:var(--orange);flex:none}
+.low-line .chev{color:var(--label3);width:14px;height:14px}
+.low-line:active{opacity:.55}
+details.bar-more{margin:28px 0 0}
+details.bar-more>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;margin:0 20px;min-height:44px;font-size:calc(15rem / 17);font-weight:600;color:var(--label2);cursor:pointer;-webkit-user-select:none;user-select:none}
+details.bar-more>summary::-webkit-details-marker{display:none}
+details.bar-more>summary .chev{color:var(--label3);transform:rotate(90deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
+details.bar-more[open]>summary .chev{transform:rotate(-90deg)}
+details.bar-more>summary:active{opacity:.55}
+details.bar-more[open]>.group{animation:barmore .28s cubic-bezier(.3,.7,.4,1)}
+@keyframes barmore{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+/* labo : pictogramme des ingrédients frais (comme les décors) */
+.shelf .sh-pic{width:34px;height:34px;margin:7px 0;display:grid;place-items:center}
+.shelf .sh-pic svg{width:30px;height:30px}
+/* À propos */
+.about-hero{display:flex;flex-direction:column;align-items:center;gap:2px;margin:8px 16px 4px;text-align:center}
+.about-hero b{font-family:var(--serif);font-size:calc(22rem / 17);font-weight:600}
+.about-hero span{font-size:calc(14rem / 17);color:var(--label2)}
+.card.about-p{margin:0 16px;padding:14px 16px;font-size:calc(15rem / 17);line-height:1.45;color:var(--label)}
+/* nuit : un croissant net, quelques étoiles dans le ciel seulement, pas d'étoile filante */
+:root[data-moment="nuit"] .amb-sun{opacity:0;animation:none}
+.amb-stars .shoot{display:none}
+.amb-stars{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 9vh,transparent 14vh);mask-image:linear-gradient(180deg,#000 0,#000 9vh,transparent 14vh)}
+.amb-stars i{opacity:var(--o,.7);box-shadow:0 0 3px rgba(255,255,255,.55);animation-name:twinkle3;animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+@keyframes twinkle3{0%,100%{opacity:var(--o,.7)}50%{opacity:calc(var(--o,.7) * .35)}}
+.amb-moon{position:absolute;top:calc(env(safe-area-inset-top,0px) + 8px);right:30%;width:28px;height:28px;color:#F2EDE0;opacity:0;transform:translateY(6px);transition:opacity 1.5s,transform 1.5s;filter:drop-shadow(0 0 10px rgba(242,237,224,.35))}
+.amb-moon svg{width:100%;height:100%;display:block}
+:root[data-moment="nuit"] .amb-moon{opacity:1;transform:none}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .amb-moon{color:#AEB7CF;filter:none}}
+:root[data-theme="light"] .amb-moon{color:#AEB7CF;filter:none}
+@media (prefers-reduced-motion:reduce){.amb-stars i{animation:none!important}.amb-moon{transition:none}}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -2051,7 +2063,7 @@ ING_RAW.push(
 ["saumure","Saumure d’olives","frais",0,0,0.3,"h1",{}]
 );
 // Contenu additionnel : considéré comme toujours disponible (réglable dans le profil)
-const BASICS=["citron","citron_vert","sucre","eau","sirop_sucre","sirop_miel","blanc_oeuf","oeuf","creme","lait","menthe","basilic","concombre","cafe","espresso","fleur_oranger","marmelade","worcestershire","tabasco"];
+const BASICS=["citron","citron_vert","sucre","eau","eau_gazeuse","sirop_sucre","sirop_miel","blanc_oeuf","oeuf","creme","lait","menthe","basilic","concombre","cafe","espresso","fleur_oranger","marmelade","worcestershire","tabasco"];
 FAMILIES.shot="Shots";
 GLASSES.shot="un verre à shot";
 
@@ -2854,6 +2866,26 @@ const GLASS_SHAPES={
   shot:{o:"M21 34H43L40.5 72Q40.2 74.5 37.7 74.5H26.3Q23.8 74.5 23.5 72Z",y:40,rim:[21,43,34],hl:"M24.8 38L26.3 69",bot:72},
   mug:{mug:1}
 };
+// Glace dessinée selon la forme du verre (1.42) : un gros glaçon est un vrai bloc posé au fond (une sphère dans les
+// verres à pied), la glace pilée un amas dense d'éclats qui remplit le verre et bombe un peu au-dessus du liquide.
+const GLASS_BOTW={rocks:17,highball:13,coupe:6,martini:1,flute:3,vin:8,tasse:12,shot:8.5};
+const STEMMED=new Set(["coupe","martini","flute","vin"]);
+function glassHalfW(sh,g,y){ const [L,R,Y]=sh.rim, top=(R-L)/2, bot=GLASS_BOTW[g]!=null?GLASS_BOTW[g]:top*0.8, t=Math.max(0,Math.min(1,(y-Y)/Math.max(1,sh.bot-Y))); return top+(bot-top)*t; }
+function bigIceSVG(sh,g){
+  const [L,R,Y]=sh.rim, cx=(L+R)/2, H=sh.bot-Y;
+  if(STEMMED.has(g)){ const mt=g==="martini", cy=Y+H*(mt?0.33:0.56), rr=Math.max(5,Math.min(glassHalfW(sh,g,cy)*(mt?0.6:0.78),H*(mt?0.28:0.36)));
+    return `<g class="cube big" style="--d:.72s;--b:0s"><circle cx="${cx}" cy="${cy.toFixed(1)}" r="${rr.toFixed(1)}" fill="#fff" fill-opacity=".24" stroke="#fff" stroke-opacity=".75" stroke-width="1.1"/><path d="M${(cx-rr*0.62).toFixed(1)} ${(cy-rr*0.1).toFixed(1)}A${(rr*0.66).toFixed(1)} ${(rr*0.66).toFixed(1)} 0 0 1 ${(cx-rr*0.1).toFixed(1)} ${(cy-rr*0.62).toFixed(1)}" stroke="#fff" stroke-opacity=".9" stroke-width="1.3" fill="none" stroke-linecap="round"/><ellipse cx="${(cx+rr*0.3).toFixed(1)}" cy="${(cy+rr*0.35).toFixed(1)}" rx="${(rr*0.35).toFixed(1)}" ry="${(rr*0.2).toFixed(1)}" fill="#fff" fill-opacity=".12"/></g>`; }
+  const tall=g==="highball", w=Math.max(9,Math.min(glassHalfW(sh,g,sh.bot-4)*2*0.86,H*0.62)), h=tall?Math.min(H*0.74,w*2.4):w, x=cx-w/2, y=sh.bot-h-1.2, rx=(w*0.14).toFixed(1);
+  return `<g class="cube big" style="--d:.72s;--b:0s"><g transform="rotate(-3 ${cx} ${(y+h/2).toFixed(1)})"><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="${rx}" fill="#fff" fill-opacity=".22" stroke="#fff" stroke-opacity=".72" stroke-width="1.1"/><rect x="${(x+1.4).toFixed(1)}" y="${(y+1.4).toFixed(1)}" width="${(w-2.8).toFixed(1)}" height="${(Math.min(h,w)*0.24).toFixed(1)}" rx="${rx}" fill="#fff" fill-opacity=".3"/><rect x="${(x+w*0.7).toFixed(1)}" y="${(y+h*0.3).toFixed(1)}" width="${(w*0.22).toFixed(1)}" height="${(h*0.62).toFixed(1)}" rx="${rx}" fill="#000" fill-opacity=".06"/><path d="M${(x+3).toFixed(1)} ${(y+Math.min(h*0.5,w*0.6)).toFixed(1)}V${(y+3.4).toFixed(1)}H${(x+w*0.5).toFixed(1)}" stroke="#fff" stroke-opacity=".9" stroke-width="1.2" fill="none" stroke-linecap="round"/></g></g>`;
+}
+function crushedIceSVG(sh,g,key){
+  const [L,R,Y]=sh.rim, cx=(L+R)/2, top=Y+(sh.bot-Y)*0.06, bot=sh.bot+1; let o=`<rect x="-40" y="${top.toFixed(1)}" width="144" height="${(bot-top+4).toFixed(1)}" fill="#fff" fill-opacity=".14"/>`, k=0;
+  for(let y=bot-1.6;y>top-1;y-=2.9){ const hw=glassHalfW(sh,g,y), n=Math.max(1,Math.round(hw*2/3.4));
+    for(let j=0;j<n;j++){ const u=hrand(key+"u"+k), v=hrand(key+"v"+k), x=cx-hw+(j+0.2+u*0.6)*(hw*2/n), yy=y-v*1.6, rr=1.5+hrand(key+"r"+k)*1.6, nv=5+Math.floor(hrand(key+"n"+k)*3), a0=hrand(key+"a"+k)*6.28;
+      const pts=[...Array(nv)].map((_,q)=>{ const a=a0+q*6.283/nv, d=rr*(0.62+hrand(key+k+"d"+q)*0.38); return (x+Math.cos(a)*d).toFixed(1)+","+(yy+Math.sin(a)*d).toFixed(1); }).join(" ");
+      o+=`<polygon class="shard" points="${pts}" fill="#fff" fill-opacity="${(0.32+hrand(key+"o"+k)*0.4).toFixed(2)}" stroke="#fff" stroke-opacity=".5" stroke-width=".4"/>`; k++; } }
+  return `<g class="crush" style="--d:.8s">${o}</g>`;
+}
 function citrusCol(t){ return /vert/.test(t)?"#9CCB4A":/orange/.test(t)?"#F29A30":/pamplemousse/.test(t)?"#F2A38A":"#F2D84A"; }
 function garnishSVG(r, sh, g){
   const t=(r.gar||"").toLowerCase().split(/ ou |, et une| si tu/)[0]; if(!t||/^aucune|^la mousse/.test(t)) return "";
@@ -2954,14 +2986,15 @@ function glassSVGRaw(r, opt={}){
   if(foam) s+=`<rect x="-40" y="${sh.y-1.5}" width="144" height="5.5" fill="#FBF6EA" opacity=".94"/>`;
   if(cream) s+=`<rect x="-40" y="${sh.y-1}" width="144" height="8" fill="#FBF6EC"/>`;
   s+=`</g><g class="ice">`;
-  const ice=r.ice; let cubes=sh.ice&&sh.ice[ice==="big"?"big":"cubes"];
-  if(!cubes&&(ice==="cubes"||ice==="big")){ // placement générique pour les verres sans positions prévues
+  const ice=r.ice; let cubes=ice==="big"?null:(sh.ice&&sh.ice.cubes);
+  if(ice==="big") s+=bigIceSVG(sh,g);
+  if(!cubes&&ice==="cubes"){ // placement générique pour les verres sans positions prévues
     const [L,R,Y]=sh.rim, w=R-L, top=Math.max(Y+3,sh.y-2), h=sh.bot-top, cx=(L+R)/2;
     if(ice==="big"){ const s=Math.max(8,Math.min(w*0.55,h*0.8)), hh=g==="highball"?Math.min(h*0.72,s*2.6):s; cubes=[[cx-s/2,Math.min(sh.bot-hh-1.5,top+h*0.1),s,hh,-3]]; }
     else { const s=Math.max(6,Math.min(w*0.32,h*0.45)); cubes=[[cx-s*1.05,top+h*0.12,s,s*0.92,-9],[cx+s*0.05,top+h*0.2,s,s*0.92,10]]; if(h>s*2.2) cubes.push([cx-s/2,top+h*0.5,s*0.95,s*0.9,4]); }
   }
-  if((ice==="cubes"||ice==="big")&&cubes) cubes.forEach(([x,y,w,h,a],k)=>{ s+=`<g class="cube" style="--d:${(0.72+k*0.09).toFixed(2)}s;--b:${(k*0.7).toFixed(1)}s"><g transform="rotate(${a} ${x+w/2} ${y+h/2})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)*0.24}" fill="#fff" fill-opacity=".26" stroke="#fff" stroke-opacity=".62" stroke-width="1"/><path d="M${x+2.5} ${y+h*0.35}V${y+2.5}H${x+w*0.45}" stroke="#fff" stroke-opacity=".75" stroke-width="1.1" fill="none" stroke-linecap="round"/></g></g>`; });
-  else if(ice==="pilee"){ for(let k=0;k<24;k++){ const x=12+hrand(r.id+k)*40, y=sh.y+2+hrand(k+r.id)*46; s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.5+hrand("z"+k)*2.1).toFixed(1)}" fill="#fff" fill-opacity=".4"/>`; } }
+  if(ice==="cubes"&&cubes) cubes.forEach(([x,y,w,h,a],k)=>{ s+=`<g class="cube" style="--d:${(0.72+k*0.09).toFixed(2)}s;--b:${(k*0.7).toFixed(1)}s"><g transform="rotate(${a} ${x+w/2} ${y+h/2})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)*0.24}" fill="#fff" fill-opacity=".26" stroke="#fff" stroke-opacity=".62" stroke-width="1"/><path d="M${x+2.5} ${y+h*0.35}V${y+2.5}H${x+w*0.45}" stroke="#fff" stroke-opacity=".75" stroke-width="1.1" fill="none" stroke-linecap="round"/></g></g>`; });
+  else if(ice==="pilee") s+=crushedIceSVG(sh,g,String(r.id||"x"));
   s+=`</g><g class="fz">`;
   if(fizz){ for(let k=0;k<9;k++){ const x=(sh.rim[0]+5)+hrand("b"+k+r.id)*(sh.rim[1]-sh.rim[0]-10), y=sh.y+5+hrand("y"+k+r.id)*Math.max(10,(sh.bot-sh.y-8)); s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r=".9" fill="#fff" opacity=".8"/>`; } }
   const straw=(g==="highball"&&(r.ice==="pilee"||r.fam==="tiki"))||/paille/i.test((r.garList||[r.gar||""]).join(" "));
@@ -3380,9 +3413,6 @@ function vBar(){
   let o=nav("Mon bar",`<button class="icon-btn" data-a="addsheet" aria-label="Ajouter">${IC.plus}</button>`)+`<div class="content"><h1 class="lt">Mon bar</h1>`;
   if(!ids.length){ o+=`<div class="empty">${IC.bottle}<b>Ton bar est vide</b>Ajoute tes bouteilles et tes softs. Sucre, œufs, agrumes, crème et herbes fraîches sont déjà considérés comme disponibles.</div><div class="btn-row"><button class="btn" data-a="quickadd">Ajout rapide</button></div><div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">Parcourir tous les ingrédients</button></div>`; return o+`</div>`; }
   o+=`<div class="stat-grid" style="grid-template-columns:1fr 1fr"><div class="stat"><b id="st-b">${barCount()}</b><span>bouteilles ouvertes</span></div><div class="stat t"><b id="st-m">${makeable()}</b><span>cocktails faisables</span></div></div>${hasPrices()?`<div class="gf" style="margin-top:10px">Valeur estimée de ton bar : <b style="color:var(--label)">${chf(barValue())}</b>, d’après les prix et niveaux renseignés.</div>`:`<div class="gf" style="margin-top:10px">Astuce : renseigne le prix d’une bouteille dans sa fiche pour voir le coût de chaque verre.</div>`}<div class="sp16"></div>`;
-  o+=`<div class="seg" data-k="barview" style="margin-bottom:12px">${[["list","Liste"],["shelf","Étagère"],["low","Presque vides"]].map(([k,n])=>`<button class="${(S.settings.barView||"list")===k?"on":""}" data-a="barview" data-v="${k}">${n}</button>`).join("")}</div>`;
-  if(S.settings.barView==="low") return o+lowView(ids)+`<div class="sp24"></div></div>`;
-  if(S.settings.barView==="shelf") return o+shelfView(ids)+`<div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">${IC.plus}Ajouter des ingrédients</button></div><div class="sp24"></div></div>`;
   o+=segChips(BF,"bf",true);
   const inSeg=id=>!BF||segOf(id)===BF;
   const out=ids.filter(id=>tracked(id)&&S.stock[id]===0&&inSeg(id));
@@ -4587,8 +4617,7 @@ Object.assign(ACT,{
   city:(d)=>citySheet(+d.i),
   lineage:(d)=>{ TREE_I=+d.i; renderView("cocktails"); },
   radpreset:(d)=>{ RAD=d.v.split(",").map(Number); renderView("cocktails"); },
-  radmine:()=>{ const tv=tasteVector(); RAD=(tv&&tv.liked?tv.liked:avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); },
-  barview:(d)=>{ S.settings.barView=d.v; save(); renderView("bar"); }
+  radmine:()=>{ const tv=tasteVector(); RAD=(tv&&tv.liked?tv.liked:avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); }
 });
 // ================= DÉFIS DU LABO =================
 function weekKey(){ const d=new Date(); d.setHours(0,0,0,0); const mon=new Date(d); mon.setDate(d.getDate()-((d.getDay()+6)%7)); return Math.floor(mon.getTime()/(7*864e5)); }
@@ -4769,7 +4798,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.41";
+const APP_VERSION="1.42";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -4911,7 +4940,7 @@ function perishing(r){ const T=S.opened||{}, now=Date.now(); let best=null; for(
 (function(){ const W=k=>{ const g=ACT[k]; if(!g) return; ACT[k]=(d,t)=>{ const had=d&&d.id&&has(d.id); const r=g(d,t); if(d&&d.id&&!had&&has(d.id)) { markBought(d.id); save(); } return r; }; }; ["toggle","addtoggle","pickit","refill","setlvl","lvl"].forEach(W); })();
 const _reasons=reasons; reasons=function(r){ const rt=S.ratings[r.id]; if(!(rt>=4)){ const p=perishing(r); if(p){ const n=lc(shortN(p[0])); return "Pour finir "+(/^[aeiouyéèêàâîïôœ]/i.test(n)?"ton ":FEM.test(n)?"ta ":"ton ")+n+" ouvert"+(FEM.test(n)?"e":"")+" "+p[1]; } } return _reasons(r); };
 // (shelfView : remplacée plus loin, voir v125.js)
-Object.assign(ACT,{ shelfpick:(d,t)=>{ if(t){ t.classList.add("lift"); } if(typeof SND!=="undefined") SND.pop(0.9); setTimeout(()=>{ if(t) t.classList.remove("lift"); ingSheet(d.id); },170); } });
+// (1.42 : shelfpick retiré avec l'étagère)
 
 // ---------- Débouchage détecté automatiquement ----------
 function markOpened(id,silent){ S.opened=S.opened||{}; S.opened[id]=Date.now(); if(!silent){ const n=lc(shortN(id)), f=FEM.test(n); toast("Nouvelle bouteille "+de(n).replace(/^de /,"de ")+" débouchée : à finir dans les "+(PERISH[id][1]+1)+" jours pour garder les bulles"); } }
@@ -5338,22 +5367,8 @@ settingsSheet=function(){
     return {title:"Paramètres",right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,body:b};
   });
 };
-// ================= 1.27 : étagère, accueil du matin =================
-// ---------- Étagère : raccourcis de rayon, indication claire pour les basiques/softs, effet de profondeur ----------
-function shelfView(ids){
-  const segs=SEGS.filter(([k])=>k!=="add"), LV=["Vide","¼","½","¾","Pleine"];
-  const present=segs.filter(([sg])=>ids.some(id=>segOf(id)===sg));
-  const tot=ids.length, empty=ids.filter(id=>tracked(id)&&S.stock[id]===0).length;
-  let o=`<div class="bar2"><div class="b2-glow"></div><div class="b2-head"><b>${barCount()} bouteille${barCount()>1?"s":""} ouverte${barCount()>1?"s":""}</b>${empty?`<span class="b2-warn">${empty} à racheter</span>`:""}</div>`;
-  if(present.length>1) o+=`<div class="b2-jump">${present.map(([sg,n])=>`<button data-a="shelfjump" data-sg="${sg}"><i style="background:${SEGCOL[sg]}"></i>${esc(n)}</button>`).join("")}</div>`;
-  let k=0;
-  present.forEach(([sg,n])=>{ const L=ids.filter(id=>segOf(id)===sg).sort((a,b)=>(S.stock[b]>0)-(S.stock[a]>0)||ING[a].n.localeCompare(ING[b].n,"fr"));
-    o+=`<div class="b2-shelf" id="b2-sg-${sg}"><div class="b2-lab">${esc(n)}<i>${L.length}</i></div><div class="b2-row">${L.map(id=>{ const tr=tracked(id), v=S.stock[id], lv=tr?v:(v===1?4:0), idx=k++;
-      const tag= tr? `<span class="b2-l l${lv}">${LV[lv]}</span>` : `<span class="b2-l ${v===1?"l4":"l0"}">${v===1?"En stock":"À racheter"}</span>`;
-      return `<button class="b2-b ${lv===0?"vide":""}" data-a="shelfpick" data-id="${id}" style="--i:${idx};--d:${(idx%9)*0.7}s"><span class="b2-svg">${bottleSVG(id,lv,false,FX("live")?((idx%9)*0.8).toFixed(1):0)}</span><span class="b2-tag"><span class="b2-n">${esc(shortN(id))}</span>${tag}</span></button>`; }).join("")}</div><div class="b2-board"><i></i></div></div>`; });
-  return o+`</div>`;
-}
-Object.assign(ACT,{ shelfjump:(d)=>{ const el=document.getElementById("b2-sg-"+d.sg); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); } });
+// ================= 1.27 : accueil du matin (l'étagère a été retirée en 1.42) =================
+// (1.42 : l'étagère du bar a été retirée)
 
 // ---------- Accueil du matin : pas de propositions de cocktails ----------
 // Le matin n'est pas vraiment l'heure de l'apéro : la carrousel « Aussi pour toi » ne s'affiche pas dans ce cas.
@@ -5803,7 +5818,8 @@ const recOpen=o=>{ o.body=o.body
 // Avant : en verre « choisi par le barman », mettre des glaçons gardait la coupe (11,7 cl utiles une fois la glace
 // déduite) et le troisième ingrédient était refusé (« Plus de place dans ce verre ! »). Désormais, tant que tu n'as pas
 // choisi le verre toi-même, le barman prend un verre qui accepte la glace et qui contient le mélange.
-const ICE_GLASS={long:["highball","vin"],spritz:["vin","highball"],stirred:["rocks","highball"],sour:["rocks","highball"],cremeux:["rocks","highball"]};
+// (1.42) seulement des verres que le score du labo juge bons pour le style (glassOk de labScore)
+const ICE_GLASS={long:["highball","vin"],spritz:["vin","highball"],stirred:["rocks"],sour:["rocks"],cremeux:["rocks"]};
 { const _lg=labGlass;
   labGlass=function(){ const r=_lg(), M=mixState(); if(M.g||M.t==="shot") return r;
     const items=mixItems(), st=items.length?labStyle(items,M.m):({long:"long",spritz:"spritz",sec:"stirred"}[M.t]||"sour");
@@ -5837,20 +5853,84 @@ let ICE_DROP=false;
     return r; }; }
 
 // ---------- Bar : une seule vue lisible, une ligne par bouteille ----------
-// Loi de Hick : plus de bascule Liste/Étagère au milieu de l'écran (l'étagère reste à un toucher, en haut à droite) ;
+// Loi de Hick : une seule vue ;
 // chaque bouteille tient sur une ligne : son nom, puis son niveau en clair et la jauge.
-const IC_SHELF=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18M3 11h18"/><path d="M6 11V6.5a1.5 1.5 0 0 1 3 0V11M11 20v-5a1.5 1.5 0 0 1 3 0v5M16 11V8a1.5 1.5 0 0 1 3 0v3"/></svg>`;
-const IC_LIST=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>`;
 stockRow=function(id){
   const i=ING[id], v=S.stock[id];
   if(tracked(id)) return `<div class="row bar-row" id="sr-${id}" style="--inset:58px"><button class="thumb" data-a="ing" data-id="${id}" style="width:30px;height:44px" aria-label="${esc(i.n)}">${bottleSVG(id,v)}</button><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${LVLN[v]}${prepActive(id)?", fait maison":""}</span>${lvlCtl(id,v)}</div>`;
   return `<div class="row bar-row" id="sr-${id}"><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${v===1?"En stock":"À racheter"}</span><button class="switch ${v===1?"on":""}" data-a="toggle" data-id="${id}" aria-label="${esc(i.n)}"></button></div>`;
 };
+// (1.42 : l'étagère et son bouton ont été retirés)
+// ================= ZESTE 1.42 : bar épuré, pictos du labo, Paramètres et À propos, nuit soignée =================
+
+// ---------- Mon bar : une seule ligne en tête, l'inventaire, et le reste dans une section qu'on déplie ----------
+// (l'étagère a été retirée : une seule vue ; l'eau gazeuse est un basique, voir data_more.js)
+if(S.settings&&S.settings.barView&&S.settings.barView!=="list") S.settings.barView="list";
 { const _vb=vBar;
-  vBar=function(){ let h=_vb(); const shelf=S.settings.barView==="shelf";
-    h=h.replace(/<div class="seg" data-k="barview"[^>]*>[\s\S]*?<\/div>/,"");
-    const btn=`<button class="icon-btn" data-a="barview" data-v="${shelf?"list":"shelf"}" aria-label="${shelf?"Voir en liste":"Voir l’étagère"}">${shelf?IC_LIST:IC_SHELF}</button>`;
-    return h.replace('<div class="nb-right">','<div class="nb-right">'+btn); };
+  vBar=function(){ if(S.settings.barView!=="list") S.settings.barView="list"; let h=_vb();
+    // en tête : « 19 cocktails faisables › » seulement (les bouteilles ouvertes se voient dans la liste)
+    h=h.replace(/<div class="bar-head"><div class="bh">[\s\S]*?<\/div>(<button class="bh go"[\s\S]*?<\/button>)<\/div>/,(m,go)=>{ const n=lowCount();
+      return `<div class="bar-head one">${go}</div>${n?`<button class="low-line" data-a="lowsheet"><span class="ol-dot"></span>${n} bouteille${n>1?"s":""} presque vide${n>1?"s":""}${IC.chev}</button>`:""}`; });
+    // basiques et achats malins : une petite section repliée en bas
+    h=h.replace(/<div class="open-links">[\s\S]*?<\/div>(?=<div class="sp24"><\/div>)/,"");
+    const at=h.indexOf('<div class="sp24"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">');
+    if(at>=0&&h.indexOf('class="bar-head one"')>=0){ const nb=BASICS.filter(id=>ING[id]&&!ING[id].al&&has(id)).length, br=bottleRecs();
+      const names=BASICS.filter(id=>ING[id]&&!ING[id].al&&has(id)).slice(0,3).map(id=>shortN(id)).join(", ");
+      const rows=`<button class="row tap" data-a="basics" style="--inset:20px"><div class="grow"><div class="t">Basiques toujours disponibles</div><div class="s">${esc(names)}…</div></div><span class="val">${nb}</span>${IC.chev}</button>`
+        +(br.length?`<button class="row tap" data-a="buysheet" style="--inset:20px"><div class="grow"><div class="t">Achats malins</div><div class="s">${esc(shortN(br[0].id))} : +${br[0].rs.length} cocktail${br[0].rs.length>1?"s":""}</div></div>${IC.chev}</button>`:"");
+      h=h.slice(0,at)+`<details class="bar-more"${BAR_MORE_OPEN?" open":""}><summary>Basiques et idées d’achat${IC.chev}</summary><div class="group">${rows}</div></details>`+h.slice(at); }
+    return h; };
+}
+let BAR_MORE_OPEN=false;
+document.addEventListener("toggle",e=>{ if(e.target&&e.target.classList&&e.target.classList.contains("bar-more")) BAR_MORE_OPEN=e.target.open; },true);
+
+// ---------- Labo : un pictogramme pour les ingrédients frais (comme les décors), une bouteille pour les sirops ----------
+const ING_PICTO={citron:"lemon",citron_vert:"citrus",menthe:"mint",blanc_oeuf:"egg",oeuf:"egg",concombre:"cucumber",basilic:"leaf",cafe:"bean",espresso:"bean"};
+{ const _vc=vCompose;
+  vCompose=function(){ return _vc().replace(/(<button class="shelf[^"]*" data-a="mixpour" data-id="([\w]+)">)<span class="sh-ic" style="background:[^"]*"><\/span>/g,(m,open,id)=>{
+      if(ING[id]&&ING[id].cat==="sirop") return `${open}<span class="sh-b">${bottleSVG(id,4)}</span>`;
+      const ic=ING_PICTO[id]; if(!ic) return m;
+      return `${open}<span class="sh-pic" style="color:${mix(colOf(id),"#1F2A22",0.42)}">${lu(ic)}</span>`; }); };
+}
+
+// ---------- Paramètres : l'essentiel ; ce qui reste utile va dans « À propos » ----------
+{ const strip=(fn,re)=>()=>fn().replace(re,"");
+  SET_GROUPS.look[2]=strip(SET_GROUPS.look[2],/<div class="gf">Le ciel de l’accueil[^<]*<\/div>/);
+  SET_GROUPS.snd[2]=strip(SET_GROUPS.snd[2],/<div class="gf">Glaçons, shaker[^<]*<\/div>/);
+  const reco=SET_GROUPS.reco[2]; SET_GROUPS.reco[2]=()=>{ let b=reco(); const i=b.indexOf('<div class="gh">Ce qui guide'); if(i>=0) b=b.slice(0,i); return b.replace(/<div class="gf">[^<]*<\/div>/,""); };
+  SET_GROUPS.data[2]=strip(SET_GROUPS.data[2],/<div class="gf">Ton bar, tes notes[^<]*<\/div>/);
+}
+{ const _ss=settingsSheet;
+  settingsSheet=function(){ _ss(); const sh=SHEETS[SHEETS.length-1]; if(!sh) return; const r0=sh.render;
+    sh.render=()=>{ const o=r0(); let b=o.body; const toi=b.indexOf('<div class="gh">Toi</div>'); if(toi>0) b=b.slice(toi);
+      b=b.replace(/<div class="gf">Poids et sexe ne servent[^<]*<\/div>/,'<div class="gf">Poids et sexe servent seulement à estimer ton alcoolémie.</div>');
+      const ab=b.indexOf('<div class="gh">À propos</div>'); if(ab>=0) b=b.slice(0,ab);
+      o.body=b+`<div class="sp16"></div><div class="group"><button class="row tap" data-a="about" style="--inset:58px"><span class="set-ic" style="background:var(--tint-bg)">${lu("info")}</span><div class="grow">À propos</div>${IC.chev}</button></div>`;
+      return o; };
+    paintSheet(sh); };
+}
+function aboutBody(){
+  const n=RECS.filter(r=>!r.mine).length, na=RECS.filter(r=>r.na).length, g=(typeof guideHTML==="function"?guideHTML():"");
+  return `<div class="about-hero"><div class="af-logo brand">${zesteMark({label:"Logo Zeste"})}</div><b>Zeste ${APP_VERSION}</b><span>${n} recettes, dont ${na} sans alcool</span></div>`
+    +(g? g.replace('<div class="gh">Ce qui guide tes suggestions</div>','<div class="gh">Comment Zeste te conseille</div>')
+       : `<div class="gh">Comment Zeste te conseille</div><div class="card about-p">Zeste apprend de tes notes et de ce que tu prépares. Note quelques cocktails : tu verras ici ce qui guide ses suggestions.</div>`)
+    +`<div class="gh">Ton alcoolémie</div><div class="card about-p">Une estimation (formule de Widmark) à partir de ton poids, de ton sexe et des verres que tu indiques. Ce n’est jamais une mesure : ne t’y fie pas pour prendre le volant.</div>`
+    +`<div class="gh">Tes données</div><div class="card about-p">Sur claude.ai, ton bar, tes notes et ton historique se synchronisent avec ton compte. Ailleurs, ils restent sur cet appareil : pense à exporter une sauvegarde (Paramètres › Données).</div>`
+    +`<div class="gh">Les recettes</div><div class="card about-p">Les 102 cocktails de la liste officielle de l’IBA sont vérifiés un à un, dosages compris.</div>`
+    +`<div class="about-foot"><span>${esc(COPYRIGHT)}</span><span>À consommer avec modération. Santé !</span></div>`;
+}
+Object.assign(ACT,{ about:()=>subSheet("À propos",aboutBody) });
+// réglages détaillés des animations : sans paragraphe d'introduction
+{ const _fx=fxSheet; fxSheet=function(){ NEXT_SHEET_XFORM=o=>{ o.body=o.body.replace(/<p class="body"[^>]*>Active ou coupe[^<]*<\/p>/,""); return o; }; try{ return _fx(); } finally { NEXT_SHEET_XFORM=null; } }; }
+
+// ---------- Nuit : une vraie lune, quelques étoiles dans le ciel (plus derrière les cartes), plus d'étoile filante ----------
+const MOON_SVG=`<svg viewBox="0 0 40 40" aria-hidden="true"><defs><mask id="zmoon"><rect width="40" height="40" fill="#fff"/><circle cx="27" cy="14" r="13" fill="#000"/></mask></defs><circle cx="20" cy="20" r="14" fill="currentColor" mask="url(#zmoon)"/></svg>`;
+{ const _aa=applyAmbient;
+  applyAmbient=function(){ const r=_aa.apply(this,arguments); const a=document.getElementById("ambient");
+    if(a&&!a.dataset.v142){ a.dataset.v142="1";
+      const st=a.querySelector(".amb-stars"); if(st) st.innerHTML=[...Array(18)].map((_,k)=>{ const big=k%6===0; return `<i style="left:${(4+hrand("nx"+k)*92).toFixed(1)}%;top:${(1+hrand("ny"+k)*9.5).toFixed(1)}%;--s:${big?2.2:(0.9+hrand("ns"+k)*1.1).toFixed(1)}px;--o:${(0.45+hrand("no"+k)*0.5).toFixed(2)};animation-duration:${(4+hrand("nd"+k)*4).toFixed(1)}s;animation-delay:${(-hrand("nl"+k)*6).toFixed(1)}s"></i>`; }).join("");
+      if(!a.querySelector(".amb-moon")){ const m=document.createElement("div"); m.className="amb-moon"; m.innerHTML=MOON_SVG; a.appendChild(m); } }
+    return r; };
 }
 // ================= VERSION FINALE =================
 const FX_LIST=[

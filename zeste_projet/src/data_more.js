@@ -33,7 +33,7 @@ ING_RAW.push(
 ["saumure","Saumure d’olives","frais",0,0,0.3,"h1",{}]
 );
 // Contenu additionnel : considéré comme toujours disponible (réglable dans le profil)
-const BASICS=["citron","citron_vert","sucre","eau","sirop_sucre","sirop_miel","blanc_oeuf","oeuf","creme","lait","menthe","basilic","concombre","cafe","espresso","fleur_oranger","marmelade","worcestershire","tabasco"];
+const BASICS=["citron","citron_vert","sucre","eau","eau_gazeuse","sirop_sucre","sirop_miel","blanc_oeuf","oeuf","creme","lait","menthe","basilic","concombre","cafe","espresso","fleur_oranger","marmelade","worcestershire","tabasco"];
 FAMILIES.shot="Shots";
 GLASSES.shot="un verre à shot";
 

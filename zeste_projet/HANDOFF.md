@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.41**. Chaque mise à jour livrée incrémente : 1.21 → 1.41… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
+- **Numérotation des versions** : la version actuelle est **1.42**. Chaque mise à jour livrée incrémente : 1.21 → 1.42… La constante est `APP_VERSION` dans `src/v117.js`. Le copyright (`COPYRIGHT`, même fichier) affiche déjà l'année en cours automatiquement (`new Date().getFullYear()`) : rien à changer chaque nouvelle année.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.` (constante `COPYRIGHT`, même fichier).
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés.
 
@@ -38,7 +38,7 @@ Autres outils (1.22) : `tests/m6.js` (simulateur réaliste des recommandations, 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js ui_final.js v126.js v130.js
 ```
 
 - **Données** (`data_*.js`) : `ING_RAW` (ingrédients) et `REC_RAW` (recettes) sont des tableaux ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
@@ -347,6 +347,21 @@ Code dans **`src/v141.js`** (après v140, avant `ui_final.js`) :
 - **Messages à jour** : `hideToast()` après un changement de glace ou un versement réussi ; `ACT.mixice` réécrit (le son reste).
 - **Bar (loi de Hick)** : plus de bascule Liste/Étagère au milieu de l'écran, l'étagère est à un toucher via l'icône en haut à droite (`barview`) ; chaque bouteille tient sur **une ligne** (`stockRow` réécrit : nom, niveau en clair « ¾ » à droite en 17 px comme toute valeur à droite, jauge). Le niveau garde la classe `.s` que `patchStock` met à jour.
 - Test : `tests/features/ice_test.js` (glace à moins de 220 px du verre et libellés sur une ligne ; les glaçons tombent ; pas de verre à pied avec des glaçons en automatique ; 3 versements acceptés ; plus de message périmé ; bar une ligne par bouteille, bascule en haut à droite qui ouvre l'étagère). `ia_test`, `hier_test`, `levels_test` adaptés.
+
+### Fait en 1.42 (bar épuré, glace réaliste, pictos, Paramètres et À propos, nuit)
+
+Retour de YaYa : les bouteilles ouvertes n'ont pas besoin d'être en haut du bar ; supprimer l'étagère ; basiques et achats malins dans une petite section déroulante ; l'eau gazeuse toujours disponible ; le gros glaçon et la glace pilée s'affichent mal ; des pictos (pas des pastilles) pour citron, citron vert, menthe, blanc d'œuf ; Paramètres plus simples, textes inutiles à la poubelle, le reste dans un À propos ; la nuit fait cheap.
+
+- **Étagère supprimée** : `shelfView`, `ACT.shelfjump` (v125), `barview` (explore), la bascule et ses icônes (v141), la branche de `vBar` (ui.js), les styles `.bar2`/`.b2-*`. Un ancien `barView:"shelf"` est ramené à « list » (v142).
+- **Bar** (`src/v142.js`, enveloppe de `vBar`) : en tête, seulement « **N** cocktails faisables › » puis, s'il y en a, la ligne orange « N bouteilles presque vides › » (`lowsheet`). Le compteur « bouteilles ouvertes » disparaît (les bouteilles se voient dans la liste). En bas, avant « Ajouter des ingrédients », un `<details class="bar-more">` fermé par défaut, « Basiques et idées d'achat » : « Basiques toujours disponibles » (`basics`, avec le nombre) et « Achats malins » (`buysheet`). L'état ouvert est gardé pendant la session (`BAR_MORE_OPEN`).
+- **Eau gazeuse** : ajoutée à `BASICS` (`data_more.js`), donc `has()` vrai sans stock, absente des listes et des achats malins, désactivable dans la feuille des basiques.
+- **Glace réaliste** (`core.js`, `glassSVGRaw`) : `bigIceSVG` dessine un bloc posé au fond (≈ 74 % de la largeur intérieure du tumbler, une « lance » haute dans le highball) ou une **sphère** dans les verres à pied (coupe, martini, flûte, vin) ; `crushedIceSVG` dessine un amas d'éclats irréguliers (≈ 150 polygones déterministes via `hrand`) calculé dans la forme du verre (`glassHalfW`, `GLASS_BOTW`), avec un voile givré. Animations : le gros glaçon ne flotte plus, la pilée tombe d'un bloc ; tout est coupé par « Réduire les animations ».
+- **Verre automatique** (v141, `ICE_GLASS`) : seulement des verres que `labScore` juge bons pour le style (stirred, sour et crémeux → tumbler).
+- **Pictos du labo** (enveloppe de `vCompose`, `ING_PICTO`) : citron `lemon`, citron vert `citrus`, menthe `mint`, blanc d'œuf et œuf `egg`, concombre, basilic, café ; teinte de l'ingrédient assombrie. Les sirops prennent leur bouteille (`bottleSVG`).
+- **Paramètres** : sans la carte logo du haut ni le pied « Version / Recettes » ; textes retirés (ciel, mode silencieux, explication des styles, intro des « Réglages détaillés », phrase de synchro) ; une ligne « À propos ›».
+- **À propos** (`aboutBody`, `ACT.about`, `subSheet`) : logo, version, nombre de recettes ; « Comment Zeste te conseille » (`guideHTML`, quitte Suggestions) ; alcoolémie (Widmark, jamais une mesure) ; tes données (synchro sur claude.ai via `initRemote`, sinon locales + export) ; recettes (102 IBA vérifiées, `tests/ibacmp.js`) ; copyright et modération.
+- **Nuit** (enveloppe de `applyAmbient`, CSS 1.42) : un croissant de lune net (SVG, 28 px, halo doux) à la place de la tache floue ; 18 étoiles au lieu de 46, seulement au-dessus du titre (masque dégradé), scintillement lent sur l'opacité ; plus d'étoile filante.
+- Test : `tests/features/v142_test.js`. Adaptés : `v127_test` (point 4 : statut du soft dans la liste), `ice_test`, `ia_test` (explication des suggestions dans À propos), `hier_test`, `levels_test` (compteur `#st-m`).
 
 ## 7. Autres chantiers proposés (après la vérification)
 

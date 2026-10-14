@@ -28,7 +28,7 @@ function perishing(r){ const T=S.opened||{}, now=Date.now(); let best=null; for(
 (function(){ const W=k=>{ const g=ACT[k]; if(!g) return; ACT[k]=(d,t)=>{ const had=d&&d.id&&has(d.id); const r=g(d,t); if(d&&d.id&&!had&&has(d.id)) { markBought(d.id); save(); } return r; }; }; ["toggle","addtoggle","pickit","refill","setlvl","lvl"].forEach(W); })();
 const _reasons=reasons; reasons=function(r){ const rt=S.ratings[r.id]; if(!(rt>=4)){ const p=perishing(r); if(p){ const n=lc(shortN(p[0])); return "Pour finir "+(/^[aeiouyéèêàâîïôœ]/i.test(n)?"ton ":FEM.test(n)?"ta ":"ton ")+n+" ouvert"+(FEM.test(n)?"e":"")+" "+p[1]; } } return _reasons(r); };
 // (shelfView : remplacée plus loin, voir v125.js)
-Object.assign(ACT,{ shelfpick:(d,t)=>{ if(t){ t.classList.add("lift"); } if(typeof SND!=="undefined") SND.pop(0.9); setTimeout(()=>{ if(t) t.classList.remove("lift"); ingSheet(d.id); },170); } });
+// (1.42 : shelfpick retiré avec l'étagère)
 
 // ---------- Débouchage détecté automatiquement ----------
 function markOpened(id,silent){ S.opened=S.opened||{}; S.opened[id]=Date.now(); if(!silent){ const n=lc(shortN(id)), f=FEM.test(n); toast("Nouvelle bouteille "+de(n).replace(/^de /,"de ")+" débouchée : à finir dans les "+(PERISH[id][1]+1)+" jours pour garder les bulles"); } }

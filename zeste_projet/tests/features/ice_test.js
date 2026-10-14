@@ -25,13 +25,10 @@ const {chromium}=require('playwright'); const path=require('path');
   await q(()=>ACT.mixice({v:"none"})); await p.waitForTimeout(200);
   const stale=await q(()=>({fits:labFits(S.mix.items), shown:document.getElementById('toast').classList.contains('show')&&/déborde/.test(document.getElementById('toast').textContent)}));
   if(stale.fits&&stale.shown) fail.push('message « ça déborde » resté affiché');
-  // bar : une ligne par bouteille, bascule en haut à droite
+  // bar : une ligne par bouteille, une seule vue (1.42 : plus d'étagère)
   await p.tap('.tabbar button[data-t="bar"]'); await p.waitForTimeout(900);
-  const bar=await q(()=>{ const v=document.querySelector('#v-bar'), rows=[...v.querySelectorAll('.bar-row')]; return {seg:v.querySelectorAll('.content .seg[data-k="barview"]').length, toggle:!!v.querySelector('.nb-right [data-a="barview"]'), rows:rows.length, maxH:Math.max(...rows.map(r=>r.getBoundingClientRect().height)), lvl:rows.filter(r=>r.querySelector('.lvl-txt')).length}; });
-  if(bar.seg||!bar.toggle||!bar.rows||bar.maxH>64||bar.lvl!==bar.rows) fail.push('bar : '+JSON.stringify(bar));
-  await p.tap('#v-bar .nb-right [data-a="barview"]'); await p.waitForTimeout(700);
-  if(await q(()=>S.settings.barView!=="shelf"||!document.querySelector('#v-bar .b2-row'))) fail.push('le bouton étagère ne montre pas l’étagère');
-  await q(()=>ACT.barview({v:"list"})); await p.waitForTimeout(300);
+  const bar=await q(()=>{ const v=document.querySelector('#v-bar'), rows=[...v.querySelectorAll('.bar-row')]; return {seg:v.querySelectorAll('.content .seg[data-k="barview"]').length, toggle:!!v.querySelector('[data-a="barview"]'), rows:rows.length, maxH:Math.max(...rows.map(r=>r.getBoundingClientRect().height)), lvl:rows.filter(r=>r.querySelector('.lvl-txt')).length}; });
+  if(bar.seg||bar.toggle||!bar.rows||bar.maxH>64||bar.lvl!==bar.rows) fail.push('bar : '+JSON.stringify(bar));
   if(errs.length) fail.push('erreurs JS : '+errs.join(' | '));
-  console.log(fail.length?'ÉCHEC glace et bar : '+fail.join(' ; '):'Glace et bar : la glace se choisit sous le verre et y tombe, le verre automatique s’adapte, plus de versement refusé ni de message périmé ; bar en une ligne par bouteille, étagère à un toucher.');
+  console.log(fail.length?'ÉCHEC glace et bar : '+fail.join(' ; '):'Glace et bar : la glace se choisit sous le verre et y tombe, le verre automatique s’adapte, plus de versement refusé ni de message périmé ; bar en une ligne par bouteille, une seule vue.');
   await b.close(); process.exit(fail.length?1:0); })();

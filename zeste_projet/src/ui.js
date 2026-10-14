@@ -208,9 +208,6 @@ function vBar(){
   let o=nav("Mon bar",`<button class="icon-btn" data-a="addsheet" aria-label="Ajouter">${IC.plus}</button>`)+`<div class="content"><h1 class="lt">Mon bar</h1>`;
   if(!ids.length){ o+=`<div class="empty">${IC.bottle}<b>Ton bar est vide</b>Ajoute tes bouteilles et tes softs. Sucre, œufs, agrumes, crème et herbes fraîches sont déjà considérés comme disponibles.</div><div class="btn-row"><button class="btn" data-a="quickadd">Ajout rapide</button></div><div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">Parcourir tous les ingrédients</button></div>`; return o+`</div>`; }
   o+=`<div class="stat-grid" style="grid-template-columns:1fr 1fr"><div class="stat"><b id="st-b">${barCount()}</b><span>bouteilles ouvertes</span></div><div class="stat t"><b id="st-m">${makeable()}</b><span>cocktails faisables</span></div></div>${hasPrices()?`<div class="gf" style="margin-top:10px">Valeur estimée de ton bar : <b style="color:var(--label)">${chf(barValue())}</b>, d’après les prix et niveaux renseignés.</div>`:`<div class="gf" style="margin-top:10px">Astuce : renseigne le prix d’une bouteille dans sa fiche pour voir le coût de chaque verre.</div>`}<div class="sp16"></div>`;
-  o+=`<div class="seg" data-k="barview" style="margin-bottom:12px">${[["list","Liste"],["shelf","Étagère"],["low","Presque vides"]].map(([k,n])=>`<button class="${(S.settings.barView||"list")===k?"on":""}" data-a="barview" data-v="${k}">${n}</button>`).join("")}</div>`;
-  if(S.settings.barView==="low") return o+lowView(ids)+`<div class="sp24"></div></div>`;
-  if(S.settings.barView==="shelf") return o+shelfView(ids)+`<div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">${IC.plus}Ajouter des ingrédients</button></div><div class="sp24"></div></div>`;
   o+=segChips(BF,"bf",true);
   const inSeg=id=>!BF||segOf(id)===BF;
   const out=ids.filter(id=>tracked(id)&&S.stock[id]===0&&inSeg(id));
