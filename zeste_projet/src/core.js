@@ -432,6 +432,26 @@ const GLASS_SHAPES={
   shot:{o:"M21 34H43L40.5 72Q40.2 74.5 37.7 74.5H26.3Q23.8 74.5 23.5 72Z",y:40,rim:[21,43,34],hl:"M24.8 38L26.3 69",bot:72},
   mug:{mug:1}
 };
+// Glace dessinée selon la forme du verre (1.42) : un gros glaçon est un vrai bloc posé au fond (une sphère dans les
+// verres à pied), la glace pilée un amas dense d'éclats qui remplit le verre et bombe un peu au-dessus du liquide.
+const GLASS_BOTW={rocks:17,highball:13,coupe:6,martini:1,flute:3,vin:8,tasse:12,shot:8.5};
+const STEMMED=new Set(["coupe","martini","flute","vin"]);
+function glassHalfW(sh,g,y){ const [L,R,Y]=sh.rim, top=(R-L)/2, bot=GLASS_BOTW[g]!=null?GLASS_BOTW[g]:top*0.8, t=Math.max(0,Math.min(1,(y-Y)/Math.max(1,sh.bot-Y))); return top+(bot-top)*t; }
+function bigIceSVG(sh,g){
+  const [L,R,Y]=sh.rim, cx=(L+R)/2, H=sh.bot-Y;
+  if(STEMMED.has(g)){ const mt=g==="martini", cy=Y+H*(mt?0.33:0.56), rr=Math.max(5,Math.min(glassHalfW(sh,g,cy)*(mt?0.6:0.78),H*(mt?0.28:0.36)));
+    return `<g class="cube big" style="--d:.72s;--b:0s"><circle cx="${cx}" cy="${cy.toFixed(1)}" r="${rr.toFixed(1)}" fill="#fff" fill-opacity=".24" stroke="#fff" stroke-opacity=".75" stroke-width="1.1"/><path d="M${(cx-rr*0.62).toFixed(1)} ${(cy-rr*0.1).toFixed(1)}A${(rr*0.66).toFixed(1)} ${(rr*0.66).toFixed(1)} 0 0 1 ${(cx-rr*0.1).toFixed(1)} ${(cy-rr*0.62).toFixed(1)}" stroke="#fff" stroke-opacity=".9" stroke-width="1.3" fill="none" stroke-linecap="round"/><ellipse cx="${(cx+rr*0.3).toFixed(1)}" cy="${(cy+rr*0.35).toFixed(1)}" rx="${(rr*0.35).toFixed(1)}" ry="${(rr*0.2).toFixed(1)}" fill="#fff" fill-opacity=".12"/></g>`; }
+  const tall=g==="highball", w=Math.max(9,Math.min(glassHalfW(sh,g,sh.bot-4)*2*0.86,H*0.62)), h=tall?Math.min(H*0.74,w*2.4):w, x=cx-w/2, y=sh.bot-h-1.2, rx=(w*0.14).toFixed(1);
+  return `<g class="cube big" style="--d:.72s;--b:0s"><g transform="rotate(-3 ${cx} ${(y+h/2).toFixed(1)})"><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="${rx}" fill="#fff" fill-opacity=".22" stroke="#fff" stroke-opacity=".72" stroke-width="1.1"/><rect x="${(x+1.4).toFixed(1)}" y="${(y+1.4).toFixed(1)}" width="${(w-2.8).toFixed(1)}" height="${(Math.min(h,w)*0.24).toFixed(1)}" rx="${rx}" fill="#fff" fill-opacity=".3"/><rect x="${(x+w*0.7).toFixed(1)}" y="${(y+h*0.3).toFixed(1)}" width="${(w*0.22).toFixed(1)}" height="${(h*0.62).toFixed(1)}" rx="${rx}" fill="#000" fill-opacity=".06"/><path d="M${(x+3).toFixed(1)} ${(y+Math.min(h*0.5,w*0.6)).toFixed(1)}V${(y+3.4).toFixed(1)}H${(x+w*0.5).toFixed(1)}" stroke="#fff" stroke-opacity=".9" stroke-width="1.2" fill="none" stroke-linecap="round"/></g></g>`;
+}
+function crushedIceSVG(sh,g,key){
+  const [L,R,Y]=sh.rim, cx=(L+R)/2, top=Y+(sh.bot-Y)*0.06, bot=sh.bot+1; let o=`<rect x="-40" y="${top.toFixed(1)}" width="144" height="${(bot-top+4).toFixed(1)}" fill="#fff" fill-opacity=".14"/>`, k=0;
+  for(let y=bot-1.6;y>top-1;y-=2.9){ const hw=glassHalfW(sh,g,y), n=Math.max(1,Math.round(hw*2/3.4));
+    for(let j=0;j<n;j++){ const u=hrand(key+"u"+k), v=hrand(key+"v"+k), x=cx-hw+(j+0.2+u*0.6)*(hw*2/n), yy=y-v*1.6, rr=1.5+hrand(key+"r"+k)*1.6, nv=5+Math.floor(hrand(key+"n"+k)*3), a0=hrand(key+"a"+k)*6.28;
+      const pts=[...Array(nv)].map((_,q)=>{ const a=a0+q*6.283/nv, d=rr*(0.62+hrand(key+k+"d"+q)*0.38); return (x+Math.cos(a)*d).toFixed(1)+","+(yy+Math.sin(a)*d).toFixed(1); }).join(" ");
+      o+=`<polygon class="shard" points="${pts}" fill="#fff" fill-opacity="${(0.32+hrand(key+"o"+k)*0.4).toFixed(2)}" stroke="#fff" stroke-opacity=".5" stroke-width=".4"/>`; k++; } }
+  return `<g class="crush" style="--d:.8s">${o}</g>`;
+}
 function citrusCol(t){ return /vert/.test(t)?"#9CCB4A":/orange/.test(t)?"#F29A30":/pamplemousse/.test(t)?"#F2A38A":"#F2D84A"; }
 function garnishSVG(r, sh, g){
   const t=(r.gar||"").toLowerCase().split(/ ou |, et une| si tu/)[0]; if(!t||/^aucune|^la mousse/.test(t)) return "";
@@ -532,14 +552,15 @@ function glassSVGRaw(r, opt={}){
   if(foam) s+=`<rect x="-40" y="${sh.y-1.5}" width="144" height="5.5" fill="#FBF6EA" opacity=".94"/>`;
   if(cream) s+=`<rect x="-40" y="${sh.y-1}" width="144" height="8" fill="#FBF6EC"/>`;
   s+=`</g><g class="ice">`;
-  const ice=r.ice; let cubes=sh.ice&&sh.ice[ice==="big"?"big":"cubes"];
-  if(!cubes&&(ice==="cubes"||ice==="big")){ // placement générique pour les verres sans positions prévues
+  const ice=r.ice; let cubes=ice==="big"?null:(sh.ice&&sh.ice.cubes);
+  if(ice==="big") s+=bigIceSVG(sh,g);
+  if(!cubes&&ice==="cubes"){ // placement générique pour les verres sans positions prévues
     const [L,R,Y]=sh.rim, w=R-L, top=Math.max(Y+3,sh.y-2), h=sh.bot-top, cx=(L+R)/2;
     if(ice==="big"){ const s=Math.max(8,Math.min(w*0.55,h*0.8)), hh=g==="highball"?Math.min(h*0.72,s*2.6):s; cubes=[[cx-s/2,Math.min(sh.bot-hh-1.5,top+h*0.1),s,hh,-3]]; }
     else { const s=Math.max(6,Math.min(w*0.32,h*0.45)); cubes=[[cx-s*1.05,top+h*0.12,s,s*0.92,-9],[cx+s*0.05,top+h*0.2,s,s*0.92,10]]; if(h>s*2.2) cubes.push([cx-s/2,top+h*0.5,s*0.95,s*0.9,4]); }
   }
-  if((ice==="cubes"||ice==="big")&&cubes) cubes.forEach(([x,y,w,h,a],k)=>{ s+=`<g class="cube" style="--d:${(0.72+k*0.09).toFixed(2)}s;--b:${(k*0.7).toFixed(1)}s"><g transform="rotate(${a} ${x+w/2} ${y+h/2})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)*0.24}" fill="#fff" fill-opacity=".26" stroke="#fff" stroke-opacity=".62" stroke-width="1"/><path d="M${x+2.5} ${y+h*0.35}V${y+2.5}H${x+w*0.45}" stroke="#fff" stroke-opacity=".75" stroke-width="1.1" fill="none" stroke-linecap="round"/></g></g>`; });
-  else if(ice==="pilee"){ for(let k=0;k<24;k++){ const x=12+hrand(r.id+k)*40, y=sh.y+2+hrand(k+r.id)*46; s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.5+hrand("z"+k)*2.1).toFixed(1)}" fill="#fff" fill-opacity=".4"/>`; } }
+  if(ice==="cubes"&&cubes) cubes.forEach(([x,y,w,h,a],k)=>{ s+=`<g class="cube" style="--d:${(0.72+k*0.09).toFixed(2)}s;--b:${(k*0.7).toFixed(1)}s"><g transform="rotate(${a} ${x+w/2} ${y+h/2})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)*0.24}" fill="#fff" fill-opacity=".26" stroke="#fff" stroke-opacity=".62" stroke-width="1"/><path d="M${x+2.5} ${y+h*0.35}V${y+2.5}H${x+w*0.45}" stroke="#fff" stroke-opacity=".75" stroke-width="1.1" fill="none" stroke-linecap="round"/></g></g>`; });
+  else if(ice==="pilee") s+=crushedIceSVG(sh,g,String(r.id||"x"));
   s+=`</g><g class="fz">`;
   if(fizz){ for(let k=0;k<9;k++){ const x=(sh.rim[0]+5)+hrand("b"+k+r.id)*(sh.rim[1]-sh.rim[0]-10), y=sh.y+5+hrand("y"+k+r.id)*Math.max(10,(sh.bot-sh.y-8)); s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r=".9" fill="#fff" opacity=".8"/>`; } }
   const straw=(g==="highball"&&(r.ice==="pilee"||r.fam==="tiki"))||/paille/i.test((r.garList||[r.gar||""]).join(" "));

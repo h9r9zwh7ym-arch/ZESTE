@@ -21,10 +21,10 @@ const {chromium}=require('playwright'); const path=require('path');
   const dup=await q(()=>[...document.querySelectorAll('.sheet [data-g="fam"]')].map(b=>b.dataset.k).filter(k=>["bulles","chaud","shot","na"].includes(k)));
   if(dup.length) fail.push('filtres : familles en double '+dup.join(","));
   await q(()=>{ ACT.resetf(); closeAll(); }); await p.waitForTimeout(400);
-  // Bar : Liste et Étagère ; « Presque vides » en ligne qui ouvre la liste
+  // Bar : une seule vue (1.42) ; « Presque vides » en ligne qui ouvre la liste
   await q(()=>switchTab("bar")); await p.waitForTimeout(600);
   const bar=await q(()=>({seg:document.querySelectorAll('#v-bar [data-a="barview"]').length, low:!!document.querySelector('#v-bar [data-a="lowsheet"]'), tip:/Astuce/.test(document.querySelector('#v-bar').textContent)}));
-  if(bar.seg!==1||!bar.low||bar.tip) fail.push('bar : '+JSON.stringify(bar));
+  if(bar.seg||!bar.low||bar.tip) fail.push('bar : '+JSON.stringify(bar));
   await p.click('#v-bar [data-a="lowsheet"]'); await p.waitForTimeout(500);
   if(!await q(()=>document.querySelectorAll('.sheet .low-row').length)) fail.push('bar : « Presque vides » vide'); await q(()=>closeAll()); await p.waitForTimeout(400);
   // Labo : Composer | Fait maison (préparations en cours et recettes réunies), défis sous l'atelier
@@ -40,8 +40,9 @@ const {chromium}=require('playwright'); const path=require('path');
   if(pr.guide||!pr.recap) fail.push('profil : '+JSON.stringify(pr));
   await q(()=>{ settingsSheet(); }); await p.waitForTimeout(500);
   if(await q(()=>!!document.querySelector('.sheet [data-a="basics"]'))) fail.push('réglages : « Contenu additionnel » en double avec le Bar');
-  await q(()=>ACT.setgroup({g:"reco"})); await p.waitForTimeout(500);
-  if(!await q(()=>/Ce qui guide tes suggestions/.test(document.querySelector('.sheet:last-of-type').textContent))) fail.push('Suggestions : explication absente');
+  // (1.42) l'explication des suggestions est dans Paramètres › À propos
+  await q(()=>ACT.about()); await p.waitForTimeout(500);
+  if(!await q(()=>/Comment Zeste te conseille[\s\S]*Appris grâce à/.test(document.querySelector('.sheet:last-of-type').textContent))) fail.push('À propos : explication des suggestions absente');
   await q(()=>closeAll()); await p.waitForTimeout(400);
   // Fiche recette : ingrédients, préparation, puis ton avis ; la garniture n'est pas répétée
   await q(()=>recSheet("negroni")); await p.waitForTimeout(700);
@@ -49,5 +50,5 @@ const {chromium}=require('playwright'); const path=require('path');
   const ix=k=>rs.hs.indexOf(k);
   if(!(ix("Ingrédients")<ix("Préparation")&&ix("Préparation")<ix("Ton avis"))||ix("Ma note perso")>=0||rs.gar!==1) fail.push('fiche recette : '+JSON.stringify(rs));
   if(errs.length) fail.push('erreurs JS : '+errs.join(' | '));
-  console.log(fail.length?'ÉCHEC organisation : '+fail.join(' ; '):'Organisation : un rôle par onglet, sans alcool en filtre, Bar Liste/Étagère + Presque vides, Labo Composer/Fait maison, récaps au Profil, explication des suggestions dans les réglages, fiche recette dans l’ordre d’usage.');
+  console.log(fail.length?'ÉCHEC organisation : '+fail.join(' ; '):'Organisation : un rôle par onglet, sans alcool en filtre, Bar en une vue + Presque vides, Labo Composer/Fait maison, récaps au Profil, explication des suggestions dans À propos, fiche recette dans l’ordre d’usage.');
   await b.close(); process.exit(fail.length?1:0); })();

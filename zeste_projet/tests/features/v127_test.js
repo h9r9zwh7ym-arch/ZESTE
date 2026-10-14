@@ -29,13 +29,12 @@ const {chromium}=require('playwright'),path=require('path');
   const order=await p.evaluate(()=>{ const row=document.querySelector('#bac-card .bac-row'); return row?[...row.children].map(c=>c.className):null; });
   if(!order || !/bac-add/.test(order[0]||'')) out.push('3) Le bouton + n’est pas le premier élément de la bulle (ordre observé : '+JSON.stringify(order)+').');
 
-  // 4) l'étagère : raccourcis de rayon présents, et les softs affichent un statut clair
+  // 4) (1.42 : l'étagère est retirée) les softs affichent un statut clair dans la liste, même avec un ancien réglage « étagère »
   await p.evaluate(()=>{ closeAll(); S.stock={gin:4,tonic:1,sucre:1}; S.settings.barView='shelf'; switchTab('bar'); dirty.bar=1; renderView('bar'); });
   await p.waitForTimeout(300);
-  const jumps=await p.evaluate(()=>[...document.querySelectorAll('.b2-jump button')].length);
-  const softTag=await p.evaluate(()=>{ const b=[...document.querySelectorAll('.b2-b')].find(x=>x.dataset.id==='tonic'); return b&&b.querySelector('.b2-l')&&b.querySelector('.b2-l').textContent; });
-  if(!(jumps>=1)) out.push('4) Aucun raccourci de rayon dans l’étagère.');
-  if(softTag!=='En stock') out.push('4) Le statut du soft ("tonic") dans l’étagère n’est pas clair (obtenu : '+softTag+').');
+  const softTag=await p.evaluate(()=>{ const r=document.getElementById('sr-tonic'); return r&&r.querySelector('.lvl-txt')&&r.querySelector('.lvl-txt').textContent; });
+  if(await p.evaluate(()=>!!document.querySelector('.b2-row,.b2-b'))) out.push('4) L’étagère est encore affichée.');
+  if(softTag!=='En stock') out.push('4) Le statut du soft ("tonic") n’est pas clair (obtenu : '+softTag+').');
 
   // 5) trophées à paliers : présents dans le profil, avec le bon libellé de palier
   await p.evaluate(()=>{ closeAll(); S.hist=Array.from({length:12},(_,i)=>({id:'negroni',t:Date.now()-i*36e5})); checkTrophies(); switchTab('profil'); dirty.profil=1; renderView('profil'); });
