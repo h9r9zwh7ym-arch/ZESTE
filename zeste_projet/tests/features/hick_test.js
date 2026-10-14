@@ -15,7 +15,9 @@ const {chromium}=require('playwright'); const path=require('path');
   const top='.sheet:last-of-type .sheet-body';
   const budget=async(n,sel,max)=>{ const c=await choices(sel); if(c<0||c>max) fail.push(`${n} : ${c} choix (budget ${max})`); return c; };
   const res={};
-  for(const t of ["today","bar","labo","profil"]){ await p.evaluate(t=>switchTab(t),t); await p.waitForTimeout(900); res[t]=await budget(t,'#v-'+t,{today:32,bar:45,labo:58,profil:32}[t]); }
+  for(const t of ["today","bar","labo","profil"]){ await p.evaluate(t=>switchTab(t),t); await p.waitForTimeout(900); res[t]=await budget(t,'#v-'+t,{today:36,bar:45,labo:58,profil:32}[t]); }
+  // (1.43) accueil 32 → 36 : depuis que l'eau gazeuse est un basique (1.42), le carrousel « Sans alcool » (4 cartes + « Tout voir »)
+  // apparaît pour ce profil l'après-midi ; à la même heure, la 1.41 comptait 30 choix et la 1.43 en compte 35.
   // Profil : trophées en résumé (6 au plus) puis la collection complète en feuille ; listes de 3 qui se déplient
   const prof=await p.evaluate(()=>({tro:document.querySelectorAll('#v-profil .trophies .trophy').length, best:document.querySelectorAll('#v-profil .group .row.tap[data-a="rec"]').length, more:document.querySelectorAll('#v-profil [data-a="more"]').length, guide:!!document.querySelector('#v-profil .gd-more[hidden]')}));
   if(prof.tro>6) fail.push('profil : '+prof.tro+' trophées affichés au lieu d’un résumé');
