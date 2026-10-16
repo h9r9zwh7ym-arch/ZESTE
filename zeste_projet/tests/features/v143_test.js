@@ -53,6 +53,8 @@ const BIG={gin:3,campari:2,vermouth_rouge:1,vermouth_dry:2,rhum_blanc:1,rhum_amb
     await p.tap('#v-bar .cat-h.fold[data-k="Spiritueux"]'); await p.waitForTimeout(500);
     let s=await q(()=>{ const h=document.querySelector('#v-bar .cat-h.fold[data-k="Spiritueux"]'), g=h.nextElementSibling; return {exp:h.getAttribute('aria-expanded'), hidden:getComputedStyle(g).display==="none", gin:!!document.getElementById('sr-gin').getClientRects().length, saved:S.settings.barFold.Spiritueux}; });
     if(s.exp!=="false"||!s.hidden||s.gin||s.saved!==1) fail.push('replier : '+JSON.stringify(s));
+    // (1.52) attendre que le repli soit écrit avant de recharger (course du navigateur de test, piège 17 du HANDOFF)
+    await p.waitForFunction(()=>/"barFold":\{[^}]*Spiritueux/.test(localStorage.getItem('zeste.v1')||''),null,{timeout:5000}).catch(()=>{}); await p.waitForTimeout(400);
     await p.reload(); await p.waitForTimeout(2500); await q(()=>switchTab("bar")); await p.waitForTimeout(800);
     if(!await q(()=>{ const h=document.querySelector('#v-bar .cat-h.fold[data-k="Spiritueux"]'); return h&&h.classList.contains('shut')&&getComputedStyle(h.nextElementSibling).display==="none"; })) fail.push('le repli ne survit pas au rechargement');
     await p.tap('#v-bar .cat-h.fold[data-k="Spiritueux"]'); await p.waitForTimeout(500);
