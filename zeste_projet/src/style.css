@@ -1856,3 +1856,22 @@ details.bar-more[open]>summary .chev,.cat-h.fold:not(.shut) .fold-n .chev{transf
 /* barre Servir : fond dégradé et flouté derrière */
 #v-labo .lab-servebar{bottom:-40px;margin:var(--z-s2) 0 -32px;padding:var(--z-s3) var(--z-s2) 48px;background:linear-gradient(to bottom,transparent,var(--bg) 55%);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);mask-image:linear-gradient(to bottom,transparent 0,#000 18px)}
 #v-labo .content{padding-bottom:calc(var(--z-s4) * 4)}
+/* ================= 1.50 : Labo (Composer) ================= */
+body.lab-serving #toast{bottom:calc(env(safe-area-inset-bottom,0px) + 84px + var(--serve-h,0px) + 12px)}
+.goal.bad{background:color-mix(in srgb,var(--z-err) 16%,transparent);color:var(--z-err)}
+.goal.bad i{background:var(--z-err);color:#fff}
+#v-labo .goal i{font-weight:800}
+.lab-legend{display:inline-flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}
+.lab-legice svg{width:14px;height:14px;display:block;color:var(--label2)}
+/* steppers : largeur minimale fixe, une seule ligne ; le nom se tronque */
+#v-labo .mix-row .stepper{width:auto;min-width:132px;flex:none}
+#v-labo .mix-row .stepper span{white-space:nowrap;min-width:56px;padding:0 2px;font-size:calc(14rem / 17)}
+#v-labo .mix-row .n{min-width:0;flex:1 1 auto}
+/* décor : tuiles de même taille, icônes alignées, nom sur deux lignes réservées */
+#v-labo .lab-gars .lgar{height:92px;justify-content:flex-start}
+#v-labo .lab-gars .lgar span{height:30px;width:30px;flex:none}
+#v-labo .lab-gars .lgar b{height:2.3em;display:flex;align-items:flex-start;justify-content:center;overflow:hidden}
+#v-labo .lab-gars+.more-btn{display:none}
+/* résumé de Personnaliser : sans troncature */
+details.lab-perso .lp-s{white-space:normal;overflow:visible;text-overflow:clip}
+#v-labo .lab-goals.warn .goal.bad{box-shadow:inset 0 0 0 1px var(--z-err);color:var(--z-err)}#v-labo .lab-goals.warn .goal.bad i{background:var(--z-err);color:#fff}

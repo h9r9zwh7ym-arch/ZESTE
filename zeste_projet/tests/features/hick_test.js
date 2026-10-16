@@ -10,7 +10,7 @@ const {chromium}=require('playwright'); const path=require('path');
       stock:{gin:3,campari:2,vermouth_rouge:2,rhum_blanc:2,tequila:2,triple_sec:1,citron_vert:2,citron:2,sirop_sucre:1,angostura:1,whisky_bourbon:2,prosecco:1,aperol:2,eau_gazeuse:2,tonic:2,vodka:2},
       ratings:{negroni:5,aperol_spritz:4,daiquiri:5,gin_tonic:4,margarita:3,mojito:4,old_fashioned:5,whiskey_sour:4},hist})); });
   await p.goto('file://'+path.join(__dirname,'../../dist/zeste.html')); await p.waitForTimeout(3000);
-  const choices=sel=>p.evaluate(sel=>{ const R=document.querySelector(sel); if(!R) return -1; const vis=e=>{ const r=e.getBoundingClientRect(); return r.width>0&&r.height>0&&!e.closest('[hidden]'); };
+  const choices=sel=>p.evaluate(sel=>{ const R=document.querySelector(sel); if(!R) return -1; const vis=e=>{ const r=e.getBoundingClientRect(); return r.width>0&&r.height>0&&!e.closest('[hidden]')&&!(e.closest('details:not([open])')&&!e.closest('summary')); }; // (1.50) le contenu d'un <details> fermé n'est pas à l'écran
     const els=[...R.querySelectorAll('button, [data-a], input, select, [role=button]')].filter(vis); return els.filter(e=>!els.some(q=>q!==e&&q.contains(e))).length; },sel);
   const top='.sheet:last-of-type .sheet-body';
   const budget=async(n,sel,max)=>{ const c=await choices(sel); if(c<0||c>max) fail.push(`${n} : ${c} choix (budget ${max})`); return c; };

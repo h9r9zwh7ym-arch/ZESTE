@@ -22,7 +22,9 @@ document.addEventListener("toggle",e=>{ const t=e.target; if(!t||!t.classList) r
       const pick=re=>{ const x=h.match(re); return x?x[1].trim():""; };
       const g=pick(/class="lg on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/), gar=(part.match(/class="lgar on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/g)||[]).map(x=>x.match(/<b>([^<]+)<\/b>/)[1]),
         meth=(part.match(/<button class="on" data-a="mm"[^>]*>([^<]+)<\/button>/)||[])[1]||"", sty=(part.match(/<button class="chip on" data-a="mixtype"[^>]*>([^<]+)<\/button>/)||[])[1]||"";
-      const sum=[g,gar.length?gar.join(", "):"Sans décor",meth,sty==="Je ne sais pas"?"Style auto":sty].filter(Boolean).map(esc).join(" · ");
+      // (1.50) seulement ce qui est dans la section, libellés courts pour tenir sur une ligne
+      const SHORT={"Verre à mélange":"Mélange","Cocktail court":"Court","Sec et fort":"Sec","Long drink":"Long","Je ne sais pas":"Style auto","Zeste de citron":"Zeste citron","Zeste d’orange":"Zeste orange"}, sh=x=>SHORT[x]||x;
+      const sum=[gar.length?(gar.length>2?gar.length+" décors":gar.map(sh).join(", ")):"Sans décor",sh(meth),sh(sty)].filter(Boolean).map(esc).join(" · ");
       h=h.slice(0,d0)+`<details class="lab-perso"${LAB_PERSO_OPEN?" open":""}><summary><span class="lp-t">Personnaliser</span><span class="lp-s">${sum}</span>${IC.chev}</summary>${part}</details>`+h.slice(end); }
     // actions : Servir fixé au-dessus des onglets, Recommencer séparé
     h=h.replace('<div class="btn-row"><button class="btn lab-serve','<div class="btn-row lab-servebar"><button class="btn lab-serve');
