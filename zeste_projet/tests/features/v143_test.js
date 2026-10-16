@@ -6,7 +6,7 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
 const BIG={gin:3,campari:2,vermouth_rouge:1,vermouth_dry:2,rhum_blanc:1,rhum_ambre:3,tequila:1,mezcal:2,whisky_bourbon:2,scotch:3,cognac:2,vodka:4,triple_sec:3,aperol:1,chartreuse:2,maraschino:1,amaretto:3,kahlua:2,angostura:2,tonic:1,ginger_beer:1,cola:1};
 (async()=>{ const b=await chromium.launch(); const fail=[]; const errs=[];
   const open=async(stock,extra={})=>{ const p=await b.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true}); p.on('pageerror',e=>errs.push(e.message));
-    await p.addInitScript(([s,x])=>{ if(!localStorage.getItem("zeste.v1")){ /* (1.53) garde sur localStorage : sessionStorage se perd parfois au rechargement en file:// */ localStorage.setItem("zeste.v1",JSON.stringify({v:1,t:1,quizSkip:1,settings:Object.assign({fx:{splash:false},hintSwipe:1},x),stock:s})); } },[stock,extra]);
+    await p.addInitScript(([s,x])=>{ if(!/[?&]r=1/.test(location.search)){ /* (1.54) le rechargement passe par ?r=1 et ne réinitialise jamais : en file://, ni sessionStorage ni localStorage ne sont fiables au moment du script d’amorçage */ localStorage.setItem("zeste.v1",JSON.stringify({v:1,t:1,quizSkip:1,settings:Object.assign({fx:{splash:false},hintSwipe:1},x),stock:s})); } },[stock,extra]);
     await p.goto(APP); await p.waitForTimeout(2500); await p.evaluate(()=>switchTab("bar")); await p.waitForTimeout(900);
     const c=await p.context().newCDPSession(p); const touch=(type,x,y)=>c.send('Input.dispatchTouchEvent',{type,touchPoints:type==="touchEnd"?[]:[{x,y}]});
     const drag=async(id,dx,dy=1,end=true)=>{ const r=await p.evaluate(id=>{ const e=document.getElementById('sr-'+id); e.scrollIntoView({block:"center"}); const b=e.getBoundingClientRect(); return {x:b.right-40,y:b.top+b.height/2}; },id); await p.waitForTimeout(250);
@@ -55,7 +55,7 @@ const BIG={gin:3,campari:2,vermouth_rouge:1,vermouth_dry:2,rhum_blanc:1,rhum_amb
     if(s.exp!=="false"||!s.hidden||s.gin||s.saved!==1) fail.push('replier : '+JSON.stringify(s));
     // (1.52) attendre que le repli soit écrit avant de recharger (course du navigateur de test, piège 17 du HANDOFF)
     await p.waitForFunction(()=>/"barFold":\{[^}]*Spiritueux/.test(localStorage.getItem('zeste.v1')||''),null,{timeout:5000}).catch(()=>{}); await p.waitForTimeout(400);
-    await p.reload(); await p.waitForTimeout(2500); await q(()=>switchTab("bar")); await p.waitForTimeout(800);
+    await p.goto(APP+'?r=1'); await p.waitForTimeout(2500); await q(()=>switchTab("bar")); await p.waitForTimeout(800);
     if(!await q(()=>{ const h=document.querySelector('#v-bar .cat-h.fold[data-k="Spiritueux"]'); return h&&h.classList.contains('shut')&&getComputedStyle(h.nextElementSibling).display==="none"; })) fail.push('le repli ne survit pas au rechargement');
     await p.tap('#v-bar .cat-h.fold[data-k="Spiritueux"]'); await p.waitForTimeout(500);
     if(await q(()=>!document.getElementById('sr-gin').getClientRects().length||!!S.settings.barFold.Spiritueux)) fail.push('déplier ne marche pas');

@@ -1925,6 +1925,42 @@ h2.sh .stepper button::after{content:"";position:absolute;inset:-4px -2px}
 .tile.lite .ts{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:unset}
 .tile.lite{align-self:stretch}
 .tile.lite{display:flex;flex-direction:column;justify-content:flex-start}
+/* ================= 1.54 : Labo, Bar, feuille « Ajouter au bar » ================= */
+/* Servir : texte sur teinte */
+#v-labo .lab-serve,#v-labo .lab-servebar .lab-serve{color:var(--on-tint)}
+#v-labo .lab-serve svg{color:var(--on-tint)}
+/* pastilles d'objectifs : point de 8 px, libellé couleur du texte, fond orange léger, une rangée */
+#v-labo .lab-goals.warn{flex-wrap:nowrap;gap:6px;justify-content:center}
+#v-labo .lab-goals.warn .goal,#v-labo .lab-goals.warn .goal.bad{position:relative;box-shadow:none;background:color-mix(in srgb,var(--z-warn) 10%,transparent);color:var(--label);gap:6px;padding:0 10px;white-space:nowrap;font-size:var(--z-fs-l)}
+#v-labo .lab-goals.warn .goal i{display:none}
+#v-labo .lab-goals.warn .goal::before{content:"";width:8px;height:8px;border-radius:4px;background:var(--z-warn);flex:none}
+#v-labo .lab-goals.warn .goal.bad::before{background:var(--z-err)}
+#v-labo .lab-goals.warn .goal.bad{background:color-mix(in srgb,var(--z-err) 10%,transparent)}
+#v-labo .lab-goals.warn .goal::after{content:"";position:absolute;inset:-8px 0}
+/* conseils */
+.tip-one .tip-bulb{color:var(--label2)}
+.tip-r.tip-one.tip-miss>svg{color:var(--z-warn)}
+.tip-one .tip-b{min-height:44px}
+/* composition : zones tactiles 44 px */
+.stepper button{position:relative}
+.stepper button::after{content:"";position:absolute;inset:-4px -2px}
+#v-labo .mix-row .rm{color:var(--label2);opacity:1}
+/* segments : 44 px de haut au toucher */
+.seg button{position:relative}
+.seg button::after{content:"";position:absolute;inset:-7px 0}
+/* cartes repliables : bords des autres cartes, chevron ⌄ / ⌃ */
+details.lab-perso,details.lab-chal,details.bar-more{border-radius:var(--r-card);box-shadow:var(--shadow);background:var(--bg2)}
+details.bar-more{margin:var(--z-s3) var(--z-side) 0}
+details.bar-more>summary{margin:0;min-height:52px;padding:0 var(--z-s2);font-size:var(--z-fs-b);color:var(--label)}
+details.bar-more>.group{box-shadow:none;margin:0 0 var(--z-s1);background:transparent}
+details.bar-more>summary .chev{transform:rotate(90deg)}
+details.bar-more[open]>summary .chev{transform:rotate(-90deg)}
+/* points de catégorie retirés */
+.cat-h b i,.segchips .chip i{display:none!important}
+/* feuille d'ajout : puce sélectionnée comme les tuiles */
+.segchips .chip.on{background:var(--bg2);color:var(--label);box-shadow:inset 0 0 0 2px var(--z-accent)}
+/* « OK » des en-têtes : zone 44 px, texte aligné sur le retrait des cartes */
+.sheet-head .sr .link{min-width:44px;min-height:44px;display:grid;place-items:center;padding:0 4px 0 10px}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -5011,7 +5047,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.53";
+const APP_VERSION="1.54";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6401,6 +6437,20 @@ function recTitle(body){ const sh=body&&body.closest(".sheet"), h1=body&&body.qu
   st.setAttribute("aria-hidden",String(!on)); }   // caché tant que le grand titre est visible (pas de double lecture)
 document.addEventListener("scroll",e=>{ const t=e.target; if(t&&t.classList&&t.classList.contains("sheet-body")) recTitle(t); },true);
 { const _ps=paintSheet; paintSheet=function(sh){ const r=_ps.apply(this,arguments); try{ recTitle(sh&&sh.el&&sh.el.querySelector(".sheet-body")); }catch(_){} return r; }; }
+// ================= ZESTE 1.54 : Labo — conseils, composition (rendu seulement) =================
+{ const _vc=vCompose;
+  vCompose=function(){ let h=_vc(); const M=mixState();
+    // conseils : « ! » orange seulement pour un ingrédient manquant ; sinon une ampoule grise
+    h=h.replace(/<div class="tip-r tip-one([^"]*)">(<svg[\s\S]*?<\/svg>)([\s\S]*?<\/div>)/g,(m,cls,ic,rest)=>{
+      if(/\bbad\b/.test(cls)) return m;
+      const miss=/data-a="mixfix"/.test(rest);
+      return `<div class="tip-r tip-one${cls}${miss?" tip-miss":""}">${miss?ic:lu("lightbulb","tip-bulb")}${rest}`; });
+    // composition : pas de point de couleur ; l'unité complète (« 4 feuilles ») comme dans la fiche recette
+    h=h.replace(/(<div class="n">)<i style="[^"]*"><\/i>/g,"$1");
+    h=h.replace(/(<button data-a="mixq" data-k="(\d+)" data-d="-1"[^>]*>[\s\S]*?<\/button><span>)([^<]*)(<\/span>)/g,(m,a,k,t,b)=>{
+      const it=M.items[+k]; if(!it) return m; const u=unitOf(it.id); return u==="ml"? m : a+esc(fmtQ({q:it.q,u}))+b; });
+    return h; };
+}
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
