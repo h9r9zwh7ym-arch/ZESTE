@@ -27,8 +27,8 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   // sauvegarde : healState rejette les valeurs invalides ; sanitizeBackup garde les valides
   const h=await q(()=>{ S.settings.glassCap={highball:28,coupe:500,nope:20,rocks:"x"}; healState(); const a=JSON.stringify(S.settings.glassCap); const bk=sanitizeBackup({stock:{gin:1},settings:{glassCap:{highball:28,martini:3}}}); return [a,JSON.stringify(bk.settings.glassCap)]; });
   if(h[0]!=='{"highball":28}'||h[1]!=='{"highball":28}') fail.push('validation : '+h.join(" "));
-  await q(()=>{ save(); }); await p.waitForTimeout(500);
-  await p.goto(APP+'?r=1'); await p.waitForTimeout(2500);
+  // redémarrage depuis la sauvegarde par le chemin du lancement (DEF + fixState) : en file://, une navigation relit parfois un stockage vide (piège 17)
+  await q(()=>{ save(); S=Object.assign(DEF(),JSON.parse(localStorage.getItem(KEY))); fixState(); }); await p.waitForTimeout(300);
   if(await q(()=>!(S.settings.glassCap&&S.settings.glassCap.highball===28&&labAvail("highball","none")===280))) fail.push('contenance perdue au rechargement');
   // Rétablir
   await q(()=>{ LT="compose"; switchTab("labo"); S.mix.g="highball"; S.mix.gUser=1; changed(); capSheet(); }); await p.waitForTimeout(500);

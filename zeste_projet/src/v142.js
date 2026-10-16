@@ -7,7 +7,7 @@ if(S.settings&&S.settings.barView&&S.settings.barView!=="list") S.settings.barVi
   vBar=function(){ if(S.settings.barView!=="list") S.settings.barView="list"; let h=_vb();
     // en tête : « 19 cocktails faisables › » seulement (les bouteilles ouvertes se voient dans la liste)
     h=h.replace(/<div class="bar-head"><div class="bh">[\s\S]*?<\/div>(<button class="bh go"[\s\S]*?<\/button>)<\/div>/,(m,go)=>{ const n=lowCount();
-      return `<div class="bar-head one">${go}</div>${n?`<button class="low-line" data-a="lowsheet"><span class="ol-dot"></span>${n} bouteille${n>1?"s":""} presque vide${n>1?"s":""}${IC.chev}</button>`:""}`; });
+      return `<div class="bar-head one">${go}</div>${n?`<button class="low-line" data-a="lowsheet"><span class="ol-dot"></span>${n} bouteille${n>1?"s":""} bientôt à racheter${IC.chev}</button>`:""}`; });
     // basiques et achats malins : une petite section repliée en bas
     h=h.replace(/<div class="open-links">[\s\S]*?<\/div>(?=<div class="sp24"><\/div>)/,"");
     const at=h.indexOf('<div class="sp24"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">');

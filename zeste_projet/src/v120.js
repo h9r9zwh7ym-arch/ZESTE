@@ -161,7 +161,7 @@ function lowView(ids){
   let o="";
   [0,1,2].forEach(lv=>{ const G=L.filter(id=>S.stock[id]===lv); if(!G.length) return;
     o+=`<div class="list-h"><b>${LV[lv]}</b><span>${G.length}</span></div><div class="group">${G.map(id=>`<div class="row low-row"><button class="low-b" data-a="ing" data-id="${id}"><span class="low-svg">${bottleSVG(id,lv)}</span><span class="grow"><b>${esc(ING[id].n)}</b><span>${(()=>{ const n=RECS.filter(r=>r.ing.some(i=>i.id===id&&i.r!=="opt")).length; return n+" recette"+(n>1?"s":"")+" l’utilisent"; })()}</span></span></button>${lv===0?`<button class="btn small" data-a="refill" data-id="${id}">Racheté</button>`:`<span class="low-l l${lv}">${["","¼","½"][lv]}</span>`}</div>`).join("")}</div>`; });
-  return o+`<div class="gf">Les bouteilles à moitié pleines ou moins.</div>`;
+  return o; // (1.56) sans phrase en pied : l’en-tête de groupe (« Environ ½ ») suffit
 }
 
 // ---------- 8. Environnement selon l'heure locale de l'appareil ----------

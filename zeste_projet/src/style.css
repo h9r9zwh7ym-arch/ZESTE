@@ -1990,3 +1990,13 @@ body.sheet-open{background:var(--bg)}
 .adj-dots::before{left:33px;right:33px}
 .adj-dots .adj-end{position:absolute;top:50%;transform:translateY(-50%);font-size:var(--z-fs-l);font-weight:600;color:var(--label3);pointer-events:none}
 .adj-dots .adj-end:first-child{left:2px}.adj-dots .adj-end:last-child{right:2px}
+/* ================= 1.56 (C) : Bar et feuilles ================= */
+/* basiques et idées d'achat : une seule carte (en-tête, séparateur, lignes) */
+details.bar-more>.group{margin:0;border-radius:0;box-shadow:none;background:transparent;border-top:.5px solid var(--sep)}
+details.bar-more[open]{padding-bottom:0}
+/* presque vides : le niveau en texte neutre à droite, comme dans la liste du Bar */
+.low-row .low-l{background:none!important;color:var(--label2);font-family:inherit;font-weight:400;font-size:calc(17rem / 17);padding:0 4px;border-radius:0}
+/* Paramètres : « Sexe » sur une ligne, « kg » collé à la valeur */
+.row .seg.sex-seg{margin:0 0 0 auto;flex:none;width:176px}
+#bac-w-set{width:3em!important}
+#bac-w-set+.muted{margin-left:-10px}
