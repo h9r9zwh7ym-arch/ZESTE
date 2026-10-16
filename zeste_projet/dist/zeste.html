@@ -2271,10 +2271,11 @@ const PAIR = {
  brandy:["citron","triple_sec","sirop_miel","pomme","benedictine","angostura","creme_cacao"],
  eaux:["citron","sirop_miel","tonic","pomme","menthe","sirop_sureau"],
  amer:["orange","vermouth_rouge","prosecco","pamplemousse","eau_gazeuse","gin"],
- gingembre:["citron_vert","menthe","angostura","rhum_brun"]
+ gingembre:["citron_vert","menthe","angostura","rhum_brun"],
+ amer_na:["orange","eau_gazeuse","tonic","pamplemousse","citron","sirop_sureau"]
 };
-const SPIRIT_GROUP = {rhum_agricole:"rhum",pflumli:"eaux",abricotine:"eaux",cynar:"amer",rhum_blanc:"rhum",rhum_ambre:"rhum",rhum_jam:"rhum",rhum_brun:"rhum",cachaca:"rhum",gin:"gin",tequila:"agave",mezcal:"agave",bourbon:"whisky",rye:"whisky",scotch:"whisky",islay:"whisky",irish:"whisky",vodka:"vodka",cognac:"brandy",calvados:"brandy",pisco:"brandy",kirsch:"eaux",williamine:"eaux",campari:"amer",aperol:"amer",amaro:"amer",appenzeller:"amer",fernet:"amer",gentiane:"amer",ginger_beer:"gingembre",sirop_gingembre:"gingembre"};
-const ROLE = {citron_vert:"l’acidité vive qui réveille le mélange",citron:"une acidité plus ronde que le citron vert",menthe:"une fraîcheur herbacée",ananas:"du fruit tropical et une belle mousse",angostura:"des épices et de la profondeur, en deux traits",orgeat:"une rondeur d’amande",falernum:"des épices douces et du citron vert",sirop_gingembre:"un piquant chaleureux",creme_coco:"une onctuosité tropicale",espresso:"une amertume torréfiée",triple_sec:"une note d’orange qui fait le lien",tonic:"de l’amertume et des bulles",basilic:"une note verte et poivrée",sirop_sureau:"une note florale alpine",st_germain:"du floral et du litchi",chartreuse:"une complexité herbacée intense",vermouth_dry:"de la sécheresse aromatique",campari:"une amertume d’orange qui structure",sirop_framboise:"du fruit rouge acidulé",orange_bitters:"du zeste d’orange concentré",pamplemousse:"une amertume fruitée",sirop_agave:"une douceur qui prolonge l’agave",ginger_beer:"des bulles et du gingembre",cassis:"du fruit noir profond",soda_pamplemousse:"des bulles acidulées",sirop_miel:"une douceur florale et ronde",vermouth_rouge:"une rondeur épicée",pomme:"du fruit de verger",amaretto:"une amande gourmande",benedictine:"du miel et des plantes",creme_cacao:"du cacao gourmand",orange:"une douceur fruitée",prosecco:"des bulles et de la légèreté",eau_gazeuse:"de la légèreté",gin:"une colonne vertébrale botanique",canneberge:"du fruit rouge acidulé",kahlua:"du café sucré",rhum_brun:"une mélasse profonde"};
+const SPIRIT_GROUP = {rhum_agricole:"rhum",pflumli:"eaux",abricotine:"eaux",cynar:"amer",rhum_blanc:"rhum",rhum_ambre:"rhum",rhum_jam:"rhum",rhum_brun:"rhum",cachaca:"rhum",gin:"gin",tequila:"agave",mezcal:"agave",bourbon:"whisky",rye:"whisky",scotch:"whisky",islay:"whisky",irish:"whisky",vodka:"vodka",cognac:"brandy",calvados:"brandy",pisco:"brandy",kirsch:"eaux",williamine:"eaux",campari:"amer",aperol:"amer",amaro:"amer",appenzeller:"amer",fernet:"amer",gentiane:"amer",ginger_beer:"gingembre",sirop_gingembre:"gingembre",crodino:"amer_na",sanbitter:"amer_na"};
+const ROLE = {crodino:"une amertume douce d’agrumes, sans alcool",sanbitter:"une amertume fruitée, sans alcool",elmer_citro:"des bulles citronnées",gazosa:"des bulles citronnées à la tessinoise",schorle:"de la pomme pétillante",rivella_bleu:"le goût du Rivella, moins sucré",citron_vert:"l’acidité vive qui réveille le mélange",citron:"une acidité plus ronde que le citron vert",menthe:"une fraîcheur herbacée",ananas:"du fruit tropical et une belle mousse",angostura:"des épices et de la profondeur, en deux traits",orgeat:"une rondeur d’amande",falernum:"des épices douces et du citron vert",sirop_gingembre:"un piquant chaleureux",creme_coco:"une onctuosité tropicale",espresso:"une amertume torréfiée",triple_sec:"une note d’orange qui fait le lien",tonic:"de l’amertume et des bulles",basilic:"une note verte et poivrée",sirop_sureau:"une note florale alpine",st_germain:"du floral et du litchi",chartreuse:"une complexité herbacée intense",vermouth_dry:"de la sécheresse aromatique",campari:"une amertume d’orange qui structure",sirop_framboise:"du fruit rouge acidulé",orange_bitters:"du zeste d’orange concentré",pamplemousse:"une amertume fruitée",sirop_agave:"une douceur qui prolonge l’agave",ginger_beer:"des bulles et du gingembre",cassis:"du fruit noir profond",soda_pamplemousse:"des bulles acidulées",sirop_miel:"une douceur florale et ronde",vermouth_rouge:"une rondeur épicée",pomme:"du fruit de verger",amaretto:"une amande gourmande",benedictine:"du miel et des plantes",creme_cacao:"du cacao gourmand",orange:"une douceur fruitée",prosecco:"des bulles et de la légèreté",eau_gazeuse:"de la légèreté",gin:"une colonne vertébrale botanique",canneberge:"du fruit rouge acidulé",kahlua:"du café sucré",rhum_brun:"une mélasse profonde"};
 // ---------- EXTENSION DE LA BASE ----------
 ING_RAW.push(
 ["chartreuse_jaune","Chartreuse jaune","liqueur",40,30,0,"h2l2",{ref:15,col:"#E8D040",tip:"Plus douce, plus miellée et moins forte que la verte. Elle adoucit un cocktail sans perdre la complexité des plantes."}],
@@ -2678,6 +2679,26 @@ REC_RAW.push(
 ["russian_spring_punch","Russian Spring Punch","bulles","shake","highball","cubes","#C84A6A",[["vodka",25],["citron",25],["cassis",15],["sirop_sucre",10],["champagne",90,"ml","top"]],"Mûres, et rondelle de citron (facultative)",{c:1,v:["kir_royal"],h:"Créé dans les années 1980 à Londres par Dick Bradsell, pour une fête où chaque invité apportait son champagne. Il le décrivait comme un Kir royal renforcé, servi sur glace."}],
 ["spicy_fifty","Spicy Fifty","sour","shake","coupe","none","#F0E0B0",[["vodka_vanille",50],["sirop_sureau",15],["citron_vert",15],["sirop_miel",10],["piment",2,"u"]],"Piment rouge",{c:1,h:"Créé par Salvatore Calabrese pour la carte d’ouverture de son bar Fifty, à Londres, en 2005 : vanille, sureau et piment rouge."}],
 ["vento","Ve.N.To","sour","shake","rocks","cubes","#F2E8C0",[["grappa",45],["citron",22.5],["sirop_miel",15],["cordial_camomille",15],["blanc_oeuf",15,"ml","opt"]],"Zeste de citron et raisins blancs",{c:1,n:"Pour le sirop de miel, l’IBA suggère de remplacer l’eau par une infusion de camomille.",h:"Le premier cocktail à la grappa entré dans la liste de l’IBA, en 2020. Créé par les barmen Samuele Ambrosi et Leonardo Veronesi, son nom vient de leurs régions : la Vénétie et le Trentin."}]
+);
+// ---------- SOFTS COURANTS EN SUISSE (1.55) ----------
+// Sucre g/100 ml : Crodino 15 (fiche technique Campari, Crodino Biondo) ; Sanbitter 15,1 (étiquette, REWE 6×98 ml).
+// Valeurs approchées (bases tierces, par 100 g ≈ 100 ml) : Elmer Citro 8,4 (wikifit) ; Gazosa 11 (CodeCheck, Gazosa 1883) ;
+// Schorle de pomme 6,7 (CodeCheck, Ramseier) ; Rivella bleu 1,5 (wikifit). Acidité et arômes alignés sur les softs existants.
+ING_RAW.push(
+["crodino","Crodino","soft",0,15,0.3,"b2h2f1",{fizz:1,col:"#F08A1E",subs:["sanbitter"],tip:"Apéritif sans alcool italien (groupe Campari), amer et herbacé, en petites bouteilles de 10 cl. Il se sert simplement sur glace avec une rondelle d’orange."}],
+["sanbitter","Sanbitter","soft",0,15.1,0.3,"b2f1",{fizz:1,col:"#D8222A",subs:["crodino"],tip:"L’apéritif amer sans alcool de San Pellegrino, rouge vif, en petites bouteilles d’environ 10 cl. Se sert sur glace avec une rondelle d’orange."}],
+["elmer_citro","Elmer Citro","soft",0,8.4,0.4,"f2",{fizz:1,col:"#F2EFC0",tip:"La limonade au citron suisse, à base d’eau minérale d’Elm. Remplace la limonade dans toutes les recettes."}],
+["gazosa","Gazosa tessinoise","soft",0,11,0.3,"f2",{fizz:1,col:"#F2F0D0",tip:"La limonade du Tessin, en bouteille à bouchon mécanique. Remplace la limonade dans toutes les recettes."}],
+["schorle","Schorle de pomme","soft",0,6.7,0.3,"f2",{fizz:1,col:"#E8C878",tip:"Du jus de pomme coupé d’eau gazeuse, comme le Schorle de Ramseier : moins sucré qu’un jus pur."}],
+["rivella_bleu","Rivella bleu","soft",0,1.5,0.3,"f1h1",{fizz:1,col:"#E8E4C8",subs:["rivella"],tip:"La version allégée du Rivella, très peu sucrée."}]
+);
+// les limonades suisses remplacent la limonade ; le Rivella bleu remplace le rouge
+for(const r of ING_RAW){ if(r[0]==="limonade"){ r[7]=r[7]||{}; r[7].subs=[...new Set([...(r[7].subs||[]),"elmer_citro","gazosa"])]; }
+  if(r[0]==="rivella"){ r[7]=r[7]||{}; r[7].subs=[...new Set([...(r[7].subs||[]),"rivella_bleu"])]; } }
+REC_RAW.push(
+["crodino_rocks","Crodino sur glace","sansalcool","build","vin","cubes","#F08A1E",[["crodino",100]],"Rondelle d’orange",{na:1,v:["sanbitter_rocks","crodino_spritz"],n:"Le service recommandé par la marque : bien froid, sur beaucoup de glace."}],
+["sanbitter_rocks","Sanbitter sur glace","sansalcool","build","vin","cubes","#D8222A",[["sanbitter",100]],"Rondelle d’orange",{na:1,v:["crodino_rocks"]}],
+["crodino_spritz","Spritz sans alcool au Crodino","sansalcool","build","vin","cubes","#F2A040",[["crodino",100],["eau_gazeuse",50,"ml","top"]],"Rondelle d’orange",{na:1,cr:1,v:["crodino_rocks","aperol_spritz","rivella_spritz"]}]
 );
 // ================= MOTEUR =================
 const ING = {};
@@ -5047,7 +5068,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.54";
+const APP_VERSION="1.55";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6450,6 +6471,16 @@ document.addEventListener("scroll",e=>{ const t=e.target; if(t&&t.classList&&t.c
     h=h.replace(/(<button data-a="mixq" data-k="(\d+)" data-d="-1"[^>]*>[\s\S]*?<\/button><span>)([^<]*)(<\/span>)/g,(m,a,k,t,b)=>{
       const it=M.items[+k]; if(!it) return m; const u=unitOf(it.id); return u==="ml"? m : a+esc(fmtQ({q:it.q,u}))+b; });
     return h; };
+}
+// ================= ZESTE 1.55 : labo — accords sans alcool =================
+// pairings() choisit les accords d'après l'alcool de base ; sans alcool (baseOf vide), il prenait ceux du gin
+// (gin, chartreuse, vermouth…). Un mélange sans alcool à base de Crodino ou de Sanbitter prend les accords « amer_na »,
+// et un mélange sans alcool ne se voit jamais proposer d'alcool.
+{ const _pa=pairings;
+  pairings=function(items){ if(baseOf(items)) return _pa(items);
+    const inMix=new Set(items.map(i=>i.id)), g=items.map(i=>SPIRIT_GROUP[i.id]).find(Boolean);
+    let L=(PAIR[g]||PAIR.amer_na).slice(); if(items.some(i=>i.id==="ginger_beer"||i.id==="sirop_gingembre")) L=L.concat(PAIR.gingembre);
+    L=[...new Set(L)].filter(id=>!inMix.has(id)&&ING[id]&&!(ING[id].abv>0)); L.sort((a,b)=>has(b)-has(a)); return L.slice(0,4); };
 }
 // ================= VERSION FINALE =================
 const FX_LIST=[
