@@ -1815,6 +1815,21 @@ details.lab-chal .chal-row{margin-top:0}
 #v-labo .lab-reset .btn.danger{background:transparent;color:var(--z-err);font-weight:500}
 #v-labo .lab-reset .btn.danger[data-sure]{box-shadow:inset 0 0 0 1px var(--z-err)}
 #v-labo details.lab-more>summary svg{color:var(--label3)}
+/* ================= 1.47 : Bar et feuille de niveau ================= */
+/* le niveau en une fois : la fraction est le bouton (44 px), plus de barres */
+#v-bar .lvl.one{align-items:center;justify-content:flex-end;min-width:56px;padding:0 0 0 var(--z-s1);gap:0}
+#v-bar .lvl.one .lvl-txt{margin:0;font-variant-numeric:tabular-nums}
+#v-bar .lvl.one.empty .lvl-txt{color:var(--z-err)}
+/* titres de section : « Basiques et idées d'achat » comme « Spiritueux », même repère de pliage */
+details.bar-more{margin:var(--z-s3) 0 0}
+details.bar-more>summary{margin:0 var(--z-side) var(--z-s1);min-height:44px;font-size:calc(15rem / 17);font-weight:600;color:var(--label2)}
+details.bar-more>summary .chev,.cat-h.fold .fold-n .chev{width:12px;height:12px;color:var(--label3);transform:rotate(0deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
+details.bar-more[open]>summary .chev,.cat-h.fold:not(.shut) .fold-n .chev{transform:rotate(90deg)}
+/* feuille de niveau : sélection commune, libellés de même taille centrés sous l'icône */
+/* (les boutons sont des label.hap depuis 1.44 : on cible les deux) */
+.lvl-big>button,.lvl-big>label.hap{flex:1;position:relative;border-radius:var(--z-r-m);background:var(--fill2);padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;min-height:44px;min-width:44px;font-size:var(--z-fs-l);font-weight:600;line-height:1.2;text-align:center;color:var(--label2);font-variant-numeric:tabular-nums}
+.lvl-big>button.on,.lvl-big>label.hap.on{background:var(--z-accent-bg);box-shadow:inset 0 0 0 1.5px var(--z-accent);color:var(--label)}
+@media (prefers-reduced-motion:reduce){details.bar-more>summary .chev{transition:none}}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -4900,7 +4915,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.46";
+const APP_VERSION="1.47";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6164,6 +6179,20 @@ document.addEventListener("toggle",e=>{ const t=e.target; if(!t||!t.classList) r
   ACT.mixclear=(d,el)=>{ if(el&&!el.dataset.sure){ const t=el.textContent; el.dataset.sure="1"; el.textContent="Confirmer : tout effacer";
       clearTimeout(el._t); el._t=setTimeout(()=>{ delete el.dataset.sure; el.textContent=t; },3000); return; }
     return _clr(d,el); }; }
+// ================= ZESTE 1.47 : Bar et feuille de niveau — mise en page (rendu seulement) =================
+// Le niveau ne s'affiche qu'une fois par ligne : la fraction devient le bouton (plus de barres) ; patchStock met
+// toujours à jour le texte (.s) ; la feuille de niveau reste ouverte par « lvlpick ».
+{ const _sr=stockRow;
+  stockRow=function(id){ let h=_sr(id); if(!tracked(id)) return h;
+    const m=h.match(/<span class="s lvl-txt">([\s\S]*?)<\/span>/); if(!m) return h;
+    h=h.replace(m[0],"");
+    return h.replace(/(<button class="lvl one[^"]*"[^>]*>)[\s\S]*?<\/button>/,(x,o)=>`${o}${m[0]}</button>`); };
+}
+// le gros bouton « Ajouter des ingrédients » seulement quand le bar est vide (le « + » reste en haut à droite)
+{ const _vb=vBar;
+  vBar=function(){ const h=_vb(); if(!Object.keys(S.stock).some(id=>ING[id]&&!ING[id].basic)) return h;
+    return h.replace(/<div class="sp24"><\/div><div class="btn-row"><button class="btn sec" data-a="addsheet">[\s\S]*?<\/button><\/div>/,""); };
+}
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],

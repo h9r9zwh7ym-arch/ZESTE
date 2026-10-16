@@ -30,7 +30,7 @@ const {chromium}=require('playwright'); const path=require('path');
   const g=await p.evaluate(()=>{ const e=document.querySelector('#v-bar .lvl.one'), r=e.getBoundingClientRect(); return {w:r.width,h:r.height,old:document.querySelectorAll('#v-bar .lvl button').length,id:e.dataset.id}; });
   if(g.w<44||g.h<44) fail.push(`bar : jauge de ${g.w}×${g.h} px`); if(g.old) fail.push('bar : petits boutons de niveau encore présents');
   await p.click('#v-bar .lvl.one'); await p.waitForTimeout(600); await p.click('.sheet [data-a="lvlset"][data-l="1"]'); await p.waitForTimeout(600);
-  const lv=await p.evaluate(id=>[S.stock[id],document.querySelectorAll(`#sr-${id} .lvl.one i.on`).length,SHEETS.length],g.id);
+  const lv=await p.evaluate(id=>[S.stock[id],(document.querySelector(`#sr-${id} .lvl.one .lvl-txt`)||{}).textContent===LVLN[1]?1:0,SHEETS.length],g.id);
   if(lv[0]!==1||lv[1]!==1||lv[2]!==0) fail.push('bar : choix du niveau non appliqué '+JSON.stringify(lv));
   // Fiche ingrédient : 5 recettes puis « Voir les N autres »
   await p.evaluate(()=>ingSheet("gin")); await p.waitForTimeout(700);
