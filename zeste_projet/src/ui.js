@@ -1,5 +1,6 @@
 // ================= ÉTAT & SAUVEGARDE =================
 const KEY="zeste.v1";
+const USE_LEGACY_VIBRATE=false; // ignoré sur iPhone (Safari iOS n’a pas navigator.vibrate) ; l’haptique passe par un switch invisible (v144.js)
 const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
 function loadLocal(){ try{ const j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){} return DEF(); }
 S=loadLocal();
@@ -568,7 +569,7 @@ function paintBM(){
 function bmTimer(sec){
   clearInterval(BM.timer); const t0=Date.now(); BM.tleft=sec;
   setTimeout(()=>{ const tm=document.querySelector(".timer"); if(tm) tm.classList.add("run"); },20);
-  BM.timer=setInterval(()=>{ BM.tleft=Math.max(0,sec-(Date.now()-t0)/1000); const v=$("#tval"), rg=$("#tring"); if(v) v.textContent=Math.ceil(BM.tleft); if(rg){ const C=2*Math.PI*96; rg.setAttribute("stroke-dasharray",`${C*(BM.tleft/sec)} ${C}`);} if(BM.tleft<=0){ clearInterval(BM.timer); BM.timer=null; if(navigator.vibrate) navigator.vibrate(200); if(v) v.innerHTML=IC.check; const tm=document.querySelector(".timer"); if(tm){ tm.classList.remove("run"); tm.classList.add("done"); } } },100);
+  BM.timer=setInterval(()=>{ BM.tleft=Math.max(0,sec-(Date.now()-t0)/1000); const v=$("#tval"), rg=$("#tring"); if(v) v.textContent=Math.ceil(BM.tleft); if(rg){ const C=2*Math.PI*96; rg.setAttribute("stroke-dasharray",`${C*(BM.tleft/sec)} ${C}`);} if(BM.tleft<=0){ clearInterval(BM.timer); BM.timer=null; if(USE_LEGACY_VIBRATE&&navigator.vibrate) navigator.vibrate(200); if(v) v.innerHTML=IC.check; const tm=document.querySelector(".timer"); if(tm){ tm.classList.remove("run"); tm.classList.add("done"); } } },100);
   paintBM();
 }
 function closeOverlay(){ setTimeout(()=>{ if(dirty[TAB]&&!covered()) renderView(TAB); },0); if(BM&&BM.timer) clearInterval(BM.timer); BM=null; $("#overlay").classList.remove("open"); $("#overlay").innerHTML=""; }
@@ -709,7 +710,7 @@ const ACT={
   qzdone:()=>{ QZ=null; closeOverlay(); HERO_LAST=null; changed(); },
   quiz:()=>{ closeAll(); openQuiz(); },
   remind:(d,t)=>{ const n=+d.n, id=d.id; learnFrom(id,n); S.ratings[id]=n; S.rt=S.rt||{}; S.rt[id]=Date.now(); POP={k:"rem"+id,t:Date.now()}; const card=t.closest(".remind"); if(n===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top,RMAP[id].col); }
-    if(card){ card.querySelectorAll(".stars button").forEach(b=>b.classList.toggle("on",+b.dataset.n<=n)); card.classList.add("done"); setTimeout(()=>{ changed(); },900); } else changed(); },
+    if(card){ card.querySelectorAll(".stars [data-n]").forEach(b=>b.classList.toggle("on",+b.dataset.n<=n)); card.classList.add("done"); setTimeout(()=>{ changed(); },900); } else changed(); },
   snooze:(d,t)=>{ S.snooze=S.snooze||{}; S.snooze[d.id]=Date.now(); const card=t.closest(".remind"); if(card){ card.classList.add("gone"); setTimeout(()=>changed(),420); } else changed(); },
   adj:(d)=>{ S.adj=S.adj||{}; const a=S.adj[d.id]=Object.assign({s:0,a:0,f:0},S.adj[d.id]||{}); a[d.k]=+d.v; if(!a.s&&!a.a&&!a.f) delete S.adj[d.id]; POP={k:"adj"+d.id+d.k,t:Date.now()}; const sh=SHEETS[SHEETS.length-1]; if(sh&&sh.setVer) sh.setVer(getAdj(d.id)?"mine":"orig"); changed(); },
   adjreset:(d)=>{ if(S.adj) delete S.adj[d.id]; changed(); toast("Retour à la recette originale"); },
@@ -724,7 +725,7 @@ const ACT={
   setname:()=>{},
   rlgo:()=>{ const r=RL.pick; RL=null; barMode(r.id); BM.fromRoul=1; }
 };
-document.addEventListener("click",e=>{ const t=e.target.closest("[data-a]"); if(!t) return; const a=ACT[t.dataset.a]; if(a){ e.preventDefault(); a(t.dataset,t,e); } });
+document.addEventListener("click",e=>{ if(e.target.closest("label.hap")) return; const t=e.target.closest("[data-a]"); if(!t) return; const a=ACT[t.dataset.a]; if(a){ e.preventDefault(); a(t.dataset,t,e); } });
 document.addEventListener("touchstart",e=>{ const t=e.target.closest(".tile,.duo-c,.mini"); if(!t) return; const b=t.getBoundingClientRect(), p=e.touches[0]; const rx=((p.clientY-b.top)/b.height-.5)*-9, ry=((p.clientX-b.left)/b.width-.5)*9; t.style.transform=`perspective(500px) rotateX(${rx}deg) rotateY(${ry}deg) scale(.97)`; },{passive:true});
 document.addEventListener("touchend",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
 document.addEventListener("touchcancel",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
