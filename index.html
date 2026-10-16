@@ -1756,6 +1756,65 @@ label.hap>.hap-sw{position:absolute;opacity:0;width:1px;height:1px;margin:0;poin
 .stars label.hap{transition:transform .18s cubic-bezier(.3,.7,.4,1),opacity .18s,background .2s}
 :where(.stars label.hap){position:relative}
 .bar-row:not(.sw)>.row-act>.hap-sw{display:none} /* bouton « Finie » caché : son switch aussi, tant que la ligne n’est pas glissée */
+/* ================= 1.46 : jetons partagés (réutilisables sur tous les écrans) ================= */
+:root{--z-accent:var(--tint);--z-accent-bg:var(--tint-bg);--z-ok:var(--green);--z-warn:var(--orange);--z-err:var(--red);
+ --z-fs-h:calc(22rem / 17);--z-fs-b:calc(16rem / 17);--z-fs-l:calc(13rem / 17);
+ --z-s1:8px;--z-s2:16px;--z-s3:24px;--z-s4:32px;--z-side:20px;--z-r-s:10px;--z-r-m:14px;--z-r-l:20px}
+/* ---------- Labo (Composer) ---------- */
+#v-labo .content{padding-bottom:calc(var(--z-s4) * 3)}
+#v-labo .lab-sub,#v-labo .lab-classics>span,#v-labo .sh-sub{font-size:var(--z-fs-l);color:var(--label2)}
+/* un seul style de sélection : fond jaune translucide + bordure jaune */
+#v-labo .seg .seg-thumb{display:none}
+#v-labo .seg button.on,#v-labo .lg.on,#v-labo .lgar.on,#v-labo .chip.on,#v-labo .lab-auto.on{background:var(--z-accent-bg)!important;box-shadow:inset 0 0 0 1.5px var(--z-accent)!important;color:var(--label)!important;border-radius:var(--z-r-s)}
+#v-labo .lg.on b,#v-labo .lgar.on b{color:var(--label)}
+/* carte du verre : ~35 % de l'écran */
+#v-labo .lab-stage{padding:var(--z-s2) var(--z-s2) var(--z-s1);max-height:36vh;min-height:0}
+#v-labo .lab-glass{height:min(19vh,170px)}
+#v-labo .lab-glass svg{height:100%;width:auto}
+#v-labo .lab-top{min-height:0}
+#v-labo .lab-score-t{font-size:var(--z-fs-l);font-weight:600;color:var(--label2);font-family:inherit}
+#v-labo .lab-gauge{margin-top:var(--z-s1)}
+#v-labo .lab-gauge span{font-size:var(--z-fs-l)}
+.lab-allok{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--z-s1);font-size:var(--z-fs-l);color:var(--label2)}
+.lab-allok svg{width:14px;height:14px;color:var(--z-ok)}
+#v-labo .lab-goals.warn .goal{background:transparent;box-shadow:inset 0 0 0 1px var(--z-warn);color:var(--z-warn)}
+#v-labo .lab-goals.warn .goal i{background:var(--z-warn);color:#fff}
+/* bouteilles : nom sur une ligne, icône plus grande, quantité dans la carte */
+#v-labo .shelf{overflow:hidden}
+#v-labo .shelf .sh-b{height:56px;width:34px}
+#v-labo .shelf .sh-pic svg{width:34px;height:34px}
+#v-labo .shelf .sh-n{display:block;max-width:100%;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#v-labo .shelf .sh-q{top:6px;right:6px;left:auto;transform:none;font-variant-numeric:tabular-nums}
+/* liste : stepper de largeur fixe, chiffres tabulaires, croix discrète à droite (44 px) */
+#v-labo .mix-row{padding:6px 4px 6px var(--z-s2);gap:var(--z-s1)}
+#v-labo .mix-row .stepper{width:132px;justify-content:space-between}
+#v-labo .mix-row .stepper span{min-width:52px;font-variant-numeric:tabular-nums}
+#v-labo .mix-row .rm{order:3;width:44px;height:44px;color:var(--label3);opacity:.7}
+/* « Auto » du verre */
+.lab-auto{margin-left:auto;padding:4px 12px;border-radius:var(--z-r-s);font-size:var(--z-fs-l);font-weight:600;color:var(--label2);box-shadow:inset 0 0 0 1px var(--sep)}
+#v-labo .lab-sub:has(.lab-auto){display:flex;align-items:center}
+/* Personnaliser et Défis : repliés avec un résumé d'une ligne */
+details.lab-perso,details.lab-chal{margin:var(--z-s2) var(--z-side) 0;border-radius:var(--z-r-m);background:var(--bg2)}
+details.lab-chal{margin-top:var(--z-s3)}
+details.lab-perso>summary,details.lab-chal>summary{list-style:none;display:flex;align-items:center;gap:var(--z-s1);min-height:52px;padding:0 var(--z-s2);cursor:pointer}
+details.lab-perso>summary::-webkit-details-marker,details.lab-chal>summary::-webkit-details-marker{display:none}
+details.lab-perso .lp-t,details.lab-chal .lp-t{font-size:var(--z-fs-b);font-weight:600;flex:none}
+details.lab-perso .lp-s,details.lab-chal .lp-s{flex:1;min-width:0;text-align:right;font-size:var(--z-fs-l);color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.lab-perso>summary .chev,details.lab-chal>summary .chev{flex:none;color:var(--label3);transform:rotate(90deg);transition:transform .25s}
+details.lab-perso[open]>summary .chev,details.lab-chal[open]>summary .chev{transform:rotate(-90deg)}
+details.lab-perso[open]{padding-bottom:var(--z-s2)}
+details.lab-chal[open]{padding-bottom:var(--z-s1)}
+details.lab-chal .chal-row{margin-top:0}
+/* actions : Servir fixé au-dessus des onglets ; le reste en secondaire */
+#v-labo .lab-servebar{position:sticky;bottom:var(--z-s1);z-index:6;margin-top:var(--z-s2)}
+#v-labo .lab-servebar .lab-serve{background:var(--z-accent);color:#1A1A1A;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+#v-labo details.lab-more>summary,#v-labo .lab-links .btn.gray,#v-labo .more,#v-labo .link,#v-labo .chal .ch-f{color:var(--label2)!important}
+#v-labo .lab-links .btn.sec{background:transparent;box-shadow:inset 0 0 0 1px var(--sep);color:var(--label)}
+#v-labo .lab-tips .btn.sec{background:var(--fill);color:var(--label)}
+#v-labo .lab-reset{margin-top:var(--z-s3);padding-top:var(--z-s2);border-top:.5px solid var(--sep)}
+#v-labo .lab-reset .btn.danger{background:transparent;color:var(--z-err);font-weight:500}
+#v-labo .lab-reset .btn.danger[data-sure]{box-shadow:inset 0 0 0 1px var(--z-err)}
+#v-labo details.lab-more>summary svg{color:var(--label3)}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -4841,7 +4900,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.45";
+const APP_VERSION="1.46";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6068,6 +6127,43 @@ document.addEventListener("change",e=>{ const i=e.target; if(!i.classList||!i.cl
   const l=i.closest("label.hap"), a=l&&ACT[l.dataset.a]; if(a) a(l.dataset,l,e); });
 document.addEventListener("keydown",e=>{ if(e.key!=="Enter"&&e.key!==" ") return; const l=e.target.closest&&e.target.closest("label.hap"); if(!l||e.target!==l) return;
   e.preventDefault(); const i=l.querySelector(".hap-sw"); if(i) i.click(); });
+// ================= ZESTE 1.46 : Labo (Composer) — hiérarchie et mise en page =================
+// Rendu seulement : aucun calcul, score, versement ni enregistrement n'est modifié.
+let LAB_PERSO_OPEN=false, LAB_CHAL_OPEN=false;
+document.addEventListener("toggle",e=>{ const t=e.target; if(!t||!t.classList) return;
+  if(t.classList.contains("lab-perso")) LAB_PERSO_OPEN=t.open; else if(t.classList.contains("lab-chal")) LAB_CHAL_OPEN=t.open; },true);
+{ const _vc=vCompose;
+  vCompose=function(){ let h=_vc(); const M=mixState(), n=M.items.length;
+    // carte du verre : le style deviné fait doublon avec « Style » ; un score vide se dit en clair
+    h=h.replace(/<span class="lab-chip">[\s\S]*?<\/span>/,"");
+    h=h.replace(/(<span class="lab-score[^"]*"[^>]*>)<b>\?<\/b><i>\/100<\/i>/,(m,o)=>`${o}<b class="lab-score-t">${n?"Sers pour noter":"Verse un ingrédient"}</b>`);
+    // objectifs : une seule ligne si tout va bien, sinon seulement ce qui pose problème
+    h=h.replace(/<div class="lab-goals">([\s\S]*?)<\/div>/,(m,inner)=>{
+      const bad=(inner.match(/<button class="goal[^"]*"[\s\S]*?<\/button>/g)||[]).filter(b=>!/class="goal[^"]*\b(ok|bonus)\b/.test(b));
+      return bad.length? `<div class="lab-goals warn">${bad.join("")}</div>` : `<div class="lab-allok">${lu("check")}Tout est bon</div>`; });
+    // verre : « Auto » est un état cliquable
+    h=h.replace(/<span class="more muted"[^>]*>Choisi par le barman<\/span>|<button class="more" data-a="mixglassauto">Auto<\/button>/,
+      `<button class="lab-auto${M.gUser?"":" on"}" data-a="mixglassauto" aria-pressed="${!M.gUser}">Auto</button>`);
+    // service : Décor, Méthode et Style repliés dans « Personnaliser » avec un résumé
+    const d0=h.indexOf('<div class="lab-sub">Décor'), d1=d0>=0?h.indexOf("<h2",d0):-1;
+    if(d0>=0){ const end=d1>=0?d1:h.lastIndexOf("</div>"), part=h.slice(d0,end);
+      const pick=re=>{ const x=h.match(re); return x?x[1].trim():""; };
+      const g=pick(/class="lg on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/), gar=(part.match(/class="lgar on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/g)||[]).map(x=>x.match(/<b>([^<]+)<\/b>/)[1]),
+        meth=(part.match(/<button class="on" data-a="mm"[^>]*>([^<]+)<\/button>/)||[])[1]||"", sty=(part.match(/<button class="chip on" data-a="mixtype"[^>]*>([^<]+)<\/button>/)||[])[1]||"";
+      const sum=[g,gar.length?gar.join(", "):"Sans décor",meth,sty==="Je ne sais pas"?"Style auto":sty].filter(Boolean).map(esc).join(" · ");
+      h=h.slice(0,d0)+`<details class="lab-perso"${LAB_PERSO_OPEN?" open":""}><summary><span class="lp-t">Personnaliser</span><span class="lp-s">${sum}</span>${IC.chev}</summary>${part}</details>`+h.slice(end); }
+    // actions : Servir fixé au-dessus des onglets, Recommencer séparé
+    h=h.replace('<div class="btn-row"><button class="btn lab-serve','<div class="btn-row lab-servebar"><button class="btn lab-serve');
+    h=h.replace('<div class="btn-row"><button class="btn danger" data-a="mixclear"','<div class="btn-row lab-reset"><button class="btn danger" data-a="mixclear"');
+    // défis : repliés par défaut
+    h=h.replace(/<h2 class="sh[^"]*">Défis de la semaine(?:<span class="more muted"[^>]*>([^<]*)<\/span>)?<\/h2>(<div class="scroller chal-row[^"]*">[\s\S]*?<\/div>)/,(m,left,row)=>
+      `<details class="lab-chal"${LAB_CHAL_OPEN?" open":""}><summary><span class="lp-t">Défis de la semaine</span><span class="lp-s">${left||""}</span>${IC.chev}</summary>${row}</details>`);
+    return h; };
+}
+{ const _clr=ACT.mixclear;
+  ACT.mixclear=(d,el)=>{ if(el&&!el.dataset.sure){ const t=el.textContent; el.dataset.sure="1"; el.textContent="Confirmer : tout effacer";
+      clearTimeout(el._t); el._t=setTimeout(()=>{ delete el.dataset.sure; el.textContent=t; },3000); return; }
+    return _clr(d,el); }; }
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],

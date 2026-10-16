@@ -2,7 +2,7 @@
 // Stratégie « cache d'abord, mise à jour en arrière-plan » : la page s'ouvre depuis la copie locale,
 // puis la dernière version est téléchargée discrètement. Si elle a changé, la page est prévenue
 // (« Nouvelle version prête ») ; hors réseau, le téléchargement échoue en silence et rien ne casse.
-const CACHE = "zeste-v3";
+const CACHE = "zeste-v4";
 const CORE = ["./", "./index.html", "./apple-touch-icon.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).catch(() => {}).then(() => self.skipWaiting()));
