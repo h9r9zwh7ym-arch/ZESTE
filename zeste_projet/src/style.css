@@ -1921,3 +1921,39 @@ h2.sh .stepper button::after{content:"";position:absolute;inset:-4px -2px}
 .tile.lite .ts{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:unset}
 .tile.lite{align-self:stretch}
 .tile.lite{display:flex;flex-direction:column;justify-content:flex-start}
+/* ================= 1.54 : Labo, Bar, feuille « Ajouter au bar » ================= */
+/* Servir : texte sur teinte */
+#v-labo .lab-serve,#v-labo .lab-servebar .lab-serve{color:var(--on-tint)}
+#v-labo .lab-serve svg{color:var(--on-tint)}
+/* pastilles d'objectifs : point de 8 px, libellé couleur du texte, fond orange léger, une rangée */
+#v-labo .lab-goals.warn{flex-wrap:nowrap;gap:6px;justify-content:center}
+#v-labo .lab-goals.warn .goal,#v-labo .lab-goals.warn .goal.bad{position:relative;box-shadow:none;background:color-mix(in srgb,var(--z-warn) 10%,transparent);color:var(--label);gap:6px;padding:0 10px;white-space:nowrap;font-size:var(--z-fs-l)}
+#v-labo .lab-goals.warn .goal i{display:none}
+#v-labo .lab-goals.warn .goal::before{content:"";width:8px;height:8px;border-radius:4px;background:var(--z-warn);flex:none}
+#v-labo .lab-goals.warn .goal.bad::before{background:var(--z-err)}
+#v-labo .lab-goals.warn .goal.bad{background:color-mix(in srgb,var(--z-err) 10%,transparent)}
+#v-labo .lab-goals.warn .goal::after{content:"";position:absolute;inset:-8px 0}
+/* conseils */
+.tip-one .tip-bulb{color:var(--label2)}
+.tip-r.tip-one.tip-miss>svg{color:var(--z-warn)}
+.tip-one .tip-b{min-height:44px}
+/* composition : zones tactiles 44 px */
+.stepper button{position:relative}
+.stepper button::after{content:"";position:absolute;inset:-4px -2px}
+#v-labo .mix-row .rm{color:var(--label2);opacity:1}
+/* segments : 44 px de haut au toucher */
+.seg button{position:relative}
+.seg button::after{content:"";position:absolute;inset:-7px 0}
+/* cartes repliables : bords des autres cartes, chevron ⌄ / ⌃ */
+details.lab-perso,details.lab-chal,details.bar-more{border-radius:var(--r-card);box-shadow:var(--shadow);background:var(--bg2)}
+details.bar-more{margin:var(--z-s3) var(--z-side) 0}
+details.bar-more>summary{margin:0;min-height:52px;padding:0 var(--z-s2);font-size:var(--z-fs-b);color:var(--label)}
+details.bar-more>.group{box-shadow:none;margin:0 0 var(--z-s1);background:transparent}
+details.bar-more>summary .chev{transform:rotate(90deg)}
+details.bar-more[open]>summary .chev{transform:rotate(-90deg)}
+/* points de catégorie retirés */
+.cat-h b i,.segchips .chip i{display:none!important}
+/* feuille d'ajout : puce sélectionnée comme les tuiles */
+.segchips .chip.on{background:var(--bg2);color:var(--label);box-shadow:inset 0 0 0 2px var(--z-accent)}
+/* « OK » des en-têtes : zone 44 px, texte aligné sur le retrait des cartes */
+.sheet-head .sr .link{min-width:44px;min-height:44px;display:grid;place-items:center;padding:0 4px 0 10px}
