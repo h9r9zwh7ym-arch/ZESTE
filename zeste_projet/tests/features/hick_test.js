@@ -58,9 +58,9 @@ const {chromium}=require('playwright'); const path=require('path');
     return {dup:Object.values(c).filter(v=>v>1).length,broken}; });
   if(ids.dup||ids.broken) fail.push('verres : '+ids.dup+' identifiants en double, '+ids.broken+' références vers un écran masqué');
   await p.evaluate(()=>closeAll()); await p.waitForTimeout(400);
-  // Carrousel aimanté sur la marge, et plus de texte sous 11 px dans les vues
-  const sc=await p.evaluate(()=>{ const s=document.querySelector('#v-today .scroller'); return s?getComputedStyle(s).scrollPaddingLeft:"16px"; });
-  if(sc!=="16px") fail.push('carrousel : scroll-padding '+sc);
+  // Carrousel aimanté sur la marge (20 px depuis 1.57), et plus de texte sous 11 px dans les vues
+  const sc=await p.evaluate(()=>{ const s=document.querySelector('#v-today .scroller'); return s?getComputedStyle(s).scrollPaddingLeft:"20px"; });
+  if(sc!=="20px") fail.push('carrousel : scroll-padding '+sc);
   const tiny=await p.evaluate(()=>{ let n=[]; for(const t of ["today","bar","labo","profil"]){ switchTab(t); document.querySelectorAll('#v-'+t+' *').forEach(e=>{ if(!e.getClientRects().length) return; if(![...e.childNodes].some(x=>x.nodeType===3&&x.data.trim())) return; const f=parseFloat(getComputedStyle(e).fontSize); if(f<11&&!e.closest('svg:not(.radar)')) n.push(t+":"+e.className+":"+f); }); } switchTab("today"); return n.slice(0,4); });
   if(tiny.length) fail.push('texte sous 11 px : '+tiny.join(", "));
   if(errs.length) fail.push('erreurs JS : '+errs.join(' | '));
