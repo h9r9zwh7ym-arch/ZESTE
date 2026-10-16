@@ -439,8 +439,8 @@ svg.pour .garn{transform-box:fill-box;transform-origin:center;animation:gpop .5s
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:200}
 .confetti i{position:absolute;width:7px;height:12px;border-radius:2px;margin:-4px 0 0 -4px;animation:conf 1.3s cubic-bezier(.15,.7,.3,1) forwards}
 @keyframes conf{0%{transform:translate(0,0) rotate(0);opacity:1}70%{opacity:1}100%{transform:translate(var(--x),calc(var(--y) + 260px)) rotate(var(--r));opacity:0}}
-.tabbar button.bounce svg{animation:tb .45s cubic-bezier(.3,1.8,.5,1)}
-@keyframes tb{0%{transform:scale(.8)}60%{transform:scale(1.15)}100%{transform:none}}
+.tabbar button svg{transition:transform .12s ease-out}.tabbar button:active svg{transform:scale(.9)}.tabbar button.bounce svg{animation:tb .22s cubic-bezier(.3,1.5,.5,1)}
+@keyframes tb{0%{transform:scale(.9)}65%{transform:scale(1.06)}100%{transform:none}}@media (prefers-reduced-motion:reduce){.tabbar button svg,.tabbar button:active svg,.tabbar button.bounce svg{transition:none;animation:none;transform:none}}
 .timer .shk{position:absolute;top:44px;width:26px;height:26px;color:var(--tint)}
 .timer .shk svg{width:100%;height:100%}
 .timer.run .shk{animation:shk .16s ease-in-out infinite alternate}
@@ -4841,7 +4841,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.44";
+const APP_VERSION="1.45";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
