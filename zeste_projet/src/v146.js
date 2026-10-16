@@ -16,8 +16,9 @@ document.addEventListener("toggle",e=>{ const t=e.target; if(!t||!t.classList) r
     h=h.replace(/<span class="more muted"[^>]*>Choisi par le barman<\/span>|<button class="more" data-a="mixglassauto">Auto<\/button>/,
       `<button class="lab-auto${M.gUser?"":" on"}" data-a="mixglassauto" aria-pressed="${!M.gUser}">Auto</button>`);
     // service : Décor, Méthode et Style repliés dans « Personnaliser » avec un résumé
-    const d0=h.indexOf('<div class="lab-sub">Décor'), d1=d0>=0?h.indexOf("<h2",d0):-1;
-    if(d0>=0){ const end=d1>=0?d1:h.lastIndexOf("</div>"), part=h.slice(d0,end);
+    // (1.48) la carte s'arrête au premier élément qui ne relève pas du service : titre, Servir, analyse, actions
+    const d0=h.indexOf('<div class="lab-sub">Décor'), d1=d0<0?-1:Math.min(...['<h2','<div class="sp16"></div><div class="btn-row','<details class="lab-more"','<div class="btn-row'].map(k=>h.indexOf(k,d0)).filter(x=>x>=0),h.lastIndexOf("</div>"));
+    if(d0>=0){ const end=d1, part=h.slice(d0,end);
       const pick=re=>{ const x=h.match(re); return x?x[1].trim():""; };
       const g=pick(/class="lg on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/), gar=(part.match(/class="lgar on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/g)||[]).map(x=>x.match(/<b>([^<]+)<\/b>/)[1]),
         meth=(part.match(/<button class="on" data-a="mm"[^>]*>([^<]+)<\/button>/)||[])[1]||"", sty=(part.match(/<button class="chip on" data-a="mixtype"[^>]*>([^<]+)<\/button>/)||[])[1]||"";

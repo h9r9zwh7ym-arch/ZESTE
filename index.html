@@ -4915,7 +4915,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.47";
+const APP_VERSION="1.48";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6160,8 +6160,9 @@ document.addEventListener("toggle",e=>{ const t=e.target; if(!t||!t.classList) r
     h=h.replace(/<span class="more muted"[^>]*>Choisi par le barman<\/span>|<button class="more" data-a="mixglassauto">Auto<\/button>/,
       `<button class="lab-auto${M.gUser?"":" on"}" data-a="mixglassauto" aria-pressed="${!M.gUser}">Auto</button>`);
     // service : Décor, Méthode et Style repliés dans « Personnaliser » avec un résumé
-    const d0=h.indexOf('<div class="lab-sub">Décor'), d1=d0>=0?h.indexOf("<h2",d0):-1;
-    if(d0>=0){ const end=d1>=0?d1:h.lastIndexOf("</div>"), part=h.slice(d0,end);
+    // (1.48) la carte s'arrête au premier élément qui ne relève pas du service : titre, Servir, analyse, actions
+    const d0=h.indexOf('<div class="lab-sub">Décor'), d1=d0<0?-1:Math.min(...['<h2','<div class="sp16"></div><div class="btn-row','<details class="lab-more"','<div class="btn-row'].map(k=>h.indexOf(k,d0)).filter(x=>x>=0),h.lastIndexOf("</div>"));
+    if(d0>=0){ const end=d1, part=h.slice(d0,end);
       const pick=re=>{ const x=h.match(re); return x?x[1].trim():""; };
       const g=pick(/class="lg on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/), gar=(part.match(/class="lgar on[^"]*"[^>]*>[\s\S]*?<b>([^<]+)<\/b>/g)||[]).map(x=>x.match(/<b>([^<]+)<\/b>/)[1]),
         meth=(part.match(/<button class="on" data-a="mm"[^>]*>([^<]+)<\/button>/)||[])[1]||"", sty=(part.match(/<button class="chip on" data-a="mixtype"[^>]*>([^<]+)<\/button>/)||[])[1]||"";
@@ -6192,6 +6193,27 @@ document.addEventListener("toggle",e=>{ const t=e.target; if(!t||!t.classList) r
 { const _vb=vBar;
   vBar=function(){ const h=_vb(); if(!Object.keys(S.stock).some(id=>ING[id]&&!ING[id].basic)) return h;
     return h.replace(/<div class="sp24"><\/div><div class="btn-row"><button class="btn sec" data-a="addsheet">[\s\S]*?<\/button><\/div>/,""); };
+}
+// ================= ZESTE 1.48 : versement qui s'adapte à la place restante =================
+// Avant : toucher une bouteille versait toujours la dose par défaut (4,5 cl de spiritueux, 10 cl de soda…) ou un pas
+// de stepper ; si elle ne tenait pas, labTry refusait tout (« Plus de place dans ce verre ! »), même avec 2 cl de libre.
+// Maintenant : dose = min(dose habituelle, place restante), arrondie vers le bas au plus petit pas des steppers (0,25 cl),
+// sans jamais dépasser le verre (même test labFits, verre automatique compris). Moins d'un pas de place : la jauge
+// tremble, sans message. Les doses des ingrédients déjà présents ne changent pas.
+const POUR_STEP=2.5;
+function labFitsWith(items){ const bk=S.mix.items; S.mix.items=items; try{ return labFits(items); } finally { S.mix.items=bk; } }
+function labNope(){ const el=document.querySelector(".lab-stage"); if(!el) return; el.classList.remove("shake-no"); void el.offsetWidth; el.classList.add("shake-no"); }
+{ const _mp=ACT.mixpour;
+  ACT.mixpour=(d,t)=>{ const items=S.mix.items, ex=items.find(i=>i.id===d.id), u=unitOf(d.id);
+    const want=ex? stepQ(ex.q,u,1)-ex.q : defaultQ(d.id);
+    const withAdd=add=>ex? items.map(i=>i===ex?Object.assign({},i,{q:Math.round((i.q+add)*10)/10}):i) : items.concat([{id:d.id,q:add}]);
+    if(labFitsWith(withAdd(want))) return _mp(d,t);                       // la dose habituelle tient : comportement inchangé
+    if(u!=="ml") return labNope();                                          // traits, feuilles, pièces : pas de demi-dose
+    let add=Math.floor(want/POUR_STEP)*POUR_STEP; while(add>=POUR_STEP&&!labFitsWith(withAdd(add))) add-=POUR_STEP;
+    if(add<POUR_STEP) return labNope();
+    if(t){ t.classList.remove("pour"); void t.offsetWidth; t.classList.add("pour"); }
+    labTry(()=>{ if(ex) ex.q=Math.round((ex.q+add)*10)/10; else S.mix.items.push({id:d.id,q:add}); });
+    if(typeof SND!=="undefined"&&SND.pour) SND.pour(0.4); };
 }
 // ================= VERSION FINALE =================
 const FX_LIST=[
