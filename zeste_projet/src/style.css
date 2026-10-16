@@ -1752,3 +1752,62 @@ label.hap>.hap-sw{position:absolute;opacity:0;width:1px;height:1px;margin:0;poin
 .stars label.hap{transition:transform .18s cubic-bezier(.3,.7,.4,1),opacity .18s,background .2s}
 :where(.stars label.hap){position:relative}
 .bar-row:not(.sw)>.row-act>.hap-sw{display:none} /* bouton « Finie » caché : son switch aussi, tant que la ligne n’est pas glissée */
+/* ================= 1.46 : jetons partagés (réutilisables sur tous les écrans) ================= */
+:root{--z-accent:var(--tint);--z-accent-bg:var(--tint-bg);--z-ok:var(--green);--z-warn:var(--orange);--z-err:var(--red);
+ --z-fs-h:calc(22rem / 17);--z-fs-b:calc(16rem / 17);--z-fs-l:calc(13rem / 17);
+ --z-s1:8px;--z-s2:16px;--z-s3:24px;--z-s4:32px;--z-side:20px;--z-r-s:10px;--z-r-m:14px;--z-r-l:20px}
+/* ---------- Labo (Composer) ---------- */
+#v-labo .content{padding-bottom:calc(var(--z-s4) * 3)}
+#v-labo .lab-sub,#v-labo .lab-classics>span,#v-labo .sh-sub{font-size:var(--z-fs-l);color:var(--label2)}
+/* un seul style de sélection : fond jaune translucide + bordure jaune */
+#v-labo .seg .seg-thumb{display:none}
+#v-labo .seg button.on,#v-labo .lg.on,#v-labo .lgar.on,#v-labo .chip.on,#v-labo .lab-auto.on{background:var(--z-accent-bg)!important;box-shadow:inset 0 0 0 1.5px var(--z-accent)!important;color:var(--label)!important;border-radius:var(--z-r-s)}
+#v-labo .lg.on b,#v-labo .lgar.on b{color:var(--label)}
+/* carte du verre : ~35 % de l'écran */
+#v-labo .lab-stage{padding:var(--z-s2) var(--z-s2) var(--z-s1);max-height:36vh;min-height:0}
+#v-labo .lab-glass{height:min(19vh,170px)}
+#v-labo .lab-glass svg{height:100%;width:auto}
+#v-labo .lab-top{min-height:0}
+#v-labo .lab-score-t{font-size:var(--z-fs-l);font-weight:600;color:var(--label2);font-family:inherit}
+#v-labo .lab-gauge{margin-top:var(--z-s1)}
+#v-labo .lab-gauge span{font-size:var(--z-fs-l)}
+.lab-allok{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--z-s1);font-size:var(--z-fs-l);color:var(--label2)}
+.lab-allok svg{width:14px;height:14px;color:var(--z-ok)}
+#v-labo .lab-goals.warn .goal{background:transparent;box-shadow:inset 0 0 0 1px var(--z-warn);color:var(--z-warn)}
+#v-labo .lab-goals.warn .goal i{background:var(--z-warn);color:#fff}
+/* bouteilles : nom sur une ligne, icône plus grande, quantité dans la carte */
+#v-labo .shelf{overflow:hidden}
+#v-labo .shelf .sh-b{height:56px;width:34px}
+#v-labo .shelf .sh-pic svg{width:34px;height:34px}
+#v-labo .shelf .sh-n{display:block;max-width:100%;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#v-labo .shelf .sh-q{top:6px;right:6px;left:auto;transform:none;font-variant-numeric:tabular-nums}
+/* liste : stepper de largeur fixe, chiffres tabulaires, croix discrète à droite (44 px) */
+#v-labo .mix-row{padding:6px 4px 6px var(--z-s2);gap:var(--z-s1)}
+#v-labo .mix-row .stepper{width:132px;justify-content:space-between}
+#v-labo .mix-row .stepper span{min-width:52px;font-variant-numeric:tabular-nums}
+#v-labo .mix-row .rm{order:3;width:44px;height:44px;color:var(--label3);opacity:.7}
+/* « Auto » du verre */
+.lab-auto{margin-left:auto;padding:4px 12px;border-radius:var(--z-r-s);font-size:var(--z-fs-l);font-weight:600;color:var(--label2);box-shadow:inset 0 0 0 1px var(--sep)}
+#v-labo .lab-sub:has(.lab-auto){display:flex;align-items:center}
+/* Personnaliser et Défis : repliés avec un résumé d'une ligne */
+details.lab-perso,details.lab-chal{margin:var(--z-s2) var(--z-side) 0;border-radius:var(--z-r-m);background:var(--bg2)}
+details.lab-chal{margin-top:var(--z-s3)}
+details.lab-perso>summary,details.lab-chal>summary{list-style:none;display:flex;align-items:center;gap:var(--z-s1);min-height:52px;padding:0 var(--z-s2);cursor:pointer}
+details.lab-perso>summary::-webkit-details-marker,details.lab-chal>summary::-webkit-details-marker{display:none}
+details.lab-perso .lp-t,details.lab-chal .lp-t{font-size:var(--z-fs-b);font-weight:600;flex:none}
+details.lab-perso .lp-s,details.lab-chal .lp-s{flex:1;min-width:0;text-align:right;font-size:var(--z-fs-l);color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.lab-perso>summary .chev,details.lab-chal>summary .chev{flex:none;color:var(--label3);transform:rotate(90deg);transition:transform .25s}
+details.lab-perso[open]>summary .chev,details.lab-chal[open]>summary .chev{transform:rotate(-90deg)}
+details.lab-perso[open]{padding-bottom:var(--z-s2)}
+details.lab-chal[open]{padding-bottom:var(--z-s1)}
+details.lab-chal .chal-row{margin-top:0}
+/* actions : Servir fixé au-dessus des onglets ; le reste en secondaire */
+#v-labo .lab-servebar{position:sticky;bottom:var(--z-s1);z-index:6;margin-top:var(--z-s2)}
+#v-labo .lab-servebar .lab-serve{background:var(--z-accent);color:#1A1A1A;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+#v-labo details.lab-more>summary,#v-labo .lab-links .btn.gray,#v-labo .more,#v-labo .link,#v-labo .chal .ch-f{color:var(--label2)!important}
+#v-labo .lab-links .btn.sec{background:transparent;box-shadow:inset 0 0 0 1px var(--sep);color:var(--label)}
+#v-labo .lab-tips .btn.sec{background:var(--fill);color:var(--label)}
+#v-labo .lab-reset{margin-top:var(--z-s3);padding-top:var(--z-s2);border-top:.5px solid var(--sep)}
+#v-labo .lab-reset .btn.danger{background:transparent;color:var(--z-err);font-weight:500}
+#v-labo .lab-reset .btn.danger[data-sure]{box-shadow:inset 0 0 0 1px var(--z-err)}
+#v-labo details.lab-more>summary svg{color:var(--label3)}
