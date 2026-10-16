@@ -11,6 +11,8 @@
       const a=(attrs.match(/data-a="([^"]+)"/)||[])[1], v=(attrs.match(/data-v="([^"]+)"/)||[])[1];
       const add=a==="mixgar"||a==="mixfix"||a==="mixadd1";
       const sugg=a==="mixgar"&&typeof LGARTXT!=="undefined"&&LGARTXT[v]? esc(LGARTXT[v]) : (label.replace(/^(Ajouter|Prendre)\s+/,"")||title);
+      // (1.50) « Côté glace » : le bouton met la glace conseillée pour le style (ACT.mixice) ; le libellé le dit
+      if(a==="mixice"){ const T={none:"Servir sans glace",cubes:"Servir sur glaçons",big:"Servir sur un gros glaçon",pilee:"Servir sur glace pilée"}; return `<div class="tip-r tip-one${cls}">${ic}<span class="tip-t">${T[v]||title}</span><button class="btn small sec tip-b"${attrs}>Appliquer</button></div>`; }
       return `<div class="tip-r tip-one${cls}">${ic}<span class="tip-t">${add||a==="mixglass"?sugg:title}</span><button class="btn small sec tip-b"${attrs} aria-label="${esc(label)}">${add?lu("plus"):esc(label)}</button></div>`; });
     return h; };
 }
