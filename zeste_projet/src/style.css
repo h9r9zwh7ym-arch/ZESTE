@@ -1736,3 +1736,19 @@ details.bar-more[open]>.group{animation:barmore .28s cubic-bezier(.3,.7,.4,1)}
 .group.fold-g{overflow:hidden}
 .group.fold-g.folded{display:none}
 @media (prefers-reduced-motion:reduce){.bar-row>*,.bar-row>.row-act,.cat-h.fold .chev{transition:none!important;animation:none!important}}
+/* 1.44 : boutons à retour haptique (label + switch invisible) */
+label.hap{cursor:pointer;-webkit-user-select:none;user-select:none}
+label.hap>.hap-sw{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.stars label.hap{width:34px;height:34px;display:grid;place-items:center;color:var(--label3)}
+.stars label.hap.on{color:var(--tint)}
+.stars label.hap.pop svg{animation:spop .45s cubic-bezier(.3,1.8,.5,1) both}
+.stars label.hap.pop:nth-child(2) svg{animation-delay:.04s}.stars label.hap.pop:nth-child(3) svg{animation-delay:.08s}.stars label.hap.pop:nth-child(4) svg{animation-delay:.12s}.stars label.hap.pop:nth-child(5) svg{animation-delay:.16s}
+.rate-box .stars label.hap{width:36px;height:36px}
+.remind .stars label.hap{width:36px;height:36px}
+.remind .stars label.hap.on svg{color:var(--tint)}
+.remind.done .stars label.hap.on svg{animation:spop .45s cubic-bezier(.3,1.8,.5,1)}
+:where(.close-x,.icon-btn,.stars label.hap){position:relative} /* priorité nulle : .rw-x, .sv-x… gardent leur position */
+.stars label.hap::after{content:"";position:absolute;inset:-5px 0}
+.stars label.hap{transition:transform .18s cubic-bezier(.3,.7,.4,1),opacity .18s,background .2s}
+:where(.stars label.hap){position:relative}
+.bar-row:not(.sw)>.row-act>.hap-sw{display:none} /* bouton « Finie » caché : son switch aussi, tant que la ligne n’est pas glissée */

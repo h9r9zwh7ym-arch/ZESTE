@@ -1740,6 +1740,22 @@ details.bar-more[open]>.group{animation:barmore .28s cubic-bezier(.3,.7,.4,1)}
 .group.fold-g{overflow:hidden}
 .group.fold-g.folded{display:none}
 @media (prefers-reduced-motion:reduce){.bar-row>*,.bar-row>.row-act,.cat-h.fold .chev{transition:none!important;animation:none!important}}
+/* 1.44 : boutons à retour haptique (label + switch invisible) */
+label.hap{cursor:pointer;-webkit-user-select:none;user-select:none}
+label.hap>.hap-sw{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.stars label.hap{width:34px;height:34px;display:grid;place-items:center;color:var(--label3)}
+.stars label.hap.on{color:var(--tint)}
+.stars label.hap.pop svg{animation:spop .45s cubic-bezier(.3,1.8,.5,1) both}
+.stars label.hap.pop:nth-child(2) svg{animation-delay:.04s}.stars label.hap.pop:nth-child(3) svg{animation-delay:.08s}.stars label.hap.pop:nth-child(4) svg{animation-delay:.12s}.stars label.hap.pop:nth-child(5) svg{animation-delay:.16s}
+.rate-box .stars label.hap{width:36px;height:36px}
+.remind .stars label.hap{width:36px;height:36px}
+.remind .stars label.hap.on svg{color:var(--tint)}
+.remind.done .stars label.hap.on svg{animation:spop .45s cubic-bezier(.3,1.8,.5,1)}
+:where(.close-x,.icon-btn,.stars label.hap){position:relative} /* priorité nulle : .rw-x, .sv-x… gardent leur position */
+.stars label.hap::after{content:"";position:absolute;inset:-5px 0}
+.stars label.hap{transition:transform .18s cubic-bezier(.3,.7,.4,1),opacity .18s,background .2s}
+:where(.stars label.hap){position:relative}
+.bar-row:not(.sw)>.row-act>.hap-sw{display:none} /* bouton « Finie » caché : son switch aussi, tant que la ligne n’est pas glissée */
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -3231,6 +3247,7 @@ Object.assign(IC,{
 });
 // ================= ÉTAT & SAUVEGARDE =================
 const KEY="zeste.v1";
+const USE_LEGACY_VIBRATE=false; // ignoré sur iPhone (Safari iOS n’a pas navigator.vibrate) ; l’haptique passe par un switch invisible (v144.js)
 const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
 function loadLocal(){ try{ const j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){} return DEF(); }
 S=loadLocal();
@@ -3799,7 +3816,7 @@ function paintBM(){
 function bmTimer(sec){
   clearInterval(BM.timer); const t0=Date.now(); BM.tleft=sec;
   setTimeout(()=>{ const tm=document.querySelector(".timer"); if(tm) tm.classList.add("run"); },20);
-  BM.timer=setInterval(()=>{ BM.tleft=Math.max(0,sec-(Date.now()-t0)/1000); const v=$("#tval"), rg=$("#tring"); if(v) v.textContent=Math.ceil(BM.tleft); if(rg){ const C=2*Math.PI*96; rg.setAttribute("stroke-dasharray",`${C*(BM.tleft/sec)} ${C}`);} if(BM.tleft<=0){ clearInterval(BM.timer); BM.timer=null; if(navigator.vibrate) navigator.vibrate(200); if(v) v.innerHTML=IC.check; const tm=document.querySelector(".timer"); if(tm){ tm.classList.remove("run"); tm.classList.add("done"); } } },100);
+  BM.timer=setInterval(()=>{ BM.tleft=Math.max(0,sec-(Date.now()-t0)/1000); const v=$("#tval"), rg=$("#tring"); if(v) v.textContent=Math.ceil(BM.tleft); if(rg){ const C=2*Math.PI*96; rg.setAttribute("stroke-dasharray",`${C*(BM.tleft/sec)} ${C}`);} if(BM.tleft<=0){ clearInterval(BM.timer); BM.timer=null; if(USE_LEGACY_VIBRATE&&navigator.vibrate) navigator.vibrate(200); if(v) v.innerHTML=IC.check; const tm=document.querySelector(".timer"); if(tm){ tm.classList.remove("run"); tm.classList.add("done"); } } },100);
   paintBM();
 }
 function closeOverlay(){ setTimeout(()=>{ if(dirty[TAB]&&!covered()) renderView(TAB); },0); if(BM&&BM.timer) clearInterval(BM.timer); BM=null; $("#overlay").classList.remove("open"); $("#overlay").innerHTML=""; }
@@ -3940,7 +3957,7 @@ const ACT={
   qzdone:()=>{ QZ=null; closeOverlay(); HERO_LAST=null; changed(); },
   quiz:()=>{ closeAll(); openQuiz(); },
   remind:(d,t)=>{ const n=+d.n, id=d.id; learnFrom(id,n); S.ratings[id]=n; S.rt=S.rt||{}; S.rt[id]=Date.now(); POP={k:"rem"+id,t:Date.now()}; const card=t.closest(".remind"); if(n===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top,RMAP[id].col); }
-    if(card){ card.querySelectorAll(".stars button").forEach(b=>b.classList.toggle("on",+b.dataset.n<=n)); card.classList.add("done"); setTimeout(()=>{ changed(); },900); } else changed(); },
+    if(card){ card.querySelectorAll(".stars [data-n]").forEach(b=>b.classList.toggle("on",+b.dataset.n<=n)); card.classList.add("done"); setTimeout(()=>{ changed(); },900); } else changed(); },
   snooze:(d,t)=>{ S.snooze=S.snooze||{}; S.snooze[d.id]=Date.now(); const card=t.closest(".remind"); if(card){ card.classList.add("gone"); setTimeout(()=>changed(),420); } else changed(); },
   adj:(d)=>{ S.adj=S.adj||{}; const a=S.adj[d.id]=Object.assign({s:0,a:0,f:0},S.adj[d.id]||{}); a[d.k]=+d.v; if(!a.s&&!a.a&&!a.f) delete S.adj[d.id]; POP={k:"adj"+d.id+d.k,t:Date.now()}; const sh=SHEETS[SHEETS.length-1]; if(sh&&sh.setVer) sh.setVer(getAdj(d.id)?"mine":"orig"); changed(); },
   adjreset:(d)=>{ if(S.adj) delete S.adj[d.id]; changed(); toast("Retour à la recette originale"); },
@@ -3955,7 +3972,7 @@ const ACT={
   setname:()=>{},
   rlgo:()=>{ const r=RL.pick; RL=null; barMode(r.id); BM.fromRoul=1; }
 };
-document.addEventListener("click",e=>{ const t=e.target.closest("[data-a]"); if(!t) return; const a=ACT[t.dataset.a]; if(a){ e.preventDefault(); a(t.dataset,t,e); } });
+document.addEventListener("click",e=>{ if(e.target.closest("label.hap")) return; const t=e.target.closest("[data-a]"); if(!t) return; const a=ACT[t.dataset.a]; if(a){ e.preventDefault(); a(t.dataset,t,e); } });
 document.addEventListener("touchstart",e=>{ const t=e.target.closest(".tile,.duo-c,.mini"); if(!t) return; const b=t.getBoundingClientRect(), p=e.touches[0]; const rx=((p.clientY-b.top)/b.height-.5)*-9, ry=((p.clientX-b.left)/b.width-.5)*9; t.style.transform=`perspective(500px) rotateX(${rx}deg) rotateY(${ry}deg) scale(.97)`; },{passive:true});
 document.addEventListener("touchend",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
 document.addEventListener("touchcancel",()=>document.querySelectorAll(".tile[style*=perspective],.duo-c[style*=perspective],.mini[style*=perspective]").forEach(t=>t.style.transform=""),{passive:true});
@@ -4824,7 +4841,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.43";
+const APP_VERSION="1.44";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6028,6 +6045,29 @@ Object.assign(ACT,{
       g.animate([{height:"0px",opacity:0},{height:hh+"px",opacity:1}],{duration:280,easing:"cubic-bezier(.3,.7,.4,1)"}); }
     if(typeof SND!=="undefined"&&SND.tap) SND.tap(); }
 });
+// ================= ZESTE 1.44 : retour haptique sur iPhone =================
+// Safari iOS ignore navigator.vibrate, mais un toucher du doigt sur un <label> contenant un <input type="checkbox" switch>
+// fait vibrer (même invisible). Les boutons d'action ci-dessous deviennent donc des labels avec un switch caché :
+// l'action part sur « change » du switch (jamais via un .click() programmatique, que iOS bloque pour l'haptique).
+// Le distributeur de ui.js ignore les clics dans label.hap : pas de double déclenchement.
+const HAPTIC=new Set(["lvlset","toggle","addtoggle","refill","rmstock","finish","rate","made","mixserve"]);
+function hapt(root){
+  if(!root||!root.querySelectorAll) return;
+  const list=root.matches&&root.matches("button[data-a]")?[root]:[];
+  root.querySelectorAll("button[data-a]").forEach(b=>list.push(b));
+  list.forEach(b=>{ if(!HAPTIC.has(b.dataset.a)||b.disabled||!b.parentNode) return;
+    const l=document.createElement("label");
+    for(const a of b.attributes) if(a.name!=="type") l.setAttribute(a.name,a.value);
+    l.classList.add("hap"); if(!l.hasAttribute("role")) l.setAttribute("role","button"); l.tabIndex=0;
+    while(b.firstChild) l.appendChild(b.firstChild);
+    const i=document.createElement("input"); i.type="checkbox"; i.setAttribute("switch",""); i.className="hap-sw"; i.tabIndex=-1; i.setAttribute("aria-hidden","true");
+    l.appendChild(i); b.replaceWith(l); });
+}
+if(typeof MutationObserver!=="undefined") new MutationObserver(ms=>{ for(const m of ms) m.addedNodes.forEach(n=>{ if(n.nodeType===1) hapt(n); }); }).observe(document.documentElement,{childList:true,subtree:true});
+document.addEventListener("change",e=>{ const i=e.target; if(!i.classList||!i.classList.contains("hap-sw")) return;
+  const l=i.closest("label.hap"), a=l&&ACT[l.dataset.a]; if(a) a(l.dataset,l,e); });
+document.addEventListener("keydown",e=>{ if(e.key!=="Enter"&&e.key!==" ") return; const l=e.target.closest&&e.target.closest("label.hap"); if(!l||e.target!==l) return;
+  e.preventDefault(); const i=l.querySelector(".hap-sw"); if(i) i.click(); });
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
