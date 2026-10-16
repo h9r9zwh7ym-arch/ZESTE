@@ -1879,6 +1879,8 @@ body.lab-serving #toast{bottom:calc(env(safe-area-inset-bottom,0px) + 84px + var
 /* résumé de Personnaliser : sans troncature */
 details.lab-perso .lp-s{white-space:normal;overflow:visible;text-overflow:clip}
 #v-labo .lab-goals.warn .goal.bad{box-shadow:inset 0 0 0 1px var(--z-err);color:var(--z-err)}#v-labo .lab-goals.warn .goal.bad i{background:var(--z-err);color:#fff}
+/* 1.51 : engrenage du Profil, zone tactile 44 px sans changer son apparence */
+#v-profil .navbar .icon-btn[data-a="settings"]{width:44px;height:44px;border-radius:22px;margin:-4px}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -3730,10 +3732,10 @@ function vProfil(){
   const tv=tasteVector(), sty=tasteStyle();
   o+=`<h2 class="sh">Ton profil de goût</h2>${sty?`<div class="sh-sub">Ton style : <b style="color:var(--tint)">${esc(sty)}</b></div>`:`<div class="sp8"></div>`}`;
   if(tv&&tv.liked){ o+=`<div class="card"><div class="prof">${radarSVG(tv.liked)}<div style="font-size:calc(15rem / 17)">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<div class="muted" style="font-size:calc(13rem / 17);margin-top:6px">Calculé à partir des cocktails que tu as notés 4 étoiles ou plus.</div></div></div></div>`; }
-  else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); o+=`<div class="card"><div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div style="font-size:calc(15rem / 17)">D’après ton quiz. Ton profil s’affinera avec tes premières notes.</div></div></div>`; }
+  else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); o+=`<div class="card"><div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div style="font-size:calc(15rem / 17)">D’après ton quiz</div></div></div>`; }
   else o+=`<div class="card muted" style="font-size:calc(15rem / 17)">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût. Plus tu notes, plus les suggestions deviennent justes.</div>`;
   if(hasTaste()){ const nx=RECS.filter(r=>!madeCount(r.id)&&!S.ratings[r.id]&&!r.na).map(r=>[r,predict(r)-0.22*status(r).miss.length]).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0];
-    if(nx){ const ok=status(nx).ok; o+=`<h2 class="sh">Ton prochain coup de cœur</h2><div class="sh-sub">Jamais préparé, et c’est notre meilleur pari</div><button class="card buy" data-a="rec" data-id="${nx.id}" style="width:calc(100% - 32px);text-align:left"><div class="bb" style="width:56px;height:70px">${glassSVG(nx)}</div><div class="grow"><div class="bt" style="font-family:var(--serif)">${esc(nx.n)}</div><div class="bs">${matchPct(nx)} % pour toi. ${ok?"Tu peux le faire maintenant.":"Il te manque "+esc(status(nx).miss.map(x=>lc(shortN(x))).join(", "))+"."}</div></div>${IC.chev}</button>`; } }
+    if(nx){ const ok=status(nx).ok; o+=`<h2 class="sh">Ton prochain coup de cœur</h2><button class="card buy" data-a="rec" data-id="${nx.id}" style="width:calc(100% - 32px);text-align:left"><div class="bb" style="width:56px;height:70px">${glassSVG(nx)}</div><div class="grow"><div class="bt" style="font-family:var(--serif)">${esc(nx.n)}</div><div class="bs">${matchPct(nx)} % pour toi · ${ok?"faisable maintenant":"manque "+esc(status(nx).miss.map(x=>lc(shortN(x))).join(", "))}</div></div>${IC.chev}</button>`; } }
   // (1.38 : « Ce qui guide tes suggestions » est passé dans Paramètres › Suggestions, voir guideHTML)
   const byBase={}; S.hist.forEach(h=>{ const r=RMAP[h.id]; if(!r) return; const b=BASE_LABEL[baseGroup(r)]; byBase[b]=(byBase[b]||0)+1; });
   const bb=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6);
@@ -4964,7 +4966,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.50";
+const APP_VERSION="1.51";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -5836,7 +5838,7 @@ Object.assign(ACT,{ carnet:(d)=>carnetSheet(d.k) });
     if(ti>=0){ const lt=(last.match(/^<h2 class="sh">([^<]*)/)||[])[1]; sec[lt]=last.slice(0,ti); }
     const nBest=bestList().length, fams=Object.keys(FAMILIES), done=new Set(distinct().map(id=>RMAP[id].fam)).size;
     const carnet=[ nBest?prow("star","Tes mieux notés","",nBest,"carnet",'data-k="best"'):"",
-      S.hist.length?prow("clock","Historique",S.hist.length+" verre"+(S.hist.length>1?"s":"")+" préparé"+(S.hist.length>1?"s":""),"","carnet",'data-k="hist"'):"",
+      S.hist.length?prow("clock","Historique","",S.hist.length,"carnet",'data-k="hist"'):"",
       prow("map","Familles explorées","",done+" sur "+fams.length,"carnet",'data-k="fam"'),
       sec["Tes spiritueux"]?prow("bottle-wine","Tes spiritueux","","","carnet",'data-k="spi"'):"" ].join("");
     const rc=recapRows();
@@ -5932,7 +5934,7 @@ let RADAR_PLAY=false;
 function focalTaste(){
   const tv=tasteVector(), sty=tasteStyle(); let body;
   if(tv&&tv.liked) body=`<div class="prof">${radarSVG(tv.liked)}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">D’après les cocktails notés 4 étoiles ou plus.</span></div></div>`;
-  else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); body=`<div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div class="fc-txt">D’après ton quiz. Ton profil s’affinera avec tes premières notes.</div></div>`; }
+  else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); body=`<div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div class="fc-txt">D’après ton quiz</div></div>`; }
   else body=`<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
   const st=[[S.hist.length,"préparé","préparés","p"],[distinct().length,"recette","recettes","r"],[rated().length,"noté","notés","n"]];
   return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}<div class="fc-stats">${st.map(([v,a,b,k])=>`<div><b ${ck("prof-"+k,v)}>${v}</b><span>${v>1?b:a}</span></div>`).join("")}</div></div>`;
@@ -6309,6 +6311,9 @@ const ICE_IC=`<svg class="lu ice-ic" viewBox="0 0 24 24" fill="none" stroke="cur
 function liftToast(){ const b=TAB==="labo"&&document.querySelector('#v-labo .lab-servebar'); document.body.style.setProperty("--serve-h",b?(b.querySelector('.lab-serve').offsetHeight+16)+"px":"0px"); document.body.classList.toggle("lab-serving",!!b); }
 { const _rv=renderView; renderView=function(){ const r=_rv.apply(this,arguments); liftToast(); return r; }; }
 { const _sw=switchTab; switchTab=function(){ const r=_sw.apply(this,arguments); liftToast(); return r; }; }
+// ================= ZESTE 1.51 : Profil — l'engrenage du haut suffit (rendu seulement) =================
+{ const _vp=vProfil;
+  vProfil=function(){ return _vp().replace(/<div class="sp24"><\/div><div class="group"><button class="row tap" data-a="settings"[\s\S]*?<\/button><\/div>/,""); }; }
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
