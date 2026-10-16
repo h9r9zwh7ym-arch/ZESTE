@@ -13,11 +13,10 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   const bar=await q(()=>{ const v=document.querySelector('#v-bar'), d=v.querySelector('details.bar-more'), txt=v.textContent;
     return {view:S.settings.barView, shelf:!!v.querySelector('[data-a="barview"],.b2-row,.b2-b'), opened:/bouteilles? ouvertes?/i.test(txt), heads:v.querySelectorAll('.bar-head .bh').length,
       faisables:!!v.querySelector('.bar-head [data-a="gofaisables"]'), more:!!d, closed:d&&!d.open, inMore:d?[...d.querySelectorAll('[data-a]')].map(x=>x.dataset.a):[],
-      lastBtn:(()=>{ const all=[...v.querySelectorAll('.content button')]; return all.length?all[all.length-1].dataset.a:""; })(), moreBeforeAdd:d&&!!(d.compareDocumentPosition(v.querySelector('.btn-row [data-a="addsheet"]'))&Node.DOCUMENT_POSITION_FOLLOWING),
-      gazBasic:BASICS.includes("eau_gazeuse")&&has("eau_gazeuse"), gazListed:!!document.getElementById('sr-eau_gazeuse'), gazBuy:bottleRecs().some(x=>x.id==="eau_gazeuse")}; });
+      addBtn:!!v.querySelector('.content .btn-row [data-a="addsheet"]'), lastBtn:(()=>{ const all=[...v.querySelectorAll('.content button')]; return all.length?all[all.length-1].dataset.a:""; })(), gazBasic:BASICS.includes("eau_gazeuse")&&has("eau_gazeuse"), gazListed:!!document.getElementById('sr-eau_gazeuse'), gazBuy:bottleRecs().some(x=>x.id==="eau_gazeuse")}; });
   if(bar.view!=="list"||bar.shelf) fail.push('bar : l’étagère existe encore '+JSON.stringify(bar));
   if(bar.opened||bar.heads!==1||!bar.faisables) fail.push('bar : en-tête '+JSON.stringify(bar));
-  if(!bar.more||!bar.closed||!bar.inMore.includes("basics")||!bar.inMore.includes("buysheet")||!bar.moreBeforeAdd||bar.lastBtn!=="addsheet") fail.push('bar : section repliée '+JSON.stringify(bar));
+  if(!bar.more||!bar.closed||!bar.inMore.includes("basics")||!bar.inMore.includes("buysheet")||bar.addBtn) fail.push('bar : section repliée '+JSON.stringify(bar));
   if(!bar.gazBasic||bar.gazListed||bar.gazBuy) fail.push('eau gazeuse : '+JSON.stringify(bar));
   await p.click('#v-bar details.bar-more>summary'); await p.waitForTimeout(400);
   await p.click('#v-bar .bar-more [data-a="basics"]'); await p.waitForTimeout(500);

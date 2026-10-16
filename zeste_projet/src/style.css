@@ -1811,3 +1811,18 @@ details.lab-chal .chal-row{margin-top:0}
 #v-labo .lab-reset .btn.danger{background:transparent;color:var(--z-err);font-weight:500}
 #v-labo .lab-reset .btn.danger[data-sure]{box-shadow:inset 0 0 0 1px var(--z-err)}
 #v-labo details.lab-more>summary svg{color:var(--label3)}
+/* ================= 1.47 : Bar et feuille de niveau ================= */
+/* le niveau en une fois : la fraction est le bouton (44 px), plus de barres */
+#v-bar .lvl.one{align-items:center;justify-content:flex-end;min-width:56px;padding:0 0 0 var(--z-s1);gap:0}
+#v-bar .lvl.one .lvl-txt{margin:0;font-variant-numeric:tabular-nums}
+#v-bar .lvl.one.empty .lvl-txt{color:var(--z-err)}
+/* titres de section : « Basiques et idées d'achat » comme « Spiritueux », même repère de pliage */
+details.bar-more{margin:var(--z-s3) 0 0}
+details.bar-more>summary{margin:0 var(--z-side) var(--z-s1);min-height:44px;font-size:calc(15rem / 17);font-weight:600;color:var(--label2)}
+details.bar-more>summary .chev,.cat-h.fold .fold-n .chev{width:12px;height:12px;color:var(--label3);transform:rotate(0deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
+details.bar-more[open]>summary .chev,.cat-h.fold:not(.shut) .fold-n .chev{transform:rotate(90deg)}
+/* feuille de niveau : sélection commune, libellés de même taille centrés sous l'icône */
+/* (les boutons sont des label.hap depuis 1.44 : on cible les deux) */
+.lvl-big>button,.lvl-big>label.hap{flex:1;position:relative;border-radius:var(--z-r-m);background:var(--fill2);padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;min-height:44px;min-width:44px;font-size:var(--z-fs-l);font-weight:600;line-height:1.2;text-align:center;color:var(--label2);font-variant-numeric:tabular-nums}
+.lvl-big>button.on,.lvl-big>label.hap.on{background:var(--z-accent-bg);box-shadow:inset 0 0 0 1.5px var(--z-accent);color:var(--label)}
+@media (prefers-reduced-motion:reduce){details.bar-more>summary .chev{transition:none}}
