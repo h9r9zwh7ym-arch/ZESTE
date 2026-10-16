@@ -30,7 +30,7 @@ Object.assign(ACT,{ carnet:(d)=>carnetSheet(d.k) });
     if(ti>=0){ const lt=(last.match(/^<h2 class="sh">([^<]*)/)||[])[1]; sec[lt]=last.slice(0,ti); }
     const nBest=bestList().length, fams=Object.keys(FAMILIES), done=new Set(distinct().map(id=>RMAP[id].fam)).size;
     const carnet=[ nBest?prow("star","Tes mieux notés","",nBest,"carnet",'data-k="best"'):"",
-      S.hist.length?prow("clock","Historique",S.hist.length+" verre"+(S.hist.length>1?"s":"")+" préparé"+(S.hist.length>1?"s":""),"","carnet",'data-k="hist"'):"",
+      S.hist.length?prow("clock","Historique","",S.hist.length,"carnet",'data-k="hist"'):"",
       prow("map","Familles explorées","",done+" sur "+fams.length,"carnet",'data-k="fam"'),
       sec["Tes spiritueux"]?prow("bottle-wine","Tes spiritueux","","","carnet",'data-k="spi"'):"" ].join("");
     const rc=recapRows();
