@@ -3,6 +3,7 @@
 // Icônes culinaires et garnitures absentes de Lucide : dessinées sur la même grille (24 px, trait arrondi) pour rester homogènes.
 // lu(nom, classe) renvoie le SVG ; la couleur suit currentColor, l'épaisseur est commune (1,75, réglable par CSS : .lu{stroke-width}).
 const LU={
+ "user-round":`<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>`,
  "lightbulb":`<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>`,
  "x":`<path d="M18 6 6 18"/><path d="m6 6 12 12"/>`,
  "plus":`<path d="M5 12h14"/><path d="M12 5v14"/>`,
