@@ -1914,6 +1914,17 @@ h2.sh .stepper button::after{content:"";position:absolute;inset:-4px -2px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge.warn{color:var(--z-warn)}}
 :root[data-theme="dark"] .badge.warn{color:var(--z-warn)}
 .rate-box .stars label.hap,.rate-box .stars>button,.remind .stars label.hap,.remind .stars>button{width:44px;height:44px}
+/* ================= 1.53 : fiche recette (2) ================= */
+.sheet-head .sr .close-x{margin-right:6px}
+.adj-l span.adj-same{visibility:hidden}
+.adj-l span{display:block;min-height:1.3em;line-height:1.3em}
+.sheet-body .hist{font-size:calc(16rem / 17);line-height:1.35;font-weight:400;color:var(--label2)}
+.sheet-body:has(>.dhero) h2.sh+.sp8{display:none}
+.sheet-body:has(>.dhero) h2.sh{margin-bottom:24px}
+.tile.lite{justify-content:flex-start;align-items:stretch}
+.tile.lite .ts{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:unset}
+.tile.lite{align-self:stretch}
+.tile.lite{display:flex;flex-direction:column;justify-content:flex-start}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -3298,6 +3309,7 @@ function currentMoment(){ const m=S.settings&&S.settings.moment; return m&&m!=="
 // Icônes culinaires et garnitures absentes de Lucide : dessinées sur la même grille (24 px, trait arrondi) pour rester homogènes.
 // lu(nom, classe) renvoie le SVG ; la couleur suit currentColor, l'épaisseur est commune (1,75, réglable par CSS : .lu{stroke-width}).
 const LU={
+ "lightbulb":`<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>`,
  "x":`<path d="M18 6 6 18"/><path d="m6 6 12 12"/>`,
  "plus":`<path d="M5 12h14"/><path d="M12 5v14"/>`,
  "minus":`<path d="M5 12h14"/>`,
@@ -4999,7 +5011,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.52";
+const APP_VERSION="1.53";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6369,6 +6381,15 @@ function recPolish(o){ let b=o.body; const id=(b.match(/data-a="rate" data-id="(
     '<div class="rad-key"><svg width="22" height="6" aria-hidden="true"><line x1="1" y1="3" x2="21" y2="3" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 3"/></svg>Moyenne</div>');
   // quelle bouteille choisir : lignes dans une carte blanche
   b=b.replace('<h2 class="sh">Quelle bouteille choisir</h2><div class="group open">','<h2 class="sh">Quelle bouteille choisir</h2><div class="group tips-card">');
+  // (1.53) étoiles sans libellé à droite ; pas de bannière « Tu as tout » ; sous-titre de réglage seulement s'il change
+  b=b.replace(/<span class="muted" style="font-size:calc\(14rem \/ 17\);text-align:right;line-height:1.2">[\s\S]*?<\/span><\/div>/,"</div>");
+  b=b.replace(/<div class="status ok">[\s\S]*?<\/span><\/div>/,"");
+  b=b.replace(/(<div class="adj-l"><b>[^<]*<\/b>)<span>Comme l’original<\/span>/g,'$1<span class="adj-same" aria-hidden="true">Comme l’original</span>');
+  // astuce : une ampoule
+  b=b.replace(/(<span style="color:var\(--tint\);flex:none">)<svg[\s\S]*?<\/svg>(<\/span><span>)/,(m,a,c)=>a+lu("lightbulb").replace("<svg",'<svg width="20" height="20"')+c);
+  // étapes : seulement la première occurrence de chaque terme est soulignée
+  b=b.replace(/<ol class="steps[\s\S]*?<\/ol>/,ol=>{ const seen=new Set(); return ol.replace(/<span class="term"[^>]*data-k="([^"]+)"[^>]*>([^<]*)<\/span>/g,(m,k,t)=>{ if(seen.has(k)) return t; seen.add(k); return m; }); });
+  b=b.replace('placeholder="Ce que tu as changé, ce que tu referais…"','placeholder="Ajouter une note"');
   o.body=b; return o; }
 { const _os=openSheet;
   openSheet=function(render,opt){ if(NEXT_SHEET_XFORM===recOpen) NEXT_SHEET_XFORM=o=>recPolish(recOpen(o)); return _os(render,opt); }; }

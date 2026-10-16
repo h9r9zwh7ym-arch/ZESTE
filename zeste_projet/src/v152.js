@@ -20,6 +20,15 @@ function recPolish(o){ let b=o.body; const id=(b.match(/data-a="rate" data-id="(
     '<div class="rad-key"><svg width="22" height="6" aria-hidden="true"><line x1="1" y1="3" x2="21" y2="3" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 3"/></svg>Moyenne</div>');
   // quelle bouteille choisir : lignes dans une carte blanche
   b=b.replace('<h2 class="sh">Quelle bouteille choisir</h2><div class="group open">','<h2 class="sh">Quelle bouteille choisir</h2><div class="group tips-card">');
+  // (1.53) étoiles sans libellé à droite ; pas de bannière « Tu as tout » ; sous-titre de réglage seulement s'il change
+  b=b.replace(/<span class="muted" style="font-size:calc\(14rem \/ 17\);text-align:right;line-height:1.2">[\s\S]*?<\/span><\/div>/,"</div>");
+  b=b.replace(/<div class="status ok">[\s\S]*?<\/span><\/div>/,"");
+  b=b.replace(/(<div class="adj-l"><b>[^<]*<\/b>)<span>Comme l’original<\/span>/g,'$1<span class="adj-same" aria-hidden="true">Comme l’original</span>');
+  // astuce : une ampoule
+  b=b.replace(/(<span style="color:var\(--tint\);flex:none">)<svg[\s\S]*?<\/svg>(<\/span><span>)/,(m,a,c)=>a+lu("lightbulb").replace("<svg",'<svg width="20" height="20"')+c);
+  // étapes : seulement la première occurrence de chaque terme est soulignée
+  b=b.replace(/<ol class="steps[\s\S]*?<\/ol>/,ol=>{ const seen=new Set(); return ol.replace(/<span class="term"[^>]*data-k="([^"]+)"[^>]*>([^<]*)<\/span>/g,(m,k,t)=>{ if(seen.has(k)) return t; seen.add(k); return m; }); });
+  b=b.replace('placeholder="Ce que tu as changé, ce que tu referais…"','placeholder="Ajouter une note"');
   o.body=b; return o; }
 { const _os=openSheet;
   openSheet=function(render,opt){ if(NEXT_SHEET_XFORM===recOpen) NEXT_SHEET_XFORM=o=>recPolish(recOpen(o)); return _os(render,opt); }; }

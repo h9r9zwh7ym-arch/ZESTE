@@ -1910,3 +1910,14 @@ h2.sh .stepper button::after{content:"";position:absolute;inset:-4px -2px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge.warn{color:var(--z-warn)}}
 :root[data-theme="dark"] .badge.warn{color:var(--z-warn)}
 .rate-box .stars label.hap,.rate-box .stars>button,.remind .stars label.hap,.remind .stars>button{width:44px;height:44px}
+/* ================= 1.53 : fiche recette (2) ================= */
+.sheet-head .sr .close-x{margin-right:6px}
+.adj-l span.adj-same{visibility:hidden}
+.adj-l span{display:block;min-height:1.3em;line-height:1.3em}
+.sheet-body .hist{font-size:calc(16rem / 17);line-height:1.35;font-weight:400;color:var(--label2)}
+.sheet-body:has(>.dhero) h2.sh+.sp8{display:none}
+.sheet-body:has(>.dhero) h2.sh{margin-bottom:24px}
+.tile.lite{justify-content:flex-start;align-items:stretch}
+.tile.lite .ts{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:unset}
+.tile.lite{align-self:stretch}
+.tile.lite{display:flex;flex-direction:column;justify-content:flex-start}
