@@ -74,7 +74,7 @@ p.body{margin:0 20px;color:var(--label2);font-size:var(--z-fs-b)}
 .row .t.serif{font-family:var(--serif);font-weight:600}
 .row .s{font-size:var(--z-fs-l);color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
 .row .val{color:var(--label2);font-size:var(--z-fs-b);white-space:nowrap}
-.chev{width:8px;height:13px;color:var(--label3);flex:none}
+.chev{width:8px;height:13px;color:var(--z-ic);flex:none}
 .row .thumb{width:42px;height:52px;flex:none;display:grid;place-items:center}
 .row .thumb svg{width:100%;height:100%}
 
@@ -148,12 +148,12 @@ p.body{margin:0 20px;color:var(--label2);font-size:var(--z-fs-b)}
 .badge.green{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
 .badge.red{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
 .stars{display:flex;gap:4px}
-.stars button{width:34px;height:34px;display:grid;place-items:center;color:var(--label3)}
+.stars button{width:34px;height:34px;display:grid;place-items:center;color:var(--z-ic)}
 .stars button.on{color:var(--tint)}
 .stars svg{width:28px;height:28px}
 .stars.sm{gap:1px}
 .stars.sm svg{width:12px;height:12px}
-.stars.sm span{color:var(--label3);display:grid}
+.stars.sm span{color:var(--z-ic);display:grid}
 .stars.sm span.on{color:var(--tint)}
 
 /* niveaux de bouteilles */
@@ -1619,7 +1619,7 @@ button.stat:active{transform:scale(.97)}
 .open-links{margin:20px 20px 0;border-top:1px solid var(--sep)}
 .open-link{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:10px 0;border-bottom:1px solid var(--sep);font-size:var(--z-fs-b);color:var(--label);text-align:left}
 .open-link .grow{flex:1;min-width:0}
-.open-link .chev{color:var(--label3)}
+.open-link .chev{color:var(--z-ic)}
 .open-link .ol-act{color:var(--tint);font-weight:600}
 .open-link .ol-dot{width:8px;height:8px;border-radius:4px;background:var(--orange);flex:none}
 .open-link:active{opacity:.55}
@@ -1680,12 +1680,12 @@ svg.icedrop .ice>g.crush{animation:drop .5s cubic-bezier(.3,1.35,.55,1) both!imp
 .bar-head.one .bh{padding-right:0}
 .low-line{display:flex;align-items:center;gap:var(--z-s1);margin:10px 20px 0;min-height:32px;font-size:var(--z-fs-b);font-weight:600;color:var(--orange);text-align:left}
 .low-line .ol-dot{width:8px;height:8px;border-radius:4px;background:var(--orange);flex:none}
-.low-line .chev{color:var(--label3);width:14px;height:14px}
+.low-line .chev{color:var(--z-ic);width:14px;height:14px}
 .low-line:active{opacity:.55}
 details.bar-more{margin:28px 0 0}
 details.bar-more>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;margin:0 20px;min-height:44px;font-size:var(--z-fs-b);font-weight:600;color:var(--label2);cursor:pointer;-webkit-user-select:none;user-select:none}
 details.bar-more>summary::-webkit-details-marker{display:none}
-details.bar-more>summary .chev{color:var(--label3);transform:rotate(90deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
+details.bar-more>summary .chev{color:var(--z-ic);transform:rotate(90deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
 details.bar-more[open]>summary .chev{transform:rotate(-90deg)}
 details.bar-more>summary:active{opacity:.55}
 details.bar-more[open]>.group{animation:barmore .28s cubic-bezier(.3,.7,.4,1)}
@@ -1731,7 +1731,7 @@ details.bar-more[open]>.group{animation:barmore .28s cubic-bezier(.3,.7,.4,1)}
 .cat-h.fold{width:calc(100% - 40px);align-items:center;text-align:left;cursor:pointer}
 .cat-h.fold:active{opacity:.55}
 .cat-h.fold .fold-n{display:flex;align-items:center;gap:6px}
-.cat-h.fold .fold-n .chev{width:12px;height:12px;color:var(--label3);transform:rotate(90deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
+.cat-h.fold .fold-n .chev{width:12px;height:12px;color:var(--z-ic);transform:rotate(90deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
 .cat-h.fold.shut .fold-n .chev{transform:rotate(0deg)}
 .group.fold-g{overflow:hidden}
 .group.fold-g.folded{display:none}
@@ -1739,7 +1739,7 @@ details.bar-more[open]>.group{animation:barmore .28s cubic-bezier(.3,.7,.4,1)}
 /* 1.44 : boutons à retour haptique (label + switch invisible) */
 label.hap{cursor:pointer;-webkit-user-select:none;user-select:none}
 label.hap>.hap-sw{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
-.stars label.hap{width:34px;height:34px;display:grid;place-items:center;color:var(--label3)}
+.stars label.hap{width:34px;height:34px;display:grid;place-items:center;color:var(--z-ic)}
 .stars label.hap.on{color:var(--tint)}
 .stars label.hap.pop svg{animation:spop .45s cubic-bezier(.3,1.8,.5,1) both}
 .stars label.hap.pop:nth-child(2) svg{animation-delay:.04s}.stars label.hap.pop:nth-child(3) svg{animation-delay:.08s}.stars label.hap.pop:nth-child(4) svg{animation-delay:.12s}.stars label.hap.pop:nth-child(5) svg{animation-delay:.16s}
@@ -1795,7 +1795,7 @@ details.lab-perso>summary,details.lab-chal>summary{list-style:none;display:flex;
 details.lab-perso>summary::-webkit-details-marker,details.lab-chal>summary::-webkit-details-marker{display:none}
 details.lab-perso .lp-t,details.lab-chal .lp-t{font-size:var(--z-fs-b);font-weight:600;flex:none}
 details.lab-perso .lp-s,details.lab-chal .lp-s{flex:1;min-width:0;text-align:right;font-size:var(--z-fs-l);color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-details.lab-perso>summary .chev,details.lab-chal>summary .chev{flex:none;color:var(--label3);transform:rotate(90deg);transition:transform .25s}
+details.lab-perso>summary .chev,details.lab-chal>summary .chev{flex:none;color:var(--z-ic);transform:rotate(90deg);transition:transform .25s}
 details.lab-perso[open]>summary .chev,details.lab-chal[open]>summary .chev{transform:rotate(-90deg)}
 details.lab-perso[open]{padding-bottom:var(--z-s2)}
 details.lab-chal[open]{padding-bottom:var(--z-s1)}
@@ -1809,7 +1809,7 @@ details.lab-chal .chal-row{margin-top:0}
 #v-labo .lab-reset{margin-top:var(--z-s3);padding-top:var(--z-s2);border-top:.5px solid var(--sep)}
 #v-labo .lab-reset .btn.danger{background:transparent;color:var(--z-err);font-weight:500}
 #v-labo .lab-reset .btn.danger[data-sure]{box-shadow:inset 0 0 0 1px var(--z-err)}
-#v-labo details.lab-more>summary svg{color:var(--label3)}
+#v-labo details.lab-more>summary svg{color:var(--z-ic)}
 /* ================= 1.47 : Bar et feuille de niveau ================= */
 /* le niveau en une fois : la fraction est le bouton (44 px), plus de barres */
 #v-bar .lvl.one{align-items:center;justify-content:flex-end;min-width:56px;padding:0 0 0 var(--z-s1);gap:0}
@@ -1818,7 +1818,7 @@ details.lab-chal .chal-row{margin-top:0}
 /* titres de section : « Basiques et idées d'achat » comme « Spiritueux », même repère de pliage */
 details.bar-more{margin:var(--z-s3) 0 0}
 details.bar-more>summary{margin:0 var(--z-side) var(--z-s1);min-height:44px;font-size:var(--z-fs-b);font-weight:600;color:var(--label2)}
-details.bar-more>summary .chev,.cat-h.fold .fold-n .chev{width:12px;height:12px;color:var(--label3);transform:rotate(0deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
+details.bar-more>summary .chev,.cat-h.fold .fold-n .chev{width:12px;height:12px;color:var(--z-ic);transform:rotate(0deg);transition:transform .25s cubic-bezier(.3,.7,.4,1)}
 details.bar-more[open]>summary .chev,.cat-h.fold:not(.shut) .fold-n .chev{transform:rotate(90deg)}
 /* feuille de niveau : sélection commune, libellés de même taille centrés sous l'icône */
 /* (les boutons sont des label.hap depuis 1.44 : on cible les deux) */
@@ -1901,7 +1901,7 @@ h2.sh .stepper button::after{content:"";position:absolute;inset:-4px -2px}
 /* quelle bouteille choisir : carte blanche, lignes avec chevron */
 .group.tips-card{background:var(--bg2);box-shadow:var(--shadow)}
 .tips-card details.tip>summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;list-style:none}
-.tips-card details.tip>summary .chev{color:var(--label3);transition:transform .25s}
+.tips-card details.tip>summary .chev{color:var(--z-ic);transition:transform .25s}
 .tips-card details.tip[open]>summary .chev{transform:rotate(90deg)}
 .rate-box .stars{flex:none}
 .stars label.hap,.stars>button{flex:none}
@@ -1959,7 +1959,7 @@ details.bar-more[open]>summary .chev{transform:rotate(-90deg)}
 .sheet-head .sr .link{min-width:44px;min-height:44px;display:grid;place-items:center;padding:0 4px 0 10px}
 /* ================= 1.56 : contenance réglable ================= */
 #v-labo button.lab-legend{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 var(--z-s1);color:var(--label2);font-size:var(--z-fs-l);font-variant-numeric:tabular-nums}
-#v-labo button.lab-legend .chev{width:12px;height:12px;color:var(--label3)}
+#v-labo button.lab-legend .chev{width:12px;height:12px;color:var(--z-ic)}
 .cap-row .stepper{flex:none}
 .cap-row .stepper span{min-width:64px;font-variant-numeric:tabular-nums}
 .cap-reset .grow{color:var(--z-accent)}
@@ -2006,3 +2006,37 @@ details.bar-more[open]{padding-bottom:0}
 .sheet-body>div>:is(.group,.card){margin-left:var(--z-side);margin-right:var(--z-side)}
 :is(#v-profil,#v-bar,#v-labo) .content>.scroller,.sheet-body>.scroller,.sheet-body>div>.scroller{padding-left:var(--z-side);padding-right:var(--z-side);scroll-padding-inline:var(--z-side)}
 #v-labo .lab-servebar{padding-left:var(--z-side);padding-right:var(--z-side)}
+
+/* ================= 1.57 : audit mesurable (375/390, clair/sombre) — corrections objectives seulement ================= */
+/* jetons : icône neutre ≥ 3:1 (chevrons, loupe, « − / + » de Force), texte vert ≥ 4,5:1 en clair */
+:root{--z-ic:rgba(79,70,52,.68);--z-ok-tx:color-mix(in srgb,var(--green) 75%,var(--label))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--z-ic:rgba(242,237,224,.5);--z-ok-tx:var(--green)}}
+:root[data-theme="dark"]{--z-ic:rgba(242,237,224,.5);--z-ok-tx:var(--green)}
+/* zones tactiles ≥ 44 px : on agrandit la zone par ::after, pas le visuel */
+.fbtn,.search,.low-line,.lab-auto,#v-labo details.lab-more>summary,#v-bar .row button.grow[data-a="ing"],#v-bar .row .thumb[data-a="ing"],.segchips .chip{position:relative}
+.fbtn::after,.search::after,.low-line::after,.lab-auto::after,#v-labo details.lab-more>summary::after,#v-bar .row button.grow[data-a="ing"]::after,#v-bar .row .thumb[data-a="ing"]::after,.segchips .chip::after{content:"";position:absolute}
+.fbtn::after{inset:-5px 0}
+.search::after{inset:-3px 0}
+.low-line::after{inset:-6px 0}
+.lab-auto::after{inset:-9px 0}
+#v-labo details.lab-more>summary::after{inset:-3px 0}
+#v-bar .row button.grow[data-a="ing"]::after{inset:-11px 0}
+#v-bar .row .thumb[data-a="ing"]::after{inset:0 -7px}
+.segchips .chip::after{inset:-6px 0}
+.segchips{padding:var(--z-s1) var(--z-side);margin-top:-6px;margin-bottom:2px} /* place pour la zone des puces (le défileur rogne), même mise en page */
+.set-in{height:44px;margin:-9.5px 0} /* champ transparent : toute la hauteur de la ligne, même mise en page */
+/* contraste */
+.chev,.open-link .chev,.low-line .chev,details.bar-more>summary .chev,#v-labo details.lab-more>summary svg,.search svg{color:var(--z-ic)}
+.adj-dots .adj-end{color:var(--label2)}
+.sheet .row.hap>span[style*="--label3"]{color:var(--z-ic)!important} /* « pas au bar » de la feuille d’ajout */
+.badge.green{color:var(--z-ok-tx)}
+:root:not([data-theme="dark"]) .mo-soir{color:#9572DC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mo-soir{color:#9A7AE0}}
+/* marge latérale 20 px : Aujourd'hui et Cocktails, carte « prochain coup de cœur » du Profil, résumé du Labo */
+:is(#v-today,#v-cocktails) .content>:is(.hero,.duo,.disc,.btn-row,.seg,.toolbar,.search,.group,.card){margin-left:var(--z-side);margin-right:var(--z-side)}
+:is(#v-today,#v-cocktails) .content>:is(.scroller,.dishes){padding-left:var(--z-side);padding-right:var(--z-side);scroll-padding-inline:var(--z-side)}
+#v-profil .content>.card.buy{width:calc(100% - 2 * var(--z-side))!important}
+#v-labo details.lab-more>summary{padding-left:var(--z-side);padding-right:var(--z-side)}
+/* jeton : les 14 px restés en style en ligne passent à la petite taille */
+[style*="font-size:calc(14rem / 17)"]{font-size:var(--z-fs-l)!important}
+#v-cocktails .content>div:not([class])>:is(.toolbar,.group,.card,.seg){margin-left:var(--z-side);margin-right:var(--z-side)}
