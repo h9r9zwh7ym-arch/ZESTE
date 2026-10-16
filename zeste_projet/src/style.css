@@ -1877,3 +1877,36 @@ details.lab-perso .lp-s{white-space:normal;overflow:visible;text-overflow:clip}
 #v-labo .lab-goals.warn .goal.bad{box-shadow:inset 0 0 0 1px var(--z-err);color:var(--z-err)}#v-labo .lab-goals.warn .goal.bad i{background:var(--z-err);color:#fff}
 /* 1.51 : engrenage du Profil, zone tactile 44 px sans changer son apparence */
 #v-profil .navbar .icon-btn[data-a="settings"]{width:44px;height:44px;border-radius:22px;margin:-4px}
+/* ================= 1.52 : fiche recette ================= */
+.badge.warn{background:color-mix(in srgb,var(--z-warn) 16%,transparent);color:var(--z-warn)}
+.ing-line.miss .n{color:var(--label)}
+.ing-line .q{font-variant-numeric:tabular-nums}
+/* en-tête : titre réduit comme la barre du Profil ; fermer à 20 px du bord, zone 44 px */
+.sheet-head .st.rec-t{opacity:0;transition:opacity .2s}
+.sheet-head.rec-t-on .st.rec-t{opacity:1}
+.sheet-head .sr .close-x{margin-right:-6px;position:relative}
+/* zones tactiles */
+h2.sh .stepper button{position:relative}
+h2.sh .stepper button::after{content:"";position:absolute;inset:-4px -2px}
+.stars{gap:0}
+.stars label.hap,.stars>button{width:44px;height:44px}
+.stars label.hap:not(.on) svg path,.stars>button:not(.on) svg path{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+.stars label.hap.on,.stars>button.on{color:var(--z-accent)}
+.adj-dots{gap:0}
+.adj-dots button{height:44px}
+/* Ta version : « Modifier dans le labo » en dernière ligne de la carte */
+.card.adj .adj-lab{margin:0 -16px -12px;width:calc(100% + 32px);border-top:.5px solid var(--sep);padding-left:16px;padding-right:16px;min-height:48px}
+/* profil de goût : légende */
+.rad-key{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:var(--z-fs-l);color:var(--label2)}
+/* quelle bouteille choisir : carte blanche, lignes avec chevron */
+.group.tips-card{background:var(--bg2);box-shadow:var(--shadow)}
+.tips-card details.tip>summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;list-style:none}
+.tips-card details.tip>summary .chev{color:var(--label3);transition:transform .25s}
+.tips-card details.tip[open]>summary .chev{transform:rotate(90deg)}
+.rate-box .stars{flex:none}
+.stars label.hap,.stars>button{flex:none}
+/* « Manque » : orange assez foncé en clair pour 4,5:1 sur son fond teinté */
+.badge.warn{color:#8F4000}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge.warn{color:var(--z-warn)}}
+:root[data-theme="dark"] .badge.warn{color:var(--z-warn)}
+.rate-box .stars label.hap,.rate-box .stars>button,.remind .stars label.hap,.remind .stars>button{width:44px;height:44px}
