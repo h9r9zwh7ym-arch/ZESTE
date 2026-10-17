@@ -1,5 +1,5 @@
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.62";
+const APP_VERSION="1.63";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
