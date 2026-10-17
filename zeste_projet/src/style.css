@@ -2155,3 +2155,12 @@ details.bar-more[open]{padding-bottom:0}
 .ls-bar i.mid{background:var(--orange)}.ls-bar i.ko{background:var(--red)}
 /* 1.62 : la jauge de remplissage suit le sous-score Remplissage */
 .lab-gbar i.mid{background:var(--orange)}.lab-gbar i.bad{background:var(--red)}
+/* 1.62 : score en direct du Labo, écran de service chiffré */
+.lab-live{text-align:center;margin-top:var(--z-s1);font-size:var(--z-fs-b);color:var(--label2)}
+.lab-live b{font-family:var(--rounded);font-weight:700;color:var(--label);font-variant-numeric:tabular-nums}
+.lab-live.lab-none{color:var(--label2)}
+.sv-gi.sv-num-s{width:auto;min-width:32px;padding:0 6px;border-radius:12px;background:rgba(0,0,0,.28)!important;color:#fff!important;font-variant-numeric:tabular-nums}
+.sv-goal.mid u{background:#FF9F0A}.sv-goal.ko u{background:#FF453A}
+.sv-chev{display:grid;place-items:center;flex:none;color:#fff}.sv-chev svg{width:16px;height:16px}
+#serve.p5 .sv-sum{opacity:1}
+#serve .sv-bg{filter:brightness(var(--svdim,1))}
