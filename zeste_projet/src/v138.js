@@ -49,7 +49,7 @@ function homemadeView(){
   const row=t=>`<button class="row tap" data-a="tech" data-id="${t.id}"><div class="grow"><div class="t">${esc(t.n)}</div><div class="s">${esc(t.t)}, ${esc(t.lvl.toLowerCase())}</div></div>${IC.chev}</button>`;
   let o="";
   if(P.length) o+=`<h2 class="sh">En cours</h2><div class="group">${P.map(prepRow).join("")}</div><div class="gf">Durées indicatives au frigo. Au moindre doute (trouble, odeur, moisissure), jette.</div>`;
-  o+=`<h2 class="sh">À faire soi-même</h2>${P.length?"":`<div class="sh-sub">Lance une recette : l’app te prévient avant que ça tourne.</div>`}<div class="group">${withP.map(row).join("")}</div>`;
+  o+=`<h2 class="sh">À faire soi-même</h2><div class="group">${withP.map(row).join("")}</div>`;
   if(gest.length) o+=`<h2 class="sh">Gestes de bar</h2><div class="group">${gest.map(row).join("")}</div>`;
   return o+`<div class="sp16"></div><div class="btn-row"><button class="btn sec" data-a="newprep">${IC.plus}Noter une autre préparation</button></div>`;
 }

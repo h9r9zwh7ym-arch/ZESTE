@@ -63,9 +63,8 @@ try{ frTypo(document.body); new MutationObserver(ms=>{ for(const m of ms) m.adde
 // Pastille des onglets : position mesurée par rapport à la barre (et non à la page), puis vérifiée à la fin de
 // l'animation et à chaque changement de taille (rotation, clavier), pour qu'elle reste centrée sous l'onglet.
 moveTabInd=function(){ const tb=document.querySelector(".tabbar"), on=tb&&tb.querySelector("button.on"), ind=tb&&tb.querySelector(".tab-ind"); if(!on||!ind) return;
-  // (1.59) largeur = libellé + 8 px de chaque côté, pour tous les onglets
-  const lab=[...on.querySelectorAll("span")].pop(); let lw=40; if(lab){ const g=document.createRange(); g.selectNodeContents(lab); lw=g.getBoundingClientRect().width; }
-  const w=Math.ceil(lw)+16, a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(); ind.style.width=w+"px"; ind.style.transform=`translateX(${Math.round(r.left-a.left+r.width/2-w/2)}px)`; };
+  // (1.60) colonnes égales (1/5) ; pastille de largeur fixe = colonne − 8 px
+  const a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(), w=Math.round(r.width-8); ind.style.width=w+"px"; ind.style.transform=`translateX(${Math.round(r.left-a.left+r.width/2-w/2)}px)`; };
 { const _sw=switchTab; switchTab=function(){ const r=_sw.apply(this,arguments); setTimeout(moveTabInd,480); return r; };
   setTimeout(moveTabInd,0); if(typeof document!=="undefined"&&document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>moveTabInd());   // (1.59) init passe avant ce module
   let rz=0; const onRz=()=>{ clearTimeout(rz); rz=setTimeout(moveTabInd,120); }; addEventListener("resize",onRz); window.visualViewport&&visualViewport.addEventListener("resize",onRz); }
