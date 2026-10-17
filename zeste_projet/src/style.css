@@ -2153,3 +2153,5 @@ details.bar-more[open]{padding-bottom:0}
 .ls-bar{height:5px;border-radius:3px;background:var(--fill);overflow:hidden}
 .ls-bar i{display:block;height:100%;border-radius:3px;background:var(--green)}
 .ls-bar i.mid{background:var(--orange)}.ls-bar i.ko{background:var(--red)}
+/* 1.62 : la jauge de remplissage suit le sous-score Remplissage */
+.lab-gbar i.mid{background:var(--orange)}.lab-gbar i.bad{background:var(--red)}
