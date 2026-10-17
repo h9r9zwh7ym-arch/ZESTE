@@ -27,7 +27,7 @@ const ING_PICTO={citron:"lemon",citron_vert:"citrus",menthe:"mint",blanc_oeuf:"e
   vCompose=function(){ return _vc().replace(/(<button class="shelf[^"]*" data-a="mixpour" data-id="([\w]+)">)<span class="sh-ic" style="background:[^"]*"><\/span>/g,(m,open,id)=>{
       if(ING[id]&&ING[id].cat==="sirop") return `${open}<span class="sh-b">${bottleSVG(id,4)}</span>`;
       const ic=ING_PICTO[id]; if(!ic) return m;
-      return `${open}<span class="sh-pic" style="color:${mix(colOf(id),"#1F2A22",0.42)}">${lu(ic)}</span>`; }); };
+      return `${open}<span class="sh-pic" style="--pc-l:${picCol(mix(colOf(id),"#1F2A22",0.42),"#FFFDF8","#000000")};--pc-d:${picCol(mix(colOf(id),"#1F2A22",0.42),"#18211B","#FFFFFF")}">${lu(ic)}</span>`; }); };
 }
 
 // ---------- Paramètres : l'essentiel ; ce qui reste utile va dans « À propos » ----------

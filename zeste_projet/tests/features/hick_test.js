@@ -1,6 +1,6 @@
 // 1.37 (loi de Hick, harmonisation) : budgets de choix par écran avec un utilisateur réaliste, listes repliées qui se
 // déplient, jauge du bar en un seul bouton de 44 px, réglages en groupes avec Retour, trophées en résumé, verres jamais
-// vides (identifiants SVG uniques), carrousels aimantés sur la marge, plus aucun texte sous 11 px.
+// vides (identifiants SVG uniques), carrousels aimantés sur la marge, plus aucun texte sous 12 px.
 const {chromium}=require('playwright'); const path=require('path');
 (async()=>{ const b=await chromium.launch(); const fail=[]; const errs=[];
   const p=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:2}); p.on('pageerror',e=>errs.push(e.message));
@@ -58,11 +58,11 @@ const {chromium}=require('playwright'); const path=require('path');
     return {dup:Object.values(c).filter(v=>v>1).length,broken}; });
   if(ids.dup||ids.broken) fail.push('verres : '+ids.dup+' identifiants en double, '+ids.broken+' références vers un écran masqué');
   await p.evaluate(()=>closeAll()); await p.waitForTimeout(400);
-  // Carrousel aimanté sur la marge (20 px depuis 1.57), et plus de texte sous 11 px dans les vues
+  // Carrousel aimanté sur la marge (20 px depuis 1.57), et plus de texte sous 12 px dans les vues ni les onglets (1.58)
   const sc=await p.evaluate(()=>{ const s=document.querySelector('#v-today .scroller'); return s?getComputedStyle(s).scrollPaddingLeft:"20px"; });
   if(sc!=="20px") fail.push('carrousel : scroll-padding '+sc);
-  const tiny=await p.evaluate(()=>{ let n=[]; for(const t of ["today","bar","labo","profil"]){ switchTab(t); document.querySelectorAll('#v-'+t+' *').forEach(e=>{ if(!e.getClientRects().length) return; if(![...e.childNodes].some(x=>x.nodeType===3&&x.data.trim())) return; const f=parseFloat(getComputedStyle(e).fontSize); if(f<11&&!e.closest('svg:not(.radar)')) n.push(t+":"+e.className+":"+f); }); } switchTab("today"); return n.slice(0,4); });
-  if(tiny.length) fail.push('texte sous 11 px : '+tiny.join(", "));
+  const tiny=await p.evaluate(()=>{ let n=[]; for(const t of ["today","bar","labo","profil"]){ switchTab(t); document.querySelectorAll('#v-'+t+' *').forEach(e=>{ if(!e.getClientRects().length) return; if(![...e.childNodes].some(x=>x.nodeType===3&&x.data.trim())) return; const f=parseFloat(getComputedStyle(e).fontSize); if(f<12&&!e.closest('svg:not(.radar)')) n.push(t+":"+e.className+":"+f); }); } switchTab("today"); document.querySelectorAll(".tabbar span").forEach(e=>{ const f=parseFloat(getComputedStyle(e).fontSize); if(f<12) n.push("onglets:"+e.textContent+":"+f); }); return n.slice(0,4); });
+  if(tiny.length) fail.push('texte sous 12 px : '+tiny.join(", "));
   if(errs.length) fail.push('erreurs JS : '+errs.join(' | '));
   console.log(fail.length?'ÉCHEC loi de Hick : '+fail.join(' ; '):`Loi de Hick : accueil ${res.today}, bar ${res.bar}, labo ${res.labo}, profil ${res.profil}, réglages ${res.reglages} choix ; listes repliées qui se déplient, jauge de 44 px, réglages en groupes avec Retour, verres jamais vides, carrousels sur la marge.`);
   await b.close(); process.exit(fail.length?1:0); })();

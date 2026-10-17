@@ -113,7 +113,7 @@ function settingsSheet(){
   });
 }
 function fxSheet(){
-  openSheet(()=>({title:"Animations",body:`<p class="body" style="margin-bottom:12px">Active ou coupe chaque animation. Les petites animations essentielles restent toujours là.</p><div class="group">${FX_LIST.map(([k,n,d])=>`<div class="row fx-row"><div class="grow"><div class="t">${esc(n)}</div><div class="s" style="white-space:normal">${esc(d)}</div></div>${sw(FX(k),"setfx",n,`data-k="${k}"`)}</div>`).join("")}</div><div class="sp16"></div><div class="btn-row"><button class="btn gray" data-a="fxpreview">${IC.play}Voir un aperçu</button></div>`}));
+  openSheet(()=>({title:"Animations",body:`<p class="body" style="margin-bottom:var(--z-s2)">Active ou coupe chaque animation. Les petites animations essentielles restent toujours là.</p><div class="group">${FX_LIST.map(([k,n,d])=>`<div class="row fx-row"><div class="grow"><div class="t">${esc(n)}</div><div class="s" style="white-space:normal">${esc(d)}</div></div>${sw(FX(k),"setfx",n,`data-k="${k}"`)}</div>`).join("")}</div><div class="sp16"></div><div class="btn-row"><button class="btn gray" data-a="fxpreview">${IC.play}Voir un aperçu</button></div>`}));
 }
 function momentSheet(){
   const L=[["auto","Automatique","Suit l’heure réelle"],["matin","Matin","Aube pêche et soleil levant"],["aprem","Après-midi","Ciel bleu et plein soleil"],["apero","Apéro","L’heure dorée"],["soir","Soir","Mauve et premières étoiles"],["nuit","Nuit","Ciel étoilé et étoiles filantes"]];

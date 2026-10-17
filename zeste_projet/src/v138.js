@@ -36,7 +36,7 @@ const lowCount=()=>barIds().filter(id=>tracked(id)&&S.stock[id]>0&&S.stock[id]<=
 { const _vb=vBar;
   vBar=function(){ if(S.settings.barView==="low") S.settings.barView="list"; let h=_vb();
     h=h.replace(/<button class="[^"]*" data-a="barview" data-v="low">Presque vides<\/button>/,"")
-       .replace(/<div class="gf" style="margin-top:10px">Astuce : [^<]*<\/div>/,"");
+       .replace(/<div class="gf" style="margin-top:var\(--z-s1\)">Astuce : [^<]*<\/div>/,"");
     const n=lowCount();
     if(n&&(S.settings.barView||"list")==="list") h=h.replace(/(<div class="seg" data-k="barview"[^>]*>[\s\S]*?<\/div>)/,`$1<div class="group low-link"><button class="row tap" data-a="lowsheet" style="--inset:20px"><div class="grow">Presque vides</div><span class="val">${n}</span>${IC.chev}</button></div><div class="sp8"></div>`);
     return h; };

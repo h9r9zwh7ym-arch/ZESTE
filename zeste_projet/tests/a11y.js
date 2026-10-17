@@ -6,7 +6,9 @@ const AUDIT=()=>{ const out={sansNom:{},petites:{}}; const name=el=>(el.getAttri
     const cs=getComputedStyle(el); if(cs.visibility==="hidden"||cs.display==="none") return;
     const k=(el.dataset.a||el.tagName.toLowerCase())+"."+String(el.className&&el.className.baseVal===undefined?el.className:"").split(" ")[0];
     if(!name(el)&&el.tagName!=="INPUT") out.sansNom[k]=(out.sansNom[k]||0)+1;
-    if((r.width<44||r.height<44)&&el.tagName!=="INPUT"&&!el.closest(".ing-line,.row")){ const kk=k+" "+Math.round(r.width)+"×"+Math.round(r.height); out.petites[kk]=(out.petites[kk]||0)+1; } });
+    // (1.58) zone réelle : la boîte agrandie par un ::after absolu débordant (motif « zone ≥ 44 px sans changer le visuel »)
+    let zw=r.width, zh=r.height; const af=getComputedStyle(el,"::after"); if(af.content!=="none"&&af.position==="absolute"){ const n=v=>Math.min(0,parseFloat(v)||0); zw=Math.max(zw,r.width-n(af.left)-n(af.right)); zh=Math.max(zh,r.height-n(af.top)-n(af.bottom)); }
+    if((zw<43.5||zh<43.5)&&el.tagName!=="INPUT"&&!el.closest(".ing-line,.row")){ const kk=k+" "+Math.round(zw)+"×"+Math.round(zh); out.petites[kk]=(out.petites[kk]||0)+1; } });
   const svgs=[...document.querySelectorAll("svg")].filter(s=>{ const r=s.getBoundingClientRect(); return r.width>=40&&r.top<innerHeight&&!s.closest("[aria-hidden=true],button,[data-a]")&&!s.getAttribute("aria-label")&&s.getAttribute("role")!=="img"&&s.getAttribute("aria-hidden")!=="true"; }).length;
   out.dessinsSansDescription=svgs; return out; };
 (async()=>{ const b=await chromium.launch(), p=await b.newPage({viewport:{width:390,height:844}});
