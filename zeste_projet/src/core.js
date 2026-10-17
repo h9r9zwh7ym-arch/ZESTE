@@ -29,7 +29,7 @@ function buildRecipes(custom){
   (custom||[]).forEach(c=>RECS.push(Object.assign({},c,{mine:1,ing:c.ing.map(i=>Object.assign({},i))})));
   RMAP={}; RECS.forEach(r=>{RMAP[r.id]=r; r.v=(r.v||[]).slice();});
   RECS.forEach(r=>r.v.forEach(v=>{ if(RMAP[v] && !RMAP[v].v.includes(r.id)) RMAP[v].v.push(r.id); }));
-  AVGP=null; MODEL=null; STC={}; MEMO={}; THUMB={}; GFULL={}; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; delete r._ik; delete r._bg; r.base=baseOf(r.ing); });
+  AVGP=null; MODEL=null; STC={}; MEMO={}; THUMB={}; GFULL={}; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; delete r._ik; delete r._bg; delete r._dn; r.base=baseOf(r.ing); });
   computeZones();
 }
 
@@ -166,7 +166,7 @@ function trainSet(){
 }
 function getModel(){
   if(MODEL&&MREV===SREV&&MOBJ===S) return MODEL; MREV=SREV; MOBJ=S;
-  const k=JSON.stringify(S.ratings)+"|"+S.hist.length+"|"+S.fav.join(",")+"|"+RECS.length+"|"+JSON.stringify(S.quiz||0)+"|"+JSON.stringify(S.adj||0)+"|"+JSON.stringify(S.mw||0)+"|"+Object.keys(S.opens||{}).length;
+  const k=JSON.stringify(S.ratings)+"|"+S.hist.length+"|"+S.fav.join(",")+"|"+RECS.length+"|"+JSON.stringify(S.quiz||0)+"|"+JSON.stringify(S.adj||0)+"|"+JSON.stringify(S.mw||0)+"|"+Object.keys(S.opens||{}).length+"|"+(S.duels||[]).length+"|"+JSON.stringify(S.sig||0);   // (1.60) duels et signaux implicites
   if(MODEL&&MKEY===k) return MODEL; MKEY=k;
   const T=trainSet(), ids=Object.keys(T), n=ids.reduce((a,id)=>a+T[id].w,0);
   const ia={},iw={}, fa={},fw={}, ba={},bw={};

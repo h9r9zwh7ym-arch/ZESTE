@@ -11,7 +11,7 @@ predict=function(r){
   const prior=(r.c?0.22:0)+(r.s?0.08:0)+pp*0.4/(1+M.n/3);
   if(!M.ids.length && !M.Q){ M.W[r.id]=null; return M.P[r.id]=3+prior; }
   let sw=0,sv=0,best=null,bc=0;
-  M.ids.forEach(id=>{ if(id===r.id) return; const t=M.T[id]; const s=cos(fvec(r),fvec(RMAP[id])); const w=Math.pow(Math.max(0,s-0.5),2)*t.w; sw+=w; sv+=w*t.v; if(t.v>0.8&&w*t.v>bc){ bc=w*t.v; best=id; } });
+  M.ids.forEach(id=>{ if(id===r.id) return; const t=M.T[id]; const s=cos(fvec(r),fvec(RMAP[id])); const w=Math.pow(Math.max(0,s-0.5),2)*t.w; sw+=w; sv+=w*t.v; if(t.v>0.5&&w*t.v>bc){ bc=w*t.v; best=id; } });
   const knn=sw?sv/sw:0, kc=Math.min(1,sw*4);
   const sh=shares(r); let ing=0, topI=null, topV=0, lowI=null, lowV=0;
   for(const i in sh){ const a=M.IA[i]||0; ing+=sh[i]*a; if(a*sh[i]>topV){topV=a*sh[i];topI=i;} if(a*sh[i]<lowV){lowV=a*sh[i];lowI=i;} }
@@ -44,6 +44,8 @@ matchPct=function(r){ return Math.round(100*likeProb(r)); };
 // ingrédients + famille + spiritueux de base, pénalité sur les 3 derniers préparés, créneau découverte = incertain mais probablement aimé ---
 const ingKeys=r=>r._ik||(r._ik=new Set(r.ing.filter(i=>!ING[i.id].basic).map(i=>i.id)));
 function recSim(a,b){ const A=ingKeys(a),B=ingKeys(b); let n=0; A.forEach(x=>{ if(B.has(x)) n++; }); return 0.5*n/((A.size+B.size-n)||1)+0.25*(a.fam===b.fam?1:0)+0.25*((a._bg||(a._bg=baseGroup(a)))===(b._bg||(b._bg=baseGroup(b)))?1:0); }
+// (1.60) fatigue : suggéré 3 fois sans être ouvert → pénalité 0,35 qui s'efface (demi-vie de 2 jours depuis la dernière apparition)
+function fatigueOf(hl){ const d=Math.max(...hl.map(h=>h.d)), s=String(d), t=new Date(+s.slice(0,4),+s.slice(4,6)-1,+s.slice(6,8)).getTime(), days=Math.max(0,(Date.now()-t)/864e5); return 0.35*Math.pow(0.5,days/2); }
 function lastMadeIds(k){ const out=[]; for(let i=S.hist.length-1;i>=0&&out.length<k;i--){ const id=S.hist[i].id; if(!out.includes(id)) out.push(id); } return out; }
 if(RECO.mmr==null) RECO.mmr=0.75;
 tonightRaw=function(){
@@ -51,9 +53,9 @@ tonightRaw=function(){
   const NOV=[0.05,0.25,0.5][EX], RND=[0.3,0.5,0.75][EX], SK=S.skips||{}, last3=lastMadeIds(3);
   const naOk=S.settings.na||rated().some(([id,rt])=>RMAP[id].na&&rt>=4);
   const cand=RECS.filter(r=>status(r).ok&&(naOk||!r.na)).map(r=>{ const lm=lastMade(r.id), rt=S.ratings[r.id];
-    const hl=(S.heroLog||[]).filter(h=>h.id===r.id), today=daySeed(), recentHero=hl.some(h=>h.d!==today&&h.d>=today-2), fatigue=hl.length>=3&&!(S.opens||{})[r.id]&&!madeCount(r.id);
+    const hl=(S.heroLog||[]).filter(h=>h.id===r.id), today=daySeed(), recentHero=hl.some(h=>h.d!==today&&h.d>=today-2), fatigue=hl.length>=3&&!(S.opens||{})[r.id]&&!madeCount(r.id)?fatigueOf(hl):0;
     const sk=SK[r.id]&&now-SK[r.id].t<14*864e5?Math.min(0.45,0.15*SK[r.id].n):0, rep=last3.includes(r.id)||now-lm<3*864e5;
-    let sc=(rt? rt-(EX===0?0.2:0.45) : predict(r))+(useCtx?ctxBonus(r,c):0)+hrand(r.id+seed)*RND+(madeCount(r.id)?0:NOV)-sk-(rep?1.2:0)-(rt&&rt<=2?1.5:0)+(freshBottle(r)?0.3:0)+(typeof perishing==="function"?(p=>p?(p[2]<=4?0.45:0.18):0)(perishing(r)):0)-(recentHero?0.35:0)-(fatigue?0.3:0);
+    let sc=(rt? rt-(EX===0?0.2:0.45) : predict(r))+(useCtx?ctxBonus(r,c):0)+hrand(r.id+seed)*RND+(madeCount(r.id)?0:NOV)-sk-(rep?1.2:0)-(rt&&rt<=2?1.5:0)+(freshBottle(r)?0.3:0)+(typeof perishing==="function"?(p=>p?(p[2]<=4?0.45:0.18):0)(perishing(r)):0)-(recentHero?0.35:0)-fatigue;
     return [r,sc]; }).sort((a,b)=>b[1]-a[1]);
   const pool=cand.slice(0,40), out=[], L=RECO.mmr;
   while(pool.length && out.length<14){ let bi=0,bv=-1e9;

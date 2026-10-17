@@ -20,7 +20,7 @@ const popw=r=>(POPIDX[r.id]!=null?3:0)+(r.c?1:0.3);
 const ingSet=r=>new Set(r.ing.filter(i=>!ING[i.id].basic).map(i=>i.id));
 const dist=(a,b)=>{ const A=ingSet(a),B=ingSet(b); let n=0; A.forEach(x=>{ if(B.has(x)) n++; }); const j=n/((A.size+B.size-n)||1); return 1-(0.5*j+0.25*(a.fam===b.fam?1:0)+0.25*(baseGroup(a)===baseGroup(b)?1:0)); };
 const pLike=r=>(typeof likeProb==="function"? likeProb(r) : matchPct(r)/100);
-const reset=()=>{ S.ratings={}; S.rt={}; S.hist=[]; S.fav=[]; S.mw=null; S.mwN=0; S.quiz=null; S.adj={}; S.opens={}; S.skips={}; S.heroLog=[]; MODEL=null; SREV++; STC={}; MEMO={}; };
+const reset=()=>{ S.ratings={}; S.rt={}; S.hist=[]; S.fav=[]; S.mw=null; S.mwN=0; S.quiz=null; S.adj={}; S.opens={}; S.skips={}; S.heroLog=[]; S.sig={}; S.duels=[]; MODEL=null; SREV++; STC={}; MEMO={}; };
 const R={}; const add=(k,v)=>{ R[k]=R[k]||{s:0,k:0}; R[k].s+=v; R[k].k++; };
 const CAL=[]; const allIng=Object.keys(ING);
 for(let u=0;u<NU;u++){
@@ -42,6 +42,9 @@ for(let u=0;u<NU;u++){
       order.slice(n,n+12).forEach((r,k)=>{ const tt=truth[r.id]; if(tt+bias>3.4){ const c=1+Math.min(3,Math.floor((tt+bias-3.4)*2)); for(let j=0;j<c;j++) S.hist.push({id:r.id,t:t0-(k*3+j)*864e5}); used.add(r.id); } });
       order.slice(0,n).filter(r=>truth[r.id]>=thr).slice(0,2).forEach(r=>S.fav.push(r.id));
       order.slice(0,n).filter(r=>S.ratings[r.id]>=3).slice(0,3).forEach(r=>{ const a={s:w[0]<-0.8?-1:w[0]>0.8?1:0,a:w[1]<-0.8?-1:w[1]>0.8?1:0,f:w[3]<-0.8?-1:w[3]>0.8?1:0}; if(a.s||a.a||a.f) S.adj[r.id]=a; });
+      // (1.60) fiche ouverte puis « Préparer » (sans l'avoir encore fait) et « Surprends-moi » écarté tout de suite
+      S.sig={p:{},r:{}}; order.slice(n+12,n+24).forEach(r=>{ if(!used.has(r.id)&&truth[r.id]+bias>3.2&&rnd()<0.6){ S.sig.p[r.id]=1; used.add(r.id); } });
+      for(let j=0;j<5;j++){ const r=pool[Math.floor(rnd()*pool.length)]; if(!used.has(r.id)&&truth[r.id]+bias<2.7){ S.sig.r[r.id]=1; used.add(r.id); } }
       MODEL=null; SREV++; }
     const test=pool.filter(r=>!used.has(r.id)), pr=test.map(r=>predict(r)), tr=test.map(r=>truth[r.id]);
     const rank=test.map((r,i)=>[pr[i],tr[i]]).sort((a,b)=>b[0]-a[0]), top=rank.slice(0,10);
