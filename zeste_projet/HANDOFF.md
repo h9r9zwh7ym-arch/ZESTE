@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.55**. Chaque mise à jour livrée incrémente : 1.21 → 1.55… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v13` à la 1.55) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.59**. Chaque mise à jour livrée incrémente : 1.21 → 1.59… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v17` à la 1.59) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -29,12 +29,12 @@ Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Pl
 
 ## 3. Architecture
 
-**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (49 modules dans `src/`). L’ordre de concaténation est important :
+**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (55 modules dans `src/`). L’ordre de concaténation est important :
 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js ui_final.js v126.js v130.js
 ```
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
@@ -126,16 +126,20 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 
 - **1.44 — Haptique** (`v144.js`) : voir « Haptique » ; `USE_LEGACY_VIBRATE=false` (`ui.js`).
 - **1.45 — Barre d’onglets** : rebond des icônes, CSS seul (keyframe `tb`, 220 ms).
-- **1.46 — Labo** (`v146.js`, enveloppe de `vCompose`) : jetons `--z-*` ; carte du verre ~35 % ; `.lab-auto` ; `details.lab-perso` (`LAB_PERSO_OPEN`) ; Servir collé (`.lab-servebar`) ; Recommencer en deux touchers ; `details.lab-chal`.
+- **1.46 — Labo** (`v146.js`, `vCompose`) : jetons `--z-*` ; `.lab-auto` ; `details.lab-perso` ; Servir collé (`.lab-servebar`) ; `details.lab-chal`.
 - **1.47 — Bar** (`v147.js`) : la fraction est le bouton de niveau (`.lvl.one .lvl-txt`) ; ajout en gros seulement si le bar est vide ; « presque vide » = ¼ ou ½ (`lowCount`).
 - **1.48 — Labo** : Personnaliser s’arrête avant Servir ; versement adapté à la place restante (`v148.js`, `ACT.mixpour`, `POUR_STEP` 2,5 ml, `labFitsWith`, `labNope`).
 - **1.49 — Labo** (`v149.js`) : conseils en une ligne (`.tip-one`) ; décor en rangée ; segments iOS ; barre Servir floutée.
-- **1.50 — Labo, débordement** (`v150.js`) : toast filtré dans `ACT.mixice`, seule la carte « Ça déborde ! » reste ; légende + glaçon (`ICE_IC`) ; tous les décors (`MORE_OPEN.add("labgar")`) ; « Côté glace » → « Servir sans glace… » ; toasts au-dessus de Servir (`liftToast`).
+- **1.50 — Labo** (`v150.js`) : un seul message de débordement (`ACT.mixice`) ; tous les décors ; toasts au-dessus de Servir (`liftToast`).
 - **1.51 — Profil** (`v151.js`, `vProfil`) : plus de ligne « Paramètres » ; textes raccourcis ; Historique en nombre (`v139.js`).
 - **1.52 — Fiche recette** (`v152.js`) : `recPolish` composé avec `recOpen` via `NEXT_SHEET_XFORM` (bannière de manque retirée, `.badge.warn`, « % pour toi » dans le bandeau, sans `ing-sec`, « Modifier dans le labo » dans `.card.adj`) ; titre réduit `recTitle` (`aria-hidden` tant qu’il est caché).
 - **1.53 — Fiche recette (2)** (`recPolish` + CSS) : étoiles sans libellé ; `.adj-same` ; histoire au format des étapes ; ampoule (`lightbulb` dans `LU`) ; un terme souligné une fois.
 - **1.54 — Labo, Bar, feuille d’ajout** (`v154.js` + CSS) : conseils (« ! » pour `mixfix`, sinon ampoule) ; « 4 feuilles » (`fmtQ`) ; `details.bar-more` au format de Personnaliser ; points de catégorie retirés (règles dans « Cap design »).
 - **1.55 — Softs suisses** (`data_softs.js`, sources en tête) : Crodino, Sanbitter, Elmer Citro, Gazosa, Schorle, Rivella bleu ; `subs` limonade et Rivella ; 3 recettes sans alcool ; `ROLE`, `PAIR.amer_na`, `SPIRIT_GROUP` ; `v155.js` enveloppe `pairings` (sans alcool : jamais d’alcool proposé). **Piège** : `tests/load.js` coupe au premier `ING_RAW.forEach(` : utiliser `for…of` dans les données.
+- **1.56 — Labo + design global** : contenance réglable (`v156.js`, `S.settings.glassCap`) ; accent réservé, Profil (`v157.js`) ; Bar et feuilles (`v158.js`) ; jetons `--z-*` et marge de 20 px.
+- **1.57 — Audit mesurable** (CSS) : zones 44 px, `--z-ic`, marge de 20 px partout.
+- **1.58 — Décisions de l'audit** (`v159.js`) : « Ta version » en piste ; pictos ≥ 3:1 (`picCol`) ; textes ≥ 13 px ; espacements en jetons. **Piège** : un `var(--…)` écrit dans une regex doit avoir ses parenthèses échappées.
+- **1.59 — Lot A→H** (`v160.js`, `v161.js`) : pastille d'onglet (`v130.js`) ; Aujourd'hui épuré ; profil de goût d'une seule source (`tasteAxes`) ; « Conseillé » = Auto (`labGlass`) ; moteur (§ 9 bis).
 
 ## 8. Haptique
 
@@ -152,9 +156,9 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 
 ## 9. Cap design
 
-- Sobre et proche des apps Apple ; pas de textes d’instruction ; pas de répétition d’une information.
-- **Accent** (jaune en sombre, vert en clair) réservé à l’action principale et à l’état actif ; texte posé dessus en `--on-tint` (#FBF6EC / #14231A). **Vert** = validation, **orange ou rouge** = alerte, point de 8 px sans icône ; « ! » seulement pour un ingrédient manquant, ampoule pour un conseil. Les liens secondaires sont gris (`--label2`).
-- **Trois tailles de texte** (titre de section, texte courant, libellé), **espacements en multiples de 8 px**, **marge latérale de 20 px** ; titre → contenu 24 px ; fermer et « OK » à 16 px du bord. Contraste texte ≥ 4,5:1, icônes ≥ 3:1. Zones tactiles ≥ 44 px (`::after`, visuel inchangé).
+- Sobre, proche d'Apple ; ni consigne ni information répétée.
+- **Accent** (`--z-accent` : vert en clair, jaune en sombre) réservé à l'action principale et à l'état actif ; texte posé dessus en `--on-tint`. **Vert** = validation, **orange ou rouge** = alerte (point de 8 px ; « ! » pour un manque, ampoule pour un conseil). Secondaire en gris (`--label2`, `--z-ic`).
+- **Trois tailles** (`--z-fs-h` 22, `--z-fs-b` 16, `--z-fs-l` 13), plus les titres de page (34) et les grands chiffres ; rien sous 12 px (vérifié par `hick_test`). **Grille de 8 px** (`--z-s1…s4`, 4 px toléré entre icône et libellé). **Marge latérale de 20 px** (`--z-side`) sur tous les écrans ; titre → contenu 24 px. Contraste texte ≥ 4,5:1, icônes ≥ 3:1 ; zones tactiles ≥ 44 px par `::after` (visuel inchangé).
 - **Contrôles segmentés iOS** : pastille claire légèrement relevée, sans bordure. **Chips et tuiles** (Style, Verre, Décor, niveau de bouteille) : fond d’accent translucide + bordure d’accent quand ils sont sélectionnés  ; puces de filtre : fond neutre, bordure 2 px. Chevron ⌄ / ⌃.
 - Pas de swipe entre onglets.
 - **Jetons** (`:root`, bloc « 1.46 » et « 1.49 » de `style.css`), clair / sombre :
@@ -171,8 +175,15 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 | `--z-s1…s4` | 8 / 16 / 24 / 32 px | idem |
 | `--z-side` | 20 px | idem |
 | `--z-r-s` / `--z-r-m` / `--z-r-l` | 10 / 14 / 20 px | idem |
+| `--z-ic` (icône neutre) | rgba(79,70,52,.68) | rgba(242,237,224,.5) |
 
-- **Pas encore migré vers les jetons** (1.50) : ~330 font-size, ~200 padding, ~320 margin, surtout `style.css` et `ui.js`. Seuls Labo, Bar et fiche recette les utilisent.
+## 9 bis. Moteur de recommandation
+
+- **Modèle** (`core.js` `getModel`/`trainSet`, `v161.js` `predict`) : voisins + ingrédients + familles + axes de goût + ridge sur le profil. Signaux : notes (note − 3, vieillissement doux), verre refait (v 1 + 0,25/fois), favori, fiche ouverte, « Ta version » (`S.adj` : 0,05 par cran sur `DIR`), quiz. Biais utilisateur : + ½ (moyenne rétrécie de ses notes − 3) (Koren 2009).
+- **« N % pour toi »** = `likeProb` : P(≥ 4 étoiles) logistique (Platt 1999) sur la prédiction, réglée par simulation ; plafond 95 % sous 15 notes, jamais 100 %.
+- **Listes** (`tonightRaw`) : faisables, MMR λ 0,75 (Carbonell & Goldstein 1998) sur `recSim` (ingrédients, famille, base), 3 derniers préparés pénalisés ; découverte = incertitude × P(aimer). « Surprends-moi » : top 15, jamais noté ≤ 2.
+- **Achats malins** : gain attendu Σ P(aimer)². **Autonomie** : ≈ N verres = niveau × contenance ÷ dose moyenne (`glassesLeft`), tri par urgence. **Explications** : contribution réelle la plus forte, sinon rien.
+- **Tests** : `m3`, `m5` (froid), `m6` (NDCG@10), `m7` (signaux, MAE, Brier/ECE, liste, achats). **Règle** : régler sur `SEED=1`, valider sur `SEED=2`, ne garder que ce qui améliore la validation sans dégrader `m5` ; variantes via `EXP=fichier` ou `RECO='{…}'`. Non retenus : centrage, IDF, ridge ingrédients.
 
 ## 10. Vérification des recettes, reste à faire
 
