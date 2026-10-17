@@ -10,7 +10,10 @@ const {chromium}=require('playwright'); const path=require('path');
       if(wid!==w) fail.push(`${w} px, onglet ${t} : la page s'élargit à ${wid} px pendant l'animation`);
       await p.waitForTimeout(700);
       const d=await p.evaluate(()=>{ const on=document.querySelector('.tabbar button.on').getBoundingClientRect(), ind=document.querySelector('.tab-ind').getBoundingClientRect(); return Math.round((ind.left+ind.width/2)-(on.left+on.width/2)); });
-      if(Math.abs(d)>1) fail.push(`${w} px, onglet ${t} : pastille décalée de ${d} px`); }
+      if(Math.abs(d)>1) fail.push(`${w} px, onglet ${t} : pastille décalée de ${d} px`);
+      // (1.59) pastille = libellé + 8 px de chaque côté, dans l'écran ; le libellé ne touche pas le bord
+      const k=await p.evaluate(()=>{ const on=document.querySelector('.tabbar button.on'), s=[...on.querySelectorAll('span')].pop(), g=document.createRange(); g.selectNodeContents(s); const l=g.getBoundingClientRect(), i=document.querySelector('.tab-ind').getBoundingClientRect(); return {lw:l.width, iw:i.width, il:i.left, ir:i.right, ll:l.left, lr:l.right, W:innerWidth}; });
+      if(Math.abs(k.iw-(k.lw+16))>2||k.il<0||k.ir>k.W||k.ll<8||k.lr>k.W-8) fail.push(`${w} px, onglet ${t} : pastille ${Math.round(k.iw)} px pour un libellé de ${Math.round(k.lw)} px [${Math.round(k.il)}→${Math.round(k.ir)}]`); }
     if(errs.length) fail.push("erreurs JS : "+errs.join(" | ")); await p.close(); }
-  console.log(fail.length?"ÉCHEC barre d’onglets : "+fail.join(" ; "):"Barre d’onglets : la page ne s’élargit jamais pendant les transitions, la pastille reste centrée sous l’onglet actif.");
+  console.log(fail.length?"ÉCHEC barre d’onglets : "+fail.join(" ; "):"Barre d’onglets : la page ne s’élargit jamais pendant les transitions, la pastille reste centrée sous l’onglet actif, à la largeur du libellé + 8 px de chaque côté.");
   await b.close(); process.exit(fail.length?1:0); })();
