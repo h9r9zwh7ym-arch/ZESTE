@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.59**. Chaque mise à jour livrée incrémente : 1.21 → 1.59… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v17` à la 1.59) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.60**. Chaque mise à jour livrée incrémente : 1.21 → 1.60… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v18` à la 1.60) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -29,12 +29,12 @@ Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Pl
 
 ## 3. Architecture
 
-**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (55 modules dans `src/`). L’ordre de concaténation est important :
+**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (57 modules dans `src/`). L’ordre de concaténation est important :
 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js ui_final.js v126.js v130.js
 ```
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
@@ -140,6 +140,7 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **1.57 — Audit mesurable** (CSS) : zones 44 px, `--z-ic`, marge de 20 px partout.
 - **1.58 — Décisions de l'audit** (`v159.js`) : « Ta version » en piste ; pictos ≥ 3:1 (`picCol`) ; textes ≥ 13 px ; espacements en jetons. **Piège** : un `var(--…)` écrit dans une regex doit avoir ses parenthèses échappées.
 - **1.59 — Lot A→H** (`v160.js`, `v161.js`) : pastille d'onglet (`v130.js`) ; Aujourd'hui épuré ; profil de goût d'une seule source (`tasteAxes`) ; « Conseillé » = Auto (`labGlass`) ; moteur (§ 9 bis).
+- **1.60 — Finitions + intelligence** : onglets 1/5 (`v130.js`), radar, Lignées, segments et ciel sombre (`v162.js`) ; duels, signaux implicites, recherche en langage courant, précision mesurée (`v163.js`, § 9 bis). **Piège** : la zone `::after` de `label.search` intercepte les clics de Playwright : `focus()` dans les tests.
 
 ## 8. Haptique
 
@@ -159,8 +160,8 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - Sobre, proche d'Apple ; ni consigne ni information répétée.
 - **Accent** (`--z-accent` : vert en clair, jaune en sombre) réservé à l'action principale et à l'état actif ; texte posé dessus en `--on-tint`. **Vert** = validation, **orange ou rouge** = alerte (point de 8 px ; « ! » pour un manque, ampoule pour un conseil). Secondaire en gris (`--label2`, `--z-ic`).
 - **Trois tailles** (`--z-fs-h` 22, `--z-fs-b` 16, `--z-fs-l` 13), plus les titres de page (34) et les grands chiffres ; rien sous 12 px (vérifié par `hick_test`). **Grille de 8 px** (`--z-s1…s4`, 4 px toléré entre icône et libellé). **Marge latérale de 20 px** (`--z-side`) sur tous les écrans ; titre → contenu 24 px. Contraste texte ≥ 4,5:1, icônes ≥ 3:1 ; zones tactiles ≥ 44 px par `::after` (visuel inchangé).
-- **Contrôles segmentés iOS** : pastille claire légèrement relevée, sans bordure. **Chips et tuiles** (Style, Verre, Décor, niveau de bouteille) : fond d’accent translucide + bordure d’accent quand ils sont sélectionnés  ; puces de filtre : fond neutre, bordure 2 px. Chevron ⌄ / ⌃.
-- Pas de swipe entre onglets.
+- **Onglets** : 5 colonnes égales, pastille = colonne − 8 px, libellés de 12 px. **Segments** : piste opaque et neutre (`--z-seg-track`), pastille `--z-seg-on` sans ombre, identiques partout. **Chips et tuiles** sélectionnées : bordure d'accent 2 px (+ fond `--z-accent-bg` pour tuiles et préréglages) ; jamais de fond plein. Chevron ⌄ / ⌃. Pas de swipe entre onglets.
+- **Ambiance** : en sombre, fond uni et au plus un léger dégradé au-dessus du titre (pas de soleil ni de tache) ; particules seulement au-dessus du premier texte ; halo d'une boisson ≤ 15 %.
 - **Jetons** (`:root`, bloc « 1.46 » et « 1.49 » de `style.css`), clair / sombre :
 
 | Jeton | Clair | Sombre |
@@ -170,7 +171,7 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 | `--z-ok` (= `--green`) | #1E7B34 | #30D158 |
 | `--z-warn` (= `--orange`) | #B25000 | #FF9F0A |
 | `--z-err` (= `--red`) | #D70015 | #FF453A |
-| `--z-seg-on` | #FFFFFF | #4A524C |
+| `--z-seg-on` / `--z-seg-track` | #FFFFFF / 9 % de `--label` sur `--bg2` | #4A524C / idem |
 | `--z-fs-h` / `--z-fs-b` / `--z-fs-l` | 22 / 16 / 13 px (en rem) | idem |
 | `--z-s1…s4` | 8 / 16 / 24 / 32 px | idem |
 | `--z-side` | 20 px | idem |
@@ -183,7 +184,11 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **« N % pour toi »** = `likeProb` : P(≥ 4 étoiles) logistique (Platt 1999) sur la prédiction, réglée par simulation ; plafond 95 % sous 15 notes, jamais 100 %.
 - **Listes** (`tonightRaw`) : faisables, MMR λ 0,75 (Carbonell & Goldstein 1998) sur `recSim` (ingrédients, famille, base), 3 derniers préparés pénalisés ; découverte = incertitude × P(aimer). « Surprends-moi » : top 15, jamais noté ≤ 2.
 - **Achats malins** : gain attendu Σ P(aimer)². **Autonomie** : ≈ N verres = niveau × contenance ÷ dose moyenne (`glassesLeft`), tri par urgence. **Explications** : contribution réelle la plus forte, sinon rien.
-- **Tests** : `m3`, `m5` (froid), `m6` (NDCG@10), `m7` (signaux, MAE, Brier/ECE, liste, achats). **Règle** : régler sur `SEED=1`, valider sur `SEED=2`, ne garder que ce qui améliore la validation sans dégrader `m5` ; variantes via `EXP=fichier` ou `RECO='{…}'`. Non retenus : centrage, IDF, ridge ingrédients.
+- **Duels** (`v163.js`, « Affiner mon goût » dans Ton carnet, `S.duels`) : préférence par paires dans `trainSet` (gagnant +0,8, perdant −0,8, poids 0,5) ; paire = incertitude + densité + couverture + différence (Settles & Craven 2008), jamais notée ; 10 par série ; choix en `label.hap` (action `duel`).
+- **Signaux implicites** (`S.sig`) : fiche ouverte puis Préparer (+0,6), Surprends-moi écarté en < 10 s (−0,4) ; fatigue du héros dégressive (demi-vie 2 j). Explication : le voisin dominant dit sa source (note, duel, Préparer, refait, favori).
+- **Recherche en langage courant** (`nlParse`, enveloppe de `filtered`) : axes de goût, sans alcool, faisable, avec / sans X, moments, Levenshtein ; puces retirables (`nlrm`) ; un nom ou un spiritueux seul garde la recherche classique.
+- **Précision mesurée** (À propos, ≥ 10 notes) : validation croisée en laissant une note de côté (`looAccuracy`), différée, mise en cache par `SREV`.
+- **Tests** : `m3`, `m5` (froid), `m6` (NDCG@10), `m7` (signaux, MAE, Brier/ECE, liste, achats), `m8` (duels contre paires et notes au hasard). **Règle** : régler sur `SEED=1`, valider sur `SEED=2`, ne garder que ce qui améliore la validation sans dégrader `m5` ; variantes via `EXP=fichier`, `RECO='{…}'` ou `RECO2='{…}'`. Non retenus : centrage, IDF, ridge ingrédients.
 
 ## 10. Vérification des recettes, reste à faire
 
