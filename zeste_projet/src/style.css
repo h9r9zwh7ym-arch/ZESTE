@@ -2103,3 +2103,8 @@ details.bar-more[open]{padding-bottom:0}
 .ing-line.basic .q,.ing-line.basic .n{color:var(--label)}
 .ing-line .q{font-weight:600}
 .ing-line .n{font-weight:400}
+/* D14 — tuiles d'ingrédient : retour à la ligne entre les mots seulement, jamais de césure */
+#v-labo .shelf .sh-n{hyphens:manual;-webkit-hyphens:manual;overflow-wrap:normal;word-break:keep-all}
+/* D15 — barre « … et servir » : pleine largeur, bouton aligné sur les cartes (20 px) */
+#v-labo .content>.lab-servebar{margin-left:0;margin-right:0;padding-left:var(--z-side);padding-right:var(--z-side)}
+#v-labo .lab-servebar .lab-serve{width:100%}
