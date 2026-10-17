@@ -29,7 +29,7 @@ function buildRecipes(custom){
   (custom||[]).forEach(c=>RECS.push(Object.assign({},c,{mine:1,ing:c.ing.map(i=>Object.assign({},i))})));
   RMAP={}; RECS.forEach(r=>{RMAP[r.id]=r; r.v=(r.v||[]).slice();});
   RECS.forEach(r=>r.v.forEach(v=>{ if(RMAP[v] && !RMAP[v].v.includes(r.id)) RMAP[v].v.push(r.id); }));
-  AVGP=null; MODEL=null; STC={}; MEMO={}; THUMB={}; GFULL={}; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; r.base=baseOf(r.ing); });
+  AVGP=null; MODEL=null; STC={}; MEMO={}; THUMB={}; GFULL={}; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; delete r._ik; delete r._bg; r.base=baseOf(r.ing); });
   computeZones();
 }
 
@@ -159,7 +159,8 @@ function trainSet(){
   Object.entries(S.ratings).forEach(([id,rt])=>{ if(RMAP[id]){ const age=RT[id]?(now-RT[id])/864e5:0; T[id]={v:rt-3,w:Math.max(0.45,Math.pow(0.5,age/365))}; } });
   S.fav.forEach(id=>{ if(RMAP[id]&&!T[id]) T[id]={v:1.3,w:.7}; });
   const cnt={}; S.hist.forEach(h=>cnt[h.id]=(cnt[h.id]||0)+1);
-  Object.entries(cnt).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]) T[id]={v:0.45+Math.min(n-1,3)*0.2,w:0.3+Math.min(n,4)*0.1}; });
+  // (1.59) un cocktail refait compte presque comme une bonne note (réglé avec tests/m7.js : NDCG avec signaux +0,015 à +0,060 en validation)
+  Object.entries(cnt).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]) T[id]={v:1+Math.min(n-1,3)*0.25,w:0.6+Math.min(n,4)*0.1}; });
   Object.entries(S.opens||{}).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]&&n>=2) T[id]={v:0.3,w:Math.min(0.25,0.08*n)}; });
   return T;
 }
@@ -179,7 +180,7 @@ function getModel(){
   const av=avgProfile(), dir=Array(8).fill(0); let dw=0;
   ids.forEach(id=>{ const p=profileR(RMAP[id]), t=T[id]; dw+=t.w; for(let i=0;i<8;i++) dir[i]+=t.v*t.w*(p[i]-av[i]); });
   const qW=Q?3:0; const DIR=dir.map((x,i)=>(x+(Q?Q.dir[i]*1.7*qW:0))/(dw+1+qW));
-  Object.values(S.adj||{}).forEach(a=>{ DIR[0]+=0.02*(a.s||0); DIR[1]+=0.02*(a.a||0); DIR[3]+=0.02*(a.f||0); });
+  Object.values(S.adj||{}).forEach(a=>{ DIR[0]+=0.05*(a.s||0); DIR[1]+=0.05*(a.a||0); DIR[3]+=0.05*(a.f||0); });   // « Ta version » : moins de sucre, d’acidité ou de force déplace le goût (0,02 → 0,05 en 1.59)
   MODEL={T,ids,n:n+(Q?3:0),Q,IA,FA,BA,DIR,P:{},W:{}}; return MODEL;
 }
 function predict(r){
