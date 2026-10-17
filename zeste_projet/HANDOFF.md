@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.65**. Chaque mise à jour livrée incrémente : 1.21 → 1.65… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v23` à la 1.65) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.66**. Chaque mise à jour livrée incrémente : 1.21 → 1.66… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v24` à la 1.66) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -35,7 +35,7 @@ Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Pl
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js v169.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js v169.js v170.js ui_final.js v126.js v130.js
 ```
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
@@ -151,6 +151,7 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **1.63 — Labo** (`v168.js`) : « Autre » versait la dose entière (soft refusé sous 10 cl) ; « + » sans son ; quantité saisissable au clavier (`mixqedit`, champ 16 px jamais recréé pendant la frappe).
 - **1.64 — Robustesse et nettoyage** : sous-scores masqués sans note ; bancs Node complets (`v.js`, `audit.js`, `pick.js`, `txt.js`) ; règle « sans alcool » de `audit.js` alignée sur `na:1` ; fichiers inutilisés retirés (`data/bad|good|other.json`) ; `README.md`.
 - **1.65 — Données locales** (`v169.js`) : synchro claude.ai retirée, copie de secours IndexedDB, sauvegardes et écran de stockage (§ 9 quater) ; textes d'« À propos » raccourcis.
+- **1.66 — Mes créations** (`v170.js`) : section du Profil, avant « Ton carnet », listant tous les cocktails créés dans le Labo (plus récents d’abord, 3 puis « Voir les N autres », via `recRow` et `foldRows`) ; liste vide : « Crée ton premier cocktail » ouvre le Labo en Composer (`ACT.gocreate`). Test `mine_test.js`.
 
 ## 8. Haptique
 

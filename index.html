@@ -5273,7 +5273,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.65";
+const APP_VERSION="1.66";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -7343,6 +7343,19 @@ Object.assign(ACT,{ storage:()=>{ subSheet("Espace de stockage",storageBody); se
 SET_GROUPS.data=["Données","up",()=>{ const a=zBackupAge();
   return `<div class="group">${srow("up","Faire une sauvegarde",`<span class="val${a.due?" due":""}">${esc(a.t)}</span>`,"export")}${srow("down","Restaurer une sauvegarde","","import")}${srow(zIcon("disk","hard-drive"),"Espace de stockage",`<span class="val">${zBytes(zLsBytes())}</span>`,"storage")}</div>
     <div class="gf">Tout reste sur cet appareil : rien n’est envoyé.</div><div class="sp16"></div><div class="group">${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div>`; },()=>zBackupAge().t];
+// ---------- 1.66 : Profil > « Mes créations » (tous les cocktails créés dans le Labo, du plus récent au plus ancien) ----------
+function myCreations(){
+  const t=c=>{ const m=/^c_(\d+)/.exec(c.id||""); return m?+m[1]:0; };
+  return (S.custom||[]).map((c,i)=>({c,i})).sort((a,b)=>(t(b.c)-t(a.c))||(b.i-a.i)).map(x=>RMAP[x.c.id]).filter(Boolean);
+}
+if(typeof vProfil==="function"){ const _vp=vProfil; vProfil=function(){
+  const L=myCreations();
+  const body=L.length? foldRows("mine",L.map(r=>recRow(r)),3)
+    : prow("flask-conical","Crée ton premier cocktail","Dans le Labo, mode Composer","","gocreate");
+  const sec=`<h2 class="sh">Mes créations${L.length?`<span class="more" style="color:var(--label2)">${L.length}</span>`:""}</h2><div class="group">${body}</div>`;
+  return _vp().replace('<h2 class="sh">Ton carnet</h2>',m=>sec+m);
+}; }
+Object.assign(ACT,{ gocreate:()=>{ LT="compose"; closeAll(); changed(); switchTab("labo"); } });
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
