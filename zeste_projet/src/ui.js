@@ -2,7 +2,7 @@
 const KEY="zeste.v1";
 const USE_LEGACY_VIBRATE=false; // ignoré sur iPhone (Safari iOS n’a pas navigator.vibrate) ; l’haptique passe par un switch invisible (v144.js)
 const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
-function loadLocal(){ try{ const j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){} return DEF(); }
+function loadLocal(){ let j=null; try{ j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){ try{ if(j) localStorage.setItem(KEY+".illisible."+Date.now(),j); }catch(e2){} } return DEF(); } // (1.65) illisible : mis de côté, jamais écrasé
 S=loadLocal();
 // (fixState : remplacée plus loin, voir ui_final.js)
 let DB=null, DOC=null, saveTimer=null, saving=false, pending=false;
@@ -390,7 +390,7 @@ function guideHTML(){ let o="";
     // la régression (70 % de la prédiction) se répartit entre ton palais (profil) et tes styles (familles, alcools), selon ce qu'elle a appris
     const RW=ridgeOf(getModel()); if(RW){ const e=RW.W.map(w=>w*w), ep=e.slice(0,9).reduce((a,b)=>a+b,0), ec=e.slice(9).reduce((a,b)=>a+b,0), et=ep+ec||1;
       for(const k in mw) mw[k]=0.3*mw[k]/tot; mw.dims+=0.7*ep/et; mw.fam+=0.7*ec/et; tot=1; }
-    const L=[["knn","Tes coups de cœur","des cocktails qui ressemblent à ceux que tu as bien notés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs qui reviennent dans ce que tu aimes","#FF375F"],["fam","Tes styles","les familles (sours, spritz…) et les alcools que tu préfères","#5E5CE6"],["dims","Ton palais","ton goût pour l’amer, le sucré, l’acide, le fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
+    const L=[["knn","Tes coups de cœur","des cocktails proches de ceux que tu as aimés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs que tu aimes","#FF375F"],["fam","Tes styles","tes familles et alcools préférés","#5E5CE6"],["dims","Ton palais","amer, sucré, acide, fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
     const top=L.slice().sort((a,b)=>b[4]-a[4])[0], pl=(n,a,b)=>n+" "+(n>1?b:a);
     const src=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"]].filter(x=>x[0]).map(([n,a,b])=>pl(n,a,b)).concat(S.quiz?["quiz de goût"]:[]);
     o+=`<div class="gh">Ce qui guide tes suggestions</div>
@@ -398,7 +398,7 @@ function guideHTML(){ let o="";
     <div class="gd-bar">${L.map(x=>`<i style="width:${x[4]}%;background:${x[3]}"></i>`).join("")}</div>
     ${L.sort((a,b)=>b[4]-a[4]).map(x=>`<div class="gd-row"><span class="gd-dot" style="background:${x[3]}"></span><div class="grow"><b>${esc(x[1])}</b><span>${esc(x[2].charAt(0).toUpperCase()+x[2].slice(1))}</span></div><em>${x[4]} %</em></div>`).join("")}
     <div class="gd-src"><span>Appris grâce à</span>${src.map(x=>`<i>${esc(x)}</i>`).join("")}</div>
-    <div class="gd-foot">Chaque nouvelle note renforce ce qui avait vu juste.</div></div>`; }
+    <div class="gd-foot">Chaque note l’affine.</div></div>`; }
   return o; }
 
 
