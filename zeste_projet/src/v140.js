@@ -47,8 +47,8 @@ function focalTaste(){
   if(tv&&tv.liked) body=`<div class="prof">${radarSVG(tv.liked)}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">D’après les cocktails notés 4 étoiles ou plus.</span></div></div>`;
   else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); body=`<div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div class="fc-txt">D’après ton quiz</div></div>`; }
   else body=`<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
-  const st=[[S.hist.length,"préparé","préparés","p"],[distinct().length,"recette","recettes","r"],[rated().length,"noté","notés","n"]];
-  return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}<div class="fc-stats">${st.map(([v,a,b,k])=>`<div><b ${ck("prof-"+k,v)}>${v}</b><span>${v>1?b:a}</span></div>`).join("")}</div></div>`;
+  // (1.59) plus de compteurs en bas : ils répétaient Historique et Tes mieux notés
+  return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`;
 }
 let TRO_SEEN=null; try{ TRO_SEEN=JSON.parse(localStorage.getItem("zeste.troSeen")||"null"); }catch(e){}
 { const _vp=vProfil;

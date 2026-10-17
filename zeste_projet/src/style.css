@@ -2108,3 +2108,6 @@ details.bar-more[open]{padding-bottom:0}
 /* D15 — barre « … et servir » : pleine largeur, bouton aligné sur les cartes (20 px) */
 #v-labo .content>.lab-servebar{margin-left:0;margin-right:0;padding-left:var(--z-side);padding-right:var(--z-side)}
 #v-labo .lab-servebar .lab-serve{width:100%}
+/* E16 — carte du profil de goût : petit libellé gris, le style de l'utilisateur en titre serif ; plus de compteurs */
+.focal-card .fc-k{font-family:inherit;font-size:var(--z-fs-l);font-weight:600;color:var(--label2)}
+.focal-card .fc-t{margin-top:4px;font-family:var(--serif);font-size:var(--z-fs-h);font-weight:700;line-height:1.2;color:var(--label)}
