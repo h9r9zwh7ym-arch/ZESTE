@@ -2145,3 +2145,11 @@ details.bar-more[open]{padding-bottom:0}
 .duel-dots i{width:8px;height:8px;border-radius:4px;background:var(--fill)}
 .duel-dots i.on{background:var(--z-accent)}
 .about-hero .about-acc{display:block;margin-top:var(--z-s1);font-size:var(--z-fs-l);color:var(--label2)}
+/* 1.61 : sous-scores du Labo (analyse détaillée) */
+.lab-subs{display:grid;gap:var(--z-s1)}
+.lab-sub-s{display:grid;grid-template-columns:96px 1fr 28px;align-items:center;gap:var(--z-s2);font-size:var(--z-fs-l)}
+.lab-sub-s span{color:var(--label2)}
+.lab-sub-s b{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--label)}
+.ls-bar{height:5px;border-radius:3px;background:var(--fill);overflow:hidden}
+.ls-bar i{display:block;height:100%;border-radius:3px;background:var(--green)}
+.ls-bar i.mid{background:var(--orange)}.ls-bar i.ko{background:var(--red)}
