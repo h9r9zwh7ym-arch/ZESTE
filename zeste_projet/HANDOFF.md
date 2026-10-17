@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.64**. Chaque mise à jour livrée incrémente : 1.21 → 1.64… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v22` à la 1.64) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.65**. Chaque mise à jour livrée incrémente : 1.21 → 1.65… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v23` à la 1.65) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -26,16 +26,16 @@ node tests/m3.js / m5.js / m6.js   # simulateurs du moteur de recommandation et 
 node tests/m9.js                    # score du Labo : 20 mauvais mélanges, IBA, recettes dégradées, aléatoires (SEED=1 puis 2)
 ```
 
-Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Playwright (Chromium) est requis ; WebKit est testé via WebKitGTK (`tests/webkit.js`, `apt-get install webkit2gtk-driver xvfb`). Si WebKit échoue au démarrage du pilote (« fetch failed »), relancer `node tests/webkit.js` seul. Tests de fonctionnalités : `tests/features/*.js` (32 fichiers, bloquants dans `all.sh`). Autres outils : `tests/contrast.js` (WCAG, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/audit2.js` ; hors suite : `tests/m7.js`, `m8.js` (moteur), `audit.js` et `txt.js` (relecture des données et des textes), `deadcode.js`, `sounds.js`, `perf.py`. Un `README.md` à la racine du dépôt résume le tout pour un humain.
+Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Playwright (Chromium) est requis ; WebKit est testé via WebKitGTK (`tests/webkit.js`, `apt-get install webkit2gtk-driver xvfb`). Si WebKit échoue au démarrage du pilote (« fetch failed »), relancer `node tests/webkit.js` seul. Tests de fonctionnalités : `tests/features/*.js` (33 fichiers, bloquants dans `all.sh`). Autres outils : `tests/contrast.js` (WCAG, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/audit2.js` ; hors suite : `tests/m7.js`, `m8.js` (moteur), `audit.js` et `txt.js` (relecture des données et des textes), `deadcode.js`, `sounds.js`, `perf.py`. Un `README.md` à la racine du dépôt résume le tout pour un humain.
 
 ## 3. Architecture
 
-**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (62 modules JS et `style.css` dans `src/`). L’ordre de concaténation est important :
+**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (63 modules JS et `style.css` dans `src/`). L’ordre de concaténation est important :
 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js v169.js ui_final.js v126.js v130.js
 ```
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
@@ -56,7 +56,7 @@ core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js 
   - Avant de modifier une fonction, cherche **toutes** ses redéfinitions et enveloppes dans les modules suivants (`vCompose`, `vBar`, `stockRow`, `renderView`, `settingsSheet` en ont beaucoup).
 - **`ui_final.js`** se termine par `fixState(); applyTheme(); init(); applyFx();` : c’est le démarrage. Un module qui doit agir dès le premier rendu se place **avant** `ui_final.js`. `v126.js` et `v130.js` (service worker) restent après.
 - **Actions** : tout élément avec `data-a="nom"` déclenche `ACT.nom(dataset, élément, événement)` par délégation (`ui.js`, écouteur `click` sur `document`). Exception : les `label.hap` (voir « Haptique »).
-- **État** : objet global `S`, sauvegardé dans `localStorage` (clé `zeste.v1`) par `save()`, et synchronisé avec le compte via la capacité `db` quand elle existe (`initRemote`). Champs principaux :
+- **État** : objet global `S`, sauvegardé dans `localStorage` (clé `zeste.v1`) par `save()`, **uniquement sur l'appareil** (1.65 : plus de synchronisation claude.ai, `initRemote` est vide), avec une copie de secours compressée dans IndexedDB (`v169.js`, voir § 9 quater). Champs principaux :
   - bar et notes : `stock` (niveau 0–4 des bouteilles suivies, 0/1 pour les softs), `ratings`, `rt`, `hist` (`{id,t}`), `fav`, `custom` ;
   - personnalisation : `adj`, `price`, `opened`, `quiz` ;
   - progression : `tro` et `troT`, `chal`, `mix` (état du labo : `items[{id,q}]`, `m`, `g`, `gUser`, `ice`, `gar`, `t`) ;
@@ -66,7 +66,7 @@ core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js 
 
 ### Environnement d’exécution (claude.ai)
 
-L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/S4FstFgJfmaipC6JGEtoiw`. Le code utilise `window.claude.use("downloads")` pour l’export de sauvegarde et l’image du Rewind, et la synchronisation via la capacité `db` et l’identifiant utilisateur (`user`). **Ces API n’existent pas hors de claude.ai** : replis (feuille de texte, partage natif, image à enregistrer d’un appui long). Le service worker (`sw.js`, `v130.js`) n’est inscrit qu’en https ou localhost, jamais sur claude.ai.
+L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/S4FstFgJfmaipC6JGEtoiw`. Le code utilise seulement `window.claude.use("downloads")` pour l’export de sauvegarde et l’image du Rewind ; plus aucune synchronisation (capacités `db` et `user` retirées en 1.65). **Ces API n’existent pas hors de claude.ai** : replis (feuille de texte, partage natif, image à enregistrer d’un appui long). Le service worker (`sw.js`, `v130.js`) n’est inscrit qu’en https ou localhost, jamais sur claude.ai.
 
 ## 4. Pièges connus (tous déjà rencontrés)
 
@@ -150,6 +150,7 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **1.62 — Score du Labo v3** (`v166.js`, § 9 ter) ; affichage : mots, écran de service chiffré, score en direct, seuils (`v167.js`).
 - **1.63 — Labo** (`v168.js`) : « Autre » versait la dose entière (soft refusé sous 10 cl) ; « + » sans son ; quantité saisissable au clavier (`mixqedit`, champ 16 px jamais recréé pendant la frappe).
 - **1.64 — Robustesse et nettoyage** : sous-scores masqués sans note ; bancs Node complets (`v.js`, `audit.js`, `pick.js`, `txt.js`) ; règle « sans alcool » de `audit.js` alignée sur `na:1` ; fichiers inutilisés retirés (`data/bad|good|other.json`) ; `README.md`.
+- **1.65 — Données locales** (`v169.js`) : synchro claude.ai retirée, copie de secours IndexedDB, sauvegardes et écran de stockage (§ 9 quater) ; textes d'« À propos » raccourcis.
 
 ## 8. Haptique
 
@@ -208,6 +209,14 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **Plafonds** : sous 40 (39) si Équilibre < 0,30, volume > 135 % de la contenance effective, éthanol > 48,9 ml ; 70 au plus si Équilibre < 0,60.
 - **Cohérence** : jauge de remplissage colorée par le sous-score Remplissage (≥ 0,70 / ≥ 0,40 / < 0,40) ; « À améliorer » = sous-scores < 70 ; seuils des défis 95 / 97 / 100, « Chef de bar » 97, confettis 97.
 - **m9** (bloquant) : 20 mauvais mélanges écrits à la main sous 40 ou sans note ; IBA ≥ 85 pour 90 % ; médianes IBA ≥ 90 et recettes ≥ 85. Non tenables sans pénaliser des recettes réelles (planchers de non-régression) : AUC ≥ 0,95, dégradées < 5 %, aléatoires médiane ≤ 45 / P90 < 80 / ≤ 1 % à 90 : les recettes de l'app occupent les mêmes zones de sucre, d'acidité et d'alcool que ces mélanges. IBA sous 85 assumés : Zombie, IBA Tiki (débordement, éthanol), Trinidad Sour (amers), Monkey Gland, Mary Pickford, Porto Flip, Bloody Mary, Old Fashioned, Pisco Sour, Casino.
+
+## 9 quater. Données et stockage (1.65, inspiré d'ASCEN)
+
+- **Tout reste sur l'appareil** : `save()` (`v169.js`) écrit `localStorage` puis une copie **gzip dans IndexedDB** (`zeste`/`state`, au plus toutes les 3 s, immédiatement à `pagehide` et quand l'app passe en arrière-plan). Au lancement, `zidbRecover` reprend la copie si `localStorage` est vide ou plus ancien (plein, vidé) ; sinon il la crée. Stockage plein : un seul toast.
+- **Données illisibles** : `loadLocal` (`ui.js`) les met de côté (`zeste.v1.illisible.<date>`) au lieu de les écraser.
+- **Stockage protégé** : `navigator.storage.persist()` demandé au lancement (accordé surtout à l'app installée ; Safari efface un site non installé après 7 jours sans visite).
+- **Sauvegardes** : `exportData` → `downloads` sur claude.ai, sinon partage de fichier (Fichiers, iCloud), sinon téléchargement, sinon texte ; date dans `S.backupT` (« jamais » en orange dès 5 notes ou verres, et après 21 jours).
+- **Écrans** : Paramètres › Données et sauvegarde (Faire / Restaurer / Espace de stockage / Tout réinitialiser) ; « Espace de stockage » : taille sur ~5 Mo, copie de secours, total de l'appareil (`storage.estimate`), protection. Test : `storage_test.js`.
 
 ## 10. Vérification des recettes, reste à faire
 

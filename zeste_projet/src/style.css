@@ -2168,3 +2168,10 @@ details.bar-more[open]{padding-bottom:0}
 .stepper .mq-n{width:auto;min-width:44px;padding:0 4px;position:relative;font-weight:600;font-size:var(--z-fs-b);font-family:var(--rounded);color:var(--label)}
 .stepper .mq-n::after{content:"";position:absolute;top:-4px;bottom:-4px;left:0;right:0}
 .stepper .mq-in{width:64px;height:100%;border:0;background:transparent;color:var(--label);text-align:center;font:600 16px var(--rounded);border-radius:7px;outline:2px solid var(--tint);outline-offset:-2px;padding:0}
+/* 1.65 : données et stockage */
+.row .val.due{color:var(--orange)}
+.sto-card{display:flex;flex-direction:column;gap:4px;padding:var(--z-s2)}
+.sto-card b{font-size:var(--z-fs-h);font-weight:700}
+.sto-card span{font-size:var(--z-fs-l);color:var(--label2)}
+.sto-bar{margin-top:var(--z-s1)}
+.row .s.sto-s{white-space:normal;overflow:visible;text-overflow:clip;font-size:var(--z-fs-l);color:var(--label2);line-height:1.35}

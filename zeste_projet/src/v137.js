@@ -128,7 +128,7 @@ Object.assign(ACT,{ setgroup:(d)=>{ const g=SET_GROUPS[d.g]; if(g) subSheet(g[0]
   settingsSheet=function(){ _ss(); const sh=SHEETS[SHEETS.length-1]; if(!sh) return; const r0=sh.render;
     sh.render=()=>{ const o=r0(), b=o.body, cut=b.indexOf('<div class="gh">Apparence</div>'), ab=b.indexOf('<div class="gh">À propos</div>'); if(cut<0||ab<0) return o;
       const rows=[["look"],["snd"],["reco"],["bar"]].map(([k])=>{ const g=SET_GROUPS[k]; return srow(g[1],g[0],`<span class="val">${esc(g[3]())}</span>`,"setgroup",`data-g="${k}"`); }).join("")+srow("home","Accueil",`<span class="val">${S.settings.home.filter(x=>x[1]).length} sections</span>`,"homeedit");
-      o.body=b.slice(0,cut)+`<div class="gh">Préférences</div><div class="group">${rows}</div><div class="gh">Données</div><div class="group">${srow("up","Sauvegarde et réinitialisation","","setgroup",'data-g="data"')}</div>`+b.slice(ab);
+      o.body=b.slice(0,cut)+`<div class="gh">Préférences</div><div class="group">${rows}</div><div class="gh">Données</div><div class="group">${srow("up","Données et sauvegarde",`<span class="val${zBackupAge().due?" due":""}">${esc(zBackupAge().t)}</span>`,"setgroup",'data-g="data"')}</div>`+b.slice(ab);
       return o; };
     paintSheet(sh); };
 }

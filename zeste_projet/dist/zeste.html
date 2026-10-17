@@ -2172,6 +2172,13 @@ details.bar-more[open]{padding-bottom:0}
 .stepper .mq-n{width:auto;min-width:44px;padding:0 4px;position:relative;font-weight:600;font-size:var(--z-fs-b);font-family:var(--rounded);color:var(--label)}
 .stepper .mq-n::after{content:"";position:absolute;top:-4px;bottom:-4px;left:0;right:0}
 .stepper .mq-in{width:64px;height:100%;border:0;background:transparent;color:var(--label);text-align:center;font:600 16px var(--rounded);border-radius:7px;outline:2px solid var(--tint);outline-offset:-2px;padding:0}
+/* 1.65 : données et stockage */
+.row .val.due{color:var(--orange)}
+.sto-card{display:flex;flex-direction:column;gap:4px;padding:var(--z-s2)}
+.sto-card b{font-size:var(--z-fs-h);font-weight:700}
+.sto-card span{font-size:var(--z-fs-l);color:var(--label2)}
+.sto-bar{margin-top:var(--z-s1)}
+.row .s.sto-s{white-space:normal;overflow:visible;text-overflow:clip;font-size:var(--z-fs-l);color:var(--label2);line-height:1.35}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -3689,7 +3696,7 @@ Object.assign(IC,{
 const KEY="zeste.v1";
 const USE_LEGACY_VIBRATE=false; // ignoré sur iPhone (Safari iOS n’a pas navigator.vibrate) ; l’haptique passe par un switch invisible (v144.js)
 const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
-function loadLocal(){ try{ const j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){} return DEF(); }
+function loadLocal(){ let j=null; try{ j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){ try{ if(j) localStorage.setItem(KEY+".illisible."+Date.now(),j); }catch(e2){} } return DEF(); } // (1.65) illisible : mis de côté, jamais écrasé
 S=loadLocal();
 // (fixState : remplacée plus loin, voir ui_final.js)
 let DB=null, DOC=null, saveTimer=null, saving=false, pending=false;
@@ -4077,7 +4084,7 @@ function guideHTML(){ let o="";
     // la régression (70 % de la prédiction) se répartit entre ton palais (profil) et tes styles (familles, alcools), selon ce qu'elle a appris
     const RW=ridgeOf(getModel()); if(RW){ const e=RW.W.map(w=>w*w), ep=e.slice(0,9).reduce((a,b)=>a+b,0), ec=e.slice(9).reduce((a,b)=>a+b,0), et=ep+ec||1;
       for(const k in mw) mw[k]=0.3*mw[k]/tot; mw.dims+=0.7*ep/et; mw.fam+=0.7*ec/et; tot=1; }
-    const L=[["knn","Tes coups de cœur","des cocktails qui ressemblent à ceux que tu as bien notés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs qui reviennent dans ce que tu aimes","#FF375F"],["fam","Tes styles","les familles (sours, spritz…) et les alcools que tu préfères","#5E5CE6"],["dims","Ton palais","ton goût pour l’amer, le sucré, l’acide, le fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
+    const L=[["knn","Tes coups de cœur","des cocktails proches de ceux que tu as aimés","#FF9F0A"],["ing","Tes ingrédients","les bouteilles et saveurs que tu aimes","#FF375F"],["fam","Tes styles","tes familles et alcools préférés","#5E5CE6"],["dims","Ton palais","amer, sucré, acide, fort…","#30B0C7"]].map(x=>x.concat([Math.round(mw[x[0]]/tot*100)]));
     const top=L.slice().sort((a,b)=>b[4]-a[4])[0], pl=(n,a,b)=>n+" "+(n>1?b:a);
     const src=[[rated().length,"note","notes"],[S.hist.length,"verre préparé","verres préparés"],[Object.keys(S.adj||{}).length,"recette ajustée","recettes ajustées"]].filter(x=>x[0]).map(([n,a,b])=>pl(n,a,b)).concat(S.quiz?["quiz de goût"]:[]);
     o+=`<div class="gh">Ce qui guide tes suggestions</div>
@@ -4085,7 +4092,7 @@ function guideHTML(){ let o="";
     <div class="gd-bar">${L.map(x=>`<i style="width:${x[4]}%;background:${x[3]}"></i>`).join("")}</div>
     ${L.sort((a,b)=>b[4]-a[4]).map(x=>`<div class="gd-row"><span class="gd-dot" style="background:${x[3]}"></span><div class="grow"><b>${esc(x[1])}</b><span>${esc(x[2].charAt(0).toUpperCase()+x[2].slice(1))}</span></div><em>${x[4]} %</em></div>`).join("")}
     <div class="gd-src"><span>Appris grâce à</span>${src.map(x=>`<i>${esc(x)}</i>`).join("")}</div>
-    <div class="gd-foot">Chaque nouvelle note renforce ce qui avait vu juste.</div></div>`; }
+    <div class="gd-foot">Chaque note l’affine.</div></div>`; }
   return o; }
 
 
@@ -5283,7 +5290,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.64";
+const APP_VERSION="1.65";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6041,7 +6048,7 @@ Object.assign(ACT,{ setgroup:(d)=>{ const g=SET_GROUPS[d.g]; if(g) subSheet(g[0]
   settingsSheet=function(){ _ss(); const sh=SHEETS[SHEETS.length-1]; if(!sh) return; const r0=sh.render;
     sh.render=()=>{ const o=r0(), b=o.body, cut=b.indexOf('<div class="gh">Apparence</div>'), ab=b.indexOf('<div class="gh">À propos</div>'); if(cut<0||ab<0) return o;
       const rows=[["look"],["snd"],["reco"],["bar"]].map(([k])=>{ const g=SET_GROUPS[k]; return srow(g[1],g[0],`<span class="val">${esc(g[3]())}</span>`,"setgroup",`data-g="${k}"`); }).join("")+srow("home","Accueil",`<span class="val">${S.settings.home.filter(x=>x[1]).length} sections</span>`,"homeedit");
-      o.body=b.slice(0,cut)+`<div class="gh">Préférences</div><div class="group">${rows}</div><div class="gh">Données</div><div class="group">${srow("up","Sauvegarde et réinitialisation","","setgroup",'data-g="data"')}</div>`+b.slice(ab);
+      o.body=b.slice(0,cut)+`<div class="gh">Préférences</div><div class="group">${rows}</div><div class="gh">Données</div><div class="group">${srow("up","Données et sauvegarde",`<span class="val${zBackupAge().due?" due":""}">${esc(zBackupAge().t)}</span>`,"setgroup",'data-g="data"')}</div>`+b.slice(ab);
       return o; };
     paintSheet(sh); };
 }
@@ -6398,10 +6405,10 @@ function aboutBody(){
   const n=RECS.filter(r=>!r.mine).length, na=RECS.filter(r=>r.na).length, g=(typeof guideHTML==="function"?guideHTML():"");
   return `<div class="about-hero"><div class="af-logo brand">${zesteMark({label:"Logo Zeste"})}</div><b>Zeste ${APP_VERSION}</b><span>${n} recettes, dont ${na} sans alcool</span></div>`
     +(g? g.replace('<div class="gh">Ce qui guide tes suggestions</div>','<div class="gh">Comment Zeste te conseille</div>')
-       : `<div class="gh">Comment Zeste te conseille</div><div class="card about-p">Zeste apprend de tes notes et de ce que tu prépares. Note quelques cocktails : tu verras ici ce qui guide ses suggestions.</div>`)
-    +`<div class="gh">Ton alcoolémie</div><div class="card about-p">Une estimation (formule de Widmark) à partir de ton poids, de ton sexe et des verres que tu indiques. Ce n’est jamais une mesure : ne t’y fie pas pour prendre le volant.</div>`
-    +`<div class="gh">Tes données</div><div class="card about-p">Sur claude.ai, ton bar, tes notes et ton historique se synchronisent avec ton compte. Ailleurs, ils restent sur cet appareil : pense à exporter une sauvegarde (Paramètres › Données).</div>`
-    +`<div class="gh">Les recettes</div><div class="card about-p">Les 102 cocktails de la liste officielle de l’IBA sont vérifiés un à un, dosages compris.</div>`
+       : `<div class="gh">Comment Zeste te conseille</div><div class="card about-p">Note quelques cocktails : Zeste apprend tes goûts, et tu verras ici ce qui guide ses idées.</div>`)
+    +`<div class="gh">Ton alcoolémie</div><div class="card about-p">Une estimation (Widmark) selon ton poids, ton sexe et tes verres. Jamais une mesure : ne t’y fie pas pour conduire.</div>`
+    +`<div class="gh">Tes données</div><div class="card about-p">Tout reste sur ton téléphone, rien n’est envoyé. Fais une sauvegarde de temps en temps (Paramètres › Données).</div>`
+    +`<div class="gh">Les recettes</div><div class="card about-p">Les 102 cocktails officiels de l’IBA, vérifiés un à un, dosages compris.</div>`
     +`<div class="about-foot"><span>${esc(COPYRIGHT)}</span><span>À consommer avec modération. Santé !</span></div>`;
 }
 Object.assign(ACT,{ about:()=>subSheet("À propos",aboutBody) });
@@ -7274,6 +7281,85 @@ Object.assign(ACT,{ mixqedit:(d,t)=>{ const it=S.mix.items[+d.k]; if(!it||!t) re
   inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); fin(true); } else if(e.key==="Escape"){ e.preventDefault(); fin(false); } });
   inp.addEventListener("blur",()=>fin(true));
   t.replaceWith(inp); inp.focus(); inp.select(); } });
+// ================= ZESTE 1.65 : données 100 % locales, copie de secours, sauvegardes (inspiré d'ASCEN) =================
+// Rien ne quitte l'appareil : la synchronisation avec le compte claude.ai (capacité « db ») est retirée.
+initRemote=async function(){}; pushRemote=async function(){};
+
+// ---------- copie de secours IndexedDB, compressée ----------
+// Chaque enregistrement est aussi copié (gzip natif) dans IndexedDB, au plus toutes les 3 s et tout de suite quand l'app
+// passe en arrière-plan. Si localStorage est plein, vidé ou illisible, Zeste repart de cette copie au lancement suivant.
+const ZIDB_NAME="zeste", ZIDB_STORE="state";
+let ZIDB_PENDING=null, ZIDB_WRITING=false, ZIDB_LAST=0, ZIDB_TIMER=null, LS_FAIL=false;
+function zidbOpen(){ return new Promise((ok,ko)=>{ if(typeof indexedDB==="undefined") return ko(new Error("indisponible"));
+  const r=indexedDB.open(ZIDB_NAME,1); r.onupgradeneeded=()=>r.result.createObjectStore(ZIDB_STORE); r.onsuccess=()=>ok(r.result); r.onerror=()=>ko(r.error); }); }
+function zidbPut(data,t){ return zidbOpen().then(db=>new Promise((ok,ko)=>{ const tx=db.transaction(ZIDB_STORE,"readwrite"); tx.objectStore(ZIDB_STORE).put({data,t},"main");
+  tx.oncomplete=()=>{ db.close(); ok(); }; tx.onerror=()=>{ db.close(); ko(tx.error); }; })); }
+function zidbGet(){ return zidbOpen().then(db=>new Promise((ok,ko)=>{ const r=db.transaction(ZIDB_STORE).objectStore(ZIDB_STORE).get("main");
+  r.onsuccess=()=>{ db.close(); ok(r.result||null); }; r.onerror=()=>{ db.close(); ko(r.error); }; })); }
+// octets bruts (pas de Blob : WebKit les refuse en navigation privée et pendant qu'on quitte la page)
+async function zgz(str){ if(typeof CompressionStream==="undefined") return str; const cs=new CompressionStream("gzip"), w=cs.writable.getWriter();
+  w.write(new TextEncoder().encode(str)).catch(()=>{}); w.close().catch(()=>{}); return await new Response(cs.readable).arrayBuffer(); }
+async function zgunz(d){ if(typeof d==="string") return d; return await new Response(new Response(d).body.pipeThrough(new DecompressionStream("gzip"))).text(); }
+function zidbMirror(str,t,now){ ZIDB_PENDING={str,t}; const wait=ZIDB_LAST+3000-Date.now();
+  if(!now&&wait>0){ if(!ZIDB_TIMER) ZIDB_TIMER=setTimeout(()=>{ ZIDB_TIMER=null; if(ZIDB_PENDING) zidbMirror(ZIDB_PENDING.str,ZIDB_PENDING.t,true); },wait); return; }
+  clearTimeout(ZIDB_TIMER); ZIDB_TIMER=null; ZIDB_LAST=Date.now(); if(ZIDB_WRITING) return; ZIDB_WRITING=true;
+  (async()=>{ while(ZIDB_PENDING){ const j=ZIDB_PENDING; ZIDB_PENDING=null; try{ await zidbPut(await zgz(j.str),j.t); }catch(e){ try{ await zidbPut(j.str,j.t); }catch(e2){} } } ZIDB_WRITING=false; })(); }
+function zidbFlush(){ if(ZIDB_PENDING) zidbMirror(ZIDB_PENDING.str,ZIDB_PENDING.t,true); }
+save=function(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); const j=JSON.stringify(S);
+  try{ localStorage.setItem(KEY,j); LS_FAIL=false; }
+  catch(e){ if(!LS_FAIL&&typeof toast==="function") toast("Stockage principal plein : tes données sont gardées dans la copie de secours. Fais une sauvegarde."); LS_FAIL=true; }
+  zidbMirror(j,S.t); };
+if(typeof addEventListener==="function") addEventListener("pagehide",zidbFlush);
+if(typeof document!=="undefined"&&document.addEventListener) document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden") zidbFlush(); });
+// au lancement : la copie de secours plus récente que localStorage (plein, vidé ou illisible) est reprise ; sinon elle est créée
+function zidbRecover(){ zidbGet().then(async rec=>{
+    if(!rec||!rec.data){ zidbMirror(JSON.stringify(S),S.t||Date.now(),true); return; }
+    let has=false; try{ has=!!localStorage.getItem(KEY); }catch(e){}
+    if(has&&!(rec.t>(S.t||0))) return;
+    const str=await zgunz(rec.data); let d; try{ d=JSON.parse(str); }catch(e){ return; }
+    S=Object.assign(DEF(),d); fixState(); try{ localStorage.setItem(KEY,str); }catch(e){} buildRecipes(S.custom||[]); MODEL=null;
+    renderAll(); refreshSheets(); toast("Tes données ont été récupérées depuis la copie de secours"); }).catch(()=>{}); }
+setTimeout(zidbRecover,0);
+// stockage protégé : le système ne l'efface pas pour libérer de la place (accordé surtout à l'app installée)
+try{ if(typeof navigator!=="undefined"&&navigator.storage&&navigator.storage.persisted) navigator.storage.persisted().then(p=>{ if(!p&&navigator.storage.persist) navigator.storage.persist(); }).catch(()=>{}); }catch(e){}
+
+// ---------- sauvegarde en fichier : Fichiers / iCloud (partage), sinon téléchargement ----------
+function zBackupAge(){ const b=S.backupT; if(!b) return {t:"jamais",due:(S.hist||[]).length+Object.keys(S.ratings||{}).length>=5};
+  const n=Math.floor((Date.now()-b)/864e5); return {t:n===0?"aujourd’hui":n===1?"hier":`il y a ${n} j`, due:n>=21}; }
+exportData=async function(){ const json=JSON.stringify(S,null,1), d=new Date(), name=`zeste-sauvegarde-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}.json`;
+  let ok=false;
+  try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:name,data:json}); ok=true; } }catch(e){ if(e&&e.code&&e.code!=="unavailable") return; }
+  if(!ok) try{ const f=new File([json],name,{type:"application/json"}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f],title:"Sauvegarde Zeste"}); ok=true; } }catch(e){ if(e&&e.name==="AbortError") return; }
+  if(!ok) try{ const a=document.createElement("a"), u=URL.createObjectURL(new Blob([json],{type:"application/json"})); a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); ok=true; }catch(e){}
+  if(!ok){ textSheet("Sauvegarde",json); return; }
+  S.backupT=Date.now(); save(); refreshSheets(); toast("Sauvegarde prête"); };
+
+// ---------- écran « Espace de stockage » ----------
+Object.assign(LU,{"hard-drive":`<path d="M22 12H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M6 16h.01"/><path d="M10 16h.01"/>`,
+  "shield-check":`<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>`});
+const LS_QUOTA=5*1024*1024;
+function zLsBytes(){ try{ let n=0; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith(KEY)) n+=(k.length+(localStorage.getItem(k)||"").length)*2; } return n; }catch(e){ return 0; } }
+function zBytes(b){ return b<1024? b+" o" : b<1024*1024? num(Math.round(b/1024))+" Ko" : num(Math.round(b/1024/1024*10)/10)+" Mo"; }
+function zStandalone(){ try{ return !!(navigator.standalone||(matchMedia&&matchMedia("(display-mode: standalone)").matches)); }catch(e){ return false; } }
+function zIcon(k,n){ if(!ICS[k]) ICS[k]=[ICS.up[0],lu(n)]; return k; }
+function storageBody(){ const u=zLsBytes(), pct=Math.min(100,u/LS_QUOTA*100), nb=Object.values(S.stock||{}).filter(v=>v>0).length, nr=Object.keys(S.ratings||{}).length, nh=(S.hist||[]).length;
+  return `<div class="card sto-card"><b>${zBytes(u)} sur ~5 Mo</b><span>${nb} bouteille${nb>1?"s":""} · ${nr} note${nr>1?"s":""} · ${nh} verre${nh>1?"s":""}</span><div class="ls-bar sto-bar"><i style="width:${Math.max(1.5,pct).toFixed(1)}%"></i></div></div>
+    <div class="sp16"></div><div class="group">
+      ${srow(zIcon("disk","hard-drive"),`Copie de secours<div class="s sto-s">Une seconde copie, compressée, au cas où.</div>`,`<span class="val" id="sto-idb">–</span>`)}
+      ${srow(zIcon("phone2","house"),`Total sur l’appareil<div class="s sto-s">Données et fichiers gardés pour le hors ligne.</div>`,`<span class="val" id="sto-tot">–</span>`)}
+      ${srow(zIcon("shield","shield-check"),`Protection<div class="s sto-s" id="sto-prot">Vérification…</div>`,"")}</div>
+    <div class="gf">Rien ne quitte ton téléphone. Pour changer d’appareil sans rien perdre, garde une sauvegarde dans Fichiers ou iCloud.</div>
+    <div class="sp16"></div><div class="group">${srow("up","Faire une sauvegarde",`<span class="val">${esc(zBackupAge().t)}</span>`,"export")}</div>`; }
+function storageFill(){ const set=(id,t)=>{ const e=document.getElementById(id); if(e) e.textContent=t; };
+  zidbGet().then(r=>{ if(r&&r.data) set("sto-idb",zBytes(typeof r.data==="string"?r.data.length*2:r.data.byteLength||0)); }).catch(()=>set("sto-idb","indisponible"));
+  try{ if(navigator.storage&&navigator.storage.estimate) navigator.storage.estimate().then(x=>{ if(x&&x.usage!=null) set("sto-tot",zBytes(x.usage+zLsBytes())); }).catch(()=>{}); }catch(e){}
+  const prot=p=>set("sto-prot", p? "Protégé : le système ne l’effacera pas pour faire de la place." : zStandalone()? "App installée : tes données restent sur l’appareil." : "Ajoute Zeste à l’écran d’accueil : Safari efface les sites non installés après 7 jours sans visite.");
+  try{ if(navigator.storage&&navigator.storage.persisted) navigator.storage.persisted().then(prot).catch(()=>prot(false)); else prot(false); }catch(e){ prot(false); } }
+Object.assign(ACT,{ storage:()=>{ subSheet("Espace de stockage",storageBody); setTimeout(storageFill,60); } });
+// groupe « Données » des Paramètres
+SET_GROUPS.data=["Données","up",()=>{ const a=zBackupAge();
+  return `<div class="group">${srow("up","Faire une sauvegarde",`<span class="val${a.due?" due":""}">${esc(a.t)}</span>`,"export")}${srow("down","Restaurer une sauvegarde","","import")}${srow(zIcon("disk","hard-drive"),"Espace de stockage",`<span class="val">${zBytes(zLsBytes())}</span>`,"storage")}</div>
+    <div class="gf">Tout reste sur cet appareil : rien n’est envoyé.</div><div class="sp16"></div><div class="group">${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div>`; },()=>zBackupAge().t];
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
