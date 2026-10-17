@@ -43,6 +43,7 @@ function covered(){ return SHEETS.length>0||document.getElementById("serve")||do
 function changed(){ save(); Object.keys(dirty).forEach(k=>dirty[k]=1); if(!covered()) renderView(TAB); refreshSheets(); checkTrophies(); }
 function softChanged(){ save(); Object.keys(dirty).forEach(k=>{ if(k!==TAB) dirty[k]=1; }); refreshSheets(); checkTrophies(); updateBarStats(); }
 function nav(title,right="",left=""){ return `<div class="navbar"><div class="nb-left">${left}</div><div class="nb-title">${esc(title)}</div><div class="nb-right">${right}</div></div>`; }
+const noOkDot=h=>h.replace('<span class="dot ok"></span>',"");   // (1.59) liste déjà groupée « Faisables » : pas de point vert
 const statusDot=r=>{ const s=status(r); return `<span class="dot ${s.ok?"ok":s.subOk?"sub":"no"}"></span>`; };
 function recRow(r, sub){
   const rt=S.ratings[r.id];
@@ -154,12 +155,12 @@ function cocktailsResults(){
     const ok=[],one=[],rest=[]; L.forEach(r=>{ const s=status(r); if(s.ok) ok.push(r); else if(s.subOk||s.miss.length===1) one.push([r,s]); else rest.push(r); });
     const more=(n,k)=>n>(CF.lim[k]||30)?`<button class="row tap more-row" data-a="listmore" data-k="${k}">Afficher ${Math.min(60,n-(CF.lim[k]||30))} de plus (${n-(CF.lim[k]||30)} restants)</button>`:"";
     CF.lim=CF.lim||{};
-    if(ok.length) o+=`<div class="list-h"><b>Faisables maintenant</b><span>${ok.length}</span></div><div class="group">${ok.slice(0,CF.lim.ok||30).map(r=>recRow(r)).join("")}${more(ok.length,"ok")}</div>`;
+    if(ok.length) o+=`<div class="list-h"><b>Faisables maintenant</b><span>${ok.length}</span></div><div class="group">${ok.slice(0,CF.lim.ok||30).map(r=>noOkDot(recRow(r))).join("")}${more(ok.length,"ok")}</div>`;
     if(one.length) o+=`<div class="list-h"><b>Il manque une chose</b><span>${one.length}</span></div><div class="group">${one.slice(0,CF.lim.one||30).map(([r,s])=>recRow(r, s.subOk?"Avec "+lc(shortN(s.subs[s.miss[0]]))+" à la place":"Manque : "+lc(shortN(s.miss[0])))).join("")}${more(one.length,"one")}</div>`;
     if(rest.length){ const lim=CF.all?rest.length:Math.min(CF.lim.rest||30,rest.length); o+=`<div class="list-h"><b>Pour plus tard</b><span>${rest.length}</span></div><div class="group">${rest.slice(0,lim).map(r=>recRow(r)).join("")}${rest.length>lim?`<button class="row tap more-row" data-a="showall">Afficher les ${rest.length-lim} autres</button>`:""}</div>`; }
   } else {
     CF.lim=CF.lim||{}; const lim=CF.lim.all||40;
-    o+=`<div class="list-h"><b>${L.length} cocktail${L.length>1?"s":""}</b><span></span></div><div class="group">${L.slice(0,lim).map(r=>recRow(r)).join("")}${L.length>lim?`<button class="row tap more-row" data-a="listmore" data-k="all">Afficher ${Math.min(60,L.length-lim)} de plus (${L.length-lim} restants)</button>`:""}</div>`;
+    o+=`<div class="list-h"><b>${L.length} cocktail${L.length>1?"s":""}</b><span></span></div><div class="group">${L.slice(0,lim).map(r=>CF.main==="ok"?noOkDot(recRow(r)):recRow(r)).join("")}${L.length>lim?`<button class="row tap more-row" data-a="listmore" data-k="all">Afficher ${Math.min(60,L.length-lim)} de plus (${L.length-lim} restants)</button>`:""}</div>`;
   }
   return o;
 }
