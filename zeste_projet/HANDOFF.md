@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.60**. Chaque mise à jour livrée incrémente : 1.21 → 1.60… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v18` à la 1.60) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.64**. Chaque mise à jour livrée incrémente : 1.21 → 1.64… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v22` à la 1.64) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -16,25 +16,26 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 
 ```sh
 sh tests/all.sh           # TOUT : build, données, IBA, prédiction, Chromium, contraste, VoiceOver, WebKit, fonctionnalités, fuzz ; s’arrête au premier échec ; copie dist vers ../index.html
-sh build.sh                 # assemble dist/zeste.html (fichier unique, ~950 Ko)
+sh build.sh                 # assemble dist/zeste.html (fichier unique, ~1 Mo)
 node tests/v.js             # validation des données (doit afficher « aucune erreur »)
 node tests/validate.js      # validation stricte : unités, rôles, verres, doublons
 node tests/ibacmp.js        # comparaison avec les recettes officielles de l’IBA (102 conformes)
 NODE_PATH=$(npm root -g) node tests/smoke.js   # ouvre les 366 fiches dans Chromium
 python3 tests/fuzz.py       # (Python ≥ 3.12) batterie complète dans Chromium (Playwright)
 node tests/m3.js / m5.js / m6.js   # simulateurs du moteur de recommandation et du quiz (SEED=…)
+node tests/m9.js                    # score du Labo : 20 mauvais mélanges, IBA, recettes dégradées, aléatoires (SEED=1 puis 2)
 ```
 
-Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Playwright (Chromium) est requis ; WebKit est testé via WebKitGTK (`tests/webkit.js`, `apt-get install webkit2gtk-driver xvfb`). Si WebKit échoue au démarrage du pilote (« fetch failed »), relancer `node tests/webkit.js` seul. Tests de fonctionnalités : `tests/features/*.js` (20 fichiers, bloquants dans `all.sh`). Autres outils : `tests/contrast.js` (WCAG, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/sounds.js`, `tests/audit2.js`, `tests/deadcode.js`.
+Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Playwright (Chromium) est requis ; WebKit est testé via WebKitGTK (`tests/webkit.js`, `apt-get install webkit2gtk-driver xvfb`). Si WebKit échoue au démarrage du pilote (« fetch failed »), relancer `node tests/webkit.js` seul. Tests de fonctionnalités : `tests/features/*.js` (32 fichiers, bloquants dans `all.sh`). Autres outils : `tests/contrast.js` (WCAG, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/audit2.js` ; hors suite : `tests/m7.js`, `m8.js` (moteur), `audit.js` et `txt.js` (relecture des données et des textes), `deadcode.js`, `sounds.js`, `perf.py`. Un `README.md` à la racine du dépôt résume le tout pour un humain.
 
 ## 3. Architecture
 
-**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (57 modules dans `src/`). L’ordre de concaténation est important :
+**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (62 modules JS et `style.css` dans `src/`). L’ordre de concaténation est important :
 
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js ui_final.js v126.js v130.js
 ```
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
@@ -90,6 +91,10 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 19. **Ordre des enveloppes de `vCompose`** (v137 → v141 → v142 → v146 → v149 → v150) : chacune transforme le HTML de la précédente. Une regex qui délimite une zone doit s’arrêter au bon endroit : en 1.46, la carte « Personnaliser » englobait tout jusqu’au titre suivant et avalait le bouton Servir quand « Conseils » était absent (corrigé en 1.48).
 20. **Boutons devenus `label.hap`** (depuis 1.44) : un sélecteur CSS ou JS écrit `.x button` ne les trouve plus. Cibler `.x>*`, `.x [data-a]` ou ajouter le pendant `label.hap` (la feuille de niveau a perdu sa mise en page de 1.44 à 1.47 pour cette raison).
 21. **`S.settings.moment` remis à « auto » au chargement** (`v120.js`) : pour forcer un moment (nuit…) dans un test ou une capture, le régler **après** le chargement, puis `applyAmbient()`.
+22. **Tout versement du Labo passe par `labPour`** (`v164.js`) : tuile, « + » du stepper, conseil, ajout direct, « Autre » (`ACT.mixadd`, oublié jusqu'à la 1.63) et saisie au clavier versent min(dose, place) au 0,05 cl ; refus seulement verre plein, un seul message. Un nouveau chemin d'ajout doit l'utiliser (sinon : « soft refusé sous 10 cl »). `labfill_test.js` parcourt tous les chemins.
+23. **Bancs Node et ordre du bundle** : `v126.js` et `v130.js` viennent *après* `init();`. Un banc qui coupe le bundle à `init();` perd `TIER_TROPHIES` et `moveTabInd` : `vProfil` y plantait en silence jusqu'à la 1.64. Ne retirer que la ligne de démarrage (`init(); applyFx();`) et bouchonner `addEventListener`. `all.sh` échoue désormais si `v.js` signale une vue en erreur.
+24. **Score « sans note »** : `labScore` renvoie `{none:true, score:null}` quand le mélange n'a pas deux rôles différents. Tout affichage ou toute logique qui lit `SC.score` doit tester `SC.none` (service bloqué, défis refusés, sous-scores masqués).
+25. **Code évalué dans la portée de l'app** (`m9.js`, bancs) : un `const score=…` entre en collision avec la fonction `score(r)` de l'app ; envelopper le code du banc dans un bloc `{ … }`.
 
 ## 5. Règles en vigueur
 
@@ -141,6 +146,10 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **1.58 — Décisions de l'audit** (`v159.js`) : « Ta version » en piste ; pictos ≥ 3:1 (`picCol`) ; textes ≥ 13 px ; espacements en jetons. **Piège** : un `var(--…)` écrit dans une regex doit avoir ses parenthèses échappées.
 - **1.59 — Lot A→H** (`v160.js`, `v161.js`) : pastille d'onglet (`v130.js`) ; Aujourd'hui épuré ; profil de goût d'une seule source (`tasteAxes`) ; « Conseillé » = Auto (`labGlass`) ; moteur (§ 9 bis).
 - **1.60 — Finitions + intelligence** : onglets 1/5 (`v130.js`), radar, Lignées, segments et ciel sombre (`v162.js`) ; duels, signaux implicites, recherche en langage courant, précision mesurée (`v163.js`, § 9 bis). **Piège** : la zone `::after` de `label.search` intercepte les clics de Playwright : `focus()` dans les tests.
+- **1.61 — Labo** : versement adapté à la place par tous les chemins (`v164.js`, `labPour`, `labFitsStrict`) ; score continu (`v165.js`) ; point de statut seulement vert (`statusDot`).
+- **1.62 — Score du Labo v3** (`v166.js`, § 9 ter) ; affichage : mots, écran de service chiffré, score en direct, seuils (`v167.js`).
+- **1.63 — Labo** (`v168.js`) : « Autre » versait la dose entière (soft refusé sous 10 cl) ; « + » sans son ; quantité saisissable au clavier (`mixqedit`, champ 16 px jamais recréé pendant la frappe).
+- **1.64 — Robustesse et nettoyage** : sous-scores masqués sans note ; bancs Node complets (`v.js`, `audit.js`, `pick.js`, `txt.js`) ; règle « sans alcool » de `audit.js` alignée sur `na:1` ; fichiers inutilisés retirés (`data/bad|good|other.json`) ; `README.md`.
 
 ## 8. Haptique
 
@@ -189,6 +198,16 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **Recherche en langage courant** (`nlParse`, enveloppe de `filtered`) : axes de goût, sans alcool, faisable, avec / sans X, moments, Levenshtein ; puces retirables (`nlrm`) ; un nom ou un spiritueux seul garde la recherche classique.
 - **Précision mesurée** (À propos, ≥ 10 notes) : validation croisée en laissant une note de côté (`looAccuracy`), différée, mise en cache par `SREV`.
 - **Tests** : `m3`, `m5` (froid), `m6` (NDCG@10), `m7` (signaux, MAE, Brier/ECE, liste, achats), `m8` (duels contre paires et notes au hasard). **Règle** : régler sur `SEED=1`, valider sur `SEED=2`, ne garder que ce qui améliore la validation sans dégrader `m5` ; variantes via `EXP=fichier`, `RECO='{…}'` ou `RECO2='{…}'`. Non retenus : centrage, IDF, ridge ingrédients.
+
+## 9 ter. Score du Labo v3 (1.62)
+
+- **Formule** (`v166.js`, `labScore`) : Q = 100·(0,6·Équilibre + 0,4·Force) ; facteur technique T = (0,8 + 0,2·Remplissage)·(0,75 + 0,25·Glace), entre 0,6 et 1 ; score = Q·T ; 100 seulement à partir de 98 brut. Décor = bonus affiché, hors note. Mots (`labGrade`, `v167.js`) : Déséquilibré < 40, Buvable 40-69, Réussi 70-84, Excellent ≥ 85.
+- **Rôles** (`labRole`, `labRoles`) : base, acide, sucre, mélangeur (compte à partir de 15 % du volume), amer, liqueur ; sans spiritueux, l'alcool le plus abondant tient lieu de base (Kir, Panaché). Moins de deux rôles : pas de note (« Ajoute un second ingrédient »).
+- **Équilibre** : distance hors des plages du style (P10–P90 des recettes de l'app préparées comme « Modifier dans le labo », `labRef`/`labRef3`) pour le sucre, l'acidité, le sucre attendu (régression sur acidité, amertume, degré), le degré, la part d'amers, et une combinaison de rôles jamais vue dans ce style ; exp(−½·d²/1,1²) après 0,25 de tolérance (à 3 écarts : 0,044).
+- **Force** : plage du degré du style et éthanol pur par verre (`ETH_IBA` : médiane 23,7 ml, P95 32,6 ml sur 101 IBA, recalculés et vérifiés par `m9`).
+- **Plafonds** : sous 40 (39) si Équilibre < 0,30, volume > 135 % de la contenance effective, éthanol > 48,9 ml ; 70 au plus si Équilibre < 0,60.
+- **Cohérence** : jauge de remplissage colorée par le sous-score Remplissage (≥ 0,70 / ≥ 0,40 / < 0,40) ; « À améliorer » = sous-scores < 70 ; seuils des défis 95 / 97 / 100, « Chef de bar » 97, confettis 97.
+- **m9** (bloquant) : 20 mauvais mélanges écrits à la main sous 40 ou sans note ; IBA ≥ 85 pour 90 % ; médianes IBA ≥ 90 et recettes ≥ 85. Non tenables sans pénaliser des recettes réelles (planchers de non-régression) : AUC ≥ 0,95, dégradées < 5 %, aléatoires médiane ≤ 45 / P90 < 80 / ≤ 1 % à 90 : les recettes de l'app occupent les mêmes zones de sucre, d'acidité et d'alcool que ces mélanges. IBA sous 85 assumés : Zombie, IBA Tiki (débordement, éthanol), Trinidad Sour (amers), Monkey Gland, Mary Pickford, Porto Flip, Bloody Mary, Old Fashioned, Pisco Sour, Casino.
 
 ## 10. Vérification des recettes, reste à faire
 

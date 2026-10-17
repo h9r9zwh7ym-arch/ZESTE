@@ -6,7 +6,7 @@ set -e
 PY=${PY:-python3}
 export NODE_PATH=${NODE_PATH:-$(npm root -g)}
 sh build.sh
-echo "— données";      node tests/v.js | tail -1; node tests/validate.js
+echo "— données";      O=$(node tests/v.js) || { echo "$O"; exit 1; }; echo "$O" | grep -E "^v(Today|Cocktails|Bar|Labo|Profil) " && { echo "Échec : une vue plante dans tests/v.js"; exit 1; }; echo "$O" | tail -1; node tests/validate.js
 echo "— IBA";          node tests/ibacmp.js | head -1
 echo "— cohérence";    node tests/audit2.js | tail -1
 echo "— prédiction";   node tests/m3.js | tail -3; node tests/m5.js | tail -1; SEED=1 node tests/m6.js

@@ -1,7 +1,8 @@
 const fs=require('fs');const h=fs.readFileSync('dist/zeste.html','utf8');let js=h.split('<script>')[1].split('</script>')[0];
 global.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement:()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},setAttribute(){},appendChild(){}}),getElementById:()=>null,body:{appendChild(){},prepend(){},classList:{add(){},remove(){},toggle(){}}},documentElement:{dataset:{}}};
+global.addEventListener=()=>{};global.removeEventListener=()=>{};
 global.localStorage={getItem:()=>null,setItem(){}};global.window={addEventListener(){}};global.matchMedia=()=>({matches:false,addEventListener(){}});global.setInterval=()=>0;global.setTimeout=()=>0;global.requestAnimationFrame=()=>0;global.requestAnimationFrame=f=>0;
-js=js.replace(/\ninit\(\);[\s\S]*$/,"\n");
+js=js.replace(/\ninit\(\);\napplyFx\(\);[^\n]*\n/,"\n"); // (1.64) seulement le démarrage : v126 et v130 restent chargés
 eval(js+`
 REC_RAW.forEach(r=>{ if(r[9]&&r[9].n){ r[9].tip=r[9].n; delete r[9].n; } }); buildRecipes([]);
 const ids=new Set(); let bad=[];

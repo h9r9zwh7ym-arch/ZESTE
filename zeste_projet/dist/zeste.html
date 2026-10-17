@@ -5283,7 +5283,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.63";
+const APP_VERSION="1.64";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -7109,7 +7109,7 @@ labScore=function(A){
 // ---------- Affichage : un mot pour le score, les quatre sous-scores dans l'analyse détaillée ----------
 labGrade=function(s){ return s>=90?["Proche d’un classique","trophy"]:s>=70?["Réussi","medal"]:s>=40?["Buvable","thumbs-up"]:["Déséquilibré","wrench"]; };
 { const _vc=vCompose; vCompose=function(){ let h=_vc(); const M=mixState(); if(!M.items.length) return h;
-    const A=analyze(); if(!A) return h; const SC=labScore(A);
+    const A=analyze(); if(!A) return h; const SC=labScore(A); if(SC.none) return h; // (1.64) sans note : pas de sous-scores (ni « 0 »)
     const rows=SC.goals.filter(g=>g[0]!=="gar").map(([k,n,v])=>{ const p=Math.round(v*100);
       return `<div class="lab-sub-s"><span>${esc(n)}</span><div class="ls-bar" role="img" aria-label="${esc(n)} : ${p} sur 100"><i class="${v>=0.85?"ok":v>=0.5?"mid":"ko"}" style="width:${p}%"></i></div><b>${p}</b></div>`; }).join("");
     return h.replace(/(<details class="lab-more"><summary>[\s\S]*?<\/summary><div class="card"[^>]*>)/,`$1<div class="lab-subs">${rows}</div><div class="sp16"></div>`); }; }
