@@ -100,7 +100,7 @@ function vCompose(){
   // ---- conseils ----
   if(A){ const tips=[];
     A.diag.filter(d=>d.warn).forEach(d=>tips.push(`<div class="tip-r">${IC.warn}<div class="grow"><b>${esc(d.t)}</b><span>${esc(d.why)}</span>${d.fix?`<button class="btn small sec" data-a="mixfix" data-id="${d.fix.id}" data-q="${d.fix.q}">Ajouter ${esc(fmtQ({q:d.fix.q,u:unitOf(d.fix.id)}))} ${esc(de(lc(shortN(d.fix.id))).replace(/^de /,"de "))}</button>`:""}</div></div>`));
-    if(M.g&&M.g!==rec.g&&SC.goals.find(x=>x[0]==="glass")[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un autre verre ?</b><span>Pour ce style, le barman te conseille ${esc(GLASSES[rec.g])}.</span><button class="btn small sec" data-a="mixglass" data-v="${rec.g}">Prendre ${esc(LGLASS.find(x=>x[0]===rec.g)[1].toLowerCase())}</button></div></div>`);
+    if(M.g&&M.g!==rec.g&&(SC.goals.find(x=>x[0]==="glass")||SC.goals.find(x=>x[0]==="ice"))[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un autre verre ?</b><span>Pour ce style, le barman te conseille ${esc(GLASSES[rec.g])}.</span><button class="btn small sec" data-a="mixglass" data-v="${rec.g}">Prendre ${esc(LGLASS.find(x=>x[0]===rec.g)[1].toLowerCase())}</button></div></div>`);
     if(SC.goals.find(x=>x[0]==="ice")[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Côté glace</b><span>${{long:"Un long drink se sert sur beaucoup de glaçons.",spritz:"Un spritz se sert sur des glaçons.",stirred:"Un cocktail sec se sert sur un gros glaçon, ou sans glace dans un verre refroidi.",sour:"Un cocktail court se sert plutôt sans glace, bien froid.",cremeux:"Plutôt sans glace."}[A.st]||"Adapte la glace au style."}</span><button class="btn small sec" data-a="mixice" data-v="${rec.ice}">${esc(LICE.find(x=>x[0]===rec.ice)[1])}</button></div></div>`);
     if(!M.gar.length) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un peu de décor ?</b><span>Avec ce mélange, ${esc(LGARTXT[SC.sug[0]].toLowerCase())} irait très bien.</span><button class="btn small sec" data-a="mixgar" data-v="${SC.sug[0]}">Ajouter</button></div></div>`);
     if(fill>1.02) tips.unshift(`<div class="tip-r bad">${IC.warn}<div class="grow"><b>Ça déborde !</b><span>Il faut environ ${fmtMl(vol-avail)} de place en plus.</span><button class="btn small sec" data-a="mixfit">Ajuster au verre</button></div></div>`);
@@ -148,7 +148,7 @@ Object.assign(ACT,{
     setTimeout(()=>{ LAB_SERVE={key:JSON.stringify(M),t:Date.now()}; LAB_LASTY=null; S.labBest=Math.max(S.labBest||0,SC.score); S.labServes=(S.labServes||0)+1; changed();
       const sc=document.querySelector(".lab-score b"); if(sc){ const t0=performance.now(), v=SC.score; const step=t=>{ const k=Math.min(1,(t-t0)/900), e=1-Math.pow(1-k,3); sc.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
       document.querySelectorAll(".lab-goals .goal").forEach((gl,i)=>{ gl.style.animationDelay=(i*90)+"ms"; gl.classList.add("pop"); });
-      if(SC.score>=85){ const b=document.querySelector(".lab-glass"); if(b){ const r=b.getBoundingClientRect(); setTimeout(()=>confetti(r.left+r.width/2,r.top+r.height*0.4,labBlendCol(mixItems())),500); } }
+      if(SC.score>=LAB_FETE){ const b=document.querySelector(".lab-glass"); if(b){ const r=b.getBoundingClientRect(); setTimeout(()=>confetti(r.left+r.width/2,r.top+r.height*0.4,labBlendCol(mixItems())),500); } }
       const [gt]=labGrade(SC.score); toast(SC.score+"/100 : "+gt); },wait); },
 });
 // garnitures et verre repris quand on part d'un cocktail

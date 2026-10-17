@@ -106,7 +106,7 @@ const SND=(()=>{
     const tTool=m==="build"?150:1350; setTimeout(()=>{ if(SV){ SND.pour(0.9); SND.ice(); } },tTool);
     setTimeout(()=>{ if(!SV) return; for(let k=0;k<10;k++) setTimeout(()=>SV&&SND.detent(0.15+k*0.085),k*95); },tTool+1250);
     setTimeout(()=>{ if(!SV) return; document.querySelectorAll(".sv-goal").forEach((g,i)=>setTimeout(()=>SND.pop(1+i*0.08),i*110)); },tTool+2150);
-    setTimeout(()=>{ if(!SV) return; SV.score>=85?SND.fanfare():SV.score>=60?SND.chime():SND.ding(); const ch=document.querySelector(".sv-chal"); if(ch) setTimeout(()=>ch.classList.contains("win")?SND.success():SND.fail(),700); },tTool+3000); };
+    setTimeout(()=>{ if(!SV) return; SV.score>=LAB_FETE?SND.fanfare():SV.score>=70?SND.chime():SND.ding(); const ch=document.querySelector(".sv-chal"); if(ch) setTimeout(()=>ch.classList.contains("win")?SND.success():SND.fail(),700); },tTool+3000); };
   document.addEventListener("pointerup",()=>{ if(typeof TILT!=="undefined"&&TILT&&TILT.drag&&Math.abs(TILT.a)>8) SND.slosh(); },{capture:true,passive:true});
   document.addEventListener("pointermove",()=>{ if(typeof RADDRAG!=="undefined"&&RADDRAG!=null&&RAD) SND.detent(RAD[RADDRAG]); },{passive:true});
   document.addEventListener("touchmove",()=>{ const p=document.getElementById("pull"); if(!p) return; if(p.classList.contains("armed")&&!p.dataset.snd){ p.dataset.snd=1; SND.select(); } else if(!p.classList.contains("armed")) delete p.dataset.snd; },{passive:true});

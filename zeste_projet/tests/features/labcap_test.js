@@ -35,8 +35,8 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   await p.tap('.sheet:last-of-type [data-a="capreset"]'); await p.waitForTimeout(400);
   if(await q(()=>!!(S.settings.glassCap&&S.settings.glassCap.highball)||labAvail("highball","none")!==350||!!document.querySelector('.sheet:last-of-type [data-a="capreset"]'))) fail.push('Rétablir');
   await q(()=>closeAll()); await p.waitForTimeout(300);
-  // plus de volume minimal : 1 cl puis 0,5 cl restants
-  const fill=async left=>q(left=>{ S.mix.items=[{id:"gin",q:50},{id:"tonic",q:10}]; const t=S.mix.items[1]; while(labFitsWith(S.mix.items.map(i=>Object.assign({},i,{q:i.q+(i===t?0.1:0)})))) t.q=Math.round((t.q+0.1)*10)/10; t.q=Math.round((t.q-left)*10)/10; changed(); },left);
+  // plus de volume minimal : 1 cl puis 0,5 cl restants (depuis 1.61, sous la contenance exacte : plus de tolérance de 3 % au versement)
+  const fill=async left=>q(left=>{ S.mix.items=[{id:"gin",q:50},{id:"tonic",q:10}]; const t=S.mix.items[1]; while(labFitsStrict(S.mix.items.map(i=>Object.assign({},i,{q:i.q+(i===t?0.1:0)})))) t.q=Math.round((t.q+0.1)*10)/10; t.q=Math.round((t.q-left)*10)/10; changed(); },left);
   const pour=async id=>{ await q(id=>{ document.querySelector(`#v-labo .shelf[data-id="${id}"]`).scrollIntoView({block:"center",inline:"center"}); },id); await p.waitForTimeout(200); await p.tap(`#v-labo .shelf[data-id="${id}"]`); await p.waitForTimeout(450); };
   await fill(10); await pour("vodka");
   let r=await q(()=>({v:(S.mix.items.find(i=>i.id==="vodka")||{}).q, fits:labFits(S.mix.items)}));

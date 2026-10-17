@@ -44,7 +44,8 @@ function changed(){ save(); Object.keys(dirty).forEach(k=>dirty[k]=1); if(!cover
 function softChanged(){ save(); Object.keys(dirty).forEach(k=>{ if(k!==TAB) dirty[k]=1; }); refreshSheets(); checkTrophies(); updateBarStats(); }
 function nav(title,right="",left=""){ return `<div class="navbar"><div class="nb-left">${left}</div><div class="nb-title">${esc(title)}</div><div class="nb-right">${right}</div></div>`; }
 const noOkDot=h=>h.replace('<span class="dot ok"></span>',"");   // (1.59) liste déjà groupée « Faisables » : pas de point vert
-const statusDot=r=>{ const s=status(r); return `<span class="dot ${s.ok?"ok":s.subOk?"sub":"no"}"></span>`; };
+// (1.61) le point n’apparaît que vert (faisable) ; sinon rien, plus de point gris ni orange en bout de ligne
+const statusDot=r=>status(r).ok? `<span class="dot ok"></span>` : "";
 function recRow(r, sub){
   const rt=S.ratings[r.id];
   return `<button class="row tap" data-a="rec" data-id="${r.id}" style="--inset:70px"><div class="thumb">${glassThumb(r)}</div><div class="grow"><div class="t serif">${esc(r.n)}</div><div class="s">${esc(sub||ingList(r))}</div></div>${rt?starsSm(rt):""}${statusDot(r)}${IC.chev}</button>`;

@@ -2149,6 +2149,14 @@ details.bar-more[open]{padding-bottom:0}
 .duel-dots i{width:8px;height:8px;border-radius:4px;background:var(--fill)}
 .duel-dots i.on{background:var(--z-accent)}
 .about-hero .about-acc{display:block;margin-top:var(--z-s1);font-size:var(--z-fs-l);color:var(--label2)}
+/* 1.61 : sous-scores du Labo (analyse détaillée) */
+.lab-subs{display:grid;gap:var(--z-s1)}
+.lab-sub-s{display:grid;grid-template-columns:96px 1fr 28px;align-items:center;gap:var(--z-s2);font-size:var(--z-fs-l)}
+.lab-sub-s span{color:var(--label2)}
+.lab-sub-s b{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--label)}
+.ls-bar{height:5px;border-radius:3px;background:var(--fill);overflow:hidden}
+.ls-bar i{display:block;height:100%;border-radius:3px;background:var(--green)}
+.ls-bar i.mid{background:var(--orange)}.ls-bar i.ko{background:var(--red)}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -3708,7 +3716,8 @@ function changed(){ save(); Object.keys(dirty).forEach(k=>dirty[k]=1); if(!cover
 function softChanged(){ save(); Object.keys(dirty).forEach(k=>{ if(k!==TAB) dirty[k]=1; }); refreshSheets(); checkTrophies(); updateBarStats(); }
 function nav(title,right="",left=""){ return `<div class="navbar"><div class="nb-left">${left}</div><div class="nb-title">${esc(title)}</div><div class="nb-right">${right}</div></div>`; }
 const noOkDot=h=>h.replace('<span class="dot ok"></span>',"");   // (1.59) liste déjà groupée « Faisables » : pas de point vert
-const statusDot=r=>{ const s=status(r); return `<span class="dot ${s.ok?"ok":s.subOk?"sub":"no"}"></span>`; };
+// (1.61) le point n’apparaît que vert (faisable) ; sinon rien, plus de point gris ni orange en bout de ligne
+const statusDot=r=>status(r).ok? `<span class="dot ok"></span>` : "";
 function recRow(r, sub){
   const rt=S.ratings[r.id];
   return `<button class="row tap" data-a="rec" data-id="${r.id}" style="--inset:70px"><div class="thumb">${glassThumb(r)}</div><div class="grow"><div class="t serif">${esc(r.n)}</div><div class="s">${esc(sub||ingList(r))}</div></div>${rt?starsSm(rt):""}${statusDot(r)}${IC.chev}</button>`;
@@ -4756,7 +4765,7 @@ function vCompose(){
   // ---- conseils ----
   if(A){ const tips=[];
     A.diag.filter(d=>d.warn).forEach(d=>tips.push(`<div class="tip-r">${IC.warn}<div class="grow"><b>${esc(d.t)}</b><span>${esc(d.why)}</span>${d.fix?`<button class="btn small sec" data-a="mixfix" data-id="${d.fix.id}" data-q="${d.fix.q}">Ajouter ${esc(fmtQ({q:d.fix.q,u:unitOf(d.fix.id)}))} ${esc(de(lc(shortN(d.fix.id))).replace(/^de /,"de "))}</button>`:""}</div></div>`));
-    if(M.g&&M.g!==rec.g&&SC.goals.find(x=>x[0]==="glass")[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un autre verre ?</b><span>Pour ce style, le barman te conseille ${esc(GLASSES[rec.g])}.</span><button class="btn small sec" data-a="mixglass" data-v="${rec.g}">Prendre ${esc(LGLASS.find(x=>x[0]===rec.g)[1].toLowerCase())}</button></div></div>`);
+    if(M.g&&M.g!==rec.g&&(SC.goals.find(x=>x[0]==="glass")||SC.goals.find(x=>x[0]==="ice"))[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un autre verre ?</b><span>Pour ce style, le barman te conseille ${esc(GLASSES[rec.g])}.</span><button class="btn small sec" data-a="mixglass" data-v="${rec.g}">Prendre ${esc(LGLASS.find(x=>x[0]===rec.g)[1].toLowerCase())}</button></div></div>`);
     if(SC.goals.find(x=>x[0]==="ice")[2]<0.85) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Côté glace</b><span>${{long:"Un long drink se sert sur beaucoup de glaçons.",spritz:"Un spritz se sert sur des glaçons.",stirred:"Un cocktail sec se sert sur un gros glaçon, ou sans glace dans un verre refroidi.",sour:"Un cocktail court se sert plutôt sans glace, bien froid.",cremeux:"Plutôt sans glace."}[A.st]||"Adapte la glace au style."}</span><button class="btn small sec" data-a="mixice" data-v="${rec.ice}">${esc(LICE.find(x=>x[0]===rec.ice)[1])}</button></div></div>`);
     if(!M.gar.length) tips.push(`<div class="tip-r">${IC.sparkle}<div class="grow"><b>Un peu de décor ?</b><span>Avec ce mélange, ${esc(LGARTXT[SC.sug[0]].toLowerCase())} irait très bien.</span><button class="btn small sec" data-a="mixgar" data-v="${SC.sug[0]}">Ajouter</button></div></div>`);
     if(fill>1.02) tips.unshift(`<div class="tip-r bad">${IC.warn}<div class="grow"><b>Ça déborde !</b><span>Il faut environ ${fmtMl(vol-avail)} de place en plus.</span><button class="btn small sec" data-a="mixfit">Ajuster au verre</button></div></div>`);
@@ -4804,7 +4813,7 @@ Object.assign(ACT,{
     setTimeout(()=>{ LAB_SERVE={key:JSON.stringify(M),t:Date.now()}; LAB_LASTY=null; S.labBest=Math.max(S.labBest||0,SC.score); S.labServes=(S.labServes||0)+1; changed();
       const sc=document.querySelector(".lab-score b"); if(sc){ const t0=performance.now(), v=SC.score; const step=t=>{ const k=Math.min(1,(t-t0)/900), e=1-Math.pow(1-k,3); sc.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
       document.querySelectorAll(".lab-goals .goal").forEach((gl,i)=>{ gl.style.animationDelay=(i*90)+"ms"; gl.classList.add("pop"); });
-      if(SC.score>=85){ const b=document.querySelector(".lab-glass"); if(b){ const r=b.getBoundingClientRect(); setTimeout(()=>confetti(r.left+r.width/2,r.top+r.height*0.4,labBlendCol(mixItems())),500); } }
+      if(SC.score>=LAB_FETE){ const b=document.querySelector(".lab-glass"); if(b){ const r=b.getBoundingClientRect(); setTimeout(()=>confetti(r.left+r.width/2,r.top+r.height*0.4,labBlendCol(mixItems())),500); } }
       const [gt]=labGrade(SC.score); toast(SC.score+"/100 : "+gt); },wait); },
 });
 // garnitures et verre repris quand on part d'un cocktail
@@ -5252,14 +5261,14 @@ const SND=(()=>{
     const tTool=m==="build"?150:1350; setTimeout(()=>{ if(SV){ SND.pour(0.9); SND.ice(); } },tTool);
     setTimeout(()=>{ if(!SV) return; for(let k=0;k<10;k++) setTimeout(()=>SV&&SND.detent(0.15+k*0.085),k*95); },tTool+1250);
     setTimeout(()=>{ if(!SV) return; document.querySelectorAll(".sv-goal").forEach((g,i)=>setTimeout(()=>SND.pop(1+i*0.08),i*110)); },tTool+2150);
-    setTimeout(()=>{ if(!SV) return; SV.score>=85?SND.fanfare():SV.score>=60?SND.chime():SND.ding(); const ch=document.querySelector(".sv-chal"); if(ch) setTimeout(()=>ch.classList.contains("win")?SND.success():SND.fail(),700); },tTool+3000); };
+    setTimeout(()=>{ if(!SV) return; SV.score>=LAB_FETE?SND.fanfare():SV.score>=70?SND.chime():SND.ding(); const ch=document.querySelector(".sv-chal"); if(ch) setTimeout(()=>ch.classList.contains("win")?SND.success():SND.fail(),700); },tTool+3000); };
   document.addEventListener("pointerup",()=>{ if(typeof TILT!=="undefined"&&TILT&&TILT.drag&&Math.abs(TILT.a)>8) SND.slosh(); },{capture:true,passive:true});
   document.addEventListener("pointermove",()=>{ if(typeof RADDRAG!=="undefined"&&RADDRAG!=null&&RAD) SND.detent(RAD[RADDRAG]); },{passive:true});
   document.addEventListener("touchmove",()=>{ const p=document.getElementById("pull"); if(!p) return; if(p.classList.contains("armed")&&!p.dataset.snd){ p.dataset.snd=1; SND.select(); } else if(!p.classList.contains("armed")) delete p.dataset.snd; },{passive:true});
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.60";
+const APP_VERSION="1.61";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6993,6 +7002,110 @@ function looAccuracy(){ const R=rated().slice(-80); if(R.length<10) return null;
     if(madeCount(id)>=2) return "Proche de "+n+", que tu refais souvent";
     if(S.fav.includes(id)) return "Proche de "+n+", un de tes favoris";
     return t; }; }
+// ================= ZESTE 1.61 (A) : Labo — verser quand il reste peu de place, par tous les chemins =================
+// Cause du bug : seule la tuile (ACT.mixpour, v148) adaptait la dose à la place restante, et elle tolérait 3 % de débordement
+// (labFits ×1,03). Le « + » d'un conseil (mixfix), l'ajout direct (mixadd1, utilisé par les suggestions) et le « + » du stepper
+// passaient la dose entière à labTry, qui refusait tout dès qu'elle ne tenait pas : avec un soda (dose 10 cl), refus sous 10 cl.
+// Règle : place restante > 0 → on verse min(dose prévue, place), arrondi vers le bas au 0,05 cl (traits, feuilles… : nombre entier),
+// sans jamais dépasser la contenance effective (tolérance 1e-6) ; refus seulement verre plein, avec un seul message.
+function labFitsStrict(items){ const bk=S.mix.items; S.mix.items=items; try{ const M=mixState(), {g,ice}=labGlass();
+    return labVol(items.map(it=>({id:it.id,q:it.q,u:unitOf(it.id),r:ING[it.id].fizz&&M.m!=="build"?"top":""})),M.m,ice)<=labAvail(g,ice)+1e-6; } finally{ S.mix.items=bk; } }
+function labPour(id,want,t){ const items=S.mix.items, ex=items.find(i=>i.id===id), u=unitOf(id);
+  const withAdd=add=>ex? items.map(i=>i===ex?Object.assign({},i,{q:Math.round((i.q+add)*100)/100}):i) : items.concat([{id,q:add}]);
+  let add=0;
+  if(u==="ml"){ if(labFitsStrict(withAdd(want))) add=want; else { let lo=0, hi=want; for(let k=0;k<30;k++){ const mid=(lo+hi)/2; if(labFitsStrict(withAdd(mid))) lo=mid; else hi=mid; } add=Math.floor(lo*2+1e-6)/2; } }
+  else { for(let n=Math.round(want);n>=1;n--) if(labFitsStrict(withAdd(n))){ add=n; break; } }
+  if(!(add>0)) { labOverflow(); return false; }
+  if(t&&t.classList){ t.classList.remove("pour"); void t.offsetWidth; t.classList.add("pour"); }
+  if(ex) ex.q=Math.round((ex.q+add)*100)/100; else S.mix.items.push({id,q:add});
+  LAB_SERVE=null; if(typeof hideToast==="function") hideToast(); changed(); if(typeof SND!=="undefined"&&SND.pour) SND.pour(0.4); return true; }
+{ const _mq=ACT.mixq;
+  ACT.mixpour=(d,t)=>{ const ex=S.mix.items.find(i=>i.id===d.id), u=unitOf(d.id); return labPour(d.id, ex? stepQ(ex.q,u,1)-ex.q : defaultQ(d.id), t); };
+  ACT.mixq=(d)=>{ const it=S.mix.items[+d.k]; if(!it) return; if(+d.d<0) return _mq(d); return labPour(it.id, stepQ(it.q,unitOf(it.id),1)-it.q); };
+  ACT.mixfix=(d)=>labPour(d.id,+d.q);
+  ACT.mixadd1=(d)=>labPour(d.id,defaultQ(d.id));
+  // « Ajuster au verre » : remplit la contenance effective, sans la dépasser
+  ACT.mixfit=()=>{ const M=mixState(), cur=labVol(mixItems(),M.m,labGlass().ice); if(!cur) return; const {g,ice}=labGlass(), A=labAvail(g,ice);
+    const scaled=k=>M.items.map(i=>unitOf(i.id)==="ml"?Object.assign({},i,{q:Math.max(0.5,Math.floor(i.q*k*2)/2)}):i);
+    let lo=0.05, hi=Math.max(1,A/cur*1.2); for(let n=0;n<30;n++){ const mid=(lo+hi)/2; if(labFitsStrict(scaled(mid))) lo=mid; else hi=mid; }
+    M.items=scaled(lo); LAB_SERVE=null; changed(); toast("Quantités ajustées au verre"); }; }
+// ================= 1.61 (B) : score du Labo =================
+// « Modifier dans le labo » recopiait la quantité sans son unité : 2 cuillères de sirop de miel devenaient 2 ml.
+// labQ convertit une dose de recette dans l'unité qu'utilise le Labo pour cet ingrédient.
+function labQ(i){ const u=i.u||"ml", lu=unitOf(i.id); if(u===lu) return i.q;
+  if(lu==="ml"){ const ml=mlOf(i); return ml>0? Math.max(0.5,Math.round(ml*2)/2) : i.q; }
+  if(lu==="d"){ const ml=mlOf(i); return ml>0? Math.max(1,Math.round(ml/0.8)) : i.q; }
+  if(lu==="f"&&u==="br") return i.q*6;
+  return i.q; }
+{ const _t=ACT.tolab; ACT.tolab=(d)=>{ _t(d); const r=RMAP[d.id]; if(!r) return; const M=mixState();
+    M.items=r.ing.filter(i=>i.r!=="rinse"&&i.r!=="opt"&&ING[i.id]).map(i=>({id:i.id,q:labQ(i)})); changed(); }; }
+
+// ---------- Score : qualité d'équilibre par rapport aux recettes du même style ----------
+// Quatre sous-scores continus (Équilibre, Force, Remplissage, Glace), moyenne pondérée, plafond si un critère est rédhibitoire.
+// Référence : les recettes de l'app préparées comme « Modifier dans le labo », regroupées par style.
+//  · Équilibre : écart du sucre à ce qu'appellent l'acidité et l'amertume du style (résidu d'une régression), plus le manque d'acidité
+//    pour les styles acides ; pénalité continue exp(-½·d^γ), sans plateau, donc 100 reste rare.
+//  · Force : écart du degré à la médiane du style (plus de tolérance côté fort).
+//  · Remplissage : verre presque vide ou trop plein ; au-delà de 135 % de la contenance du verre, le total est plafonné.
+//  · Glace : glaçons dans un verre à pied, long drink sans glace, cocktail court sans glace dans un grand verre.
+// Le décor reste un bonus affiché, hors note. La ressemblance à un classique reste une information à part (« Ça ressemble à »).
+// Réglé sur tests/m9.js (graine 1), validé sur la graine 2.
+const LSP={tb:11,tf:4,gam:0.8,wa:0.3,dry:2,strong:1.6,flo:0.2,slo:0.1,fhi:1.1,shi:0.5,ov:1.35,lni:0.5,cap:35,W:{bal:45,abv:25,fill:10,ice:20}};
+const LAB_TFAM={sour:"court",stirred:"sec",highball:"long",bulles:"spritz",shot:"shot"}, LAB_ACID=new Set(["sour","long","spritz"]);
+function labPrep(r){ return {items:r.ing.filter(i=>i.r!=="opt"&&i.r!=="rinse"&&ING[i.id]).map(i=>({id:i.id,q:labQ(i)})),
+  m:({shake:"shake",mshake:"shake",stir:"stir"})[r.m]||"build", g:LCAP[r.g]?r.g:"rocks", ice:r.ice||"none", t:LAB_TFAM[r.fam]||"auto"}; }
+function labStyleT(items,m,t){ const guess=styleOf(items,m);
+  if(t==="sec") return "stirred"; if(t==="long") return "long"; if(t==="spritz") return "spritz";
+  if(t==="court") return guess==="long"||guess==="spritz"? "sour" : guess; return guess; }
+function labFeat(st,met,amer){ const ls=Math.log(met.sug+0.5), la=Math.log(met.acid+0.05);
+  return {ls, la2:Math.log(met.acid+0.3), X: LAB_ACID.has(st)? [1,la,amer,met.abv/10] : [1,amer,met.abv/10]}; }
+function lsq(X,y){ const n=X.length?X[0].length:0, A=Array.from({length:n},()=>new Array(n).fill(0)), b=new Array(n).fill(0);
+  X.forEach((x,k)=>{ for(let i=0;i<n;i++){ b[i]+=x[i]*y[k]; for(let j=0;j<n;j++) A[i][j]+=x[i]*x[j]; } });
+  for(let i=0;i<n;i++){ let p=i; for(let k=i+1;k<n;k++) if(Math.abs(A[k][i])>Math.abs(A[p][i])) p=k; [A[i],A[p]]=[A[p],A[i]]; [b[i],b[p]]=[b[p],b[i]];
+    if(Math.abs(A[i][i])<1e-12){ const w=new Array(n).fill(0); w[0]=y.length?y.reduce((a,v)=>a+v,0)/y.length:0; return w; }
+    for(let k=i+1;k<n;k++){ const f=A[k][i]/A[i][i]; for(let j=i;j<n;j++) A[k][j]-=f*A[i][j]; b[k]-=f*b[i]; } }
+  const w=new Array(n).fill(0); for(let i=n-1;i>=0;i--){ let s=b[i]; for(let j=i+1;j<n;j++) s-=A[i][j]*w[j]; w[i]=s/A[i][i]; } return w; }
+const dot=(w,x)=>w.reduce((a,v,i)=>a+v*x[i],0);
+let LAB_REF=null, LAB_REF_FOR=null;
+function labRef(){ if(LAB_REF&&LAB_REF_FOR===RECS) return LAB_REF;
+  const by={}; RECS.filter(r=>!r.mine&&r.m!=="hot").forEach(r=>{ const P=labPrep(r);
+    const items=P.items.map(it=>({id:it.id,q:it.q,u:unitOf(it.id),r:ING[it.id].fizz&&P.m!=="build"?"top":""})); if(!items.length) return;
+    const met=calc(items,P.m,P.ice), st=labStyleT(items,P.m,P.t); (by[st]=by[st]||[]).push(Object.assign({abv:met.abv},labFeat(st,met,profileOf(items,met)[2]))); });
+  const rq=v=>v.length? [q(v,.5),(q(v,.9)-q(v,.1))/2.56||1] : [0,1], R={};
+  for(const st in by){ const L=by[st], w=lsq(L.map(f=>f.X),L.map(f=>f.ls)), res=L.map(f=>f.ls-dot(w,f.X));
+    R[st]={la2:rq(L.map(f=>f.la2)), abv:rq(L.filter(f=>f.abv>=0.5).map(f=>f.abv)), w, sr:(q(res,.9)-q(res,.1))/2.56||1}; }
+  LAB_REF_FOR=RECS; return LAB_REF=R; }
+function labGarS(items,gar){ const sug=labSuggestGar(items); return {sug, v:!gar.length?0:gar.some(x=>sug.includes(x))?1:0.5}; }
+labScore=function(A){
+  const M=mixState(), {g,ice}=labGlass(), items=mixItems(), st=A.st, met=A.met, P=LSP, Rf=labRef(), r=Rf[st]||Rf.sour;
+  const avail=labAvail(g,ice), fill=met.vol/avail, ov=met.vol/capOf(g), shot=M.t==="shot", alc=met.abv>=0.5, acid=LAB_ACID.has(st);
+  const F=labFeat(st,met,profileOf(items,met)[2]), zr=(F.ls-dot(r.w,F.X))/r.sr, za=(F.la2-r.la2[0])/r.la2[1], zf=(met.abv-r.abv[0])/r.abv[1];
+  const sh=shot?2:1, e1=zr>0? zr/(P.tb*sh) : -zr/(P.tb*sh*(acid?1:P.dry)), e2=acid? Math.max(0,-za/P.tb) : 0;
+  const bal=Math.exp(-0.5*Math.pow(e1*e1+P.wa*e2*e2,P.gam/2));
+  let abv= alc? Math.exp(-0.5*Math.pow(zf>0? zf/(P.tf*P.strong) : -zf/P.tf, P.gam)) : st==="stirred"? 0 : 1; if(shot) abv=1;
+  const fillS= fill<P.flo? Math.exp(-0.5*Math.pow((P.flo-fill)/P.slo,2)) : fill>P.fhi? Math.exp(-0.5*Math.pow((fill-P.fhi)/P.shi,2)) : 1;
+  let iceS=1; if(ice!=="none"&&["coupe","martini","flute","shot"].includes(g)) iceS=0.3; if(st==="long"&&ice==="none") iceS=P.lni;
+  if(["sour","stirred","cremeux"].includes(st)&&["highball","vin","mug"].includes(g)&&ice==="none") iceS=0.4; if(shot) iceS=g==="shot"&&ice==="none"?1:0.3;
+  const red=(st==="stirred"&&!alc&&!shot)||ov>P.ov, G=labGarS(items,M.gar);
+  const goals=[["bal","Équilibre",bal,P.W.bal],["abv","Force",abv,P.W.abv],["fill","Remplissage",fillS,P.W.fill],["ice","Glace",iceS,P.W.ice],["gar","Décor (bonus)",G.v,0]];
+  const Wt=goals.reduce((a,x)=>a+x[3],0); let raw=100*goals.reduce((a,x)=>a+x[2]*x[3],0)/Wt; if(red) raw=Math.min(raw,P.cap);
+  return {score: raw>=98-1e-9? 100 : Math.floor(raw+1e-9), raw, red, goals, fill, avail, sug:G.sug}; };
+
+// ---------- Affichage : un mot pour le score, les quatre sous-scores dans l'analyse détaillée ----------
+labGrade=function(s){ return s>=90?["Proche d’un classique","trophy"]:s>=70?["Réussi","medal"]:s>=40?["Buvable","thumbs-up"]:["Déséquilibré","wrench"]; };
+{ const _vc=vCompose; vCompose=function(){ let h=_vc(); const M=mixState(); if(!M.items.length) return h;
+    const A=analyze(); if(!A) return h; const SC=labScore(A);
+    const rows=SC.goals.filter(g=>g[0]!=="gar").map(([k,n,v])=>{ const p=Math.round(v*100);
+      return `<div class="lab-sub-s"><span>${esc(n)}</span><div class="ls-bar" role="img" aria-label="${esc(n)} : ${p} sur 100"><i class="${v>=0.85?"ok":v>=0.5?"mid":"ko"}" style="width:${p}%"></i></div><b>${p}</b></div>`; }).join("");
+    return h.replace(/(<details class="lab-more"><summary>[\s\S]*?<\/summary><div class="card"[^>]*>)/,`$1<div class="lab-subs">${rows}</div><div class="sp16"></div>`); }; }
+
+// ---------- Seuils qui dépendent du score (recalés sur la nouvelle échelle, mesurée par tests/m9.js) ----------
+// Défis : niveau 1 ≈ la moitié des mélanges plausibles, niveau 2 ≈ un quart, niveau 3 ≈ un sur six, « La perfection » ≈ un sur douze.
+// Les défis déjà réussis gardent leur score (S.chal) ; les trophées obtenus restent (S.tro, S.troT, S.tierSeen) ; S.labBest n'est pas recalculé.
+const CHAL_MIN={ing:93,mini:94,long:93,light:93,swiss:94,red:94,zero:95,deco:95,bitter:95,strong:95,bubbles:95,mystery:96,five:96,perfect:97};
+CHAL_T.forEach(t=>{ const mk=t.make; t.make=w=>{ const c=mk(w); if(CHAL_MIN[t.id]!=null) c.min=CHAL_MIN[t.id]; return c; }; });
+{ const T=TROPHIES.find(t=>t[0]==="labpro"); if(T){ T[2]="Obtiens 96/100 au labo"; T[3]=96; } }
+const LAB_FETE=95; // confettis et fanfare au service (avant : 85)
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
