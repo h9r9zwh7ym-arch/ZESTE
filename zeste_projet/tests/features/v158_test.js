@@ -1,4 +1,4 @@
-// 1.58 : « Ta version » (− et + de 44×44 aux extrémités, piste pleine largeur de 44 px de haut, hauteur de ligne fixe, bornes),
+// 1.58 : « Ta version » (− et + de 44×44 tactiles aux extrémités, piste pleine largeur de 44 px tactiles — 28 px visibles depuis 1.59 —, hauteur de ligne fixe, bornes),
 // pictos de l'étagère ≥ 3:1 dans les deux thèmes, plus de pastille de dose (bordure d'accent gardée, aussi en sombre),
 // carte découverte sans consigne (icône de rotation avec nom accessible, action inchangée), à 375 et 390 px.
 const {chromium}=require('playwright'); const path=require('path');
@@ -11,8 +11,8 @@ const LUM=`window.__lum=c=>{ const m=c.match(/[\\d.]+/g).map(Number), f=v=>{ v/=
     await p.addInitScript(LUM); await p.goto(APP); await p.waitForTimeout(2500); const q=(f,a)=>p.evaluate(f,a);
     // « Ta version »
     await q(()=>recSheet('daiquiri')); await p.waitForTimeout(800);
-    const A=await q(()=>[...document.querySelectorAll('.sheet .card.adj .adj-row')].map(r=>{ const R=e=>e.getBoundingClientRect(), st=[...r.querySelectorAll('.adj-step')], tr=r.querySelector('.adj-track'), d=r.querySelector('.adj-dots'), l=r.querySelector('.adj-l');
-      return {h:Math.round(R(r).height), steps:st.map(s=>Math.round(R(s).width)+"x"+Math.round(R(s).height)), dis:st.map(s=>s.disabled), v:st.map(s=>s.dataset.v), lab:st.map(s=>s.getAttribute('aria-label')), trackH:Math.round(R(tr).height), full:Math.round(R(d).width)>=Math.round(R(r).width)-1, below:R(d).top>=R(l).bottom-1}; }));
+    const A=await q(()=>[...document.querySelectorAll('.sheet .card.adj .adj-row')].map(r=>{ const R0=e=>e.getBoundingClientRect(), R=e=>{ const b=R0(e), a=getComputedStyle(e,'::after'), n=v=>Math.min(0,parseFloat(v)||0); return a.content!=='none'&&a.position==='absolute'?{width:b.width-n(a.left)-n(a.right),height:b.height-n(a.top)-n(a.bottom),top:b.top,bottom:b.bottom}:b; }, st=[...r.querySelectorAll('.adj-step')], tr=r.querySelector('.adj-track'), d=r.querySelector('.adj-dots'), l=r.querySelector('.adj-l');
+      return {h:Math.round(R(r).height), steps:st.map(s=>Math.round(R(s).width)+"x"+Math.round(R(s).height)), dis:st.map(s=>s.disabled), v:st.map(s=>s.dataset.v), lab:st.map(s=>s.getAttribute('aria-label')), trackH:Math.round(R(tr.querySelector('button')).height), full:Math.round(R(d).width)>=Math.round(R(r).width)-1, below:R(d).top>=R(l).bottom-1}; }));
     if(A.length!==3) fail.push(k+' : '+A.length+' réglages');
     for(const r of A){ if(r.steps.join()!=="44x44,44x44"||r.trackH<44||!r.full||!r.below||!r.lab.every(Boolean)) fail.push(k+' piste : '+JSON.stringify(r)); }
     if(new Set(A.map(r=>r.h)).size!==1) fail.push(k+' hauteurs de ligne différentes : '+A.map(r=>r.h));

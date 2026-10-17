@@ -2091,6 +2091,22 @@ details.bar-more[open]{padding-bottom:0}
 #ambient .amb-stars,#ambient .amb-dust{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(env(safe-area-inset-top,0px) + 24px),transparent calc(env(safe-area-inset-top,0px) + 36px)),linear-gradient(270deg,transparent 0,transparent 72px,#000 128px);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,#000 0,#000 calc(env(safe-area-inset-top,0px) + 24px),transparent calc(env(safe-area-inset-top,0px) + 36px)),linear-gradient(270deg,transparent 0,transparent 72px,#000 128px);mask-composite:intersect}
 /* A7 — plus de bulles flottantes sur la carte principale (particules sur une carte) */
 .hero::before,.hero::after{display:none}
+/* C9 — « Histoire » et « Profil de goût » (cartes transparentes) : 24 px du titre au premier texte, comme les autres sections */
+.sheet-body .card:has(>.hist),.sheet-body .card:has(>.prof){padding-top:0}
+.sheet-body .card:has(>.prof){margin-top:-6px} /* compense le retrait interne du libellé « Sucré » dans le SVG */
+/* C12 — radar : les libellés débordent du viewBox de ~4 px ; 8 px de marge latérale les gardent dans la marge de 20 px */
+.prof svg.radar{margin:0 var(--z-s1)}
+/* C10 — « Ta version » : libellé et sous-titre sur une ligne, 8 px, piste de 28 px visibles (44 px tactiles par ::after) : ligne de 64 px */
+.adj-row{height:64px;padding:4px 0;gap:var(--z-s1)}
+.adj-l{display:flex;align-items:baseline;gap:var(--z-s1);height:20px;line-height:20px;white-space:nowrap;overflow:hidden}
+.adj-l b,.adj-l span{display:inline;line-height:20px;min-height:0}
+.card.adj .adj-dots,.card.adj .adj-track button,.card.adj .adj-dots .adj-step{height:28px}
+.card.adj .adj-track button,.card.adj .adj-dots .adj-step{position:relative}
+.card.adj .adj-track button::after,.card.adj .adj-dots .adj-step::after{content:"";position:absolute;inset:-8px 0}
+/* C11 — quantités et noms : même couleur pour tous les ingrédients (les basiques n'étaient plus grisés que par une règle d'origine) */
+.ing-line.basic .q,.ing-line.basic .n{color:var(--label)}
+.ing-line .q{font-weight:600}
+.ing-line .n{font-weight:400}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
