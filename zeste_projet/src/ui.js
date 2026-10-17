@@ -5,27 +5,10 @@ const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],cus
 function loadLocal(){ let j=null; try{ j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){ try{ if(j) localStorage.setItem(KEY+".illisible."+Date.now(),j); }catch(e2){} } return DEF(); } // (1.65) illisible : mis de côté, jamais écrasé
 S=loadLocal();
 // (fixState : remplacée plus loin, voir ui_final.js)
-let DB=null, DOC=null, saveTimer=null, saving=false, pending=false;
-function save(){
-  SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
-  clearTimeout(saveTimer); saveTimer=setTimeout(pushRemote,1200);
-}
-async function pushRemote(){
-  if(!DOC) return; if(saving){pending=true;return;} saving=true;
-  try{ await DOC.set({json:JSON.stringify(S),t:S.t}); }catch(e){}
-  saving=false; if(pending){pending=false; pushRemote();}
-}
-async function initRemote(){
-  try{
-    if(!window.claude||!window.claude.use) return;
-    const [db,user]=await Promise.all([claude.use("db"),claude.use("user")]);
-    if(!db||!user) return; const uid=await user.id(); if(!uid) return;
-    DB=db; DOC=db.doc("data/users/"+uid+"/state");
-    const snap=await DOC.get();
-    if(snap.exists){ const d=snap.data(); if(d&&d.json&&d.t>(S.t||0)){ S=Object.assign(DEF(),JSON.parse(d.json)); fixState(); try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} buildRecipes(S.custom); renderAll(); refreshSheets(); } else if(S.t) pushRemote(); }
-    else if(S.t) pushRemote();
-  }catch(e){}
-}
+// (1.65) tout reste sur l'appareil : plus de synchronisation avec le compte claude.ai (copie de secours et sauvegardes : v169.js)
+function save(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+async function pushRemote(){}
+async function initRemote(){}
 
 
 // ================= OUTILS UI =================
