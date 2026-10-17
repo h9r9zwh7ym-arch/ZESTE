@@ -2071,6 +2071,50 @@ details.bar-more[open]{padding-bottom:0}
 /* (bug) en sombre --shadow vaut none, ce qui annulait toute la déclaration « inset …, var(--shadow) » : la tuile choisie perdait sa bordure d'accent */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .shelf.in{box-shadow:inset 0 0 0 1.5px var(--tint)}}
 :root[data-theme="dark"] .shelf.in{box-shadow:inset 0 0 0 1.5px var(--tint)}
+
+/* ================= 1.59 : lot A→G ================= */
+/* A1 — onglets : largeur du contenu + part égale (le plus long libellé garde sa pastille dans l'écran), pastille à la largeur du libellé */
+.tabbar button{flex:1 1 auto;min-width:0}
+.tab-ind{transition:transform .45s cubic-bezier(.3,1.3,.5,1),width .45s cubic-bezier(.3,1.3,.5,1)}
+@media (prefers-reduced-motion:reduce){.tab-ind{transition:none}}
+/* A2/A4 — icône du moment, icônes « À table » et tuile « Surprends-moi » en gris chaud neutre */
+.mo-eyebrow .mo-ic{color:var(--label2)!important}
+.dish .de{color:var(--label2)}
+.duo-c .di{background:var(--fill);color:var(--label2)}
+/* A5 — carte découverte à la hauteur de la face visible, transition douce ; « Voir la recette » 44 px */
+.disc-in{min-height:0;transition:transform .7s cubic-bezier(.3,1.2,.4,1),height .3s ease}
+.disc-f,.disc-b{bottom:auto}
+.disc-f p{flex:none}
+.disc-b .btn.small{min-height:44px}
+@media (prefers-reduced-motion:reduce){.disc-in{transition:none}}
+/* A7 — particules (étoiles, poussière) seulement dans la bande au-dessus du premier texte (date ou titre à 40 px), jamais derrière un texte ni sur une carte (#app est au-dessus de #ambient) */
+#ambient .amb-stars,#ambient .amb-dust{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(env(safe-area-inset-top,0px) + 24px),transparent calc(env(safe-area-inset-top,0px) + 36px)),linear-gradient(270deg,transparent 0,transparent 72px,#000 128px);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,#000 0,#000 calc(env(safe-area-inset-top,0px) + 24px),transparent calc(env(safe-area-inset-top,0px) + 36px)),linear-gradient(270deg,transparent 0,transparent 72px,#000 128px);mask-composite:intersect}
+/* A7 — plus de bulles flottantes sur la carte principale (particules sur une carte) */
+.hero::before,.hero::after{display:none}
+/* C9 — « Histoire » et « Profil de goût » (cartes transparentes) : 24 px du titre au premier texte, comme les autres sections */
+.sheet-body .card:has(>.hist),.sheet-body .card:has(>.prof){padding-top:0}
+.sheet-body .card:has(>.prof){margin-top:-6px} /* compense le retrait interne du libellé « Sucré » dans le SVG */
+/* C12 — radar : les libellés débordent du viewBox de ~4 px ; 8 px de marge latérale les gardent dans la marge de 20 px */
+.prof svg.radar{margin:0 var(--z-s1)}
+/* C10 — « Ta version » : libellé et sous-titre sur une ligne, 8 px, piste de 28 px visibles (44 px tactiles par ::after) : ligne de 64 px */
+.adj-row{height:64px;padding:4px 0;gap:var(--z-s1)}
+.adj-l{display:flex;align-items:baseline;gap:var(--z-s1);height:20px;line-height:20px;white-space:nowrap;overflow:hidden}
+.adj-l b,.adj-l span{display:inline;line-height:20px;min-height:0}
+.card.adj .adj-dots,.card.adj .adj-track button,.card.adj .adj-dots .adj-step{height:28px}
+.card.adj .adj-track button,.card.adj .adj-dots .adj-step{position:relative}
+.card.adj .adj-track button::after,.card.adj .adj-dots .adj-step::after{content:"";position:absolute;inset:-8px 0}
+/* C11 — quantités et noms : même couleur pour tous les ingrédients (les basiques n'étaient plus grisés que par une règle d'origine) */
+.ing-line.basic .q,.ing-line.basic .n{color:var(--label)}
+.ing-line .q{font-weight:600}
+.ing-line .n{font-weight:400}
+/* D14 — tuiles d'ingrédient : retour à la ligne entre les mots seulement, jamais de césure */
+#v-labo .shelf .sh-n{hyphens:manual;-webkit-hyphens:manual;overflow-wrap:normal;word-break:keep-all}
+/* D15 — barre « … et servir » : pleine largeur, bouton aligné sur les cartes (20 px) */
+#v-labo .content>.lab-servebar{margin-left:0;margin-right:0;padding-left:var(--z-side);padding-right:var(--z-side)}
+#v-labo .lab-servebar .lab-serve{width:100%}
+/* E16 — carte du profil de goût : petit libellé gris, le style de l'utilisateur en titre serif ; plus de compteurs */
+.focal-card .fc-k{font-family:inherit;font-size:var(--z-fs-l);font-weight:600;color:var(--label2)}
+.focal-card .fc-t{margin-top:4px;font-family:var(--serif);font-size:var(--z-fs-h);font-weight:700;line-height:1.2;color:var(--label)}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -2841,7 +2885,7 @@ function buildRecipes(custom){
   (custom||[]).forEach(c=>RECS.push(Object.assign({},c,{mine:1,ing:c.ing.map(i=>Object.assign({},i))})));
   RMAP={}; RECS.forEach(r=>{RMAP[r.id]=r; r.v=(r.v||[]).slice();});
   RECS.forEach(r=>r.v.forEach(v=>{ if(RMAP[v] && !RMAP[v].v.includes(r.id)) RMAP[v].v.push(r.id); }));
-  AVGP=null; MODEL=null; STC={}; MEMO={}; THUMB={}; GFULL={}; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; r.base=baseOf(r.ing); });
+  AVGP=null; MODEL=null; STC={}; MEMO={}; THUMB={}; GFULL={}; RECS.forEach(r=>{ r.v=r.v.filter(v=>RMAP[v]); delete r._sh; delete r._p; delete r._m; delete r._fv; delete r._ik; delete r._bg; r.base=baseOf(r.ing); });
   computeZones();
 }
 
@@ -2971,7 +3015,8 @@ function trainSet(){
   Object.entries(S.ratings).forEach(([id,rt])=>{ if(RMAP[id]){ const age=RT[id]?(now-RT[id])/864e5:0; T[id]={v:rt-3,w:Math.max(0.45,Math.pow(0.5,age/365))}; } });
   S.fav.forEach(id=>{ if(RMAP[id]&&!T[id]) T[id]={v:1.3,w:.7}; });
   const cnt={}; S.hist.forEach(h=>cnt[h.id]=(cnt[h.id]||0)+1);
-  Object.entries(cnt).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]) T[id]={v:0.45+Math.min(n-1,3)*0.2,w:0.3+Math.min(n,4)*0.1}; });
+  // (1.59) un cocktail refait compte presque comme une bonne note (réglé avec tests/m7.js : NDCG avec signaux +0,015 à +0,060 en validation)
+  Object.entries(cnt).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]) T[id]={v:1+Math.min(n-1,3)*0.25,w:0.6+Math.min(n,4)*0.1}; });
   Object.entries(S.opens||{}).forEach(([id,n])=>{ if(RMAP[id]&&!T[id]&&n>=2) T[id]={v:0.3,w:Math.min(0.25,0.08*n)}; });
   return T;
 }
@@ -2991,7 +3036,7 @@ function getModel(){
   const av=avgProfile(), dir=Array(8).fill(0); let dw=0;
   ids.forEach(id=>{ const p=profileR(RMAP[id]), t=T[id]; dw+=t.w; for(let i=0;i<8;i++) dir[i]+=t.v*t.w*(p[i]-av[i]); });
   const qW=Q?3:0; const DIR=dir.map((x,i)=>(x+(Q?Q.dir[i]*1.7*qW:0))/(dw+1+qW));
-  Object.values(S.adj||{}).forEach(a=>{ DIR[0]+=0.02*(a.s||0); DIR[1]+=0.02*(a.a||0); DIR[3]+=0.02*(a.f||0); });
+  Object.values(S.adj||{}).forEach(a=>{ DIR[0]+=0.05*(a.s||0); DIR[1]+=0.05*(a.a||0); DIR[3]+=0.05*(a.f||0); });   // « Ta version » : moins de sucre, d’acidité ou de force déplace le goût (0,02 → 0,05 en 1.59)
   MODEL={T,ids,n:n+(Q?3:0),Q,IA,FA,BA,DIR,P:{},W:{}}; return MODEL;
 }
 function predict(r){
@@ -3628,6 +3673,7 @@ function covered(){ return SHEETS.length>0||document.getElementById("serve")||do
 function changed(){ save(); Object.keys(dirty).forEach(k=>dirty[k]=1); if(!covered()) renderView(TAB); refreshSheets(); checkTrophies(); }
 function softChanged(){ save(); Object.keys(dirty).forEach(k=>{ if(k!==TAB) dirty[k]=1; }); refreshSheets(); checkTrophies(); updateBarStats(); }
 function nav(title,right="",left=""){ return `<div class="navbar"><div class="nb-left">${left}</div><div class="nb-title">${esc(title)}</div><div class="nb-right">${right}</div></div>`; }
+const noOkDot=h=>h.replace('<span class="dot ok"></span>',"");   // (1.59) liste déjà groupée « Faisables » : pas de point vert
 const statusDot=r=>{ const s=status(r); return `<span class="dot ${s.ok?"ok":s.subOk?"sub":"no"}"></span>`; };
 function recRow(r, sub){
   const rt=S.ratings[r.id];
@@ -3739,12 +3785,12 @@ function cocktailsResults(){
     const ok=[],one=[],rest=[]; L.forEach(r=>{ const s=status(r); if(s.ok) ok.push(r); else if(s.subOk||s.miss.length===1) one.push([r,s]); else rest.push(r); });
     const more=(n,k)=>n>(CF.lim[k]||30)?`<button class="row tap more-row" data-a="listmore" data-k="${k}">Afficher ${Math.min(60,n-(CF.lim[k]||30))} de plus (${n-(CF.lim[k]||30)} restants)</button>`:"";
     CF.lim=CF.lim||{};
-    if(ok.length) o+=`<div class="list-h"><b>Faisables maintenant</b><span>${ok.length}</span></div><div class="group">${ok.slice(0,CF.lim.ok||30).map(r=>recRow(r)).join("")}${more(ok.length,"ok")}</div>`;
+    if(ok.length) o+=`<div class="list-h"><b>Faisables maintenant</b><span>${ok.length}</span></div><div class="group">${ok.slice(0,CF.lim.ok||30).map(r=>noOkDot(recRow(r))).join("")}${more(ok.length,"ok")}</div>`;
     if(one.length) o+=`<div class="list-h"><b>Il manque une chose</b><span>${one.length}</span></div><div class="group">${one.slice(0,CF.lim.one||30).map(([r,s])=>recRow(r, s.subOk?"Avec "+lc(shortN(s.subs[s.miss[0]]))+" à la place":"Manque : "+lc(shortN(s.miss[0])))).join("")}${more(one.length,"one")}</div>`;
     if(rest.length){ const lim=CF.all?rest.length:Math.min(CF.lim.rest||30,rest.length); o+=`<div class="list-h"><b>Pour plus tard</b><span>${rest.length}</span></div><div class="group">${rest.slice(0,lim).map(r=>recRow(r)).join("")}${rest.length>lim?`<button class="row tap more-row" data-a="showall">Afficher les ${rest.length-lim} autres</button>`:""}</div>`; }
   } else {
     CF.lim=CF.lim||{}; const lim=CF.lim.all||40;
-    o+=`<div class="list-h"><b>${L.length} cocktail${L.length>1?"s":""}</b><span></span></div><div class="group">${L.slice(0,lim).map(r=>recRow(r)).join("")}${L.length>lim?`<button class="row tap more-row" data-a="listmore" data-k="all">Afficher ${Math.min(60,L.length-lim)} de plus (${L.length-lim} restants)</button>`:""}</div>`;
+    o+=`<div class="list-h"><b>${L.length} cocktail${L.length>1?"s":""}</b><span></span></div><div class="group">${L.slice(0,lim).map(r=>CF.main==="ok"?noOkDot(recRow(r)):recRow(r)).join("")}${L.length>lim?`<button class="row tap more-row" data-a="listmore" data-k="all">Afficher ${Math.min(60,L.length-lim)} de plus (${L.length-lim} restants)</button>`:""}</div>`;
   }
   return o;
 }
@@ -4395,18 +4441,18 @@ function vToday(){
   const c=ctxInfo(), mo=c.moment, h=new Date().getHours(), nm=(S.settings.name||"").trim();
   const title= nm? ({matin:"Bonjour ",aprem:"Salut ",apero:"Santé ",soir:"Bonsoir ",nuit:"Bonne nuit "}[mo])+nm : (h>=17||h<5? "Ce soir" : "Aujourd’hui");
   const list=tonight(), empty=!barCount(), taste=hasTaste();
-  let o=nav(title)+`<div class="content"><div class="eyebrow mo-eyebrow"><span class="mo-ic mo-${mo}">${MO_IC[mo]}</span>${dateLabel()}<span class="mo-k">${esc(MOMENTS[mo].k)}</span></div><h1 class="lt">${esc(title)}</h1>`;
+  let o=nav(title)+`<div class="content"><div class="eyebrow mo-eyebrow"><span class="mo-ic mo-${mo}">${MO_IC[mo]}</span>${dateLabel()}</div><h1 class="lt">${esc(title)}</h1>`;
   if(empty){
     o+=`<div class="hero"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #F5C51838, transparent 65%)"></div><div class="hg" data-a="jiggle">${glassSVG(RMAP.negroni,{pour:HERO_LAST!=="_w",live:1,stream:HERO_LAST!=="_w"&&WOW()})}</div><div class="hn">Bienvenue au bar</div><div class="hr">Dis-moi quelles bouteilles tu as. Sucre, œufs, agrumes et autres basiques sont déjà comptés.</div><div class="btn-row"><button class="btn" data-a="quickadd">Remplir mon bar</button></div></div>`;
     HERO_LAST="_w";
   } else if(mo==="matin"){
     // le matin, pas de cocktail mis en avant : un état du bar, et de quoi préparer la soirée
     const n=makeable(); HERO_LAST="_m";
-    o+=`<div class="hero still"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #FFD44740, transparent 62%)"></div><div class="hg">${glassSVG({id:"_matin",g:"coupe",col:"#F6EEDD",ing:[],ice:"none",gar:""},{fill:0,garnish:false})}</div><div class="kick">Ce matin</div><div class="hn">Le bar se repose</div><div class="hr">${n?`${n} cocktail${n>1?"s":""} faisable${n>1?"s":""} avec ton bar, pour ce soir.`:"Rien n’est encore faisable avec ton bar : c’est le bon moment pour le compléter."}</div><div class="btn-row"><button class="btn sec" data-a="tab" data-t="cocktails">Voir la carte</button><button class="btn sec" data-a="tab" data-t="bar">Mon bar</button></div></div>`;
+    o+=`<div class="hero still"><div class="glow" style="background:radial-gradient(circle at 50% 40%, #FFD44740, transparent 62%)"></div><div class="hg">${glassSVG({id:"_matin",g:"coupe",col:"#F6EEDD",ing:[],ice:"none",gar:""},{fill:0,garnish:false})}</div><div class="hn">Le bar se repose</div><div class="hr">${n?`${n} cocktail${n>1?"s":""} faisable${n>1?"s":""}`:"Rien n’est encore faisable avec ton bar : c’est le bon moment pour le compléter."}</div><div class="btn-row"><button class="btn sec" data-a="tab" data-t="cocktails">Voir la carte</button><button class="btn sec" data-a="tab" data-t="bar">Mon bar</button></div></div>`;
   } else if(list.length){
     const r=list[0], anim=HERO_LAST!==r.id; HERO_LAST=r.id; const m=metricsR(r);
     S.heroLog=S.heroLog||[]; const dsd=daySeed(); if(!S.heroLog.some(x=>x.id===r.id&&x.d===dsd)){ S.heroLog.push({id:r.id,d:dsd}); S.heroLog=S.heroLog.slice(-30); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
-    o+=`<div class="hero ${anim?"":"still"}"><div class="glow" style="background:radial-gradient(circle at 50% 36%, ${r.col}70, transparent 62%)"></div><div class="hg" data-a="jiggle">${glassSVG(r,{pour:anim,live:1,stream:anim&&WOW()})}</div><div class="kick">${esc(c.label)}</div><div class="hn">${esc(r.n)}</div><div class="hr">${esc(reasons(r))}</div><div class="pills">${S.ratings[r.id]?`<span class="pill match">Noté ${S.ratings[r.id]} sur 5</span>`:taste&&matchPct(r)>=62?`<span class="pill match">${matchPct(r)} % pour toi</span>`:`<span class="pill">${esc(FAMILIES[r.fam])}</span>`}<span class="pill">${Math.round(m.abv)} % d’alcool</span>${hasPrices()&&!costOf(r.ing).miss.length?`<span class="pill">${chf(costOf(r.ing).tot)}</span>`:""}</div><div class="btn-row"><button class="btn sec" data-a="rec" data-id="${r.id}">Voir la recette</button><button class="btn" data-a="barmode" data-id="${r.id}">${IC.play}Préparer</button></div></div>`;
+    o+=`<div class="hero ${anim?"":"still"}"><div class="glow" style="background:radial-gradient(circle at 50% 36%, ${r.col}70, transparent 62%)"></div><div class="hg" data-a="jiggle">${glassSVG(r,{pour:anim,live:1,stream:anim&&WOW()})}</div><div class="hn">${esc(r.n)}</div><div class="hr">${esc(reasons(r))}</div><div class="pills">${S.ratings[r.id]?`<span class="pill match">Noté ${S.ratings[r.id]} sur 5</span>`:taste&&matchPct(r)>=62?`<span class="pill match">${matchPct(r)} % pour toi</span>`:`<span class="pill">${esc(FAMILIES[r.fam])}</span>`}<span class="pill">${Math.round(m.abv)} % d’alcool</span>${hasPrices()&&!costOf(r.ing).miss.length?`<span class="pill">${chf(costOf(r.ing).tot)}</span>`:""}</div><div class="btn-row"><button class="btn sec" data-a="rec" data-id="${r.id}">Voir la recette</button><button class="btn" data-a="barmode" data-id="${r.id}">${IC.play}Préparer</button></div></div>`;
   } else {
     o+=`<div class="hero"><div class="hg">${glassSVG({g:"coupe",col:"#D8D0C0",ing:[]})}</div><div class="hn">Presque !</div><div class="hr">Rien n’est encore faisable avec ton bar, mais il manque souvent une seule bouteille.</div><div class="btn-row"><button class="btn sec" data-a="tab" data-t="bar">Voir les achats malins</button></div></div>`;
   }
@@ -4420,13 +4466,13 @@ const HOME_SEC={
   suggest:({list})=> list.length>1? `<h2 class="sh">Aussi pour toi<button class="more" data-a="tab" data-t="cocktails" data-f="ok">Tout voir</button></h2><div class="sh-sub">Faisables avec ton bar</div><div class="scroller stag">${list.slice(1,12).map(r=>tile(r)).join("")}</div>` : "",
   duo:({list,empty})=>{ const br=!empty&&(bottleRecs().find(b=>tracked(b.id))||bottleRecs()[0]);
     return `<div class="duo"><button class="duo-c" data-a="roulette"><div class="di">${IC.dice}</div><div class="dt">Surprends-moi</div><div class="ds">${list.length?"Au hasard parmi tes idées":"Toute la carte"}</div></button>${br?`<button class="duo-c" data-a="ing" data-id="${br.id}"><div class="db">${bottleSVG(br.id,4)}</div><div class="dt">${esc(shortN(br.id))}</div><div class="ds">+${br.rs.length} cocktail${br.rs.length>1?"s":""} si tu l’achètes</div></button>`:`<button class="duo-c" data-a="tab" data-t="labo"><div class="di">${IC.flask}</div><div class="dt">Le labo</div><div class="ds">Compose ta création</div></button>`}</div>`; },
-  table:()=>`<h2 class="sh">À table</h2><div class="sh-sub">Le bon cocktail pour ton plat</div><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${lu(d.ic)}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
+  table:()=>`<h2 class="sh">À table</h2><div class="dishes">${DISHES.map((d,k)=>`<button class="dish" data-a="dish" data-id="${d.id}" style="animation-delay:${k*25}ms"><span class="de">${lu(d.ic)}</span><span class="dn">${esc(d.n)}</span></button>`).join("")}</div>`,
   rewind:()=> rewindEligible()? `<button class="rw-card" data-a="rewind"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Zeste Rewind</div><div class="rw-t">Ton année en cocktails</div><div class="rw-s">${rewindData().count} verres, ${rewindData().distinct} recettes. Revis tout ça en quelques histoires.</div></div><div class="rw-play">${IC.play}</div></button>` : "",
   na:()=>{ const naL=RECS.filter(r=>r.na&&status(r).ok).sort((a,b)=>score(b)-score(a)).slice(0,8);
     return naL.length? `<h2 class="sh">Sans alcool<button class="more" data-a="nafilter">Tout voir</button></h2><div class="sh-sub">Tout le plaisir, zéro degré</div><div class="scroller">${naL.map(r=>tile(r)).join("")}</div>` : ""; },
   disc:()=>discoveryCard(),
   season:()=>{ const mo=new Date().getMonth()+1, se=SEASON[mo];
-    return `<h2 class="sh">De saison</h2><div class="sh-sub">${esc(se.p.charAt(0).toUpperCase()+se.p.slice(1))}</div><div class="card season"><div class="sp">${esc(se.t)}</div><div class="mini-list">${se.r.map(id=>RMAP[id]).filter(Boolean).map(r=>`<button class="mini" data-a="rec" data-id="${r.id}">${glassSVG(r)}<div class="mn">${esc(r.n)}</div></button>`).join("")}</div></div>`; },
+    return `<h2 class="sh">De saison</h2><div class="sh-sub">${esc(se.p.charAt(0).toUpperCase()+se.p.slice(1))}</div><div class="card season"><div class="mini-list">${se.r.map(id=>RMAP[id]).filter(Boolean).map(r=>`<button class="mini" data-a="rec" data-id="${r.id}">${glassSVG(r)}<div class="mn">${esc(r.n)}</div></button>`).join("")}</div></div>`; },
   prep:()=>{ const exp=(S.preps||[]).filter(p=>daysLeft(p)<=3); return exp.length? `<h2 class="sh">À surveiller</h2><div class="sh-sub">Préparations maison bientôt périmées</div><div class="group">${exp.map(p=>prepRow(p)).join("")}</div>` : ""; }
 };
 function homeSheet(){
@@ -4489,7 +4535,7 @@ function openRewind(){
   slides.push({c:["#6A9A4A","#0E1A0A"],h:`<div class="rw-small">Tu as exploré</div><div class="rw-big" data-count="${D.fams.length}">0</div><div class="rw-mid">famille${D.fams.length>1?"s":""} de cocktails sur ${Object.keys(FAMILIES).length}</div><div class="rw-chips">${Object.keys(FAMILIES).map((f,k)=>`<span class="${D.fams.includes(f)?"on":""}" style="animation-delay:${0.4+k*0.06}s">${esc(FAMILIES[f])}</span>`).join("")}</div>`});
   if(D.count>=3){ const mx=Math.max(...D.months,1); slides.push({c:["#3A6AC0","#08102A"],h:`<div class="rw-small">Ton mois le plus festif</div><div class="rw-name">${esc(D.monthNames[D.topMonth].charAt(0).toUpperCase()+D.monthNames[D.topMonth].slice(1))}</div><div class="rw-months">${D.months.map((v,k)=>`<div class="rw-m ${k===D.topMonth?"top":""}"><i style="--h:${Math.round(v/mx*100)}%;animation-delay:${0.2+k*0.05}s"></i><span>${esc(D.monthNames[k].slice(0,1).toUpperCase())}</span></div>`).join("")}</div>`}); }
   if(best&&best!==top) slides.push({c:[best.col,mix(best.col,"#000000",.6)],h:`<div class="rw-small">Ton coup de cœur</div><div class="rw-glass">${glassSVG(best,{pour:true,live:1})}</div><div class="rw-name">${esc(best.n)}</div><div class="rw-stars">${[1,2,3,4,5].map(k=>`<span class="${k<=S.ratings[best.id]?"on":""}" style="animation-delay:${0.5+k*0.1}s">${IC.star}</span>`).join("")}</div>`});
-  if(D.style){ const tv=tasteVector(); slides.push({c:["#8A4AB8","#140820"],h:`<div class="rw-small">Ton style</div><div class="rw-name">${esc(D.style)}</div>${tv&&tv.liked?`<div class="rw-radar">${radarSVG(tv.liked)}</div>`:""}`}); }
+  if(D.style){ const rv=tasteRadar(); slides.push({c:["#8A4AB8","#140820"],h:`<div class="rw-small">Ton style</div><div class="rw-name">${esc(D.style)}</div>${rv?`<div class="rw-radar">${radarSVG(rv)}</div>`:""}`}); }
   if(D.avgCost!=null&&D.priced>=2) slides.push({c:["#C8A020","#1A1404"],h:`<div class="rw-small">Côté porte-monnaie</div><div class="rw-big money">${chf(D.avgCost)}</div><div class="rw-mid">le verre en moyenne</div><div class="rw-note">Au bar, compte plutôt entre 14 et 20 CHF. Ton bar à la maison est rentable.</div>`});
   slides.push({c:[col,"#100A14"],end:1,h:`<div class="rw-small">C’était ton année</div><div class="rw-sum"><div><b>${D.count}</b><span>verres</span></div><div><b>${D.distinct}</b><span>recettes</span></div><div><b>${D.fams.length}</b><span>familles</span></div><div><b>${D.tro}</b><span>trophées</span></div></div>${top?`<div class="rw-note">Cocktail de l’année : <b>${esc(top.n)}</b></div>`:""}<div class="rw-actions"><button class="btn" data-a="rwsave">${IC.share}Enregistrer ma carte</button><button class="btn gray" data-a="rwclose">Terminer</button></div>`});
   RW={i:0,slides,D,t0:0,timer:null,paused:false};
@@ -4656,7 +4702,7 @@ function vCompose(){
     <div class="lab-top"><span class="lab-chip">${esc(LTYPE.find(x=>x[0]===M.t)[1]==="Je ne sais pas"?(A?"Style deviné : "+{sour:"cocktail court",stirred:"sec et fort",long:"long drink",spritz:"spritz",cremeux:"crémeux"}[A.st]:"Style libre"):LTYPE.find(x=>x[0]===M.t)[1])}</span>${SC?`<span class="lab-score ${served?"shown":""}" data-a="mixserve"><b>${served?SC.score:"?"}</b><i>/100</i></span>`:""}</div>
     <div class="lab-glass" data-a="jiggle">${labGlassSVG(true)}<div class="lab-tool"></div></div>
     <div class="lab-gauge"><div class="lab-gbar"><i style="width:${Math.min(100,fill*100).toFixed(0)}%"></i></div><span>${fmtMl(vol)} versés sur ${fmtMl(avail)} disponibles${ICESHARE[ice]?", glace déduite":""}</span></div>
-    ${SC?`<div class="lab-goals">${SC.goals.map(([k,n,v])=>`<span class="goal ${v>=0.85?"ok":k==="gar"?"bonus":v>=0.5?"mid":""}"><i>${v>=0.85?IC.check:k==="gar"?"+":v>=0.5?"~":"·"}</i>${n}</span>`).join("")}</div>`:`<div class="lab-hint">Verse tes ingrédients : le verre et le style se règlent tout seuls.</div>`}
+    ${SC?`<div class="lab-goals">${SC.goals.map(([k,n,v])=>`<span class="goal ${v>=0.85?"ok":k==="gar"?"bonus":v>=0.5?"mid":""}"><i>${v>=0.85?IC.check:k==="gar"?"+":v>=0.5?"~":"·"}</i>${n}</span>`).join("")}</div>`:``}
   </div>`;
   if(served&&SC){ const [gt,ge]=labGrade(SC.score); o+=`<div class="lab-verdict"><span class="lv-e">${lu(ge)}</span><div class="grow"><b>${esc(gt)}</b><span>${esc(labSummary(A,SC))}</span></div></div>`; }
   // ---- étape 1 : style ----
@@ -4998,7 +5044,7 @@ Object.assign(ACT,{
   city:(d)=>citySheet(+d.i),
   lineage:(d)=>{ TREE_I=+d.i; renderView("cocktails"); },
   radpreset:(d)=>{ RAD=d.v.split(",").map(Number); renderView("cocktails"); },
-  radmine:()=>{ const tv=tasteVector(); RAD=(tv&&tv.liked?tv.liked:avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); }
+  radmine:()=>{ RAD=(tasteRadar()||avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); }
 });
 // ================= DÉFIS DU LABO =================
 function weekKey(){ const d=new Date(); d.setHours(0,0,0,0); const mon=new Date(d); mon.setDate(d.getDate()-((d.getDay()+6)%7)); return Math.floor(mon.getTime()/(7*864e5)); }
@@ -5179,7 +5225,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.58";
+const APP_VERSION="1.59";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -6149,8 +6195,8 @@ function focalTaste(){
   if(tv&&tv.liked) body=`<div class="prof">${radarSVG(tv.liked)}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">D’après les cocktails notés 4 étoiles ou plus.</span></div></div>`;
   else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); body=`<div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div class="fc-txt">D’après ton quiz</div></div>`; }
   else body=`<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
-  const st=[[S.hist.length,"préparé","préparés","p"],[distinct().length,"recette","recettes","r"],[rated().length,"noté","notés","n"]];
-  return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}<div class="fc-stats">${st.map(([v,a,b,k])=>`<div><b ${ck("prof-"+k,v)}>${v}</b><span>${v>1?b:a}</span></div>`).join("")}</div></div>`;
+  // (1.59) plus de compteurs en bas : ils répétaient Historique et Tes mieux notés
+  return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`;
 }
 let TRO_SEEN=null; try{ TRO_SEEN=JSON.parse(localStorage.getItem("zeste.troSeen")||"null"); }catch(e){}
 { const _vp=vProfil;
@@ -6652,6 +6698,128 @@ function picCol(hex,bg,toward){ if(!/^#[0-9a-f]{6}$/i.test(hex||"")) return hex;
   for(let t=0;t<=1;t+=.04){ c=t?mix(hex,toward,t):hex; const l=picLum(c); if((Math.max(l,lb)+.05)/(Math.min(l,lb)+.05)>=3.2) break; } return c; }
 // Labo : plus de pastille de dose sur les tuiles (la dose est déjà dans « Les ingrédients ») ; la sélection reste la bordure d'accent
 { const _vc=vCompose; vCompose=function(){ return _vc().replace(/<span class="sh-q">[^<]*<\/span>/g,""); }; }
+// ================= ZESTE 1.59 : lot A→G (rendu) =================
+// A5 — « Le saviez-vous ? » : la carte prend la hauteur de la face affichée (plus de vide sous la citation)
+function discFit(root){ (root||document).querySelectorAll(".disc").forEach(d=>{ const inn=d.querySelector(".disc-in"), f=d.querySelector(d.classList.contains("flipped")?".disc-b":".disc-f"); if(inn&&f&&f.offsetHeight) inn.style.height=f.offsetHeight+"px"; }); }
+{ const _rv=renderView; renderView=function(t){ const r=_rv.apply(this,arguments); if(t==="today") requestAnimationFrame(()=>discFit(document.getElementById("v-today"))); return r; };
+  const _fl=ACT.flip; ACT.flip=function(d,t){ const r=_fl.apply(this,arguments); const c=t&&t.closest(".disc"); if(c) discFit(c.parentNode); return r; };
+  if(typeof addEventListener==="function") addEventListener("resize",()=>discFit()); if(typeof document!=="undefined"&&document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>discFit()); }
+// F18 — Profil : titre, phrase et radar viennent tous du vecteur de goût final du modèle (getModel().DIR : notes, quiz, « Ta version »).
+// Avant : titre = DIR, phrase = écart des notes à 2,5 (tasteVector().dir), radar = profil absolu des cocktails aimés → contradictions.
+function tasteAxes(){ const M=getModel(); if(!M||M.n<2) return null; const D=M.DIR, mx=Math.max(...D.map(Math.abs)); if(!(mx>0.005)) return null;
+  const s=D.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]), th=mx*0.25;
+  return {D, mx, plus:s.filter(x=>x[0]>Math.max(th,0.005)).slice(0,3).map(x=>x[1]), minus:s.filter(x=>x[0]<-Math.max(th,0.005)).slice(-2).reverse().map(x=>x[1])}; }
+function tasteRadar(){ const A=tasteAxes(); if(!A) return null; const av=avgProfile(), k=0.3/A.mx; return A.D.map((v,i)=>clamp01(av[i]+v*k)); }
+tasteSentence=function(){ const A=tasteAxes(); if(!A) return ""; const n=i=>DIMS[i].toLowerCase(); let out="";
+  if(A.plus.length) out+="Tu aimes ce qui est "+joinFr(A.plus.map(n)); if(A.minus.length) out+=(out?", un peu moins ce qui est ":"Tu aimes moins ce qui est ")+joinFr(A.minus.map(n));
+  return out? out+".":""; };
+focalTaste=function(){ const sty=tasteStyle(), rv=tasteRadar(), nR=rated().length;
+  const src=nR&&S.quiz?"D’après tes notes et ton quiz.":nR?"D’après tes notes.":"D’après ton quiz.";
+  const body= rv? `<div class="prof">${radarSVG(rv,avgProfile())}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">${src}</span></div></div>`
+    : `<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
+  return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`; };
+// F19 — Labo : « Conseillé » = ce que choisit « Auto ». Avant, le badge montrait labReco (le style seul) alors qu'Auto passait
+// ensuite par l'échelle glace/contenance de v141 et pouvait prendre un autre verre. Une seule source : le choix automatique.
+{ const _lg=labGlass;
+  labGlass=function(){ const M=mixState(), mine=M.g; let auto;
+    if(mine){ M.g=null; try{ auto=_lg().g; } finally { M.g=mine; } }
+    const r=_lg(); if(!mine) auto=r.g;
+    return auto===r.rec.g? r : Object.assign({},r,{rec:Object.assign({},r.rec,{g:auto})}); }; }
+// ================= ZESTE 1.59 (G) : moteur de recommandation, réglé par simulation (tests/m6.js, tests/m7.js, tests/m5.js) =================
+// Règle : réglé sur la graine 1, validé sur la graine 2 ; gardé seulement si la validation s'améliore sans dégrader le démarrage à froid (m5).
+// RECO : réglages retenus (voir HANDOFF « Moteur de recommandation » pour les gains mesurés). Tout reste local, sans réseau.
+const RECO={bias:0.5, biasK:5};
+if(typeof process!=="undefined"&&process.env&&process.env.RECO) Object.assign(RECO,JSON.parse(process.env.RECO));   // banc de réglage uniquement
+// --- prédiction : celle de core.js, avec la contribution réelle (explications) et le biais utilisateur ---
+// Essayés et non retenus (aucun gain en validation, voir HANDOFF) : similarité IDF des ingrédients, ridge sur les ingrédients, centrage des notes.
+predict=function(r){
+  const M=getModel(); if(M.P[r.id]!=null) return M.P[r.id];
+  const pp=(typeof POPIDX!=="undefined"&&POPIDX[r.id]!=null)?1-POPIDX[r.id]/POPULAR.length:0;
+  const prior=(r.c?0.22:0)+(r.s?0.08:0)+pp*0.4/(1+M.n/3);
+  if(!M.ids.length && !M.Q){ M.W[r.id]=null; return M.P[r.id]=3+prior; }
+  let sw=0,sv=0,best=null,bc=0;
+  M.ids.forEach(id=>{ if(id===r.id) return; const t=M.T[id]; const s=cos(fvec(r),fvec(RMAP[id])); const w=Math.pow(Math.max(0,s-0.5),2)*t.w; sw+=w; sv+=w*t.v; if(t.v>0.8&&w*t.v>bc){ bc=w*t.v; best=id; } });
+  const knn=sw?sv/sw:0, kc=Math.min(1,sw*4);
+  const sh=shares(r); let ing=0, topI=null, topV=0, lowI=null, lowV=0;
+  for(const i in sh){ const a=M.IA[i]||0; ing+=sh[i]*a; if(a*sh[i]>topV){topV=a*sh[i];topI=i;} if(a*sh[i]<lowV){lowV=a*sh[i];lowI=i;} }
+  const fam=M.FA[r.fam]||0, base=M.BA[baseGroup(r)]||0;
+  const p=profileR(r), av=avgProfile(); let dims=0; for(let i=0;i<8;i++) dims+=M.DIR[i]*(p[i]-av[i]); dims*=4;
+  if(M.Q&&M.Q.cream) dims+=M.Q.cream*((p[8]||0)-0.15)*1.6;
+  const MW=mWeights(), hasIng=Object.keys(sh).some(i=>M.IA[i]!=null), wk=MW.knn*kc, wi=hasIng?MW.ing:0;
+  const famb=0.55*fam+0.45*base*1.1;
+  let vb=0, vbest=null; M.ids.forEach(id=>{ const t=M.T[id]; if(t.v>0.8&&RMAP[id].v.includes(r.id)){ vb+=t.v*t.w*0.4; if(!vbest||t.v>M.T[vbest].v) vbest=id; } }); vb=Math.min(0.8,vb);
+  const den=wk+wi+MW.fam+MW.dims, dev=(wk*knn+wi*ing+MW.fam*famb+MW.dims*dims)/den*0.75+0.25*vb, conf=0.35+0.65*M.n/(M.n+4);
+  let pred=3+1.85*Math.tanh(dev*1.15*conf)+prior*0.5;
+  const RW=ridgeOf(M); if(RW){ const x=fvec(r); let s=0; for(let i=0;i<x.length;i++) s+=RW.W[i]*(x[i]-RW.mean[i]); pred=0.3*pred+0.7*(3+1.85*Math.tanh(s*1.1)); }
+  // biais utilisateur (Koren 2009) : décalage de la moyenne de ses notes, rétrécie vers 3 (k pseudo-notes) ; MAE −0,010 à −0,022 en validation
+  if(RECO.bias){ if(M.mu===undefined){ const R=rated(); M.nR=R.length; M.mu=R.length?(R.reduce((a,[,v])=>a+v,0)+RECO.biasK*3)/(R.length+RECO.biasK):3; } pred+=RECO.bias*(M.mu-3); }
+  // contributions réelles, ramenées à la même échelle (pour l'explication « Parce que tu as aimé X »)
+  const parts=[["knn",wk*knn/den*0.75],["ing",wi*ing/den*0.75],["fam",MW.fam*famb/den*0.75],["dims",MW.dims*dims/den*0.75],["var",0.25*vb]].sort((a,b)=>b[1]-a[1]);
+  M.W[r.id]={top:parts[0][0],v:parts[0][1],best,topI:(M.IA[topI]||0)>0.35?topI:null,lowI:(M.IA[lowI]||0)<-0.5?lowI:null,vbest,raw:{knn:kc>0.05?knn:0,ing:hasIng?ing:0,fam:famb,dims}};
+  return M.P[r.id]=pred;
+};
+// --- « N % pour toi » : probabilité d'aimer (≥ 4 étoiles), régression logistique sur la prédiction (Platt 1999),
+// ajustée sur la graine 1 de tests/m7.js et validée sur la graine 2 : Brier 0,194 → 0,157, écart de calibration 0,175 → 0,009.
+// Plafond 95 % tant qu'il y a moins de 15 notes, jamais 100 %.
+const LIKE_W=[-0.99,1.731,0.18], LIKE_RATED={5:0.97,4:0.85,3:0.3,2:0.08,1:0.03};
+function likeProb(r){ const M=getModel(); if(M.nR===undefined) M.nR=rated().length; const nR=M.nR, cap=nR<15?0.95:0.99, rt=S.ratings[r.id];
+  if(rt) return Math.min(cap,LIKE_RATED[rt]||0.5);
+  const d=predict(r)-3, n=nR+(S.quiz?3:0), z=LIKE_W[0]+LIKE_W[1]*d+LIKE_W[2]*d*Math.log1p(n);
+  return Math.max(0.02,Math.min(cap,1/(1+Math.exp(-z)))); }
+matchPct=function(r){ return Math.round(100*likeProb(r)); };
+// --- listes (Aujourd'hui, Pour ce soir) : faisables d'abord, diversité MMR (Carbonell & Goldstein 1998) sur une distance
+// ingrédients + famille + spiritueux de base, pénalité sur les 3 derniers préparés, créneau découverte = incertain mais probablement aimé ---
+const ingKeys=r=>r._ik||(r._ik=new Set(r.ing.filter(i=>!ING[i.id].basic).map(i=>i.id)));
+function recSim(a,b){ const A=ingKeys(a),B=ingKeys(b); let n=0; A.forEach(x=>{ if(B.has(x)) n++; }); return 0.5*n/((A.size+B.size-n)||1)+0.25*(a.fam===b.fam?1:0)+0.25*((a._bg||(a._bg=baseGroup(a)))===(b._bg||(b._bg=baseGroup(b)))?1:0); }
+function lastMadeIds(k){ const out=[]; for(let i=S.hist.length-1;i>=0&&out.length<k;i--){ const id=S.hist[i].id; if(!out.includes(id)) out.push(id); } return out; }
+if(RECO.mmr==null) RECO.mmr=0.75;
+tonightRaw=function(){
+  const now=Date.now(), c=ctxInfo(), seed=daySeed()+"-"+c.moment, EX=S.settings.explore!=null?S.settings.explore:1, useCtx=S.settings.ctx!==false;
+  const NOV=[0.05,0.25,0.5][EX], RND=[0.3,0.5,0.75][EX], SK=S.skips||{}, last3=lastMadeIds(3);
+  const naOk=S.settings.na||rated().some(([id,rt])=>RMAP[id].na&&rt>=4);
+  const cand=RECS.filter(r=>status(r).ok&&(naOk||!r.na)).map(r=>{ const lm=lastMade(r.id), rt=S.ratings[r.id];
+    const hl=(S.heroLog||[]).filter(h=>h.id===r.id), today=daySeed(), recentHero=hl.some(h=>h.d!==today&&h.d>=today-2), fatigue=hl.length>=3&&!(S.opens||{})[r.id]&&!madeCount(r.id);
+    const sk=SK[r.id]&&now-SK[r.id].t<14*864e5?Math.min(0.45,0.15*SK[r.id].n):0, rep=last3.includes(r.id)||now-lm<3*864e5;
+    let sc=(rt? rt-(EX===0?0.2:0.45) : predict(r))+(useCtx?ctxBonus(r,c):0)+hrand(r.id+seed)*RND+(madeCount(r.id)?0:NOV)-sk-(rep?1.2:0)-(rt&&rt<=2?1.5:0)+(freshBottle(r)?0.3:0)+(typeof perishing==="function"?(p=>p?(p[2]<=4?0.45:0.18):0)(perishing(r)):0)-(recentHero?0.35:0)-(fatigue?0.3:0);
+    return [r,sc]; }).sort((a,b)=>b[1]-a[1]);
+  const pool=cand.slice(0,40), out=[], L=RECO.mmr;
+  while(pool.length && out.length<14){ let bi=0,bv=-1e9;
+    pool.forEach(([r,sc],k)=>{ const red=out.length? Math.max(...out.map(o=>recSim(r,o))) : 0; const v=L*sc-(1-L)*4*red; if(v>bv){bv=v;bi=k;} });
+    out.push(pool.splice(bi,1)[0][0]); }
+  EXPLORE=new Set(); const M=getModel();
+  const slots=[[],[3],[2,5]][EX];
+  if(M.ids.length>=2 && out.length>=6 && slots.length){ const known=M.ids.map(id=>RMAP[id]);
+    const exs=cand.map(x=>x[0]).filter(r=>!out.slice(0,2).includes(r)&&!madeCount(r.id)&&!S.ratings[r.id]&&likeProb(r)>=0.5).map(r=>{ const u=1-Math.max(...known.map(k=>recSim(r,k))); return [r,u,u*likeProb(r)]; }).filter(x=>x[1]>=0.45).sort((a,b)=>b[2]-a[2]);
+    slots.forEach((pos,k)=>{ const ex=exs[k]; if(!ex) return; const i=out.indexOf(ex[0]); if(i>=0) out.splice(i,1); out.splice(pos,0,ex[0]); EXPLORE.add(ex[0].id); }); }
+  return out.concat(pool.map(x=>x[0]), cand.slice(40).map(x=>x[0]));
+};
+// --- achats malins : classés par gain attendu = somme des probabilités d'aimer des cocktails que la bouteille rend faisables ---
+if(RECO.buy==null) RECO.buy=1; if(RECO.buyE==null) RECO.buyE=2;   // somme des P(aimer)² : top 1 juste 0,533 → 0,567 en validation (somme simple : 0,517)
+{ const _br=bottleRecsRaw; bottleRecsRaw=function(){ if(!RECO.buy) return _br();
+  const cand={}; RECS.forEach(r=>{ const st=status(r); if(st.miss.length===1&&!(S.ratings[r.id]<=2)){ const m=st.miss[0]; (cand[m]=cand[m]||[]).push(r); } });
+  return Object.entries(cand).map(([id,rs])=>({id, rs:rs.sort((a,b)=>likeProb(b)-likeProb(a)), v:rs.reduce((a,r)=>a+Math.pow(likeProb(r),RECO.buyE||1),0)})).sort((a,b)=>b.v-a.v); }; }
+// --- « Surprends-moi » : tirage pondéré parmi les 15 meilleurs faisables non préparés récemment, jamais un cocktail noté 2 ou moins ---
+function surprisePool(){ const now=Date.now(), last3=lastMadeIds(3), ok=r=>!(S.ratings[r.id]<=2)&&!last3.includes(r.id)&&now-lastMade(r.id)>=3*864e5;
+  const L=tonight().filter(ok).slice(0,15); return L.length? L : RECS.filter(ok); }
+roulette=function(){ RL={L:surprisePool(),pick:null}; $("#overlay").classList.add("open"); spin(); };
+// --- explications : la contribution réelle la plus forte ; sous le seuil, aucune explication plutôt qu'une phrase générique ---
+const WHY_MIN=0.1;
+reasons=function(r){
+  const rt=S.ratings[r.id]; if(rt>=5) return "Un de tes coups de cœur"; if(rt===4) return "Tu l’as beaucoup aimé";
+  const fb=freshBottle(r); if(fb){ const n=lc(shortN(fb)); return "Pour étrenner "+(/^[aeiouyéèêàâîïôœ]/i.test(n)?"ton ":FEM.test(n)?"ta ":"ton ")+n; }
+  if(EXPLORE.has(r.id)) return "Pour sortir un peu de ta zone de confort";
+  predict(r); const W=getModel().W[r.id]; if(!W||W.v<WHY_MIN) return "";
+  if(W.top==="var"&&W.vbest) return "Une variante du "+RMAP[W.vbest].n+", que tu adores";
+  if(W.top==="knn"&&W.best) return "Parce que tu as aimé "+RMAP[W.best].n;
+  if(W.top==="ing"&&W.topI) return "Tu aimes "+lcArt(W.topI)+", et il y en a dedans";
+  return ""; };
+// --- « bientôt à racheter » : autonomie de chaque bouteille, ≈ N verres (niveau × contenance ÷ dose moyenne), les plus urgentes d'abord ---
+function glassesLeft(id){ const cap=((S.price||{})[id]&&S.price[id].v)||DEFVOL[ING[id].cat]||700; const d=[]; RECS.forEach(r=>r.ing.forEach(i=>{ if(i.id===id&&i.r!=="opt"){ const m=mlOf(i); if(m>0) d.push(m); } }));
+  const dose=d.length? d.reduce((a,b)=>a+b,0)/d.length : 45; return Math.floor((S.stock[id]||0)/4*cap/dose); }
+{ const _lv=lowView; lowView=function(ids){ let h=_lv(ids);
+    h=h.replace(/(<button class="low-b" data-a="ing" data-id="([\w]+)">[\s\S]*?<b>[^<]*<\/b><span>)\d+ recettes? l’utilisen?t?(<\/span>)/g,(m,a,id,b)=>{ const n=glassesLeft(id); return a+(n>0?"≈ "+n+" verre"+(n>1?"s":""):"Plus de quoi faire un verre")+b; });
+    // tri par urgence (moins de verres d'abord) à l'intérieur de chaque niveau
+    return h.replace(/(<div class="group">)((?:<div class="row low-row">[\s\S]*?<\/div>)+)(<\/div>)/g,(m,a,rows,b)=>{ const R=rows.split(/(?=<div class="row low-row">)/); R.sort((x,y)=>glassesLeft(x.match(/data-id="([\w]+)"/)[1])-glassesLeft(y.match(/data-id="([\w]+)"/)[1])); return a+R.join("")+b; }); }; }
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
@@ -6969,7 +7137,10 @@ try{ frTypo(document.body); new MutationObserver(ms=>{ for(const m of ms) m.adde
 // Pastille des onglets : position mesurée par rapport à la barre (et non à la page), puis vérifiée à la fin de
 // l'animation et à chaque changement de taille (rotation, clavier), pour qu'elle reste centrée sous l'onglet.
 moveTabInd=function(){ const tb=document.querySelector(".tabbar"), on=tb&&tb.querySelector("button.on"), ind=tb&&tb.querySelector(".tab-ind"); if(!on||!ind) return;
-  const a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(); ind.style.transform=`translateX(${Math.round(r.left-a.left+r.width/2-ind.offsetWidth/2)}px)`; };
+  // (1.59) largeur = libellé + 8 px de chaque côté, pour tous les onglets
+  const lab=[...on.querySelectorAll("span")].pop(); let lw=40; if(lab){ const g=document.createRange(); g.selectNodeContents(lab); lw=g.getBoundingClientRect().width; }
+  const w=Math.ceil(lw)+16, a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(); ind.style.width=w+"px"; ind.style.transform=`translateX(${Math.round(r.left-a.left+r.width/2-w/2)}px)`; };
 { const _sw=switchTab; switchTab=function(){ const r=_sw.apply(this,arguments); setTimeout(moveTabInd,480); return r; };
+  setTimeout(moveTabInd,0); if(typeof document!=="undefined"&&document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>moveTabInd());   // (1.59) init passe avant ce module
   let rz=0; const onRz=()=>{ clearTimeout(rz); rz=setTimeout(moveTabInd,120); }; addEventListener("resize",onRz); window.visualViewport&&visualViewport.addEventListener("resize",onRz); }
 </script></body></html>

@@ -2067,3 +2067,47 @@ details.bar-more[open]{padding-bottom:0}
 /* (bug) en sombre --shadow vaut none, ce qui annulait toute la déclaration « inset …, var(--shadow) » : la tuile choisie perdait sa bordure d'accent */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .shelf.in{box-shadow:inset 0 0 0 1.5px var(--tint)}}
 :root[data-theme="dark"] .shelf.in{box-shadow:inset 0 0 0 1.5px var(--tint)}
+
+/* ================= 1.59 : lot A→G ================= */
+/* A1 — onglets : largeur du contenu + part égale (le plus long libellé garde sa pastille dans l'écran), pastille à la largeur du libellé */
+.tabbar button{flex:1 1 auto;min-width:0}
+.tab-ind{transition:transform .45s cubic-bezier(.3,1.3,.5,1),width .45s cubic-bezier(.3,1.3,.5,1)}
+@media (prefers-reduced-motion:reduce){.tab-ind{transition:none}}
+/* A2/A4 — icône du moment, icônes « À table » et tuile « Surprends-moi » en gris chaud neutre */
+.mo-eyebrow .mo-ic{color:var(--label2)!important}
+.dish .de{color:var(--label2)}
+.duo-c .di{background:var(--fill);color:var(--label2)}
+/* A5 — carte découverte à la hauteur de la face visible, transition douce ; « Voir la recette » 44 px */
+.disc-in{min-height:0;transition:transform .7s cubic-bezier(.3,1.2,.4,1),height .3s ease}
+.disc-f,.disc-b{bottom:auto}
+.disc-f p{flex:none}
+.disc-b .btn.small{min-height:44px}
+@media (prefers-reduced-motion:reduce){.disc-in{transition:none}}
+/* A7 — particules (étoiles, poussière) seulement dans la bande au-dessus du premier texte (date ou titre à 40 px), jamais derrière un texte ni sur une carte (#app est au-dessus de #ambient) */
+#ambient .amb-stars,#ambient .amb-dust{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(env(safe-area-inset-top,0px) + 24px),transparent calc(env(safe-area-inset-top,0px) + 36px)),linear-gradient(270deg,transparent 0,transparent 72px,#000 128px);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,#000 0,#000 calc(env(safe-area-inset-top,0px) + 24px),transparent calc(env(safe-area-inset-top,0px) + 36px)),linear-gradient(270deg,transparent 0,transparent 72px,#000 128px);mask-composite:intersect}
+/* A7 — plus de bulles flottantes sur la carte principale (particules sur une carte) */
+.hero::before,.hero::after{display:none}
+/* C9 — « Histoire » et « Profil de goût » (cartes transparentes) : 24 px du titre au premier texte, comme les autres sections */
+.sheet-body .card:has(>.hist),.sheet-body .card:has(>.prof){padding-top:0}
+.sheet-body .card:has(>.prof){margin-top:-6px} /* compense le retrait interne du libellé « Sucré » dans le SVG */
+/* C12 — radar : les libellés débordent du viewBox de ~4 px ; 8 px de marge latérale les gardent dans la marge de 20 px */
+.prof svg.radar{margin:0 var(--z-s1)}
+/* C10 — « Ta version » : libellé et sous-titre sur une ligne, 8 px, piste de 28 px visibles (44 px tactiles par ::after) : ligne de 64 px */
+.adj-row{height:64px;padding:4px 0;gap:var(--z-s1)}
+.adj-l{display:flex;align-items:baseline;gap:var(--z-s1);height:20px;line-height:20px;white-space:nowrap;overflow:hidden}
+.adj-l b,.adj-l span{display:inline;line-height:20px;min-height:0}
+.card.adj .adj-dots,.card.adj .adj-track button,.card.adj .adj-dots .adj-step{height:28px}
+.card.adj .adj-track button,.card.adj .adj-dots .adj-step{position:relative}
+.card.adj .adj-track button::after,.card.adj .adj-dots .adj-step::after{content:"";position:absolute;inset:-8px 0}
+/* C11 — quantités et noms : même couleur pour tous les ingrédients (les basiques n'étaient plus grisés que par une règle d'origine) */
+.ing-line.basic .q,.ing-line.basic .n{color:var(--label)}
+.ing-line .q{font-weight:600}
+.ing-line .n{font-weight:400}
+/* D14 — tuiles d'ingrédient : retour à la ligne entre les mots seulement, jamais de césure */
+#v-labo .shelf .sh-n{hyphens:manual;-webkit-hyphens:manual;overflow-wrap:normal;word-break:keep-all}
+/* D15 — barre « … et servir » : pleine largeur, bouton aligné sur les cartes (20 px) */
+#v-labo .content>.lab-servebar{margin-left:0;margin-right:0;padding-left:var(--z-side);padding-right:var(--z-side)}
+#v-labo .lab-servebar .lab-serve{width:100%}
+/* E16 — carte du profil de goût : petit libellé gris, le style de l'utilisateur en titre serif ; plus de compteurs */
+.focal-card .fc-k{font-family:inherit;font-size:var(--z-fs-l);font-weight:600;color:var(--label2)}
+.focal-card .fc-t{margin-top:4px;font-family:var(--serif);font-size:var(--z-fs-h);font-weight:700;line-height:1.2;color:var(--label)}

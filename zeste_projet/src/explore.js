@@ -124,5 +124,5 @@ Object.assign(ACT,{
   city:(d)=>citySheet(+d.i),
   lineage:(d)=>{ TREE_I=+d.i; renderView("cocktails"); },
   radpreset:(d)=>{ RAD=d.v.split(",").map(Number); renderView("cocktails"); },
-  radmine:()=>{ const tv=tasteVector(); RAD=(tv&&tv.liked?tv.liked:avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); }
+  radmine:()=>{ RAD=(tasteRadar()||avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); }
 });
