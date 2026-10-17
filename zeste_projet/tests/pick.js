@@ -1,6 +1,7 @@
+global.addEventListener=()=>{};global.removeEventListener=()=>{};
 const fs=require('fs');const h=fs.readFileSync('dist/zeste.html','utf8');let js=h.split('<script>')[1].split('</script>')[0];
 global.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement:()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},setAttribute(){},appendChild(){}}),getElementById:()=>null,body:{appendChild(){},prepend(){},classList:{add(){},remove(){},toggle(){}}},documentElement:{dataset:{}}};global.localStorage={getItem:()=>null,setItem(){}};global.window={addEventListener(){}};global.setInterval=()=>0;global.setTimeout=()=>0;global.requestAnimationFrame=()=>0;global.matchMedia=()=>({matches:false,addEventListener(){}});
-js=js.replace(/\ninit\(\);[\s\S]*$/,'\n'); eval(js+`REC_RAW.forEach(r=>{ if(r[9]&&r[9].n){ r[9].tip=r[9].n; delete r[9].n; } }); buildRecipes([]);
+js=js.replace(/\ninit\(\);\napplyFx\(\);[^\n]*\n/,'\n'); /* (1.64) seulement le démarrage */ eval(js+`REC_RAW.forEach(r=>{ if(r[9]&&r[9].n){ r[9].tip=r[9].n; delete r[9].n; } }); buildRecipes([]);
 const av=avgProfile(); const cand=POPULAR.slice(0,45).map(id=>RMAP[id]).filter(r=>r&&!r.na);
 const info=r=>{ const p=profileR(r); let d=0; for(let i=0;i<9;i++) d+=Math.pow((p[i]||0)-(av[i]||0),2); return Math.sqrt(d); };
 const sc=cand.map(r=>[r,1-POPIDX[r.id]/POPULAR.length, info(r)]).map(([r,pop,inf])=>[r,Math.pow(pop,2)*inf]);

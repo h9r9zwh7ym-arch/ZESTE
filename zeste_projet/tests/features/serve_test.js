@@ -40,7 +40,7 @@ const lum=(r,g,b)=>{ const f=c=>{ c/=255; return c<=0.03928?c/12.92:Math.pow((c+
   const p=await b.newPage({viewport:{width:390,height:844}}); p.on('pageerror',e=>errs.push(e.message));
   await p.addInitScript(()=>{ localStorage.setItem("zeste.v1",JSON.stringify({v:1,t:1,quizSkip:1,settings:{fx:{splash:false}},stock:{gin:1,vodka:1}})); });
   await p.goto(APP); await p.waitForTimeout(1800);
-  const L=await p.evaluate(async()=>{ const W=()=>new Promise(z=>setTimeout(z,300)); const st=()=>{ const s=document.querySelector(".lab-stage"); return {live:(document.querySelector(".lab-live")||{}).textContent||"", allok:!!document.querySelector(".lab-allok"), chips:[...document.querySelectorAll(".lab-goals .goal")].map(x=>x.textContent.replace("!","").trim())}; };
+  const L=await p.evaluate(async()=>{ const W=()=>new Promise(z=>setTimeout(z,300)); const st=()=>{ const s=document.querySelector(".lab-stage"); return {live:(document.querySelector(".lab-live")||{}).textContent||"", allok:!!document.querySelector(".lab-allok"), chips:[...document.querySelectorAll(".lab-goals .goal")].map(x=>x.textContent.replace("!","").trim()), subs:!!document.querySelector(".lab-subs")}; };
     LT="compose"; S.mix={m:"shake",g:null,gUser:0,ice:null,gar:[],t:"auto",items:[]}; switchTab("labo"); await W(); const empty=st();
     S.mix.items=[{id:"tonic",q:200}]; changed(); await W(); const one=st();
     S.mix.items=[{id:"vodka",q:50},{id:"citron_vert",q:15},{id:"sirop_sucre",q:5}]; changed(); await W(); const good=st(), SCg=labScore(analyze());
@@ -49,7 +49,7 @@ const lum=(r,g,b)=>{ const f=c=>{ c/=255; return c<=0.03928?c/12.92:Math.pow((c+
     const d=document.querySelector(".lab-more"); const tip=[...document.querySelectorAll(".tip-one [data-id]")].map(x=>x.dataset.id); const pairs=d?[...d.querySelectorAll('.pair [data-a="mixadd1"]')].map(x=>x.dataset.id):[];
     return {empty,one,good,gw:labGrade(SCg.score)[0],gs:SCg.score,bad,bs:SCb.score,bw:labGrade(SCb.score)[0],low,tip,pairs,tl:d?/Toujours là/.test(d.innerHTML):false,proche:/Proche d’un classique/.test(document.querySelector("#v-labo").textContent.replace(/Ça ressemble à[\s\S]*/,"")),
       words:[39,40,69,70,84,85].map(s=>labGrade(s)[0])}; });
-  ok(!L.empty.live&&!L.empty.allok,"sans ingrédient : rien"); ok(L.one.live==="Ajoute un second ingrédient","un seul rôle : « "+L.one.live+" »");
+  ok(!L.empty.live&&!L.empty.allok,"sans ingrédient : rien"); ok(L.one.live==="Ajoute un second ingrédient","un seul rôle : « "+L.one.live+" »"); ok(!L.one.subs,"sans note : sous-scores à 0 affichés"); ok(L.good.subs,"sous-scores absents avec une note");
   ok(L.good.live===L.gs+" · "+L.gw&&!L.good.allok,"score en direct : « "+L.good.live+" »"); ok(L.bad.live===L.bs+" · "+L.bw,"score en direct (mauvais) : « "+L.bad.live+" »");
   ok(JSON.stringify(L.bad.chips)===JSON.stringify(L.low),"pastilles = sous-scores < 70 : "+JSON.stringify(L.bad.chips)+" / "+JSON.stringify(L.low)); ok(!L.good.chips.length||L.good.chips.every(c=>L.low),"pastilles bon mélange : "+L.good.chips);
   ok(!L.pairs.some(x=>L.tip.includes(x)),"« Pour aller plus loin » répète la suggestion du haut"); ok(!L.tl,"badge « Toujours là »"); ok(!L.proche,"« Proche d’un classique » hors « Ça ressemble à »");
