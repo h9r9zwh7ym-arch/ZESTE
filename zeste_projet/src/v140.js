@@ -18,7 +18,7 @@ const ck=(key,v)=>`data-ck="${key}" data-v="${v}"`;
 // ---------- Mon bar : compteurs posés sur le fond, les bouteilles en cartes, l'annexe en liens ----------
 function buySheet(){
   openSheet(()=>{ const br=bottleRecs().slice(0,8);
-    return {title:"Achats malins",body:`<p class="body" style="margin-bottom:12px">Les bouteilles qui t’ouvriraient le plus de cocktails à ton goût.</p><div class="group">${br.map(b=>`<button class="row tap" data-a="ing" data-id="${b.id}" style="--inset:58px"><div class="thumb" style="width:30px;height:44px">${bottleSVG(b.id,4)}</div><div class="grow"><div class="t">${esc(ING[b.id].n)}</div><div class="s">+${b.rs.length} : ${esc(b.rs.slice(0,3).map(r=>r.n).join(", "))}</div></div>${IC.chev}</button>`).join("")}</div>`}; });
+    return {title:"Achats malins",body:`<p class="body" style="margin-bottom:var(--z-s2)">Les bouteilles qui t’ouvriraient le plus de cocktails à ton goût.</p><div class="group">${br.map(b=>`<button class="row tap" data-a="ing" data-id="${b.id}" style="--inset:58px"><div class="thumb" style="width:30px;height:44px">${bottleSVG(b.id,4)}</div><div class="grow"><div class="t">${esc(ING[b.id].n)}</div><div class="s">+${b.rs.length} : ${esc(b.rs.slice(0,3).map(r=>r.n).join(", "))}</div></div>${IC.chev}</button>`).join("")}</div>`}; });
 }
 Object.assign(ACT,{ buysheet:()=>buySheet() });
 { const _vb=vBar;

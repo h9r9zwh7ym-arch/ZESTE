@@ -84,7 +84,7 @@ function trophyGrid(){
 function trophySheet(k){
   const T=TROPHIES.find(x=>x[0]===k), on=(S.tro||[]).includes(k), [v,G]=troProgress(k), tr=tierOf(k), when=(S.troT||{})[k];
   openSheet(()=>({title:"",body:`<div class="ts-hero t-${tr} ${on?"on":""}"><div class="ts-rays"></div><div class="ts-m">${medal(k,on,on?null:v/G)}</div><span class="tp-tier">${TIERS[tr].n}</span><h1>${esc(T[1])}</h1><p>${esc(T[2])}</p></div>
-    <div class="card" style="margin-top:8px">${on?`<div class="ts-done">${IC.checkc}<span>Débloqué${when?" le "+new Date(when).getDate()+" "+monthName(new Date(when).getMonth()+1)+" "+new Date(when).getFullYear():""}</span></div>`:`<div class="ts-prog"><div class="ts-bar"><i style="width:${Math.round(v/G*100)}%"></i></div><span>${v} sur ${G}</span></div><div class="gf" style="margin:10px 0 0">${G-v<=Math.max(1,G*0.2)?"Tu y es presque !":"Continue comme ça."}</div>`}</div>`}),{short:true});
+    <div class="card" style="margin-top:8px">${on?`<div class="ts-done">${IC.checkc}<span>Débloqué${when?" le "+new Date(when).getDate()+" "+monthName(new Date(when).getMonth()+1)+" "+new Date(when).getFullYear():""}</span></div>`:`<div class="ts-prog"><div class="ts-bar"><i style="width:${Math.round(v/G*100)}%"></i></div><span>${v} sur ${G}</span></div><div class="gf" style="margin:var(--z-s1) 0 0">${G-v<=Math.max(1,G*0.2)?"Tu y es presque !":"Continue comme ça."}</div>`}</div>`}),{short:true});
 }
 Object.assign(ACT,{ trophy:(d)=>trophySheet(d.k) });
 const _dish=ACT.dish; ACT.dish=(d)=>{ S.dishes=S.dishes||[]; if(!S.dishes.includes(d.id)){ S.dishes.push(d.id); save(); checkTrophies(); } _dish(d); };

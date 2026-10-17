@@ -588,7 +588,7 @@ function radarSVG(vals, cmp, size=150){
   let s=`<svg class="radar" viewBox="0 0 ${size} ${size}" overflow="visible" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profil de goût : ${desc}">`;
   [0.33,0.66,1].forEach(r=>s+=`<polygon points="${[...Array(n)].map((_,i)=>pt(i,r).join(",")).join(" ")}" fill="none" stroke="var(--sep)" stroke-width="1"/>`);
   for(let i=0;i<n;i++){ const [x,y]=pt(i,1); s+=`<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" stroke="var(--sep)" stroke-width=".7"/>`;
-    const [lx,ly]=pt(i,1.2); s+=`<text x="${lx}" y="${ly+4}" text-anchor="middle" font-size="11" fill="var(--label2)" font-family="ZesteSans,-apple-system,sans-serif">${DIMS[i]}</text>`; }
+    const [lx,ly]=pt(i,1.2); s+=`<text x="${lx}" y="${ly+4}" text-anchor="middle" font-size="13" fill="var(--label2)" font-family="ZesteSans,-apple-system,sans-serif">${DIMS[i]}</text>`; }
   if(cmp) s+=`<polygon points="${cmp.slice(0,8).map((v,i)=>pt(i,Math.max(.04,v)).join(",")).join(" ")}" fill="none" stroke="var(--label3)" stroke-width="1.2" stroke-dasharray="3 3"/>`;
   s+=`<polygon points="${vals.slice(0,8).map((v,i)=>pt(i,Math.max(.04,v)).join(",")).join(" ")}" fill="var(--tint)" fill-opacity=".22" stroke="var(--tint)" stroke-width="1.8" stroke-linejoin="round"/>`;
   return s+`</svg>`;

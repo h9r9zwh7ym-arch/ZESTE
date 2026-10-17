@@ -40,7 +40,7 @@ function bacRingBig(frac,label){
 }
 function bacCard(){
   const st=bacState(); if(!st.any) return "";
-  if(!st.ready) return `<button class="card bac-card bac-setup tap" data-a="settings" style="display:flex;gap:12px;align-items:center;text-align:left;width:calc(100% - 32px)"><span class="bac-ic">${bacRing(0)}</span><div class="grow"><b>Taux d’alcoolémie</b><span class="bac-t">Renseigne ton poids et ton sexe dans les réglages pour l’estimer</span></div>${IC.chev}</button>`;
+  if(!st.ready) return `<button class="card bac-card bac-setup tap" data-a="settings" style="display:flex;gap:var(--z-s1);align-items:center;text-align:left;width:calc(100% - 32px)"><span class="bac-ic">${bacRing(0)}</span><div class="grow"><b>Taux d’alcoolémie</b><span class="bac-t">Renseigne ton poids et ton sexe dans les réglages pour l’estimer</span></div>${IC.chev}</button>`;
   if(!st.active) return "";
   const frac=st.peak>0? st.perMille/st.peak : 0;
   // le bouton d'ajout est à gauche : c'est l'action la plus utile, celle qu'on refait le plus souvent en soirée
@@ -81,9 +81,9 @@ const BAC_PRESETS=[["Bière",5],["Vin",12.5],["Fort",40]];
 function bacAddSheet(){
   let abv=5, ml=330;
   const sh=openSheet(()=>({title:"Autre boisson",
-    body:`<p class="body" style="margin-bottom:12px">Pour affiner ton estimation avec ce que tu bois en dehors de l’app.</p>
+    body:`<p class="body" style="margin-bottom:var(--z-s2)">Pour affiner ton estimation avec ce que tu bois en dehors de l’app.</p>
       <div class="chips" style="flex-wrap:wrap">${BAC_PRESETS.map(([n,d])=>`<button class="chip ${abv===d?"on":""}" data-a="bacpreset" data-d="${d}">${n}</button>`).join("")}</div>
-      <div class="group" style="margin-top:10px"><div class="row"><div class="grow">Degré</div><div class="stepper"><button data-a="bacdeg" data-d="-0.5" aria-label="Moins">${IC.minus}</button><span>${num(abv)} %</span><button data-a="bacdeg" data-d="0.5" aria-label="Plus">${IC.plus}</button></div></div>
+      <div class="group" style="margin-top:var(--z-s1)"><div class="row"><div class="grow">Degré</div><div class="stepper"><button data-a="bacdeg" data-d="-0.5" aria-label="Moins">${IC.minus}</button><span>${num(abv)} %</span><button data-a="bacdeg" data-d="0.5" aria-label="Plus">${IC.plus}</button></div></div>
       <div class="row"><div class="grow">Quantité</div><div class="stepper"><button data-a="bacml" data-d="-30" aria-label="Moins">${IC.minus}</button><span>${fmtMl(ml)}</span><button data-a="bacml" data-d="30" aria-label="Plus">${IC.plus}</button></div></div></div>`,
     foot:`<button class="btn" data-a="bacconfirm">Ajouter</button>`}),{short:true});
   sh.bacGet=()=>({abv,ml});

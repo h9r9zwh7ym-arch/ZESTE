@@ -72,7 +72,7 @@ const HOME_SEC={
 };
 function homeSheet(){
   const sh=openSheet(()=>({title:"Personnaliser l’accueil",right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,
-    body:`<p class="body" style="margin-bottom:12px">Choisis les sections et leur ordre. La suggestion du soir reste toujours en haut.</p><div class="group home-list">${S.settings.home.map(([k,on],i,A)=>`<div class="row home-row" data-hk="${k}"><button class="hm" data-a="homemv" data-k="${k}" data-d="-1" ${i===0?"disabled":""} aria-label="Monter">${IC.chev.replace('class="chev"','class="chev up"')}</button><button class="hm" data-a="homemv" data-k="${k}" data-d="1" ${i===A.length-1?"disabled":""} aria-label="Descendre">${IC.chev.replace('class="chev"','class="chev down"')}</button><div class="grow ${on?"":"muted"}">${esc(HOME_N[k])}</div><button class="switch ${on?"on":""}" data-a="homeon" data-k="${k}" aria-label="${esc(HOME_N[k])}"></button></div>`).join("")}</div><div class="sp16"></div><div class="btn-row"><button class="btn danger" data-a="homereset">Rétablir l’ordre par défaut</button></div>`}));
+    body:`<p class="body" style="margin-bottom:var(--z-s2)">Choisis les sections et leur ordre. La suggestion du soir reste toujours en haut.</p><div class="group home-list">${S.settings.home.map(([k,on],i,A)=>`<div class="row home-row" data-hk="${k}"><button class="hm" data-a="homemv" data-k="${k}" data-d="-1" ${i===0?"disabled":""} aria-label="Monter">${IC.chev.replace('class="chev"','class="chev up"')}</button><button class="hm" data-a="homemv" data-k="${k}" data-d="1" ${i===A.length-1?"disabled":""} aria-label="Descendre">${IC.chev.replace('class="chev"','class="chev down"')}</button><div class="grow ${on?"":"muted"}">${esc(HOME_N[k])}</div><button class="switch ${on?"on":""}" data-a="homeon" data-k="${k}" aria-label="${esc(HOME_N[k])}"></button></div>`).join("")}</div><div class="sp16"></div><div class="btn-row"><button class="btn danger" data-a="homereset">Rétablir l’ordre par défaut</button></div>`}));
   sh.isHome=1;
 }
 function flipRows(sh, mutate){
@@ -173,7 +173,7 @@ async function rwSave(){
     const blob=await new Promise(r=>cv.toBlob(r,"image/png"));
     try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:"zeste-rewind.png",data:blob}); return; } }catch(e){ if(e&&e.code==="declined") return; }
     try{ const f=new File([blob],"zeste-rewind.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); return; } }catch(e){ return; }
-    const url=URL.createObjectURL(blob); rwClose(); openSheet(()=>({title:"Ta carte",body:`<p class="body" style="margin-bottom:12px">Appuie longuement sur l’image pour l’enregistrer.</p><div style="padding:0 16px"><img src="${url}" alt="Carte Zeste Rewind" style="width:100%;border-radius:16px"></div>`}));
+    const url=URL.createObjectURL(blob); rwClose(); openSheet(()=>({title:"Ta carte",body:`<p class="body" style="margin-bottom:var(--z-s2)">Appuie longuement sur l’image pour l’enregistrer.</p><div style="padding:0 16px"><img src="${url}" alt="Carte Zeste Rewind" style="width:100%;border-radius:16px"></div>`}));
   }catch(e){ toast("Impossible de créer l’image ici"); }
 }
 

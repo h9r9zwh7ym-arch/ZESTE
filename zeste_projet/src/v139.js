@@ -56,7 +56,7 @@ function recapRows(){
 // ---------- Bar : les catégories sont des en-têtes de liste, pas des sections ; les basiques en une ligne ----------
 { const _vb=vBar;
   vBar=function(){ let h=_vb();
-    h=h.replace(/<h2 class="sh"><span style="display:flex;align-items:center;gap:10px">([\s\S]*?)<\/span><span class="more" style="color:var\(--label2\)">(\d+)<\/span><\/h2><div class="sp8"><\/div>/g,`<div class="list-h cat-h"><b>$1</b><span>$2</span></div>`)
+    h=h.replace(/<h2 class="sh"><span style="display:flex;align-items:center;gap:var\(--z-s1\)">([\s\S]*?)<\/span><span class="more" style="color:var\(--label2\)">(\d+)<\/span><\/h2><div class="sp8"><\/div>/g,`<div class="list-h cat-h"><b>$1</b><span>$2</span></div>`)
        .replace('<h2 class="sh">À racheter</h2><div class="sh-sub">Bouteilles vides</div>','<div class="list-h cat-h"><b>À racheter</b><span></span></div>');
     h=h.replace(/<h2 class="sh">Additionnel<\/h2><div class="sh-sub">[^<]*<\/div><div class="card">[\s\S]*?<b[^>]*>(\d+) basiques<\/b>[\s\S]*?<div class="basics-line">([\s\S]*?)<\/div><\/div>/,
       (m,n,line)=>`<div class="list-h cat-h"><b>Additionnel</b><span></span></div><div class="group"><button class="row tap" data-a="basics" style="--inset:20px"><div class="grow"><div class="t">Basiques toujours disponibles</div><div class="s">${line.replace(/\.$/,"")}</div></div><span class="val">${n}</span>${IC.chev}</button></div>`);
