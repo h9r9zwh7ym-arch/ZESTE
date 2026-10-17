@@ -1,6 +1,6 @@
 // 1.61 (A) : verser dans le Labo quand il reste peu de place. Verre Highball (contenance effective), place restante 9, 5, 1,
 // 0,5 et 0,1 cl ; pour un ingrédient de chaque catégorie (dont le tonic) et par chaque chemin (tuile, « + » du stepper,
-// « + » d'un conseil, ajout direct) : on verse min(dose prévue, place), arrondi au 0,05 cl, sans jamais déborder ;
+// « + » d'un conseil, ajout direct, « Autre » [1.63]) : on verse min(dose prévue, place), arrondi au 0,05 cl, sans jamais déborder ;
 // refus seulement à 0 cl, avec un seul message. « Ajuster au verre » remplit la contenance effective sans la dépasser.
 const {chromium}=require('playwright'); const path=require('path');
 const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
@@ -20,9 +20,9 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
     const q=id=>(S.mix.items.find(i=>i.id===id)||{q:0}).q;
     for(const m of ["build","shake"]) for(const id of ids) for(const space of [90,50,10,5,1,0]){
       const ml=unitOf(id)==="ml";
-      for(const path of ["tuile","stepper","conseil","ajout"]){
+      for(const path of ["tuile","stepper","conseil","ajout","autre"]){
         setup(space,path==="stepper"?id:null,m); const before=q(id), v0=vol(), snap=JSON.stringify(S.mix.items); document.getElementById('toast')&&document.getElementById('toast').classList.remove('show');
-        try{ if(path==="tuile") ACT.mixpour({id}); if(path==="stepper") ACT.mixq({k:S.mix.items.findIndex(i=>i.id===id),d:1}); if(path==="conseil") ACT.mixfix({id,q:defaultQ(id)}); if(path==="ajout") ACT.mixadd1({id}); }catch(e){ out.push([m,id,space,path,"erreur "+e.message]); continue; }
+        try{ if(path==="tuile") ACT.mixpour({id}); if(path==="stepper") ACT.mixq({k:S.mix.items.findIndex(i=>i.id===id),d:1}); if(path==="conseil") ACT.mixfix({id,q:defaultQ(id)}); if(path==="ajout") ACT.mixadd1({id}); if(path==="autre"){ const pk=pickIngSheet; pickIngSheet=cb=>cb(id); try{ ACT.mixadd({}); } finally{ pickIngSheet=pk; } } }catch(e){ out.push([m,id,space,path,"erreur "+e.message]); continue; }
         const added=Math.round((q(id)-before)*100)/100, v1=vol(), A=avail(), over=v1>A+1e-6&&v1>v0+1e-6, t=toastN(), after=JSON.stringify(S.mix.items);
         // place réelle : au moins 0,05 cl de cet ingrédient tient-il ? (au shaker, l'alcool ajouté augmente aussi la dilution de tout le mélange)
         const ex=S.mix.items.find(i=>i.id===id); S.mix.items=JSON.parse(snap); const half=(()=>{ const bk=S.mix.items; const e=bk.find(i=>i.id===id); S.mix.items=e? bk.map(i=>i===e?Object.assign({},i,{q:i.q+0.5}):i) : bk.concat([{id,q:0.5}]); const ok=vol()<=avail()+1e-6; S.mix.items=bk; return ok; })(); if(ex) S.mix.items=JSON.parse(after);
