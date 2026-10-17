@@ -4534,7 +4534,7 @@ function openRewind(){
   slides.push({c:["#6A9A4A","#0E1A0A"],h:`<div class="rw-small">Tu as exploré</div><div class="rw-big" data-count="${D.fams.length}">0</div><div class="rw-mid">famille${D.fams.length>1?"s":""} de cocktails sur ${Object.keys(FAMILIES).length}</div><div class="rw-chips">${Object.keys(FAMILIES).map((f,k)=>`<span class="${D.fams.includes(f)?"on":""}" style="animation-delay:${0.4+k*0.06}s">${esc(FAMILIES[f])}</span>`).join("")}</div>`});
   if(D.count>=3){ const mx=Math.max(...D.months,1); slides.push({c:["#3A6AC0","#08102A"],h:`<div class="rw-small">Ton mois le plus festif</div><div class="rw-name">${esc(D.monthNames[D.topMonth].charAt(0).toUpperCase()+D.monthNames[D.topMonth].slice(1))}</div><div class="rw-months">${D.months.map((v,k)=>`<div class="rw-m ${k===D.topMonth?"top":""}"><i style="--h:${Math.round(v/mx*100)}%;animation-delay:${0.2+k*0.05}s"></i><span>${esc(D.monthNames[k].slice(0,1).toUpperCase())}</span></div>`).join("")}</div>`}); }
   if(best&&best!==top) slides.push({c:[best.col,mix(best.col,"#000000",.6)],h:`<div class="rw-small">Ton coup de cœur</div><div class="rw-glass">${glassSVG(best,{pour:true,live:1})}</div><div class="rw-name">${esc(best.n)}</div><div class="rw-stars">${[1,2,3,4,5].map(k=>`<span class="${k<=S.ratings[best.id]?"on":""}" style="animation-delay:${0.5+k*0.1}s">${IC.star}</span>`).join("")}</div>`});
-  if(D.style){ const tv=tasteVector(); slides.push({c:["#8A4AB8","#140820"],h:`<div class="rw-small">Ton style</div><div class="rw-name">${esc(D.style)}</div>${tv&&tv.liked?`<div class="rw-radar">${radarSVG(tv.liked)}</div>`:""}`}); }
+  if(D.style){ const rv=tasteRadar(); slides.push({c:["#8A4AB8","#140820"],h:`<div class="rw-small">Ton style</div><div class="rw-name">${esc(D.style)}</div>${rv?`<div class="rw-radar">${radarSVG(rv)}</div>`:""}`}); }
   if(D.avgCost!=null&&D.priced>=2) slides.push({c:["#C8A020","#1A1404"],h:`<div class="rw-small">Côté porte-monnaie</div><div class="rw-big money">${chf(D.avgCost)}</div><div class="rw-mid">le verre en moyenne</div><div class="rw-note">Au bar, compte plutôt entre 14 et 20 CHF. Ton bar à la maison est rentable.</div>`});
   slides.push({c:[col,"#100A14"],end:1,h:`<div class="rw-small">C’était ton année</div><div class="rw-sum"><div><b>${D.count}</b><span>verres</span></div><div><b>${D.distinct}</b><span>recettes</span></div><div><b>${D.fams.length}</b><span>familles</span></div><div><b>${D.tro}</b><span>trophées</span></div></div>${top?`<div class="rw-note">Cocktail de l’année : <b>${esc(top.n)}</b></div>`:""}<div class="rw-actions"><button class="btn" data-a="rwsave">${IC.share}Enregistrer ma carte</button><button class="btn gray" data-a="rwclose">Terminer</button></div>`});
   RW={i:0,slides,D,t0:0,timer:null,paused:false};
@@ -5043,7 +5043,7 @@ Object.assign(ACT,{
   city:(d)=>citySheet(+d.i),
   lineage:(d)=>{ TREE_I=+d.i; renderView("cocktails"); },
   radpreset:(d)=>{ RAD=d.v.split(",").map(Number); renderView("cocktails"); },
-  radmine:()=>{ const tv=tasteVector(); RAD=(tv&&tv.liked?tv.liked:avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); }
+  radmine:()=>{ RAD=(tasteRadar()||avgProfile()).slice(0,8).map(v=>Math.round(v*100)/100); renderView("cocktails"); }
 });
 // ================= DÉFIS DU LABO =================
 function weekKey(){ const d=new Date(); d.setHours(0,0,0,0); const mon=new Date(d); mon.setDate(d.getDate()-((d.getDay()+6)%7)); return Math.floor(mon.getTime()/(7*864e5)); }
@@ -6703,6 +6703,27 @@ function discFit(root){ (root||document).querySelectorAll(".disc").forEach(d=>{ 
 { const _rv=renderView; renderView=function(t){ const r=_rv.apply(this,arguments); if(t==="today") requestAnimationFrame(()=>discFit(document.getElementById("v-today"))); return r; };
   const _fl=ACT.flip; ACT.flip=function(d,t){ const r=_fl.apply(this,arguments); const c=t&&t.closest(".disc"); if(c) discFit(c.parentNode); return r; };
   if(typeof addEventListener==="function") addEventListener("resize",()=>discFit()); if(typeof document!=="undefined"&&document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>discFit()); }
+// F18 — Profil : titre, phrase et radar viennent tous du vecteur de goût final du modèle (getModel().DIR : notes, quiz, « Ta version »).
+// Avant : titre = DIR, phrase = écart des notes à 2,5 (tasteVector().dir), radar = profil absolu des cocktails aimés → contradictions.
+function tasteAxes(){ const M=getModel(); if(!M||M.n<2) return null; const D=M.DIR, mx=Math.max(...D.map(Math.abs)); if(!(mx>0.005)) return null;
+  const s=D.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]), th=mx*0.25;
+  return {D, mx, plus:s.filter(x=>x[0]>Math.max(th,0.005)).slice(0,3).map(x=>x[1]), minus:s.filter(x=>x[0]<-Math.max(th,0.005)).slice(-2).reverse().map(x=>x[1])}; }
+function tasteRadar(){ const A=tasteAxes(); if(!A) return null; const av=avgProfile(), k=0.3/A.mx; return A.D.map((v,i)=>clamp01(av[i]+v*k)); }
+tasteSentence=function(){ const A=tasteAxes(); if(!A) return ""; const n=i=>DIMS[i].toLowerCase(); let out="";
+  if(A.plus.length) out+="Tu aimes ce qui est "+joinFr(A.plus.map(n)); if(A.minus.length) out+=(out?", un peu moins ce qui est ":"Tu aimes moins ce qui est ")+joinFr(A.minus.map(n));
+  return out? out+".":""; };
+focalTaste=function(){ const sty=tasteStyle(), rv=tasteRadar(), nR=rated().length;
+  const src=nR&&S.quiz?"D’après tes notes et ton quiz.":nR?"D’après tes notes.":"D’après ton quiz.";
+  const body= rv? `<div class="prof">${radarSVG(rv,avgProfile())}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">${src}</span></div></div>`
+    : `<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
+  return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`; };
+// F19 — Labo : « Conseillé » = ce que choisit « Auto ». Avant, le badge montrait labReco (le style seul) alors qu'Auto passait
+// ensuite par l'échelle glace/contenance de v141 et pouvait prendre un autre verre. Une seule source : le choix automatique.
+{ const _lg=labGlass;
+  labGlass=function(){ const M=mixState(), mine=M.g; let auto;
+    if(mine){ M.g=null; try{ auto=_lg().g; } finally { M.g=mine; } }
+    const r=_lg(); if(!mine) auto=r.g;
+    return auto===r.rec.g? r : Object.assign({},r,{rec:Object.assign({},r.rec,{g:auto})}); }; }
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
