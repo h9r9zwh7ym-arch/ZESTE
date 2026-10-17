@@ -74,4 +74,4 @@ labGrade=function(s){ return s>=90?["Proche d’un classique","trophy"]:s>=70?["
 const CHAL_MIN={ing:93,mini:94,long:93,light:93,swiss:94,red:94,zero:95,deco:95,bitter:95,strong:95,bubbles:95,mystery:96,five:96,perfect:97};
 CHAL_T.forEach(t=>{ const mk=t.make; t.make=w=>{ const c=mk(w); if(CHAL_MIN[t.id]!=null) c.min=CHAL_MIN[t.id]; return c; }; });
 { const T=TROPHIES.find(t=>t[0]==="labpro"); if(T){ T[2]="Obtiens 96/100 au labo"; T[3]=96; } }
-const LAB_FETE=95; // confettis et fanfare au service (avant : 85)
+let LAB_FETE=95; // confettis et fanfare au service (avant : 85)
