@@ -3,7 +3,8 @@
 //    0 % sur les recettes, leurs versions dégradées (sucre ×1,5 / ×0,5, acidité ×0,5, spiritueux ×2) et 600 mélanges aléatoires ;
 //  · au moins 60 % des mélanges notés sous 85 reçoivent un conseil chiffré (1.66 : 51 à 74 % ; 7,5 à 19 % des conseils faisaient baisser la note) ;
 //  · retouche de ±5 ml d'un ingrédient d'une vraie recette, verre non débordant avant et après (le Labo s'arrête au bord) :
-//    sauts de 20 points ou plus ≤ 0,5 % (1.66 : 0,6 %). Les verres déjà remplis à plus de 100 % sont comptés à part, pour information.
+//    sauts de 20 points ou plus ≤ 0,5 % (1.66 : 0,6 %) ;
+//  · (1.69) conseil de méthode : règles d’accord avec ≥ 90 % des recettes ; appliqué, il ne fait jamais baisser la note et disparaît. Les verres déjà remplis à plus de 100 % sont comptés à part, pour information.
 // usage : SEED=1 node tests/m10.js (EXP=fichier : variante)
 const fs=require('fs');const h=fs.readFileSync(process.env.HTML||'dist/zeste.html','utf8');let js=h.split('<script>')[1].split('</script>')[0];
 global.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement:()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},setAttribute(){},appendChild(){}}),getElementById:()=>null,body:{appendChild(){},prepend(){},classList:{add(){},remove(){},toggle(){}}},documentElement:{dataset:{}}};
@@ -37,6 +38,13 @@ const pick=a=>a[Math.floor(rnd()*a.length)];
 for(let n=0;n<600;n++){ const items=[{id:pick(SP),q:10*(2+Math.floor(rnd()*7))}]; const k=1+Math.floor(rnd()*3); for(let j=0;j<k;j++){ const id=pick(OT); if(items.some(i=>i.id===id)) continue; items.push({id,q:10*(ING[id].fizz?(5+Math.floor(rnd()*11)):(1+Math.floor(rnd()*6)))}); }
   const fizz=items.some(i=>ING[i.id].fizz), acid=items.some(i=>ING[i.id].ac>3), m=fizz?"build":acid?"shake":"stir";
   S.mix={m,g:null,gUser:0,ice:null,gar:[],t:"auto",items}; STC={}; MEMO={}; const G=labGlass(); check("aléatoires",{items,m,g:G.g,ice:G.ice,t:"auto"}); }
+// (1.69) conseil de méthode : accord des règles avec les recettes de l'app ; mauvaise méthode → conseil qui ne fait pas baisser la note
+const MM={shake:"shake",mshake:"shake",stir:"stir",build:"build",mbuild:"build"}; let agr=0, agrN=0; const disagree=[]; const MT={shown:0,blocked:0,worse:0,stays:0,n:0}; let mex=null;
+pool.forEach(r=>{ if(!MM[r.m]) return; const b=fromRec(r); const items=b.items.map(i=>({id:i.id,q:i.q,u:unitOf(i.id),r:ING[i.id].fizz&&MM[r.m]!=="build"?"top":""}));
+  const adv=labMethodAdvice(items,b.ice||"none"); if(!adv) return; agrN++; if(adv.ok.has(MM[r.m])) agr++; else disagree.push(r.id);
+  ["shake","stir","build"].filter(m=>!adv.ok.has(m)).forEach(m=>{ setMix(Object.assign({},b,{m})); const a=now(); if(!a) return; MT.n++;
+    const t=labMethodTip(); if(!t){ MT.blocked++; return; } MT.shown++;
+    ACT.mm({m:t.m}); const c=now(); if(c&&c.s<a.s){ MT.worse++; if(!mex) mex=[r.id,m,"→",t.m,a.s,c.s]; } if(labMethodTip()) MT.stays++; }); });
 // continuité : ±5 ml sur chaque ingrédient en ml d'une vraie recette
 const J=[], JA=[]; let jex=null;
 pool.forEach(r=>{ const b=fromRec(r); setMix(b); const a=now(); if(!a) return;
@@ -53,6 +61,9 @@ console.log('  ±5 ml sur une vraie recette, dans le verre : '+J.length+' retouc
 console.log('    toutes retouches, verres déjà trop pleins compris (impossible en versant) : '+JA.length+', sauts ≥ 20 : '+pc(JA.map(j=>j>=20?1:0))+' %');
 if(big>0.5) fails.push("sauts ≥ 20 points : "+big+" % > 0,5 %");
 if(worst) console.log('  pire conseil : '+JSON.stringify(worst));
-console.log(fails.length? '  ÉCHEC : '+fails.join(" ; ") : '  Cibles tenues : aucun conseil chiffré ne fait baisser la note ; couverture ≥ 60 % ; sauts ≥ 20 points ≤ 0,5 %.');
+const agrP=Math.round(1000*agr/Math.max(1,agrN))/10;
+console.log('  méthode : règles d’accord avec '+agr+'/'+agrN+' recettes ('+agrP+' %) ; mauvaise méthode : '+MT.n+' cas, conseil affiché '+MT.shown+', retenu par le garde-fou '+MT.blocked+', note en baisse '+MT.worse+', conseil persistant '+MT.stays+(disagree.length?' ; écarts : '+disagree.join(', '):''));
+if(agrP<90) fails.push("méthode : accord "+agrP+" % < 90 %"); if(MT.worse) fails.push("méthode : un conseil fait baisser la note "+JSON.stringify(mex)); if(MT.stays) fails.push("méthode : le conseil reste après application");
+console.log(fails.length? '  ÉCHEC : '+fails.join(" ; ") : '  Cibles tenues : aucun conseil chiffré ni de méthode ne fait baisser la note ; couverture ≥ 60 % ; sauts ≥ 20 points ≤ 0,5 % ; méthode ≥ 90 % d’accord.');
 if(fails.length&&process.env.STRICT!=="0") process.exitCode=1;
 }`);
