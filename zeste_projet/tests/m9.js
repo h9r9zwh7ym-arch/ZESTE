@@ -71,7 +71,9 @@ pool.forEach(r=>{ const b=fromRec(r), st=styleOf(r.ing,r.m), mul=(f,k)=>b.items.
   TAG="mauvais verre"; deg.push([TAG,lscore(Object.assign({},b,{g:(st==="long"||st==="spritz")?"martini":"highball"}))]);
   if(st==="long"&&b.ice!=="none"){ TAG="long drink sans glace"; deg.push([TAG,lscore(Object.assign({},b,{ice:"none"}))]); } });
 // mélanges aléatoires plausibles
-const SP=Object.keys(ING).filter(k=>ING[k].cat==="spirit"&&unitOf(k)==="ml"&&!ING[k].al), OT=Object.keys(ING).filter(k=>["liqueur","amaro","vin","sirop","jus","soft"].includes(ING[k].cat)&&unitOf(k)==="ml"&&!ING[k].al&&!ING[k].basic||["citron","citron_vert","sirop_sucre","tonic","soda"].includes(k));
+// population tirée du catalogue d'avant la 1.68 (les ingrédients ajoutés changeraient l'échantillon, pas le barème)
+const NEW168=new Set(["tonic_med","tonic_sureau","tonic_aromatique","tonic_concombre","tonic_leger","limonade_sicilienne","kombucha","gin_0","prosecco_0","biere_0","vin_rose","sake","biere_blanche","ipa","poire","tequila_repo","gin_rose"]);
+const SP=Object.keys(ING).filter(k=>!NEW168.has(k)&&ING[k].cat==="spirit"&&unitOf(k)==="ml"&&!ING[k].al), OT=Object.keys(ING).filter(k=>!NEW168.has(k)&&(["liqueur","amaro","vin","sirop","jus","soft"].includes(ING[k].cat)&&unitOf(k)==="ml"&&!ING[k].al&&!ING[k].basic||["citron","citron_vert","sirop_sucre","tonic","soda"].includes(k)));
 const GL=["coupe","martini","rocks","highball","flute","vin"], ICE=["none","cubes","big","pilee"];
 const pick=a=>a[Math.floor(rnd()*a.length)];
 TAG="rand"; const rand=[]; let randNone=0; for(let n=0;n<1000;n++){ const items=[{id:pick(SP),q:10*(2+Math.floor(rnd()*7))}]; const k=1+Math.floor(rnd()*3); for(let j=0;j<k;j++){ const id=pick(OT); if(items.some(i=>i.id===id)) continue; items.push({id,q:10*(ING[id].fizz?(5+Math.floor(rnd()*11)):(1+Math.floor(rnd()*6)))}); }

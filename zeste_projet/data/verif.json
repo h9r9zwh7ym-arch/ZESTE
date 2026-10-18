@@ -1,0 +1,395 @@
+{
+ "_note": "1.68 : vérification des recettes non classiques (hors c:1). Verdicts : ajouté (nouvelle recette 1.68, sourcée), conforme (≤ 25 % d'écart avec au moins une source), corrigé, maison : plausible. Les créations suisses (cr:1) restent « à tester » : voir tests/recaudit.js.",
+ "recettes": {
+  "kentucky_mule": {
+   "verdict": "conforme (45–60 ml de bourbon selon les sources)",
+   "source": "https://bevvy.co/amp/cocktail/kentucky-mule/nuj",
+   "date": "2026-10-18"
+  },
+  "st_germain_spritz": {
+   "verdict": "conforme (prosecco et eau gazeuse à parts égales, comme la marque)",
+   "source": "https://www.stgermainliqueur.com/cocktails/st-germain-spritz/",
+   "date": "2026-10-18"
+  },
+  "mezcal_negroni": {
+   "verdict": "conforme (parts égales)",
+   "source": "https://cocktail-society.com/recipes/mezcal-negroni/",
+   "date": "2026-10-18"
+  },
+  "rum_of": {
+   "verdict": "conforme",
+   "source": "https://www.decanter.com/spirits/top-rum-old-fashioned-450372/",
+   "date": "2026-10-18"
+  },
+  "caipiroska": {
+   "verdict": "conforme",
+   "source": "https://www.barschool.net/recipes/caipiroska",
+   "date": "2026-10-18"
+  },
+  "mezcal_mule": {
+   "verdict": "conforme (version simple ; le Mezcal Mule de PDT, 2008, ajoute concombre et passion)",
+   "source": "https://cocktail-society.com/recipes/mezcal-mule/",
+   "date": "2026-10-18"
+  },
+  "gin_sour": {
+   "verdict": "conforme",
+   "source": "https://www.diffordsguide.com/en-au/cocktails/recipe/845/gin-sour",
+   "date": "2026-10-18"
+  },
+  "cadillac_margarita": {
+   "verdict": "corrigé : Grand Marnier 20 → 30 ml",
+   "source": "https://www.evolvingtable.com/cadillac-margarita",
+   "date": "2026-10-18"
+  },
+  "mezcal_margarita": {
+   "verdict": "conforme",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/2497/mezcal-margarita",
+   "date": "2026-10-18"
+  },
+  "vodka_martini": {
+   "verdict": "conforme (6:1, entre le 10:1 sec et le 2:1 « wet » de Difford's)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/2054/vodka-martini",
+   "date": "2026-10-18"
+  },
+  "perfect_manhattan": {
+   "verdict": "conforme",
+   "source": "https://punchdrink.com/recipes/perfect-manhattan/",
+   "date": "2026-10-18"
+  },
+  "cynar_negroni": {
+   "verdict": "conforme (parts égales)",
+   "source": "https://www.acouplecooks.com/cynar-negroni/",
+   "date": "2026-10-18"
+  },
+  "maple_of": {
+   "verdict": "conforme",
+   "source": "https://www.rachelcooks.com/maple-old-fashioned",
+   "date": "2026-10-18"
+  },
+  "bloody_maria": {
+   "verdict": "conforme (mêmes proportions, service plus petit)",
+   "source": "https://isabeleats.com/?p=8798",
+   "date": "2026-10-18"
+  },
+  "campari_spritz": {
+   "verdict": "conforme (recette Campari 6/9/3 cl)",
+   "source": "https://dev.campari.com/en-ca/our-cocktails/campari-spritz/",
+   "date": "2026-10-18"
+  },
+  "limoncello_spritz": {
+   "verdict": "conforme (3-2-1)",
+   "source": "https://www.chefnotrequired.com/wprm_print/limoncello-spritz",
+   "date": "2026-10-18"
+  },
+  "cardinal": {
+   "verdict": "corrigé : 2 cl de cassis pour 10 cl de vin (était 1,5 / 9)",
+   "source": "https://www.cocktailmag.fr/en/cocktail-recipe/champagne-wine/cardinal",
+   "date": "2026-10-18"
+  },
+  "mojito_royal": {
+   "verdict": "conforme",
+   "source": "https://www.cocktailmag.fr/en/cocktail-recipe/rum/royal-mojito",
+   "date": "2026-10-18"
+  },
+  "godmother": {
+   "verdict": "conforme (3:1 ; Difford's 2:1)",
+   "source": "https://food52.com/recipes/87048-godmother-cocktail",
+   "date": "2026-10-18"
+  },
+  "espresso_tonic": {
+   "verdict": "conforme",
+   "source": "https://nescafe.com/gb/recipes/espresso-tonic",
+   "date": "2026-10-18"
+  },
+  "chindon": {
+   "verdict": "corrigé : « Chindon » introuvable, renommé « Suze pamplemousse » ; 1/3 Suze, 2/3 jus (50/100 ml, était 40/120)",
+   "source": "https://fr-academic.com/dic.nsf/frwiki/1585646",
+   "date": "2026-10-18"
+  },
+  "spiced_cola": {
+   "verdict": "conforme (recette Captain Morgan 50/150 ml)",
+   "source": "https://www.captainmorgan.com/en-ca/rum-cocktails/captain-and-cola",
+   "date": "2026-10-18"
+  },
+  "spiced_mule": {
+   "verdict": "conforme (proportions d'un mule)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/1306/mexican-mule",
+   "date": "2026-10-18"
+  },
+  "bay_breeze": {
+   "verdict": "corrigé : ananas 30 → 60 ml",
+   "source": "https://abeautifulmess.com/bay-breeze-cocktail/",
+   "date": "2026-10-18"
+  },
+  "jager_tonic": {
+   "verdict": "conforme (4 cl, tonic à volonté)",
+   "source": "https://www.garrafeirasoares.pt/en/alemanha/espirituosos/jagermeister-2-cl/item_9836.html",
+   "date": "2026-10-18"
+  },
+  "madras": {
+   "verdict": "conforme (jus à parts égales)",
+   "source": "https://www.acouplecooks.com/madras-cocktail/",
+   "date": "2026-10-18"
+  },
+  "vodka_collins": {
+   "verdict": "conforme",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/4657/vodka-collins-no-added-sugar-and-low-calorie",
+   "date": "2026-10-18"
+  },
+  "mango_mule": {
+   "verdict": "maison : plausible (proportions d'un mule)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "passion_spritz": {
+   "verdict": "corrigé : Passoã 40 → 60 ml (3-2-1 de la marque)",
+   "source": "https://nordics.edrington.com/en/passoa-serves",
+   "date": "2026-10-18"
+  },
+  "long_beach": {
+   "verdict": "conforme",
+   "source": "https://www.acouplecooks.com/long-beach-iced-tea/print/127641/",
+   "date": "2026-10-18"
+  },
+  "ice_tea_peche": {
+   "verdict": "maison : plausible",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "bitter_lemon_gin": {
+   "verdict": "conforme (1:3, comme un gin tonic)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "campari_orange": {
+   "verdict": "conforme (1:3)",
+   "source": "https://www.chowhound.com/2001304/2-ingredient-italian-cocktail-bittersweet-symphony",
+   "date": "2026-10-18"
+  },
+  "coco_colada": {
+   "verdict": "corrigé : recette Malibu (50 ml Malibu, 25 ml crème de coco, 50 ml ananas, citron vert facultatif) au lieu de crème et rhum blanc",
+   "source": "https://www.malibudrinks.com/en-gb/drinks/pina-colada",
+   "date": "2026-10-18"
+  },
+  "sureau_fizz": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "virgin_mule": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "framboise_lemonade": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "passion_fizz": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "cafe_frappe": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "mangue_mule": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "virgin_sunrise": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "basil_lemonade": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "london_mule": {
+   "verdict": "conforme (proportions du Moscow Mule IBA)",
+   "source": "https://www.theendlessmeal.com/wprm_print/gin-mule-recipe",
+   "date": "2026-10-18"
+  },
+  "aperol_sour": {
+   "verdict": "conforme",
+   "source": "https://drinksworld.com/recipe/aperol-sour/",
+   "date": "2026-10-18"
+  },
+  "mojito_fraise": {
+   "verdict": "conforme",
+   "source": "https://www.olivemagazine.com/recipes/cocktails-and-drinks/strawberry-mojito/",
+   "date": "2026-10-18"
+  },
+  "gin_fraise": {
+   "verdict": "conforme",
+   "source": "https://theduke-gin.de/en/blogs/drinks/strawberry-mint-gin-tonic",
+   "date": "2026-10-18"
+  },
+  "vodka_tonic": {
+   "verdict": "conforme (1:3)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "mezcal_tonic": {
+   "verdict": "conforme (45/150 ml)",
+   "source": "https://barcart.pearcommerce.com/cocktails/creyente-tonic/index.html",
+   "date": "2026-10-18"
+  },
+  "kir_normand": {
+   "verdict": "conforme (1:5 à 1:8)",
+   "source": "https://thegoodlifefrance.com/how-to-make-kir-normand/",
+   "date": "2026-10-18"
+  },
+  "cynar_spritz": {
+   "verdict": "conforme (3 prosecco : 2 Cynar, selon Cynar)",
+   "source": "https://appetitomagazine.com/recipes/cocktails/cynar-spritz-an-italian-classic",
+   "date": "2026-10-18"
+  },
+  "citronnade": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "the_peche": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "cranberry_fizz": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "ginger_lemonade": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "most_chaud": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "virgin_fraise": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "italian_greyhound": {
+   "verdict": "conforme",
+   "source": "https://www.rachaelrayshow.com/recipes/italian-greyhound-cocktail-recipe-from-john-cusimano",
+   "date": "2026-10-18"
+  },
+  "dirty_shirley": {
+   "verdict": "conforme",
+   "source": "https://onedishkitchen.com/dirty-shirley-recipe",
+   "date": "2026-10-18"
+  },
+  "spritz_peche": {
+   "verdict": "conforme",
+   "source": "https://polkadotwedding.com/2020/01/cocktail-friday-summer-peach-spritz",
+   "date": "2026-10-18"
+  },
+  "pickleback": {
+   "verdict": "conforme (whiskey puis saumure, deux verres)",
+   "source": "https://www.theglobeandmail.com/life/cocktails-the-pickleback/article1366699",
+   "date": "2026-10-18"
+  },
+  "cucumber_cooler": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "espresso_tonic_orange": {
+   "verdict": "maison : plausible (boisson générique, sans recette de référence unique)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "crodino_rocks": {
+   "verdict": "conforme (service de la marque, 1.55)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "sanbitter_rocks": {
+   "verdict": "conforme (service de la marque, 1.55)",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "gt_med": {
+   "verdict": "ajouté : service Fever-Tree 50/150 ml",
+   "source": "https://www.sainsburys.co.uk/gol-ui/product/fever-tree-mediterranean-tonic-water-500ml",
+   "date": "2026-10-18"
+  },
+  "gt_sureau": {
+   "verdict": "ajouté : service Fever-Tree 50/150 ml",
+   "source": "https://fever-tree.com/en_GB/article/discoverperfectpairings",
+   "date": "2026-10-18"
+  },
+  "gt_concombre": {
+   "verdict": "ajouté : service Fever-Tree 50/150 ml",
+   "source": "https://fever-tree.com/en_GB/article/discoverperfectpairings",
+   "date": "2026-10-18"
+  },
+  "gt_aromatique": {
+   "verdict": "ajouté : service Fever-Tree 50/150 ml",
+   "source": "https://fever-tree.com/en_GB/article/discoverperfectpairings",
+   "date": "2026-10-18"
+  },
+  "pink_gt": {
+   "verdict": "ajouté : 50/150 ml comme un gin tonic",
+   "source": "https://fever-tree.com/en_GB/article/discoverperfectpairings",
+   "date": "2026-10-18"
+  },
+  "gt_0": {
+   "verdict": "ajouté : service Seedlip 50/150 ml",
+   "source": "https://diageobaracademy.com/en-zz/home/explore-all-recipes/seedlip-grove-42-tonic",
+   "date": "2026-10-18"
+  },
+  "sake_tonic": {
+   "verdict": "ajouté : 100/70 ml",
+   "source": "https://www.olivemagazine.com/recipes/cocktails-and-drinks/sake-and-tonic/",
+   "date": "2026-10-18"
+  },
+  "saketini": {
+   "verdict": "ajouté : 4:1 (Emeril ; Difford's 5:1)",
+   "source": "https://www.emerils.com/print/130860",
+   "date": "2026-10-18"
+  },
+  "rose_spritz": {
+   "verdict": "ajouté : 125/25/75 ml",
+   "source": "https://www.waitrose.com/ecom/recipe/rose-elderflower-spritz",
+   "date": "2026-10-18"
+  },
+  "snakebite": {
+   "verdict": "ajouté : moitié cidre, moitié bière blonde, sans glace",
+   "source": "https://en.wikipedia.org/wiki/Snakebite_(drink)",
+   "date": "2026-10-18"
+  },
+  "kombucha_mule": {
+   "verdict": "ajouté : 15 ml citron vert, 120 ml kombucha au gingembre",
+   "source": "https://houseandhome.com/recipe/kombucha-moscow-mule/",
+   "date": "2026-10-18"
+  },
+  "hugo_0": {
+   "verdict": "ajouté : proportions du Hugo, prosecco sans alcool",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "panache_0": {
+   "verdict": "ajouté : proportions du Panaché, bière sans alcool",
+   "source": "",
+   "date": "2026-10-18"
+  },
+  "oaxaca_of": {
+   "verdict": "corrigé : tequila reposado au lieu de blanco (recette de Phil Ward)",
+   "source": "https://punchdrink.com/recipes/oaxaca-old-fashioned/",
+   "date": "2026-10-18"
+  }
+ }
+}

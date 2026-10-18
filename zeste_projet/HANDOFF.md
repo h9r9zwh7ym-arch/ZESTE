@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.67**. Chaque mise à jour livrée incrémente : 1.21 → 1.67… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v25` à la 1.67) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.68**. Chaque mise à jour livrée incrémente : 1.21 → 1.68… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v26` à la 1.68) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -35,8 +35,8 @@ Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Pl
 
 ```
 style.css
-data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js v169.js v170.js v171.js ui_final.js v126.js v130.js
+data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js data_drinks.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js v169.js v170.js v171.js v172.js ui_final.js v126.js v130.js
 ```
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
@@ -154,6 +154,7 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **1.65 — Données locales** (`v169.js`) : synchro claude.ai retirée, copie de secours IndexedDB, sauvegardes et écran de stockage (§ 9 quater) ; textes d'« À propos » raccourcis.
 - **1.66 — Mes créations** (`v170.js`) : section du Profil, avant « Ton carnet », listant tous les cocktails créés dans le Labo (plus récents d’abord, 3 puis « Voir les N autres », via `recRow` et `foldRows`) ; liste vide : « Crée ton premier cocktail » ouvre le Labo en Composer (`ACT.gocreate`). Test `mine_test.js`.
 - **1.67 — Conseils et prédiction** (`v171.js`) : conseils du Labo vérifiés par la note (§ 9 ter, `m10.js`, `labtips_test.js`) ; plafonds d'équilibre adoucis ; une création enregistrée non notée devient un signal de goût (v 1,0, poids 0,5, réglé avec `m7.js CREA=1` : NDCG à 3 notes 0,776 → 0,831 en validation) et a un plancher de prédiction de 3,6.
+- **1.68 — Recettes vérifiées, nouvelles boissons** (`data_drinks.js`, `v172.js`) : 64 recettes non classiques vérifiées (§ 10, `data/verif.json`), audit `recaudit.js` ; 17 boissons (5 tonics aromatisés, limonade sicilienne, kombucha, gin / prosecco / bière sans alcool, vin rosé, saké, bière blanche, IPA, poiré, tequila reposado, gin rosé ; sucres sourcés en tête du fichier) et 13 recettes ; substituts dans les deux sens (tonic ↔ tonics aromatisés…) ; `ING_KIN` : une variante compte comme son ingrédient de base pour le modèle de goût ; m9 tire ses mélanges au hasard dans le catalogue d'avant la 1.68 (`NEW168`). Test `drinks_test.js`.
 
 ## 8. Haptique
 
@@ -225,8 +226,13 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 
 ## 10. Vérification des recettes, reste à faire
 
-1. Recettes non classiques (hors `c:1`) : pas encore vérifiées une à une.
-2. Les 32 créations suisses (`cr:1`) restent « à tester » : ne jamais les présenter comme traditionnelles.
+1. **Recettes non classiques (hors `c:1`) : vérifiées en 1.68.** Les 64 recettes ont chacune une source et un verdict dans `data/verif.json` : 40 conformes (≤ 25 % d'écart avec au moins une source), 6 corrigées (Cadillac Margarita, Cardinal, Bay Breeze, Spritz passion, Colada au Malibu, « Chindon » introuvable → « Suze pamplemousse »), 18 boissons maison plausibles sans recette de référence unique. Les 13 recettes ajoutées en 1.68 y sont aussi, avec leur source ; l'Oaxaca Old Fashioned est repassé à la tequila reposado de la recette de Phil Ward.
+2. Les 33 créations suisses (`cr:1`) restent « à tester » : ne jamais les présenter comme traditionnelles.
+3. **Audit automatique** (`tests/recaudit.js`, dans `all.sh`) : liens de variantes, ingrédients, doublons, unités, quantités, drapeau sans alcool (bloquants) ; débordement du verre et note du Labo < 70 (listés). Exception justifiée : les 45 ml d'Angostura du Trinidad Sour.
+4. **Limites connues du Labo**, listées par l'audit et non corrigées :
+   - environ 80 recettes « débordent » de 1 à 15 % : marge du modèle de glace et de dilution (Gin tonic : 107 %) ;
+   - les tiki sur glace pilée (Zombie, Painkiller…) et les shots qui se boivent en plusieurs verres (Kamikaze, Pickleback) dépassent nettement, faute de grand mug tiki dans les verres du Labo ;
+   - les highballs secs, sans sucre (Whisky highball, Gin rickey, Ranch water), sont notés 39 : les plages du style « long » viennent de recettes surtout sucrées. À reprendre dans un prochain lot.
 
 ## 11. Autres chantiers proposés
 
