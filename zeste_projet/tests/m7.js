@@ -1,7 +1,7 @@
 // Banc complet du moteur (1.59) : même simulateur que m6 (goûts = profil + ingrédients + alcool + générosité + bruit), plus
 // les signaux implicites (verres refaits, favoris, « Ta version »), l'erreur de note, la calibration du « N % pour toi »,
 // la liste du soir (réussite, diversité, répétition) et les achats malins (rang du vrai gain).
-// usage : SEED=1 node tests/m7.js   (EXP=fichier pour une variante ; NU=nombre d'utilisateurs)
+// usage : SEED=1 node tests/m7.js   (EXP=fichier pour une variante ; NU=nombre d'utilisateurs ; CREA=1 : créations enregistrées)
 // Règle : on règle sur la graine 1, on valide sur la graine 2 (et m5 pour le démarrage à froid).
 const fs=require('fs');const h=fs.readFileSync(process.env.HTML||'dist/zeste.html','utf8');let js=h.split('<script>')[1].split('</script>')[0];
 global.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement:()=>({style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},setAttribute(){},appendChild(){}}),getElementById:()=>null,body:{appendChild(){},prepend(){},classList:{add(){},remove(){},toggle(){}}},documentElement:{dataset:{}}};
@@ -20,7 +20,7 @@ const popw=r=>(POPIDX[r.id]!=null?3:0)+(r.c?1:0.3);
 const ingSet=r=>new Set(r.ing.filter(i=>!ING[i.id].basic).map(i=>i.id));
 const dist=(a,b)=>{ const A=ingSet(a),B=ingSet(b); let n=0; A.forEach(x=>{ if(B.has(x)) n++; }); const j=n/((A.size+B.size-n)||1); return 1-(0.5*j+0.25*(a.fam===b.fam?1:0)+0.25*(baseGroup(a)===baseGroup(b)?1:0)); };
 const pLike=r=>(typeof likeProb==="function"? likeProb(r) : matchPct(r)/100);
-const reset=()=>{ S.ratings={}; S.rt={}; S.hist=[]; S.fav=[]; S.mw=null; S.mwN=0; S.quiz=null; S.adj={}; S.opens={}; S.skips={}; S.heroLog=[]; S.sig={}; S.duels=[]; MODEL=null; SREV++; STC={}; MEMO={}; };
+const reset=()=>{ if(S.custom&&S.custom.length){ S.custom=[]; buildRecipes([]); } S.ratings={}; S.rt={}; S.hist=[]; S.fav=[]; S.mw=null; S.mwN=0; S.quiz=null; S.adj={}; S.opens={}; S.skips={}; S.heroLog=[]; S.sig={}; S.duels=[]; MODEL=null; SREV++; STC={}; MEMO={}; };
 const R={}; const add=(k,v)=>{ R[k]=R[k]||{s:0,k:0}; R[k].s+=v; R[k].k++; };
 const CAL=[]; const allIng=Object.keys(ING);
 for(let u=0;u<NU;u++){
@@ -45,6 +45,10 @@ for(let u=0;u<NU;u++){
       // (1.60) fiche ouverte puis « Préparer » (sans l'avoir encore fait) et « Surprends-moi » écarté tout de suite
       S.sig={p:{},r:{}}; order.slice(n+12,n+24).forEach(r=>{ if(!used.has(r.id)&&truth[r.id]+bias>3.2&&rnd()<0.6){ S.sig.p[r.id]=1; used.add(r.id); } });
       for(let j=0;j<5;j++){ const r=pool[Math.floor(rnd()*pool.length)]; if(!used.has(r.id)&&truth[r.id]+bias<2.7){ S.sig.r[r.id]=1; used.add(r.id); } }
+      // (1.67, CREA=1) créations enregistrées et jamais notées : 2 variantes (doses ±20 %) de cocktails qu'il aime, retirés du test
+      if(process.env.CREA){ const src=order.slice(n,n+80).filter(r=>!used.has(r.id)&&truth[r.id]+bias>3.6).slice(0,2);
+        const cust=src.map((r,k)=>({id:"c_"+(1000+k),n:"Création "+k,fam:r.fam,m:r.m,g:r.g,ice:r.ice,col:r.col,gar:r.gar,ing:r.ing.map(i=>Object.assign({},i,{q:Math.round(i.q*(0.8+rnd()*0.4)*10)/10}))}));
+        src.forEach(r=>used.add(r.id)); S.custom=cust; buildRecipes(cust); }
       MODEL=null; SREV++; }
     const test=pool.filter(r=>!used.has(r.id)), pr=test.map(r=>predict(r)), tr=test.map(r=>truth[r.id]);
     const rank=test.map((r,i)=>[pr[i],tr[i]]).sort((a,b)=>b[0]-a[0]), top=rank.slice(0,10);
