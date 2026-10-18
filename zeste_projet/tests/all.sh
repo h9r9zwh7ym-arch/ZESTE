@@ -10,7 +10,7 @@ echo "— données";      O=$(node tests/v.js) || { echo "$O"; exit 1; }; echo "
 echo "— IBA";          node tests/ibacmp.js | head -1
 echo "— cohérence";    node tests/audit2.js | tail -1
 echo "— prédiction";   node tests/m3.js | tail -3; node tests/m5.js | tail -1; SEED=1 node tests/m6.js
-echo "— score du Labo"; for G in 1 2; do O=$(SEED=$G node tests/m9.js) || { echo "$O"; echo "Échec : m9 (graine $G)"; exit 1; }; echo "$O" | tail -1; done
+echo "— score du Labo"; for G in 1 2; do O=$(SEED=$G node tests/m9.js) || { echo "$O"; echo "Échec : m9 (graine $G)"; exit 1; }; echo "$O" | tail -1; done; O=$(SEED=1 node tests/m10.js) || { echo "$O"; echo "Échec : m10 (conseils du Labo)"; exit 1; }; echo "$O" | tail -1
 echo "— Chromium";     node tests/smoke.js | tail -2
 echo "— contraste";    node tests/contrast.js | grep -c "0 problème" | sed 's/$/ vues sans problème de contraste sur 12/'
 echo "— VoiceOver";    node tests/a11y.js | grep -c '"sansNom":{}' | sed 's/$/ vues sans élément muet sur 6/'

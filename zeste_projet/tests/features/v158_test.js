@@ -31,7 +31,11 @@ const LUM=`window.__lum=c=>{ const m=c.match(/[\\d.]+/g).map(Number), f=v=>{ v/=
     await q(()=>{ switchTab("today"); }); await p.waitForTimeout(800);
     const D=await q(()=>{ const d=document.querySelector('#v-today .disc'); if(!d) return null; const t=d.querySelector('.disc-turn'); return {hint:!!d.querySelector('.disc-hint'), txt:/Touche pour/.test(d.textContent), label:t&&t.getAttribute('aria-label'), w:t&&Math.round(t.getBoundingClientRect().width), act:d.dataset.a}; });
     if(D&&(D.hint||D.txt||!D.label||D.w!==16||D.act!=="flip")) fail.push(k+' carte découverte : '+JSON.stringify(D));
-    if(D){ await q(()=>document.querySelector('#v-today .disc').scrollIntoView({block:"center"})); await p.waitForTimeout(300); await p.tap('#v-today .disc'); await p.waitForTimeout(700);
+    if(D){ await q(()=>document.querySelector('#v-today .disc').scrollIntoView({block:"center"}));
+      // la carte joue son apparition (opacité, translation) quand elle entre à l'écran : selon la longueur de l'accueil du jour, c'est
+      // au scrollIntoView ; Playwright ne tape pas correctement une cible en mouvement → attendre la fin de l'apparition
+      await q(async()=>{ const d=document.querySelector('#v-today .disc'); for(let i=0;i<40;i++){ const c=getComputedStyle(d); if(+c.opacity>=0.99&&(c.transform==="none"||/^matrix\(1, 0, 0, 1, 0, 0\)$/.test(c.transform))) return; await new Promise(z=>setTimeout(z,100)); } });
+      await p.tap('#v-today .disc'); await p.waitForTimeout(700);
       if(!await q(()=>document.querySelector('#v-today .disc').classList.contains('flip')||/flip/.test(document.querySelector('#v-today .disc').className))) fail.push(k+' la carte ne se retourne plus'); }
     await p.close(); }
   if(errs.length) fail.push('erreurs JS : '+[...new Set(errs)].join(' | '));

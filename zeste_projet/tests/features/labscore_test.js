@@ -1,6 +1,6 @@
 // Score du Labo v3 (1.62, B). Q = 100·(0,6·Équilibre + 0,4·Force) ; Remplissage et Glace ne font que réduire (facteur 0,6–1) ;
-// pas de note sans deux rôles différents ; plafond sous 40 (équilibre < 0,30, débordement > 135 %, éthanol > 1,5 × P95 IBA) ;
-// 70 au plus si Équilibre < 0,60 ; 100 seulement à partir de 98 brut ; décor hors note ; jauge et verdict tirés des sous-scores.
+// pas de note sans deux rôles différents ; plafond sous 40 (débordement > 135 %, éthanol > 1,5 × P95 IBA) ;
+// plafonds d'équilibre adoucis (1.67) : sous 40 si Équilibre < 0,27, 70 au plus si < 0,55, pentes entre 0,27–0,33 et 0,55–0,65 ; 100 seulement à partir de 98 brut ; décor hors note ; jauge et verdict tirés des sous-scores.
 // Les 3 cas observés sur iPhone (highball) : vodka 10,1 cl + citron 1 cl → < 40 ; tonic seul → pas de note ; citron 12 cl + gin 1 cl → < 40.
 const {chromium}=require('playwright'); const path=require('path');
 const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
@@ -29,8 +29,9 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   ok(r.base>=85,"Daiquiri ≥ 85 : "+r.base); ok(r.noIce<r.base&&r.stem<r.base,"glace : ne fait que réduire "+[r.base,r.noIce,r.stem]);
   ok(r.over[0]<40&&r.over[1].includes("débordement"),"débordement : sous 40 "+JSON.stringify(r.over)); ok(r.eth[0]<40&&r.eth[1].includes("éthanol"),"éthanol > 1,5 × P95 : sous 40 "+JSON.stringify(r.eth));
   ok(r.garA===r.garB,"le décor ne change pas la note");
-  ok(r.many.every(([raw,s,bal,Q,T,red])=>T>=0.6-1e-9&&T<=1+1e-9&&(red||Math.abs(raw-Math.min(Q*T,bal<0.6?70:1e9))<1e-6)),"total = Q × T, T entre 0,6 et 1");
-  ok(r.many.every(([raw,s,bal])=>bal>=0.3||s<40),"Équilibre < 0,30 : sous 40"); ok(r.many.every(([raw,s,bal])=>bal>=0.6||s<=70),"Équilibre < 0,60 : 70 au plus");
+  const capB=b=>b<0.27?39:b<0.33?39+31*(b-0.27)/0.06:b<0.55?70:b<0.65?70+30*(b-0.55)/0.10:1e9;
+  ok(r.many.every(([raw,s,bal,Q,T,red])=>T>=0.6-1e-9&&T<=1+1e-9&&raw<=Q*T+1e-6&&raw<=capB(bal)+1e-6&&(red||Math.abs(raw-Math.min(Q*T,capB(bal)))<1e-6)),"total = min(Q × T, plafond d’équilibre), T entre 0,6 et 1");
+  ok(r.many.every(([raw,s,bal])=>bal>=0.27||s<40),"Équilibre < 0,27 : sous 40"); ok(r.many.every(([raw,s,bal])=>bal>=0.55||s<=70),"Équilibre < 0,55 : 70 au plus");
   ok(r.many.every(([raw,s])=>raw>=98?s===100:s===Math.floor(raw)&&s<=97),"100 seulement à partir de 98 brut");
   ok((r.fillV>=0.7&&r.gauge==="")||(r.fillV<0.7&&r.fillV>=0.4&&r.gauge==="mid")||(r.fillV<0.4&&r.gauge==="bad"),"jauge = Remplissage : "+r.gauge+" / "+r.fillV);
   ok(r.weak.length? r.sum.includes("À améliorer : ") : !/améliorer|atteints/.test(r.sum),"verdict tiré des sous-scores : "+r.sum);

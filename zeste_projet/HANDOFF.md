@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.66**. Chaque mise à jour livrée incrémente : 1.21 → 1.66… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v24` à la 1.66) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.67**. Chaque mise à jour livrée incrémente : 1.21 → 1.67… La constante est `APP_VERSION` dans `src/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v25` à la 1.67) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -24,6 +24,7 @@ NODE_PATH=$(npm root -g) node tests/smoke.js   # ouvre les 366 fiches dans Chrom
 python3 tests/fuzz.py       # (Python ≥ 3.12) batterie complète dans Chromium (Playwright)
 node tests/m3.js / m5.js / m6.js   # simulateurs du moteur de recommandation et du quiz (SEED=…)
 node tests/m9.js                    # score du Labo : 20 mauvais mélanges, IBA, recettes dégradées, aléatoires (SEED=1 puis 2)
+node tests/m10.js                   # conseils du Labo (jamais une baisse de note) et continuité de la note
 ```
 
 Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Playwright (Chromium) est requis ; WebKit est testé via WebKitGTK (`tests/webkit.js`, `apt-get install webkit2gtk-driver xvfb`). Si WebKit échoue au démarrage du pilote (« fetch failed »), relancer `node tests/webkit.js` seul. Tests de fonctionnalités : `tests/features/*.js` (33 fichiers, bloquants dans `all.sh`). Autres outils : `tests/contrast.js` (WCAG, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/audit2.js` ; hors suite : `tests/m7.js`, `m8.js` (moteur), `audit.js` et `txt.js` (relecture des données et des textes), `deadcode.js`, `sounds.js`, `perf.py`. Un `README.md` à la racine du dépôt résume le tout pour un humain.
@@ -35,7 +36,7 @@ Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Pl
 ```
 style.css
 data_ing.js data_rec.js data_lab.js data_more.js data_more2.js data_na.js data_food.js data_final.js data_118.js data_world.js data_iba.js data_softs.js
-core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js v169.js v170.js ui_final.js v126.js v130.js
+core.js icons.js ui.js ui10.js labo2.js trophies.js explore.js chal.js sound.js v117.js v118.js v120.js v122.js v123.js v124.js v125.js v127.js v137.js v138.js v139.js v140.js v141.js v142.js v143.js v144.js v146.js v147.js v148.js v149.js v150.js v151.js v152.js v154.js v155.js v156.js v157.js v158.js v159.js v160.js v161.js v162.js v163.js v164.js v165.js v166.js v167.js v168.js v169.js v170.js v171.js ui_final.js v126.js v130.js
 ```
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
@@ -152,6 +153,7 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **1.64 — Robustesse et nettoyage** : sous-scores masqués sans note ; bancs Node complets (`v.js`, `audit.js`, `pick.js`, `txt.js`) ; règle « sans alcool » de `audit.js` alignée sur `na:1` ; fichiers inutilisés retirés (`data/bad|good|other.json`) ; `README.md`.
 - **1.65 — Données locales** (`v169.js`) : synchro claude.ai retirée, copie de secours IndexedDB, sauvegardes et écran de stockage (§ 9 quater) ; textes d'« À propos » raccourcis.
 - **1.66 — Mes créations** (`v170.js`) : section du Profil, avant « Ton carnet », listant tous les cocktails créés dans le Labo (plus récents d’abord, 3 puis « Voir les N autres », via `recRow` et `foldRows`) ; liste vide : « Crée ton premier cocktail » ouvre le Labo en Composer (`ACT.gocreate`). Test `mine_test.js`.
+- **1.67 — Conseils et prédiction** (`v171.js`) : conseils du Labo vérifiés par la note (§ 9 ter, `m10.js`, `labtips_test.js`) ; plafonds d'équilibre adoucis ; une création enregistrée non notée devient un signal de goût (v 1,0, poids 0,5, réglé avec `m7.js CREA=1` : NDCG à 3 notes 0,776 → 0,831 en validation) et a un plancher de prédiction de 3,6.
 
 ## 8. Haptique
 
@@ -207,9 +209,11 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **Rôles** (`labRole`, `labRoles`) : base, acide, sucre, mélangeur (compte à partir de 15 % du volume), amer, liqueur ; sans spiritueux, l'alcool le plus abondant tient lieu de base (Kir, Panaché). Moins de deux rôles : pas de note (« Ajoute un second ingrédient »).
 - **Équilibre** : distance hors des plages du style (P10–P90 des recettes de l'app préparées comme « Modifier dans le labo », `labRef`/`labRef3`) pour le sucre, l'acidité, le sucre attendu (régression sur acidité, amertume, degré), le degré, la part d'amers, et une combinaison de rôles jamais vue dans ce style ; exp(−½·d²/1,1²) après 0,25 de tolérance (à 3 écarts : 0,044).
 - **Force** : plage du degré du style et éthanol pur par verre (`ETH_IBA` : médiane 23,7 ml, P95 32,6 ml sur 101 IBA, recalculés et vérifiés par `m9`).
-- **Plafonds** : sous 40 (39) si Équilibre < 0,30, volume > 135 % de la contenance effective, éthanol > 48,9 ml ; 70 au plus si Équilibre < 0,60.
+- **Plafonds** : 39 si volume > 135 % de la contenance effective ou éthanol > 48,9 ml (net) ; selon l'Équilibre (1.67, `v171.js`, adoucis) : 39 sous 0,27, de 39 à 70 entre 0,27 et 0,33, 70 jusqu'à 0,55, puis sans plafond à 0,65.
 - **Cohérence** : jauge de remplissage colorée par le sous-score Remplissage (≥ 0,70 / ≥ 0,40 / < 0,40) ; « À améliorer » = sous-scores < 70 ; seuils des défis 95 / 97 / 100, « Chef de bar » 97, confettis 97.
 - **m9** (bloquant) : 20 mauvais mélanges écrits à la main sous 40 ou sans note ; IBA ≥ 85 pour 90 % ; médianes IBA ≥ 90 et recettes ≥ 85. Non tenables sans pénaliser des recettes réelles (planchers de non-régression) : AUC ≥ 0,95, dégradées < 5 %, aléatoires médiane ≤ 45 / P90 < 80 / ≤ 1 % à 90 : les recettes de l'app occupent les mêmes zones de sucre, d'acidité et d'alcool que ces mélanges. IBA sous 85 assumés : Zombie, IBA Tiki (débordement, éthanol), Trinidad Sour (amers), Monkey Gland, Mary Pickford, Porto Flip, Bloody Mary, Old Fashioned, Pisco Sour, Casino.
+- **Conseils du barman** (1.67, `v171.js`) : les boutons « + » / « − » ne viennent plus de l'ancien analyseur (zones) mais de `labBestFixes` : ajouter 0,5 à 2 cl d'acide ou de sucre, 1 à 2 cl de la base, de l'allongeur (styles longs), ou réduire un ingrédient à 75 % / 50 % ; chaque candidat est noté par `labScore`, on garde les 2 meilleurs gains ≥ 3 points (mémo par mélange). Une réduction passe par `mixfix` avec une quantité négative (« Réduire le … à … »). Même règle pour la fiche Équilibre/Force (`goalAdvice`).
+- **m10** (bloquant) : aucun conseil chiffré ne fait baisser la note (1.66 : 19 % des recettes, 7,5 % des dégradées, 18,5 % des aléatoires, pire −100) ; ≥ 60 % des notes < 85 ont un conseil chiffré (1.67 : 76 à 92 %) ; sauts ≥ 20 points à ±5 ml dans le verre ≤ 0,5 % (0,6 → 0,4 %).
 
 ## 9 quater. Données et stockage (1.65, inspiré d'ASCEN)
 
