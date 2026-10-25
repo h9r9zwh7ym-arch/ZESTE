@@ -97,7 +97,9 @@ console.log('  AUC recettes / dégradées '+R.auc);
 const T=[["20 mauvais mélanges sans note ou < 40",!badFail.length],["éthanol IBA conforme à l'app",Math.abs(ETH.p95-ETH_IBA.p95)<=0.1&&Math.abs(ETH.med-ETH_IBA.med)<=0.1],
   ["IBA ≥ 85 pour 90 %",R.iba.ge85>=90],["IBA : médiane ≥ 90",R.iba.med>=90],["recettes : médiane ≥ 85",R.app.med>=85]];
 // Non tenables sans pénaliser à tort des recettes de l'app (voir le commit 1.62 B) : on vérifie qu'on ne recule pas (planchers mesurés).
-const F=[["AUC ≥ 0,95",R.auc>=0.95,"AUC ≥ 0,71",R.auc>=0.71],["dégradées ≥ 85 < 5 %",R.deg.ge85<5,"dégradées ≥ 85 ≤ 59 %",R.deg.ge85<=59],
+// (1.70) plancher « dégradées » 59 → 60 % : mesuré en 1.62 avec la dilution du shaker fausse (+1,567·A²) ; corrigée, une recette secouée
+// est moins diluée, donc plus concentrée, et ses versions dégradées le sont aussi (59,7 %). AUC 0,717 → 0,722.
+const F=[["AUC ≥ 0,95",R.auc>=0.95,"AUC ≥ 0,71",R.auc>=0.71],["dégradées ≥ 85 < 5 %",R.deg.ge85<5,"dégradées ≥ 85 ≤ 60 %",R.deg.ge85<=60],
   ["aléatoires : médiane ≤ 45",R.rand.med<=45,"aléatoires : médiane ≤ 68",R.rand.med<=68],["aléatoires : P90 < 80",R.rand.p90<80,"aléatoires : ≥ 85 ≤ 37 %",R.rand.ge85<=37],
   ["aléatoires : ≤ 1 % à 90",R.rand.ge90<=1,"aléatoires : ≤ 31 % à 90",R.rand.ge90<=31]];
 const bad=T.filter(x=>!x[1]).map(x=>x[0]).concat(F.filter(x=>!x[3]).map(x=>x[2]));

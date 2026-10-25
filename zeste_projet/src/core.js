@@ -35,7 +35,10 @@ function buildRecipes(custom){
 
 // ---------- Calcul de l'équilibre ----------
 function dilution(method, A, ice){
-  if(method==="shake"||method==="mshake") return 1.567*A*A+1.742*A+0.203;
+  // Dave Arnold, Liquid Intelligence (2014) : dilution = f(degré initial A). Le livre imprime +1,567·A² pour le shaker, mais annonce
+  // 50 à 60 % de dilution pour un cocktail secoué : seul −1,567·A² les donne (A = 0,27 → 56 % ; avec +, 77 %). Erreur de signe relevée
+  // par Mike McDonald (mikemcdonald.co, 2020). Corrigé en 1.70 : les cocktails secoués étaient trop dilués (volume, degré, débordements).
+  if(method==="shake"||method==="mshake") return Math.max(0,-1.567*A*A+1.742*A+0.203);
   if(method==="stir") return Math.max(0,-1.21*A*A+1.246*A+0.145);
   if(method==="build"||method==="mbuild") return ice==="pilee"?0.4:ice==="none"?0:0.22;
   return 0;
@@ -104,7 +107,8 @@ function styleOf(items, method){
   if(method==="hot") return "cremeux";
   if(cream/V>0.15) return "cremeux";
   const pa = acid/V*100;
-  if(method==="stir" || pa<0.3) return "stirred";
+  // (1.70) le style vient de la composition, pas de la méthode choisie : un Blood and Sand secoué ou remué reste le même cocktail
+  if(pa<0.3) return "stirred";
   return "sour";
 }
 const STYLE_N={sour:"sour (acide et frais)",stirred:"cocktail sec et puissant",long:"long drink pétillant",spritz:"spritz",cremeux:"cocktail crémeux"};

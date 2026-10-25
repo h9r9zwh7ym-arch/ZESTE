@@ -152,7 +152,7 @@ Object.assign(ACT,{
   settings:()=>settingsSheet(), fxsheet:()=>fxSheet(), momentsheet:()=>momentSheet(),
   settheme:(d)=>{ S.settings.theme=d.v; applyTheme(); changed(); },
   setfxp:(d)=>{ S.settings.fx=Object.assign({},FX_PRESETS[d.v]); applyFx(); changed(); toast("Animations : "+{complet:"complètes",standard:"standard",reduit:"réduites"}[d.v]); },
-  setfx:(d)=>{ S.settings.fx=S.settings.fx||{}; S.settings.fx[d.k]=!FX(d.k); if(S.settings.fx[d.k]) delete S.settings.fx[d.k]; applyFx(); changed(); },
+  setfx:(d)=>{ S.settings.fx=S.settings.fx||{}; S.settings.fx[d.k]=!FX(d.k); if(S.settings.fx[d.k]) delete S.settings.fx[d.k]; applyFx(); changed(); if(typeof SND!=="undefined"&&SND.toggle) SND.toggle(FX(d.k)); },   // (1.70) son de sound.js, perdu car défini ici après lui
   fxpreview:()=>{ closeAll(); setTimeout(()=>{ switchTab("today"); HERO_LAST=null; renderView("today"); if(FX("clink")) setTimeout(()=>clink(tonight()[0]||RMAP.negroni),1500); },450); },
   setexplore:(d)=>{ S.settings.explore=+d.v; changed(); },
   setctx:()=>{ S.settings.ctx=S.settings.ctx===false; changed(); },

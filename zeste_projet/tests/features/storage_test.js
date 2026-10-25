@@ -2,8 +2,11 @@
 // claude.ai) ; copie de secours compressée dans IndexedDB, reprise si localStorage est vidé ; données illisibles mises de côté ;
 // sauvegarde en fichier datée ; écran « Espace de stockage » ; textes « Tes données » courts et vrais.
 const {chromium}=require('playwright'); const path=require('path');
-const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
-(async()=>{ const b=await chromium.launch(); const fail=[]; const errs=[]; const ok=(c,m)=>{ if(!c) fail.push(m); };
+// (1.70) servi en http : en file://, Chromium sans écran voit parfois un localStorage encore vide au tout début d'un rechargement,
+// ce qui faisait échouer au hasard « données illisibles » (l'app se comporte correctement en http, comme sur un téléphone)
+const http=require('http'), fs=require('fs'); let APP;
+const SRV=http.createServer((q,r)=>{ r.writeHead(200,{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store"}); r.end(fs.readFileSync(path.join(__dirname,'../../dist/zeste.html'))); });
+(async()=>{ await new Promise(z=>SRV.listen(0,'127.0.0.1',z)); APP='http://127.0.0.1:'+SRV.address().port+'/zeste.html'; const b=await chromium.launch(); const fail=[]; const errs=[]; const ok=(c,m)=>{ if(!c) fail.push(m); };
   const ctx=await b.newContext({viewport:{width:390,height:844},acceptDownloads:true}); const p=await ctx.newPage(); p.on('pageerror',e=>errs.push(e.message));
   await p.addInitScript(()=>{ window.__uses=[]; window.claude={use:async n=>{ window.__uses.push(n); if(n==="downloads") return {save:async()=>{ window.__saved=1; }}; return null; }};
     if(!localStorage.getItem("zeste.v1")&&!sessionStorage.getItem("seeded")){ sessionStorage.setItem("seeded","1"); localStorage.setItem("zeste.v1",JSON.stringify({v:1,t:1,quizSkip:1,settings:{fx:{splash:false},hintSwipe:1},stock:{gin:3},ratings:{negroni:5}})); } });

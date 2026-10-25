@@ -43,7 +43,10 @@ labScore=function(A){
   if(roles.size<2) return {none:true, score:null, raw:0, red:false, goals:[["bal","Équilibre",0,0],["abv","Force",0,0],["fill","Remplissage",1,0],["ice","Glace",1,0],["gar","Décor (bonus)",G0.v,0]], fill, avail, sug:G0.sug, eth:labEthanol(items)};
   const R0=labRef(), R3=labRef3(), r0=R0[st]||R0.sour, r3=R3[st]||R3.sour, acid=LAB_ACID.has(st), P=L3;
   const F=labFeat(st,met,profileOf(items,met)[2]), res=F.ls-dot(r0.w,F.X), la=Math.log(met.acid+0.05);
-  const dRes=plageD(res,r3.res), dS=plageD(F.ls,r3.ls), dA=acid? plageD(la,r3.la) : Math.max(0,la-r3.la[1])/Math.max((r3.la[1]-r3.la[0])/2,1e-3);
+  // (1.70) highball ou spritz sec (allongé surtout au pétillant, sucre sous la plage : Whisky highball, Gin rickey, Ranch water, Gespritzter) :
+  // le manque de sucre n'est pas un déséquilibre ; l'excès d'acidité reste compté (dA)
+  const fzV=items.filter(i=>ING[i.id].fizz).reduce((a,i)=>a+mlOf(i),0), dryLong=(st==="long"||st==="spritz")&&fzV>=0.5*(met.pre||1)&&F.ls<r3.ls[0];
+  const dRes=dryLong?0:plageD(res,r3.res), dS=dryLong?0:plageD(F.ls,r3.ls), dA=acid? plageD(la,r3.la) : Math.max(0,la-r3.la[1])/Math.max((r3.la[1]-r3.la[0])/2,1e-3);
   const alc0=met.abv>=0.5, dAbv=alc0? plageD(met.abv,r3.abv) : 0, bit=labBitShare(items,met.pre), dBit=Math.max(0,bit-r3.bit[1])/P.bitH;
   const nk=r3.rk[labRoleKey(items)]||0, dSt= nk>=2? 0 : nk===1? P.st1 : P.st0;
   const t=x=>Math.max(0,x-P.tol), D2=P.wRes*t(dRes)**2+P.wS*t(dS)**2+P.wA*t(dA)**2+P.wAbv*t(dAbv)**2+P.wBit*dBit*dBit+P.wSt*dSt*dSt, bal=Math.exp(-0.5*D2/(P.sb*P.sb));

@@ -3008,7 +3008,10 @@ function buildRecipes(custom){
 
 // ---------- Calcul de l'équilibre ----------
 function dilution(method, A, ice){
-  if(method==="shake"||method==="mshake") return 1.567*A*A+1.742*A+0.203;
+  // Dave Arnold, Liquid Intelligence (2014) : dilution = f(degré initial A). Le livre imprime +1,567·A² pour le shaker, mais annonce
+  // 50 à 60 % de dilution pour un cocktail secoué : seul −1,567·A² les donne (A = 0,27 → 56 % ; avec +, 77 %). Erreur de signe relevée
+  // par Mike McDonald (mikemcdonald.co, 2020). Corrigé en 1.70 : les cocktails secoués étaient trop dilués (volume, degré, débordements).
+  if(method==="shake"||method==="mshake") return Math.max(0,-1.567*A*A+1.742*A+0.203);
   if(method==="stir") return Math.max(0,-1.21*A*A+1.246*A+0.145);
   if(method==="build"||method==="mbuild") return ice==="pilee"?0.4:ice==="none"?0:0.22;
   return 0;
@@ -3077,7 +3080,8 @@ function styleOf(items, method){
   if(method==="hot") return "cremeux";
   if(cream/V>0.15) return "cremeux";
   const pa = acid/V*100;
-  if(method==="stir" || pa<0.3) return "stirred";
+  // (1.70) le style vient de la composition, pas de la méthode choisie : un Blood and Sand secoué ou remué reste le même cocktail
+  if(pa<0.3) return "stirred";
   return "sour";
 }
 const STYLE_N={sour:"sour (acide et frais)",stirred:"cocktail sec et puissant",long:"long drink pétillant",spritz:"spritz",cremeux:"cocktail crémeux"};
@@ -3667,7 +3671,6 @@ const LU={
  "sunset":`<path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/>`,
  "moon":`<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>`,
  "moon-star":`<path d="M18 5h4"/><path d="M20 3v4"/><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>`,
- "user-round":`<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>`,
  "a-large-small":`<path d="m15 16 2.536-7.328a1.02 1.02 1 0 1 1.928 0L22 16"/><path d="M15.697 14h5.606"/><path d="m2 16 4.039-9.69a.5.5 0 0 1 .923 0L11 16"/><path d="M3.304 13h6.392"/>`,
  "contrast":`<circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/>`,
  "clock":`<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>`,
@@ -4045,7 +4048,7 @@ function aiPrompt(){
   const lines=items.map(i=>"- "+fmtQ(i).replace(/^(\d)/,"$1")+" "+de(lc(shortN(i.id))).replace(/^de /,"de ").replace(/^/,"").trim());
   const meth={shake:"au shaker",stir:"au verre à mélange",build:"construit directement sur glace"}[S.mix.m];
   const bar=Object.keys(S.stock).filter(has).map(id=>ING[id].n);
-  const LG=labGlass(), gname=(LGLASS.find(x=>x[0]===LG.g)||[,""])[1], icen=(LICE.find(x=>x[0]===LG.ice)||[,""])[1].toLowerCase(), garn=(S.mix.gar||[]).map(k=>LGARTXT[k].toLowerCase());
+  const LG=labGlass(), gname=(LGLASS.find(x=>x[0]===LG.g)||[0,""])[1], icen=(LICE.find(x=>x[0]===LG.ice)||[0,""])[1].toLowerCase(), garn=(S.mix.gar||[]).map(k=>LGARTXT[k].toLowerCase());
   let t="Tu es un barman expert en équilibre des cocktails. Aide-moi à améliorer une création maison.\n\nMon mélange ("+meth+") :\n"+lines.join("\n")+"\nVerre : "+gname.toLowerCase()+" ("+fmtMl(LCAP[LG.g])+"), glace : "+icen+(garn.length?", garniture : "+garn.join(", "):"")+".\n\n";
   if(A){ t+="Analyse de mon app (après dilution estimée) : environ "+num(Math.round(A.met.abv*10)/10)+" % d’alcool, "+num(Math.round(A.met.sug*10)/10)+" g de sucre pour 100 ml, "+num(Math.round(A.met.acid*100)/100)+" % d’acidité. Style détecté : "+STYLE_N[A.st]+".\nDiagnostic : "+A.diag.map(d=>d.t+(d.fix?" (suggestion : ajouter "+fmtQ({q:d.fix.q,u:unitOf(d.fix.id)})+" "+de(lc(shortN(d.fix.id)))+")":"")).join(" ; ")+".\n\n"; }
   t+="Ce que j’ai dans mon bar : "+(bar.length?bar.join(", "):"pas encore renseigné")+" (plus sucre, eau et glace).\n";
@@ -4175,7 +4178,7 @@ function recSheet(id){
     SEGS.forEach(([sg,sn])=>{ const L=r.ing.filter(it=>segOf(it.id)===sg); if(!L.length) return;
       b+=`<div class="ing-sec"><i style="background:${SEGCOL[sg]}"></i>${sn}${sg==="add"?"<span>Toujours à portée de main</span>":""}</div>`;
       L.forEach(it0=>{ const it=items.find(x=>x.id===it0.id&&x.r===it0.r)||it0; const bas=ING[it.id].basic, miss=!has(it.id)&&it.r!=="opt"&&it.r!=="rinse";
-        const role={opt:"Facultatif",rinse:"Facultatif, pour parfumer le verre",top:"Pour compléter le verre",float:ING[it.id].sug>=40?"Versé en filet à la fin":ING[it.id].cat==="bitters"?"Quelques gouttes sur le dessus":"Versé en dernier, en surface",rinse:"Pour rincer le verre"}[it.r]||"";
+        const role={opt:"Facultatif",top:"Pour compléter le verre",float:ING[it.id].sug>=40?"Versé en filet à la fin":ING[it.id].cat==="bitters"?"Quelques gouttes sur le dessus":"Versé en dernier, en surface",rinse:"Pour rincer le verre"}[it.r]||"";
         b+=`<button class="ing-line ${miss?"miss":""} ${bas&&!miss?"basic":""}" data-a="ing" data-id="${it.id}"><span class="q">${termify(esc(fmtQ(it,mult)))}${it.orig!=null&&ver==="mine"?`<span class="delta ${it.q>it.orig?"up":"down"}">${it.q>it.orig?"+":"−"}${esc(fmtQ({q:Math.abs(it.q-it.orig),u:it.u},mult).replace(/ (traits?|feuilles|morceaux?|brins?|gouttes?)$/,""))}</span>`:""}</span><span class="n">${esc(ING[it.id].n)}${role?`<small>${role}</small>`:""}</span>${miss?`<span class="badge red">Manque</span>`:""}</button>`; });
     });
     b+=`</div>`+(buildSteps(r).some(x=>/^Décore/.test(x.t))?"":`<div class="gf">Garniture : ${esc(lc(r.gar||"aucune"))}.</div>`); // la dernière étape la donne déjà
@@ -4293,7 +4296,6 @@ function paintBM(){
   let body=`<div class="bm-prog">${st.map((_,k)=>`<i class="${k<BM.i?"done":k===BM.i?"now":""}"></i>`).join("")}</div><div class="bm-count">Étape ${BM.i+1} sur ${n}</div>`;
   if(s.list){ body+=`<div class="bm-text">Sors ${esc(GLASSES[r.g])}${r.ice!=="none"||["shake","stir","mshake"].includes(r.m)?" et de la glace":""}, puis réunis :</div>${getAdj(r.id)?`<div class="bm-mine">${IC.sparkle}Ta version ajustée</div>`:""}<div class="bm-list">${BM.items.map((it,k)=>`<button class="bm-item ${BM.done[k]?"done":""}" data-a="bmck" data-k="${k}"><span class="ck">${BM.done[k]?IC.check.replace("<svg","<svg width='18' height='18'"):""}</span><span class="bq">${fmtQ(it,BM.mult)}</span><span class="bn">${esc(ING[it.id].n)}${it.r==="opt"?" (facultatif)":""}</span></button>`).join("")}</div>`; }
   else if(s.end){ const rt=S.ratings[r.id]||0; body+=`<div style="text-align:center;margin-top:var(--z-s1)"><div style="height:200px;display:grid;place-items:center">${glassSVG(r,{pour:!BM.rate}).replace("<svg","<svg style='height:200px;width:auto'")}</div><div class="bm-text" style="font-family:var(--serif);font-size:calc(34rem / 17)">Santé !</div><p class="muted">Comment tu le trouves ?</p><div class="stars" style="justify-content:center">${[1,2,3,4,5].map(k=>`<button class="${k<=(BM.rate||rt)?"on":""}" data-a="bmrate" data-n="${k}" aria-label="${k} étoiles">${IC.star}</button>`).join("")}</div>${BM.rate?`<p class="muted" style="margin:18px 0 8px">Pour la prochaine fois, c’était…</p><div class="fb-chips">${[["s",-1,"Trop sucré"],["s",1,"Pas assez sucré"],["a",-1,"Trop acide"],["a",1,"Pas assez acide"],["f",-1,"Trop fort"],["f",1,"Trop léger"],["ok",0,"Parfait"]].map(([k,v,n])=>`<button class="chip ${BM.fb===k+v?"on":""}" data-a="bmfb" data-k="${k}" data-v="${v}">${n}</button>`).join("")}</div>`:""}</div>`; }
-  else if(s.list) {}
   else { body+=`<div class="bm-text">${termify(esc(s.t))}</div>`; if(s.timer){ const C=2*Math.PI*96; const left=BM.tleft==null?s.timer:BM.tleft; body+=`<div class="timer"><svg viewBox="0 0 210 210"><circle cx="105" cy="105" r="96" fill="none" stroke="var(--fill)" stroke-width="10"/><circle id="tring" cx="105" cy="105" r="96" fill="none" stroke="var(--tint)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*(left/s.timer)} ${C}"/></svg><div class="shk ${/remue/i.test(s.t)?"stir":""}">${/remue/i.test(s.t)?'<svg viewBox="0 0 24 24"><path d="M12 2v15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="12" cy="19.5" rx="3" ry="2.5" fill="currentColor"/></svg>':IC.shaker}</div><div class="tv" id="tval">${Math.ceil(left)}</div><div class="tl">secondes</div></div><div style="display:flex;justify-content:center"><button class="btn small sec" data-a="bmtimer" data-s="${s.timer}">${BM.timer?"Recommencer":"Lancer le minuteur"}</button></div>`; } }
   const dir=BM.dir||""; BM.dir="";
   $("#overlay").innerHTML=`<div class="ov-top"><button class="close-x" data-a="bmclose" aria-label="Fermer">${IC.x}</button><div class="ot">${esc(r.n)}</div><div class="stepper"><button data-a="bmmult" data-d="-1" aria-label="Moins">${IC.minus}</button><span>${BM.mult}</span><button data-a="bmmult" data-d="1" aria-label="Plus">${IC.plus}</button></div></div><div class="ov-body ${dir}">${body}</div><div class="ov-bottom">${BM.i>0?`<button class="btn gray" data-a="bmnav" data-d="-1" style="flex:0 0 34%">Retour</button>`:""}${s.end?`<button class="btn" data-a="bmfinish">Terminer</button>`:`<button class="btn" data-a="bmnav" data-d="1">${BM.i===0?"C’est prêt":"Suivant"}</button>`}</div>`;
@@ -5326,7 +5328,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.69";
+const APP_VERSION="1.70";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -7209,7 +7211,10 @@ labScore=function(A){
   if(roles.size<2) return {none:true, score:null, raw:0, red:false, goals:[["bal","Équilibre",0,0],["abv","Force",0,0],["fill","Remplissage",1,0],["ice","Glace",1,0],["gar","Décor (bonus)",G0.v,0]], fill, avail, sug:G0.sug, eth:labEthanol(items)};
   const R0=labRef(), R3=labRef3(), r0=R0[st]||R0.sour, r3=R3[st]||R3.sour, acid=LAB_ACID.has(st), P=L3;
   const F=labFeat(st,met,profileOf(items,met)[2]), res=F.ls-dot(r0.w,F.X), la=Math.log(met.acid+0.05);
-  const dRes=plageD(res,r3.res), dS=plageD(F.ls,r3.ls), dA=acid? plageD(la,r3.la) : Math.max(0,la-r3.la[1])/Math.max((r3.la[1]-r3.la[0])/2,1e-3);
+  // (1.70) highball ou spritz sec (allongé surtout au pétillant, sucre sous la plage : Whisky highball, Gin rickey, Ranch water, Gespritzter) :
+  // le manque de sucre n'est pas un déséquilibre ; l'excès d'acidité reste compté (dA)
+  const fzV=items.filter(i=>ING[i.id].fizz).reduce((a,i)=>a+mlOf(i),0), dryLong=(st==="long"||st==="spritz")&&fzV>=0.5*(met.pre||1)&&F.ls<r3.ls[0];
+  const dRes=dryLong?0:plageD(res,r3.res), dS=dryLong?0:plageD(F.ls,r3.ls), dA=acid? plageD(la,r3.la) : Math.max(0,la-r3.la[1])/Math.max((r3.la[1]-r3.la[0])/2,1e-3);
   const alc0=met.abv>=0.5, dAbv=alc0? plageD(met.abv,r3.abv) : 0, bit=labBitShare(items,met.pre), dBit=Math.max(0,bit-r3.bit[1])/P.bitH;
   const nk=r3.rk[labRoleKey(items)]||0, dSt= nk>=2? 0 : nk===1? P.st1 : P.st0;
   const t=x=>Math.max(0,x-P.tol), D2=P.wRes*t(dRes)**2+P.wS*t(dS)**2+P.wA*t(dA)**2+P.wAbv*t(dAbv)**2+P.wBit*dBit*dBit+P.wSt*dSt*dSt, bal=Math.exp(-0.5*D2/(P.sb*P.sb));
@@ -7551,6 +7556,24 @@ if(typeof vCompose==="function"){ const _vc=vCompose; vCompose=function(){ let h
   const at=h.indexOf('<div class="btn-row"><button class="btn lab-serve"'); if(at<0) return h;
   const sp=h.lastIndexOf('<div class="sp16"></div>',at); const pos=sp>=0&&sp>at-40? sp : at;
   return h.slice(0,pos)+`<div class="group lab-tips">${row}</div>`+h.slice(pos); }; }
+// ================= ZESTE 1.70 : corrections de l'audit — enveloppes perdues =================
+// Une version plus récente avait réécrit entièrement des fonctions déjà enveloppées par une plus ancienne : l'ajout de
+// l'ancienne disparaissait en silence (repéré par tests/wrappers.js, qui l'interdit désormais).
+
+// 1. Réglages > Suggestions > « Inclure les créations à tester » : sans effet depuis la 1.59 (v161 réécrit tonightRaw sans le filtre de v120)
+{ const _t=tonightRaw; tonightRaw=function(){ const L=_t(); return S.settings.untested===false? L.filter(r=>!r.cr) : L; }; }
+
+// 2. Explication « Pour finir ton … ouvert » : perdue en 1.59 (v161 réécrit reasons ; le bonus de la liste du soir, lui, restait)
+{ const _r=reasons; reasons=function(r){ const rt=S.ratings[r.id];
+    if(!(rt>=4)&&typeof perishing==="function"){ const p=perishing(r); if(p){ const n=lc(shortN(p[0]));
+      return "Pour finir "+(/^[aeiouyéèêàâîïôœ]/i.test(n)?"ton ":FEM.test(n)?"ta ":"ton ")+n+" ouvert"+(FEM.test(n)?"e":"")+" "+p[1]; } }
+    return _r(r); }; }
+
+// 3. Sons perdus quand l'action a été réécrite après le câblage de sound.js (le son est rejoué après l'action, comme dans sound.js)
+{ const W=(k,f)=>{ const g=ACT[k]; if(!g) return; ACT[k]=(d,t)=>{ const r=g(d,t); try{ if(typeof SND!=="undefined") f(d||{}); }catch(e){} return r; }; };
+  W("mixfit",()=>SND.pour(0.4));
+  W("advdo",()=>SND.pop(1.3));
+  W("mapclose",()=>SND.whoosh(false)); }
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
@@ -7705,7 +7728,7 @@ Object.assign(ACT,{
   settings:()=>settingsSheet(), fxsheet:()=>fxSheet(), momentsheet:()=>momentSheet(),
   settheme:(d)=>{ S.settings.theme=d.v; applyTheme(); changed(); },
   setfxp:(d)=>{ S.settings.fx=Object.assign({},FX_PRESETS[d.v]); applyFx(); changed(); toast("Animations : "+{complet:"complètes",standard:"standard",reduit:"réduites"}[d.v]); },
-  setfx:(d)=>{ S.settings.fx=S.settings.fx||{}; S.settings.fx[d.k]=!FX(d.k); if(S.settings.fx[d.k]) delete S.settings.fx[d.k]; applyFx(); changed(); },
+  setfx:(d)=>{ S.settings.fx=S.settings.fx||{}; S.settings.fx[d.k]=!FX(d.k); if(S.settings.fx[d.k]) delete S.settings.fx[d.k]; applyFx(); changed(); if(typeof SND!=="undefined"&&SND.toggle) SND.toggle(FX(d.k)); },   // (1.70) son de sound.js, perdu car défini ici après lui
   fxpreview:()=>{ closeAll(); setTimeout(()=>{ switchTab("today"); HERO_LAST=null; renderView("today"); if(FX("clink")) setTimeout(()=>clink(tonight()[0]||RMAP.negroni),1500); },450); },
   setexplore:(d)=>{ S.settings.explore=+d.v; changed(); },
   setctx:()=>{ S.settings.ctx=S.settings.ctx===false; changed(); },
