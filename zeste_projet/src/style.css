@@ -2191,3 +2191,7 @@ details.bar-more[open]{padding-bottom:0}
 .ing-stats>div{flex:1;display:flex;flex-direction:column;gap:2px}
 .ing-stats b{font-family:var(--rounded);font-size:calc(22rem / 17);font-weight:700}
 .ing-stats span{font-size:var(--z-fs-l);color:var(--label2);line-height:1.25}
+/* 1.73 : saisons */
+.badge.season{background:color-mix(in srgb,var(--orange) 14%,transparent);color:var(--orange)}
+.card.season.s-hiver{--sea:#6FA8DC}.card.season.s-printemps{--sea:#7CCB7E}.card.season.s-ete{--sea:#F2B33D}.card.season.s-automne{--sea:#D9822B}
+.card.season[class*="s-"] .mini{background:linear-gradient(180deg,color-mix(in srgb,var(--sea) 16%,var(--bg2)),var(--bg2) 70%)}
