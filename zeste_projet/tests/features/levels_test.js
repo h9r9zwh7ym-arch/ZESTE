@@ -22,13 +22,13 @@ const STATE=()=>{ const n=Date.now(), ids=["negroni","daiquiri","gin_tonic","mar
     if(low.length) fail.push(scheme+' : contraste insuffisant dans la carte verte '+low.join(", "));
     // bar : compteurs hors carte, bouteilles en cartes blanches avec ombre, annexe repliée
     await q(()=>switchTab("bar")); await p.waitForTimeout(1200);
-    const bar=await q(()=>{ const v=document.querySelector('#v-bar'), head=v.querySelector('.bar-head'), g=v.querySelector('.cat-h + .group'); return {head:!!head, inCard:!!(head&&head.closest('.card,.group,.stat')), statCards:v.querySelectorAll('.stat-grid').length, groupShadow:g?getComputedStyle(g).boxShadow!=="none":false, groupBg:g?getComputedStyle(g).backgroundColor:"", links:[...v.querySelectorAll('.bar-more [data-a]')].map(x=>x.dataset.a), m:(document.getElementById('st-m')||{}).textContent, mk:makeable()}; });
+    const bar=await q(()=>{ const v=document.querySelector('#v-bar'), head=v.querySelector('.bar-head'), g=v.querySelector('.cat-h + .group'); return {head:!!head, inCard:!!(head&&head.closest('.card,.group,.stat')), statCards:v.querySelectorAll('.stat-grid').length, groupShadow:g?getComputedStyle(g).boxShadow!=="none":false, groupBg:g?getComputedStyle(g).backgroundColor:"", links:[...v.querySelectorAll('.bar-more [data-a], .buy-card[data-a]')].map(x=>x.dataset.a), m:(document.getElementById('st-m')||{}).textContent, mk:makeable()}; });
     if(!bar.head||bar.inCard||bar.statCards) fail.push(scheme+' : compteurs du bar '+JSON.stringify(bar));
     if(!bar.groupShadow||/rgba\(0, 0, 0, 0\)|transparent/.test(bar.groupBg)) fail.push(scheme+' : bouteilles sans carte blanche');
     if(!bar.links.includes("buysheet")||!bar.links.includes("basics")) fail.push(scheme+' : liens du bar '+bar.links.join(","));
     if(+bar.m!==bar.mk) fail.push(scheme+` : compteur faux (${bar.m}/${bar.mk})`);
     await q(()=>{ document.querySelector('#v-bar details.bar-more').open=true; }); await p.waitForTimeout(200);
-    await p.click('#v-bar .bar-more [data-a="buysheet"]'); await p.waitForTimeout(500);
+    await p.click('#v-bar .buy-card[data-a="buysheet"]'); // (1.71) « Achats malins » : carte « Le meilleur achat » hors du repli await p.waitForTimeout(500);
     if(!await q(()=>document.querySelectorAll('.sheet .row.tap[data-a="ing"]').length)) fail.push('Achats malins : feuille vide'); await q(()=>closeAll()); await p.waitForTimeout(300);
     // trophées en carte blanche
     await q(()=>switchTab("profil")); await p.waitForTimeout(1200);

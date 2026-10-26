@@ -2175,3 +2175,19 @@ details.bar-more[open]{padding-bottom:0}
 .sto-card span{font-size:var(--z-fs-l);color:var(--label2)}
 .sto-bar{margin-top:var(--z-s1)}
 .row .s.sto-s{white-space:normal;overflow:visible;text-overflow:clip;font-size:var(--z-fs-l);color:var(--label2);line-height:1.35}
+/* 1.71 : Mon bar — meilleur achat, apport par bouteille, à finir, fiche */
+.buy-card{display:flex;align-items:center;gap:var(--z-s2);width:calc(100% - 40px);margin:var(--z-s2) 20px 0;padding:12px var(--z-s2);background:var(--bg2);border-radius:var(--r-card);box-shadow:var(--shadow);text-align:left;color:var(--label)}
+.buy-card:active{opacity:.6}
+.buy-card .bc-b{width:28px;height:44px;flex:none;display:grid;place-items:center}
+.buy-card .bc-b svg{height:44px;width:auto}
+.buy-card .bc-k{font-size:var(--z-fs-l);font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.04em}
+.buy-card .bc-t{font-size:var(--z-fs-b);font-weight:650;margin-top:2px}
+.buy-card .bc-s{font-size:var(--z-fs-l);color:var(--label2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.buy-card .grow{min-width:0}
+.buy-card .chev{color:var(--z-ic);width:14px;height:14px;flex:none}
+.bar-row .bar-n{font-size:var(--z-fs-l);color:var(--label2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row .bar-n .fin,.gf.fin{color:var(--orange);font-weight:600}
+.ing-stats{display:flex;gap:var(--z-s1);text-align:center}
+.ing-stats>div{flex:1;display:flex;flex-direction:column;gap:2px}
+.ing-stats b{font-family:var(--rounded);font-size:calc(22rem / 17);font-weight:700}
+.ing-stats span{font-size:var(--z-fs-l);color:var(--label2);line-height:1.25}

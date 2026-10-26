@@ -13,17 +13,17 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   const bar=await q(()=>{ const v=document.querySelector('#v-bar'), d=v.querySelector('details.bar-more'), txt=v.textContent;
     return {view:S.settings.barView, shelf:!!v.querySelector('[data-a="barview"],.b2-row,.b2-b'), opened:/bouteilles? ouvertes?/i.test(txt), heads:v.querySelectorAll('.bar-head .bh').length,
       faisables:!!v.querySelector('.bar-head [data-a="gofaisables"]'), more:!!d, closed:d&&!d.open, inMore:d?[...d.querySelectorAll('[data-a]')].map(x=>x.dataset.a):[],
-      addBtn:!!v.querySelector('.content .btn-row [data-a="addsheet"]'), lastBtn:(()=>{ const all=[...v.querySelectorAll('.content button')]; return all.length?all[all.length-1].dataset.a:""; })(), gazBasic:BASICS.includes("eau_gazeuse")&&has("eau_gazeuse"), gazListed:!!document.getElementById('sr-eau_gazeuse'), gazBuy:bottleRecs().some(x=>x.id==="eau_gazeuse")}; });
+      addBtn:!!v.querySelector('.content .btn-row [data-a="addsheet"]'), lastBtn:(()=>{ const all=[...v.querySelectorAll('.content button')]; return all.length?all[all.length-1].dataset.a:""; })(), gazBasic:BASICS.includes("eau_gazeuse")&&has("eau_gazeuse"), gazListed:!!document.getElementById('sr-eau_gazeuse'), gazBuy:bottleRecs().some(x=>x.id==="eau_gazeuse"), buyCard:!!v.querySelector('.buy-card[data-a="buysheet"]')}; });
   if(bar.view!=="list"||bar.shelf) fail.push('bar : l’étagère existe encore '+JSON.stringify(bar));
   if(bar.opened||bar.heads!==1||!bar.faisables) fail.push('bar : en-tête '+JSON.stringify(bar));
-  if(!bar.more||!bar.closed||!bar.inMore.includes("basics")||!bar.inMore.includes("buysheet")||bar.addBtn) fail.push('bar : section repliée '+JSON.stringify(bar));
+  if(!bar.more||!bar.closed||!bar.inMore.includes("basics")||bar.inMore.includes("buysheet")||!bar.buyCard||bar.addBtn) fail.push('bar : section repliée '+JSON.stringify(bar));
   if(!bar.gazBasic||bar.gazListed||bar.gazBuy) fail.push('eau gazeuse : '+JSON.stringify(bar));
   await p.click('#v-bar details.bar-more>summary'); await p.waitForTimeout(400);
   await p.click('#v-bar .bar-more [data-a="basics"]'); await p.waitForTimeout(500);
   if(!await q(()=>SHEETS.length&&/eau gazeuse/i.test(document.querySelector('.sheet:last-of-type').textContent))) fail.push('basiques : feuille absente ou sans eau gazeuse');
   await q(()=>closeAll()); await p.waitForTimeout(400);
   if(!await q(()=>document.querySelector('#v-bar details.bar-more').open)) fail.push('la section repliée se referme après un aller-retour');
-  await p.click('#v-bar .bar-more [data-a="buysheet"]'); await p.waitForTimeout(500);
+  await p.click('#v-bar .buy-card[data-a="buysheet"]'); await p.waitForTimeout(500); // (1.71) sortie du repli
   if(!await q(()=>document.querySelectorAll('.sheet .row.tap[data-a="ing"]').length)) fail.push('Achats malins : feuille vide'); await q(()=>closeAll()); await p.waitForTimeout(300);
   // ---------- glace ----------
   const ice=await q(()=>{ const host=document.createElement('div'); host.style.cssText="position:fixed;left:0;top:0;width:200px;height:260px"; document.body.appendChild(host); const out={big:{},crush:{}};

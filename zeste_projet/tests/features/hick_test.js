@@ -34,10 +34,11 @@ const {chromium}=require('playwright'); const path=require('path');
   if(lv[0]!==1||lv[1]!==1||lv[2]!==0) fail.push('bar : choix du niveau non appliqué '+JSON.stringify(lv));
   // Fiche ingrédient : 5 recettes puis « Voir les N autres »
   await p.evaluate(()=>ingSheet("gin")); await p.waitForTimeout(700);
-  const ing=await p.evaluate(()=>({rows:document.querySelectorAll('.sheet .group .row.tap[data-a="rec"]').length,more:!!document.querySelector('.sheet [data-a="more"]')}));
+  // (1.71) on compte le groupe « Utilisé dans » seulement : « À une bouteille près » (3 lignes au plus) est une autre section
+  const ing=await p.evaluate(()=>{ const h=[...document.querySelectorAll('.sheet .gh')].find(x=>/^Utilisé dans/.test(x.textContent)), g=h&&h.nextElementSibling; return {rows:g?g.querySelectorAll('.row.tap[data-a="rec"]').length:99,more:!!(g&&g.querySelector('[data-a="more"]'))}; });
   if(ing.rows>5||!ing.more) fail.push('fiche ingrédient : '+ing.rows+' recettes affichées');
   await p.click('.sheet [data-a="more"]'); await p.waitForTimeout(400);
-  if(await p.evaluate(()=>document.querySelectorAll('.sheet .group .row.tap[data-a="rec"]').length)<20) fail.push('fiche ingrédient : la liste ne se déplie pas');
+  if(await p.evaluate(()=>{ const h=[...document.querySelectorAll('.sheet .gh')].find(x=>/^Utilisé dans/.test(x.textContent)); return h?h.nextElementSibling.querySelectorAll('.row.tap[data-a="rec"]').length:0; })<20) fail.push('fiche ingrédient : la liste ne se déplie pas');
   await p.evaluate(()=>closeAll()); await p.waitForTimeout(500);
   // Réglages : « Toi » sur place, les groupes en feuilles avec Retour, et un réglage fonctionne depuis un groupe
   await p.evaluate(()=>settingsSheet()); await p.waitForTimeout(700); res.reglages=await budget('réglages',top,14);
