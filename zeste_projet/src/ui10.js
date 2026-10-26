@@ -147,7 +147,7 @@ function rwShow(i){
   el.querySelectorAll(".rw-prog i").forEach((p,k)=>{ p.className=k<i?"done":k===i?"now":""; p.querySelector("b").style.width=k<i?"100%":"0%"; });
   const stg=el.querySelector(".rw-stage"); stg.innerHTML=`<div class="rw-slide">${s.h}</div>`;
   stg.querySelectorAll("[data-count]").forEach(n=>{ const v=+n.dataset.count, t0=performance.now(); const step=t=>{ const k=Math.min(1,(t-t0)/1100), e=1-Math.pow(1-k,3); n.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
-  if(i===RW.slides.length-1||(s.h.includes("rw-big")&&i===0)) setTimeout(()=>{ const b=stg.getBoundingClientRect(); if(i===RW.slides.length-1||WOW()) confetti(b.left+b.width/2,b.top+b.height*0.35,s.c[0]); },500);
+  if(i===RW.slides.length-1||(s.h.includes("rw-big")&&i===0)) setTimeout(()=>{ if(!RW) return; const b=stg.getBoundingClientRect(); if(i===RW.slides.length-1||WOW()) confetti(b.left+b.width/2,b.top+b.height*0.35,s.c[0]); },500);
   cancelAnimationFrame(RW.timer); const dur=s.end?0:5200; let acc=0, last=performance.now();
   const bar=el.querySelectorAll(".rw-prog i b")[i];
   if(!dur){ bar.style.width="100%"; return; }
@@ -162,17 +162,17 @@ async function rwSave(){
   const W=1080,H=1350; const g=top? svgStandalone(glassSVG(top)).replace("<svg",`<svg x="340" y="300" width="400" height="500"`) : "";
   const st=(x,y,v,l)=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="92" fill="#fff">${v}</text><text x="${x}" y="${y+48}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">${l}</text>`;
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><radialGradient id="bg" cx="50%" cy="32%" r="80%"><stop offset="0" stop-color="${col}"/><stop offset=".55" stop-color="${mix(col,"#000000",.65)}"/><stop offset="1" stop-color="#0C0810"/></radialGradient></defs><rect width="${W}" height="${H}" fill="url(#bg)"/>
-    <text x="540" y="150" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="40" letter-spacing="3" fill="rgba(255,255,255,.8)">MON ZESTE REWIND</text>
-    <text x="540" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#fff">${new Date().getFullYear()}</text>${g}
-    ${top?`<text x="540" y="880" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#fff">${esc(top.n)}</text><text x="540" y="935" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">mon cocktail de l’année</text>`:""}
-    ${st(200,1110,D.count,"verres")}${st(420,1110,D.distinct,"recettes")}${st(640,1110,D.fams.length,"familles")}${st(860,1110,D.tro,"trophées")}
+    <text x="540" y="150" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="40" letter-spacing="3" fill="rgba(255,255,255,.8)">${esc((RW.lab&&RW.lab.head)||"MON ZESTE REWIND")}</text>
+    <text x="540" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#fff">${esc((RW.lab&&RW.lab.title)||String(new Date().getFullYear()))}</text>${g}
+    ${top?`<text x="540" y="880" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#fff">${esc(top.n)}</text><text x="540" y="935" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">${esc((RW.lab&&RW.lab.top)||"mon cocktail de l’année")}</text>`:""}
+    ${st(200,1110,D.count,"verres")}${st(420,1110,D.distinct,"recettes")}${st(640,1110,D.fams.length,"familles")}${st(860,1110,...((RW.lab&&RW.lab.s4)||[D.tro,"trophées"]))}
     ${(typeof zesteMark==="function"?zesteMark({round:true}).replace(/ class="[^"]*"/g,"").replace(/ aria-hidden="true"/,"").replace("<svg",'<svg x="444" y="1222" width="64" height="64"'):"")}<text x="${typeof zesteMark==="function"?522:540}" y="1270" text-anchor="${typeof zesteMark==="function"?"start":"middle"}" font-family="Georgia,serif" font-weight="700" font-size="44" fill="rgba(255,255,255,.9)">zeste</text></svg>`;
   try{
     const img=new Image(); img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); await img.decode();
     const cv=document.createElement("canvas"); cv.width=W; cv.height=H; cv.getContext("2d").drawImage(img,0,0);
     const blob=await new Promise(r=>cv.toBlob(r,"image/png"));
-    try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:"zeste-rewind.png",data:blob}); return; } }catch(e){ if(e&&e.code==="declined") return; }
-    try{ const f=new File([blob],"zeste-rewind.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); return; } }catch(e){ return; }
+    try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:((RW&&RW.lab&&RW.lab.file)||"zeste-rewind.png"),data:blob}); return; } }catch(e){ if(e&&e.code==="declined") return; }
+    try{ const f=new File([blob],((RW&&RW.lab&&RW.lab.file)||"zeste-rewind.png"),{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); return; } }catch(e){ return; }
     const url=URL.createObjectURL(blob); rwClose(); openSheet(()=>({title:"Ta carte",body:`<p class="body" style="margin-bottom:var(--z-s2)">Appuie longuement sur l’image pour l’enregistrer.</p><div style="padding:0 16px"><img src="${url}" alt="Carte Zeste Rewind" style="width:100%;border-radius:16px"></div>`}));
   }catch(e){ toast("Impossible de créer l’image ici"); }
 }

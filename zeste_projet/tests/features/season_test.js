@@ -1,5 +1,5 @@
 // 1.73 : « De saison ». inSeason suit SEASON (sélection du mois), les fruits frais du moment et le chaud en hiver ;
-// le filtre « De saison » de Cocktails ne garde que ces recettes ; « Tout voir » de l'accueil l'active ; badge dans la fiche
+// le filtre « De saison » de Cocktails > Filtres ne garde que ces recettes ; badge dans la fiche
 // d'une recette de saison et pas ailleurs ; la carte de l'accueil porte la teinte de la saison ; aucune erreur.
 const {chromium}=require('playwright'); const path=require('path');
 const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
@@ -16,19 +16,21 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   fail.push(...U);
   // accueil : teinte et « Tout voir »
   await p.evaluate(()=>switchTab('today')); await p.waitForTimeout(800);
-  const H=await p.evaluate(()=>{ const c=document.querySelector('#v-today .card.season'); return {cls:c&&c.className, more:!!document.querySelector('#v-today [data-a="seasonfilter"]')}; });
+  const H=await p.evaluate(()=>{ const c=document.querySelector('#v-today .card.season'); return {cls:c&&c.className}; });
   const sk=await p.evaluate(()=>seasonKey());
   if(!H.cls||!H.cls.includes("s-"+sk)) fail.push("carte de saison sans teinte : "+H.cls);
-  if(!H.more) fail.push("« Tout voir » absent de la carte de saison");
-  else { await p.locator('#v-today [data-a="seasonfilter"]').scrollIntoViewIfNeeded(); await p.click('#v-today [data-a="seasonfilter"]'); await p.waitForTimeout(900);
+  // filtre « De saison » depuis Cocktails > Filtres (puce « Autres »)
+  await p.evaluate(()=>{ switchTab('cocktails'); }); await p.waitForTimeout(600);
+  await p.evaluate(()=>ACT.filters()); await p.waitForTimeout(700);
+  const chip=p.locator('.sheet .chip', {hasText:'De saison'}); if(!await chip.count()) fail.push("puce « De saison » absente des filtres");
+  else { await chip.first().click(); await p.waitForTimeout(400); await p.evaluate(()=>closeAll()); await p.waitForTimeout(700);
     const C=await p.evaluate(()=>{ const ids=[...document.querySelectorAll('#v-cocktails [data-a="rec"]')].map(e=>e.dataset.id); const want=RECS.filter(r=>inSeason(r)).map(r=>r.id);
-      return {tab:TAB, x:CF.x.slice(), ids:[...new Set(ids)], want, chip:/De saison/.test(document.querySelector('#v-cocktails').textContent)}; });
-    if(C.tab!=="cocktails"||C.x.join()!=="season") fail.push("filtre non activé : "+JSON.stringify({tab:C.tab,x:C.x}));
-    if(!C.ids.length||C.ids.some(id=>!C.want.includes(id))||C.want.some(id=>!C.ids.includes(id))) fail.push("liste filtrée ≠ inSeason : "+C.ids.join()+" / "+C.want.join());
-    if(!C.chip) fail.push("puce « De saison » absente des filtres actifs"); }
+      return {x:CF.x.slice(), ids:[...new Set(ids)], want}; });
+    if(C.x.join()!=="season") fail.push("filtre non activé : "+C.x.join());
+    if(!C.ids.length||C.ids.some(id=>!C.want.includes(id))||C.want.some(id=>!C.ids.includes(id))) fail.push("liste filtrée ≠ inSeason : "+C.ids.join()+" / "+C.want.join()); }
   // badge dans la fiche
   const B=await p.evaluate(()=>{ const yes=RECS.find(r=>inSeason(r)), no=RECS.find(r=>!inSeason(r)); const g=id=>{ recSheet(id); const s=[...document.querySelectorAll('.sheet')].pop(); const v=!!s.querySelector('.tags .badge.season'); closeAll(); return v; }; return {yes:g(yes.id), no:g(no.id)}; });
   if(!B.yes||B.no) fail.push("badge de saison : "+JSON.stringify(B));
   if(errs.length) fail.push("erreurs : "+errs.join(" | "));
-  console.log(fail.length? "De saison : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "De saison : sélection du mois, fruits frais et chaud en hiver ; filtre exact depuis « Tout voir » de l’accueil ; badge dans la fiche ; teinte de la saison sur l’accueil.");
+  console.log(fail.length? "De saison : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "De saison : sélection du mois, fruits frais et chaud en hiver ; filtre exact depuis Cocktails > Filtres ; badge dans la fiche ; teinte de la saison sur l’accueil.");
   await b.close(); process.exit(fail.length?1:0); })();

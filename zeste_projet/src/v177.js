@@ -1,7 +1,7 @@
 // ================= ZESTE 1.73 : saisons et événements =================
 // 1. Sept occasions de plus, dont trois à date mobile (Carnaval, Oktoberfest, Beaujolais nouveau) et deux qui durent
 //    (Dry January tout le mois, Oktoberfest 16 jours, Escalade 2 jours) : affichées « En ce moment » pendant leur durée.
-// 2. « De saison » : badge dans la fiche et filtre dans Cocktails (sélection du mois de SEASON, fruits frais du moment,
+// 2. « De saison » : badge dans la fiche et filtre dans Cocktails > Filtres (sélection du mois de SEASON, fruits frais du moment,
 //    cocktails chauds en hiver).
 // 3. La carte « De saison » de l'accueil prend une teinte discrète de la saison.
 
@@ -46,5 +46,5 @@ XF.push(["season","De saison"]);
 }
 // teinte de la saison sur la carte de l'accueil
 function seasonKey(mo){ mo=mo||new Date().getMonth()+1; return [12,1,2].includes(mo)?"hiver":[3,4,5].includes(mo)?"printemps":[6,7,8].includes(mo)?"ete":"automne"; }
-{ const _s=HOME_SEC.season; HOME_SEC.season=()=>_s().replace('<div class="card season">',`<div class="card season s-${seasonKey()}">`).replace('<h2 class="sh">De saison</h2>','<h2 class="sh">De saison<button class="more" data-a="seasonfilter">Tout voir</button></h2>'); }
-Object.assign(ACT,{ seasonfilter:()=>{ CF.main=""; CF.q=""; CF.type=[]; CF.fam=[]; CF.base=[]; CF.x=["season"]; CF.mode="list"; dirty.cocktails=1; switchTab("cocktails"); } });
+{ const _s=HOME_SEC.season; HOME_SEC.season=()=>_s().replace('<div class="card season">',`<div class="card season s-${seasonKey()}">`); }
+// (1.74) pas de « Tout voir » ici : l'accueil est à son budget de choix (loi de Hick, 36) ; le filtre est dans Cocktails > Filtres

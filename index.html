@@ -4675,7 +4675,7 @@ function rwShow(i){
   el.querySelectorAll(".rw-prog i").forEach((p,k)=>{ p.className=k<i?"done":k===i?"now":""; p.querySelector("b").style.width=k<i?"100%":"0%"; });
   const stg=el.querySelector(".rw-stage"); stg.innerHTML=`<div class="rw-slide">${s.h}</div>`;
   stg.querySelectorAll("[data-count]").forEach(n=>{ const v=+n.dataset.count, t0=performance.now(); const step=t=>{ const k=Math.min(1,(t-t0)/1100), e=1-Math.pow(1-k,3); n.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
-  if(i===RW.slides.length-1||(s.h.includes("rw-big")&&i===0)) setTimeout(()=>{ const b=stg.getBoundingClientRect(); if(i===RW.slides.length-1||WOW()) confetti(b.left+b.width/2,b.top+b.height*0.35,s.c[0]); },500);
+  if(i===RW.slides.length-1||(s.h.includes("rw-big")&&i===0)) setTimeout(()=>{ if(!RW) return; const b=stg.getBoundingClientRect(); if(i===RW.slides.length-1||WOW()) confetti(b.left+b.width/2,b.top+b.height*0.35,s.c[0]); },500);
   cancelAnimationFrame(RW.timer); const dur=s.end?0:5200; let acc=0, last=performance.now();
   const bar=el.querySelectorAll(".rw-prog i b")[i];
   if(!dur){ bar.style.width="100%"; return; }
@@ -4690,17 +4690,17 @@ async function rwSave(){
   const W=1080,H=1350; const g=top? svgStandalone(glassSVG(top)).replace("<svg",`<svg x="340" y="300" width="400" height="500"`) : "";
   const st=(x,y,v,l)=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="92" fill="#fff">${v}</text><text x="${x}" y="${y+48}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">${l}</text>`;
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><radialGradient id="bg" cx="50%" cy="32%" r="80%"><stop offset="0" stop-color="${col}"/><stop offset=".55" stop-color="${mix(col,"#000000",.65)}"/><stop offset="1" stop-color="#0C0810"/></radialGradient></defs><rect width="${W}" height="${H}" fill="url(#bg)"/>
-    <text x="540" y="150" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="40" letter-spacing="3" fill="rgba(255,255,255,.8)">MON ZESTE REWIND</text>
-    <text x="540" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#fff">${new Date().getFullYear()}</text>${g}
-    ${top?`<text x="540" y="880" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#fff">${esc(top.n)}</text><text x="540" y="935" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">mon cocktail de l’année</text>`:""}
-    ${st(200,1110,D.count,"verres")}${st(420,1110,D.distinct,"recettes")}${st(640,1110,D.fams.length,"familles")}${st(860,1110,D.tro,"trophées")}
+    <text x="540" y="150" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-size="40" letter-spacing="3" fill="rgba(255,255,255,.8)">${esc((RW.lab&&RW.lab.head)||"MON ZESTE REWIND")}</text>
+    <text x="540" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#fff">${esc((RW.lab&&RW.lab.title)||String(new Date().getFullYear()))}</text>${g}
+    ${top?`<text x="540" y="880" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#fff">${esc(top.n)}</text><text x="540" y="935" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="rgba(255,255,255,.72)">${esc((RW.lab&&RW.lab.top)||"mon cocktail de l’année")}</text>`:""}
+    ${st(200,1110,D.count,"verres")}${st(420,1110,D.distinct,"recettes")}${st(640,1110,D.fams.length,"familles")}${st(860,1110,...((RW.lab&&RW.lab.s4)||[D.tro,"trophées"]))}
     ${(typeof zesteMark==="function"?zesteMark({round:true}).replace(/ class="[^"]*"/g,"").replace(/ aria-hidden="true"/,"").replace("<svg",'<svg x="444" y="1222" width="64" height="64"'):"")}<text x="${typeof zesteMark==="function"?522:540}" y="1270" text-anchor="${typeof zesteMark==="function"?"start":"middle"}" font-family="Georgia,serif" font-weight="700" font-size="44" fill="rgba(255,255,255,.9)">zeste</text></svg>`;
   try{
     const img=new Image(); img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); await img.decode();
     const cv=document.createElement("canvas"); cv.width=W; cv.height=H; cv.getContext("2d").drawImage(img,0,0);
     const blob=await new Promise(r=>cv.toBlob(r,"image/png"));
-    try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:"zeste-rewind.png",data:blob}); return; } }catch(e){ if(e&&e.code==="declined") return; }
-    try{ const f=new File([blob],"zeste-rewind.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); return; } }catch(e){ return; }
+    try{ const dl=window.claude&&await claude.use("downloads"); if(dl){ await dl.save({filename:((RW&&RW.lab&&RW.lab.file)||"zeste-rewind.png"),data:blob}); return; } }catch(e){ if(e&&e.code==="declined") return; }
+    try{ const f=new File([blob],((RW&&RW.lab&&RW.lab.file)||"zeste-rewind.png"),{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); return; } }catch(e){ return; }
     const url=URL.createObjectURL(blob); rwClose(); openSheet(()=>({title:"Ta carte",body:`<p class="body" style="margin-bottom:var(--z-s2)">Appuie longuement sur l’image pour l’enregistrer.</p><div style="padding:0 16px"><img src="${url}" alt="Carte Zeste Rewind" style="width:100%;border-radius:16px"></div>`}));
   }catch(e){ toast("Impossible de créer l’image ici"); }
 }
@@ -5348,7 +5348,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.73";
+const APP_VERSION="1.74";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -7722,7 +7722,7 @@ Object.assign(ACT,{ sharecard:d=>{ shareCard(d.id); } });
 // ================= ZESTE 1.73 : saisons et événements =================
 // 1. Sept occasions de plus, dont trois à date mobile (Carnaval, Oktoberfest, Beaujolais nouveau) et deux qui durent
 //    (Dry January tout le mois, Oktoberfest 16 jours, Escalade 2 jours) : affichées « En ce moment » pendant leur durée.
-// 2. « De saison » : badge dans la fiche et filtre dans Cocktails (sélection du mois de SEASON, fruits frais du moment,
+// 2. « De saison » : badge dans la fiche et filtre dans Cocktails > Filtres (sélection du mois de SEASON, fruits frais du moment,
 //    cocktails chauds en hiver).
 // 3. La carte « De saison » de l'accueil prend une teinte discrète de la saison.
 
@@ -7767,8 +7767,57 @@ XF.push(["season","De saison"]);
 }
 // teinte de la saison sur la carte de l'accueil
 function seasonKey(mo){ mo=mo||new Date().getMonth()+1; return [12,1,2].includes(mo)?"hiver":[3,4,5].includes(mo)?"printemps":[6,7,8].includes(mo)?"ete":"automne"; }
-{ const _s=HOME_SEC.season; HOME_SEC.season=()=>_s().replace('<div class="card season">',`<div class="card season s-${seasonKey()}">`).replace('<h2 class="sh">De saison</h2>','<h2 class="sh">De saison<button class="more" data-a="seasonfilter">Tout voir</button></h2>'); }
-Object.assign(ACT,{ seasonfilter:()=>{ CF.main=""; CF.q=""; CF.type=[]; CF.fam=[]; CF.base=[]; CF.x=["season"]; CF.mode="list"; dirty.cocktails=1; switchTab("cocktails"); } });
+{ const _s=HOME_SEC.season; HOME_SEC.season=()=>_s().replace('<div class="card season">',`<div class="card season s-${seasonKey()}">`); }
+// (1.74) pas de « Tout voir » ici : l'accueil est à son budget de choix (loi de Hick, 36) ; le filtre est dans Cocktails > Filtres
+// ================= ZESTE 1.74 : Rewind des 3 mois =================
+// Un récap par trimestre (janvier–mars, avril–juin, juillet–septembre, octobre–décembre), sur le modèle du récap du mois
+// (rewindRange) : verres, cocktail du trimestre, mois fort, moment préféré, alcool, coup de cœur, découvertes, et une carte
+// à enregistrer. Proposé sur l'accueil du 1er au 10 du mois qui suit le trimestre (au moins 3 verres), et toujours dans
+// Profil > Tes récaps.
+const TRIM=["janvier–mars","avril–juin","juillet–septembre","octobre–décembre"];
+function quarterRange(y,q){ return [new Date(y,q*3,1).getTime(), new Date(y,q*3+3,1).getTime()]; }
+function quarterLabel(y,q){ return TRIM[q]+" "+y; }
+// trimestre écoulé le plus récent (au 15 janvier 2027 : octobre–décembre 2026)
+function lastQuarter(now){ const d=new Date(now||Date.now()), q=Math.floor(d.getMonth()/3); return q? {y:d.getFullYear(),q:q-1} : {y:d.getFullYear()-1,q:3}; }
+function quarterCount(y,q){ const [a,b]=quarterRange(y,q); return S.hist.filter(h=>h.t>=a&&h.t<b&&RMAP[h.id]).length; }
+function quarterEligible(y,q){ return quarterCount(y,q)>=3; }
+function quarterData(y,q){ const [a,b]=quarterRange(y,q), D=rewindRange(a,b);
+  const months=[0,1,2].map(k=>{ const [ma,mb]=[new Date(y,q*3+k,1).getTime(),new Date(y,q*3+k+1,1).getTime()]; return D.H.filter(h=>h.t>=ma&&h.t<mb).length; });
+  const topM=months.indexOf(Math.max(...months));
+  return Object.assign({},D,{months,topM,monthNames:[0,1,2].map(k=>MOIS[q*3+k]),label:quarterLabel(y,q),y,q,tro:(S.tro||[]).length}); }
+function openQuarterRewind(y,q){
+  const D=quarterData(y,q), top=D.top&&RMAP[D.top.id], best=D.best&&RMAP[D.best], col=top?top.col:"#2E7A52", cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+  const slides=[];
+  slides.push({c:[col,"#1A1020"],h:`<div class="rw-small">Tes 3 mois, ${esc(D.label)}</div><div class="rw-big" data-count="${D.count}">0</div><div class="rw-mid">cocktail${D.count>1?"s":""} préparé${D.count>1?"s":""}</div><div class="rw-note">${D.distinct} recette${D.distinct>1?"s":""} différente${D.distinct>1?"s":""}${D.discoveries.length?`, dont ${D.discoveries.length} découverte${D.discoveries.length>1?"s":""}`:""}</div>`});
+  if(top) slides.push({c:[top.col,mix(top.col,"#000000",.6)],h:`<div class="rw-small">Ton cocktail du trimestre</div><div class="rw-glass">${glassSVG(top,{pour:true,live:1})}</div><div class="rw-name">${esc(top.n)}</div><div class="rw-note">préparé ${D.top.n} fois${S.ratings[top.id]?", noté "+S.ratings[top.id]+" sur 5":""}</div>`});
+  if(D.count>=3){ const mx=Math.max(...D.months,1);
+    slides.push({c:["#3A6AC0","#08102A"],h:`<div class="rw-small">Ton mois le plus festif</div><div class="rw-name">${esc(cap(D.monthNames[D.topM]))}</div><div class="rw-note">${D.months[D.topM]} verre${D.months[D.topM]>1?"s":""}${Math.max(...D.days)>1?`, et le ${JOURS[D.peakD]} est ton jour favori`:""}.</div><div class="rw-months">${D.months.map((v,k)=>`<div class="rw-m ${k===D.topM?"top":""}"><i style="--h:${Math.round(v/mx*100)}%;animation-delay:${0.2+k*0.1}s"></i><span>${esc(D.monthNames[k].slice(0,3))}</span></div>`).join("")}</div>`}); }
+  if(D.bases.length){ const mx=D.bases[0][1]; slides.push({c:["#C98A2E","#2A1606"],h:`<div class="rw-small">Ton alcool du trimestre</div><div class="rw-name">${esc(D.bases[0][0])}</div><div class="rw-bars">${D.bases.slice(0,4).map(([n,v],k)=>`<div class="rw-bar"><span>${esc(n)}</span><i style="--w:${Math.round(v/mx*100)}%;animation-delay:${0.3+k*0.12}s"></i><b>${v}</b></div>`).join("")}</div>`}); }
+  if(best&&best!==top) slides.push({c:[best.col,mix(best.col,"#000000",.6)],h:`<div class="rw-small">Ton coup de cœur</div><div class="rw-glass">${glassSVG(best,{pour:true,live:1})}</div><div class="rw-name">${esc(best.n)}</div><div class="rw-stars">${[1,2,3,4,5].map(k=>`<span class="${k<=S.ratings[best.id]?"on":""}" style="animation-delay:${0.5+k*0.1}s">${IC.star}</span>`).join("")}</div>`});
+  if(D.avgCost!=null&&D.priced>=2) slides.push({c:["#C8A020","#1A1404"],h:`<div class="rw-small">Côté porte-monnaie</div><div class="rw-big money">${chf(D.avgCost)}</div><div class="rw-mid">le verre en moyenne</div>`});
+  slides.push({c:[col,"#100A14"],end:1,h:`<div class="rw-small">C’étaient tes 3 mois</div><div class="rw-sum"><div><b>${D.count}</b><span>verres</span></div><div><b>${D.distinct}</b><span>recettes</span></div><div><b>${D.fams.length}</b><span>familles</span></div><div><b>${D.discoveries.length}</b><span>découvertes</span></div></div>${top?`<div class="rw-note">Cocktail du trimestre : <b>${esc(top.n)}</b></div>`:""}<div class="rw-actions"><button class="btn" data-a="rwsave">${IC.share}Enregistrer ma carte</button><button class="btn gray" data-a="rwclose">Terminer</button></div>`});
+  RW={i:0,slides,D,quarter:{y,q},lab:{head:"MES 3 MOIS ZESTE",title:cap(TRIM[q])+" "+y,top:"mon cocktail du trimestre",file:"zeste-3-mois-"+y+"-t"+(q+1)+".png",s4:[D.discoveries.length,"découverte"+(D.discoveries.length>1?"s":"")]},timer:null,paused:false};
+  let el=document.getElementById("rewind"); if(!el){ el=document.createElement("div"); el.id="rewind"; document.body.appendChild(el); }
+  el.innerHTML=`<div class="rw-prog">${slides.map(()=>`<i><b></b></i>`).join("")}</div><button class="close-x rw-x" data-a="rwclose" aria-label="Fermer">${IC.x}</button><div class="rw-stage"></div><div class="rw-tap l"></div><div class="rw-tap r"></div>`;
+  el.classList.add("open"); el.querySelector(".rw-tap.l").onclick=()=>rwGo(-1); el.querySelector(".rw-tap.r").onclick=()=>rwGo(1);
+  const st=el.querySelector(".rw-stage"); st.onpointerdown=()=>{ RW&&(RW.paused=true); }; st.onpointerup=()=>{ RW&&(RW.paused=false); };
+  rwShow(0);
+}
+// La carte à enregistrer : celle du Rewind annuel (rwSave), avec les libellés du trimestre (RW.lab)
+Object.assign(ACT,{ rwquarter:d=>openQuarterRewind(+d.y,+d.q) });
+// Accueil, sous la suggestion du soir (les récaps du mois vivent au Profil depuis la 1.38 ; celui-ci n'est là que 10 jours) :
+// du 1er au 10 du mois qui suit un trimestre
+function quarterCard(){ const now=new Date(); if(now.getMonth()%3!==0||now.getDate()>10) return ""; const {y,q}=lastQuarter(now); if(!quarterEligible(y,q)) return "";
+    const n=quarterCount(y,q);
+    return `<div class="sp16"></div><button class="rw-card month" data-a="rwquarter" data-y="${y}" data-q="${q}"><div class="rw-bg"></div><div class="rw-in"><div class="rw-k">${IC.sparkle}Tes 3 mois</div><div class="rw-t">${esc(TRIM[q].replace(/^./,c=>c.toUpperCase()))} ${y}</div><div class="rw-s">${n} cocktails préparés. Revis ton trimestre et partage ta carte.</div></div><div class="rw-play">${IC.play}</div></button>`; }
+{ const _sg=HOME_SEC.suggest; HOME_SEC.suggest=(ctx)=>{ const h=_sg(ctx); return h+quarterCard(); }; }
+// Profil > Tes récaps : le dernier trimestre écoulé, sinon le trimestre en cours (au moins 3 verres)
+{ const _rr=recapRows;
+  recapRows=function(){ const h=_rr(), now=new Date(), cq={y:now.getFullYear(),q:Math.floor(now.getMonth()/3)}, lq=lastQuarter(now);
+    const t=quarterEligible(lq.y,lq.q)? lq : quarterEligible(cq.y,cq.q)? cq : null; if(!t) return h;
+    const cur=t===cq, n=quarterCount(t.y,t.q);
+    return h+prow("sparkles","Tes 3 derniers mois",`${TRIM[t.q].replace(/^./,c=>c.toUpperCase())} ${t.y}${cur?", jusqu’ici":""} · ${n} cocktails`,"","rwquarter",`data-y="${t.y}" data-q="${t.q}"`); };
+}
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],

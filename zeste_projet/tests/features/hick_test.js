@@ -15,7 +15,7 @@ const {chromium}=require('playwright'); const path=require('path');
   const top='.sheet:last-of-type .sheet-body';
   const budget=async(n,sel,max)=>{ const c=await choices(sel); if(c<0||c>max) fail.push(`${n} : ${c} choix (budget ${max})`); return c; };
   const res={};
-  for(const t of ["today","bar","labo","profil"]){ await p.evaluate(t=>switchTab(t),t); await p.waitForTimeout(900); res[t]=await budget(t,'#v-'+t,{today:36,bar:45,labo:58,profil:32}[t]); }
+  for(const t of ["today","bar","labo","profil"]){ await p.evaluate(t=>switchTab(t),t); await p.waitForTimeout(900); res[t]=await budget(t,'#v-'+t,{today:36,bar:45,labo:58,profil:32}[t]+(t==="today"&&await p.evaluate(()=>typeof quarterCard==="function"&&!!quarterCard())?1:0)); } // (1.74) carte « Tes 3 mois » : +1 choix, 10 jours par trimestre
   // (1.43) accueil 32 → 36 : depuis que l'eau gazeuse est un basique (1.42), le carrousel « Sans alcool » (4 cartes + « Tout voir »)
   // apparaît pour ce profil l'après-midi ; à la même heure, la 1.41 comptait 30 choix et la 1.43 en compte 35.
   // Profil : trophées en résumé (6 au plus) puis la collection complète en feuille ; listes de 3 qui se déplient

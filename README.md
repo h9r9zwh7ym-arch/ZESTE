@@ -2,7 +2,7 @@
 
 Zeste est une app web de bar à cocktails pour iPhone, en français : elle propose quoi boire selon ce qu'on a au bar,
 garde les notes et les goûts (tout reste sur l’appareil, rien n’est envoyé), et contient un Labo pour composer et noter ses propres cocktails.
-Version **1.73** · © Yannick Wahler.
+Version **1.74** · © Yannick Wahler.
 
 - **Ouvrir l'app** : `index.html` (fichier unique, fonctionne hors ligne une fois installé sur l'écran d'accueil),
   ou l'artifact claude.ai `https://claude.ai/artifact/S4FstFgJfmaipC6JGEtoiw`.
@@ -13,7 +13,7 @@ Version **1.73** · © Yannick Wahler.
 | Chemin | Rôle |
 |---|---|
 | `index.html`, `sw.js`, `apple-touch-icon.png` | version déployée (copiée par `tests/all.sh` depuis `zeste_projet/`) |
-| `zeste_projet/src/` | sources : `style.css`, données (`data_*.js`), moteur (`core.js`), interface (`ui.js`, `labo2.js`…), un module par version (`v117.js` → `v177.js`) |
+| `zeste_projet/src/` | sources : `style.css`, données (`data_*.js`), moteur (`core.js`), interface (`ui.js`, `labo2.js`…), un module par version (`v117.js` → `v178.js`) |
 | `zeste_projet/build.sh` | assemble `zeste_projet/dist/zeste.html` (HTML, CSS, JS, polices et icônes dans un seul fichier, ~1 Mo) |
 | `zeste_projet/sw.js` | service worker : cache d'abord, mise à jour en arrière-plan |
 | `zeste_projet/assets/` | icônes, logo, polices (Fraunces, Figtree ; licences OFL) et licence des icônes Lucide |
