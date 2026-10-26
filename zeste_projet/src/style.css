@@ -2195,3 +2195,11 @@ details.bar-more[open]{padding-bottom:0}
 .badge.season{background:color-mix(in srgb,var(--orange) 14%,transparent);color:var(--orange)}
 .card.season.s-hiver{--sea:#6FA8DC}.card.season.s-printemps{--sea:#7CCB7E}.card.season.s-ete{--sea:#F2B33D}.card.season.s-automne{--sea:#D9822B}
 .card.season[class*="s-"] .mini{background:linear-gradient(180deg,color-mix(in srgb,var(--sea) 16%,var(--bg2)),var(--bg2) 70%)}
+/* 1.75 : liquide vivant, mini-verre du Labo */
+svg.phys .wave{display:none}
+svg.phys .tiltfix.slosh .liq{animation:none!important}
+.mini-glass{position:fixed;top:calc(env(safe-area-inset-top,0px) + 54px);right:12px;z-index:30;width:52px;height:64px;padding:4px 6px;border-radius:16px;background:var(--bg2);box-shadow:var(--shadow);opacity:0;transform:scale(.6) translateY(-10px);pointer-events:none;transition:opacity .22s,transform .32s cubic-bezier(.3,1.5,.5,1)}
+.mini-glass.show{opacity:1;transform:none;pointer-events:auto}
+.mini-glass svg{width:100%;height:100%;display:block}
+.mini-glass:active{transform:scale(.92)}
+@media (prefers-reduced-motion:reduce){.mini-glass{transition:none}}
