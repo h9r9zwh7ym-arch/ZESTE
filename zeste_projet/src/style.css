@@ -2282,3 +2282,27 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 }
 /* 1.85 : rotation — la pastille et la barre se posent sans animation pendant le changement d'orientation */
 .tabbar.tb-snap .tab-ind,.tabbar.tb-snap,.tabbar.tb-snap button,.tabbar.tb-snap button svg{transition:none!important}
+/* 1.86 : vague à « Préparer » : monte du bas (surface ondulée), couvre l'écran, puis repart par le haut */
+.wave-sweep{position:fixed;left:0;right:0;top:0;height:calc(100vh + 240px);z-index:120;pointer-events:none;transform:translateY(100vh);will-change:transform}
+.wave-sweep.up{transform:translateY(-120px);transition:transform .54s cubic-bezier(.45,.05,.3,1)}
+.wave-sweep.out{transform:translateY(calc(-100vh - 260px));transition:transform .62s cubic-bezier(.55,0,.35,1)}
+.wave-sweep svg{position:absolute;left:0;width:200%;height:120px;animation:wsx 1.2s linear infinite}
+.wave-sweep .ws-top{top:0}
+.wave-sweep .ws-bot{bottom:0;transform:scaleY(-1);animation-direction:reverse}
+.wave-sweep .ws-body{position:absolute;left:0;right:0;top:118px;bottom:118px}
+.wave-sweep .w1{opacity:.75}
+@keyframes wsx{to{translate:-50% 0}}
+@media (prefers-reduced-motion:reduce){.wave-sweep{display:none}}
+/* 1.86 : encoche sur les côtés (paysage) — mode préparation, vues, mini-verre */
+#overlay.open{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+@media (orientation:landscape) and (max-height:540px), (min-width:1000px){
+  .view{padding-right:env(safe-area-inset-right,0px)}
+  .mini-glass{right:calc(12px + env(safe-area-inset-right,0px))}
+  #v-labo .content:has(> .lab-stage)>.lab-stage{top:52px}
+}
+@media (orientation:landscape) and (max-height:540px){
+  #v-labo .content:has(> .lab-stage)>.lab-stage{top:50px}
+  #v-labo .lab-glass{height:128px}
+  #v-labo .lab-stage .lab-top{margin-bottom:0}
+}
+#overlay.open.no-in{animation:none}

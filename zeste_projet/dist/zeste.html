@@ -1937,6 +1937,28 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 .content{max-width:860px}
 }
 .tabbar.tb-snap .tab-ind,.tabbar.tb-snap,.tabbar.tb-snap button,.tabbar.tb-snap button svg{transition:none!important}
+.wave-sweep{position:fixed;left:0;right:0;top:0;height:calc(100vh + 240px);z-index:120;pointer-events:none;transform:translateY(100vh);will-change:transform}
+.wave-sweep.up{transform:translateY(-120px);transition:transform .54s cubic-bezier(.45,.05,.3,1)}
+.wave-sweep.out{transform:translateY(calc(-100vh - 260px));transition:transform .62s cubic-bezier(.55,0,.35,1)}
+.wave-sweep svg{position:absolute;left:0;width:200%;height:120px;animation:wsx 1.2s linear infinite}
+.wave-sweep .ws-top{top:0}
+.wave-sweep .ws-bot{bottom:0;transform:scaleY(-1);animation-direction:reverse}
+.wave-sweep .ws-body{position:absolute;left:0;right:0;top:118px;bottom:118px}
+.wave-sweep .w1{opacity:.75}
+@keyframes wsx{to{translate:-50% 0}}
+@media (prefers-reduced-motion:reduce){.wave-sweep{display:none}}
+#overlay.open{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+@media (orientation:landscape) and (max-height:540px), (min-width:1000px){
+.view{padding-right:env(safe-area-inset-right,0px)}
+.mini-glass{right:calc(12px + env(safe-area-inset-right,0px))}
+#v-labo .content:has(> .lab-stage)>.lab-stage{top:52px}
+}
+@media (orientation:landscape) and (max-height:540px){
+#v-labo .content:has(> .lab-stage)>.lab-stage{top:50px}
+#v-labo .lab-glass{height:128px}
+#v-labo .lab-stage .lab-top{margin-bottom:0}
+}
+#overlay.open.no-in{animation:none}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>const ING_RAW = [
 ["gin","Gin London Dry","spirit",42,0,0,"h2f1",{col:"#DDEBEE",tip:"Le style de base : genévrier marqué, sec, polyvalent. Tanqueray, Beefeater ou Bombay Sapphire se trouvent en grande surface et font parfaitement le job pour la plupart des recettes."}],
 ["vodka","Vodka","spirit",40,0,0,"",{col:"#E6EEF2",tip:"Neutre par définition : inutile de viser le haut de gamme pour les cocktails. Une vodka propre, sans arôme ajouté, suffit largement."}],
@@ -4843,7 +4865,7 @@ document.addEventListener("pointermove",()=>{ if(typeof RADDRAG!=="undefined"&&R
 document.addEventListener("touchmove",()=>{ const p=document.getElementById("pull"); if(!p) return; if(p.classList.contains("armed")&&!p.dataset.snd){ p.dataset.snd=1; SND.select(); } else if(!p.classList.contains("armed")) delete p.dataset.snd; },{passive:true});
 Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
-const APP_VERSION="1.85";
+const APP_VERSION="1.86";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 const CTYPES=[["court","Cocktail court"],["long","Long drink"],["spritz","Spritz et bulles"],["shot","Shot"],["chaud","Chaud"],["sans","Sans alcool"]];
 function typeOf(r){
@@ -7041,6 +7063,18 @@ const y=v.scrollTop, k=Math.max(0,Math.min(1,1-(y-10)/24)), o=y<=10?"":k.toFixed
 h.style.opacity=o; const prev=h.previousElementSibling; if(prev&&prev.getBoundingClientRect().bottom<=h.getBoundingClientRect().top+2) prev.style.opacity=o; }
 document.addEventListener("scroll",e=>{ fadeLargeTitle(e.target); },{capture:true,passive:true});
 { const _rv=renderView; renderView=function(t){ const r=_rv.apply(this,arguments); try{ fadeLargeTitle(document.getElementById("v-"+t)); }catch(e){} return r; }; }
+function waveSweep(col,mid){ if(!(typeof FX==="function"&&FX("live"))||REDUCED.matches){ mid(); return; }
+const light=mix(col,"#ffffff",.22);
+const wave=(amp,len,y)=>{ let d=`M0 ${y}`; for(let x=0;x<2400;x+=len) d+=` q${len/4} ${-amp} ${len/2} 0 t${len/2} 0`; return d+` V120 H0Z`; };
+const svg=cls=>`<svg class="${cls}" viewBox="0 0 2400 120" preserveAspectRatio="none"><path class="w1" d="${wave(22,300,52)}" fill="${light}"/><path class="w2" d="${wave(30,400,66)}" fill="${col}"/></svg>`;
+const el=document.createElement("div"); el.className="wave-sweep"; el.setAttribute("aria-hidden","true");
+el.innerHTML=svg("ws-top")+`<div class="ws-body" style="background:${col}"></div>`+svg("ws-bot");
+document.body.appendChild(el);
+if(typeof SND!=="undefined"&&SND.pour) try{ SND.pour(0.9); }catch(e){}
+void el.getBoundingClientRect(); el.classList.add("up");
+setTimeout(()=>{ const ov=document.getElementById("overlay"); if(ov) ov.classList.add("no-in"); try{ mid(); }catch(e){} el.classList.add("out"); setTimeout(()=>ov&&ov.classList.remove("no-in"),700); },540);
+setTimeout(()=>el.remove(),1250); }
+{ const g=ACT.barmode; if(g) ACT.barmode=(d,t)=>{ const r=RMAP[d&&d.id]; if(!r) return g(d,t); if(document.querySelector(".wave-sweep")) return;  closeAll(); waveSweep(/^#[0-9a-f]{6}$/i.test(r.col||"")?r.col:"#1F5A3D",()=>g(d,t)); }; }
 const FX_LIST=[
 ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
 ["sky","Ciel animé","Soleil, étoiles et poussières dorées qui bougent selon l’heure"],

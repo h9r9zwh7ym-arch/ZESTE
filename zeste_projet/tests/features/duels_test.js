@@ -24,7 +24,7 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   const why=await p.evaluate(()=>RECS.map(r=>reasons(r)).find(t=>/choisi dans tes duels/.test(t))||"");
   // signaux : Préparer depuis la fiche ouverte (+), Surprends-moi écarté tout de suite (−)
   await p.evaluate(()=>{ closeAll(); recSheet('americano'); }); await p.waitForTimeout(700);
-  await p.evaluate(()=>{ const b=[...document.querySelectorAll('.sheet [data-a="barmode"]')].pop(); b.click(); }); await p.waitForTimeout(500);
+  await p.evaluate(()=>{ const b=[...document.querySelectorAll('.sheet [data-a="barmode"]')].pop(); b.click(); }); await p.waitForTimeout(1000); // (1.86) le mode préparation s'ouvre après la vague (0,54 s)
   await p.evaluate(()=>{ if(typeof closeOverlay==="function") closeOverlay(); closeAll(); ACT.roulette(); }); await p.waitForTimeout(1600);
   await p.evaluate(()=>ACT.bmclose()); await p.waitForTimeout(300);
   const g=await p.evaluate(()=>S.sig);

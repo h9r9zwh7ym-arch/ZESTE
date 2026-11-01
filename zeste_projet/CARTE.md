@@ -2,7 +2,7 @@
 
 _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la main)._
 
-82 fichiers, chargés dans l’ordre de `src/ORDRE`. Chaque version ajoute un module qui enveloppe des fonctions existantes (`const _f=f; f=function(){ … _f() … }`) : pour comprendre un écran, suivre sa chaîne ci-dessous, de haut en bas.
+83 fichiers, chargés dans l’ordre de `src/ORDRE`. Chaque version ajoute un module qui enveloppe des fonctions existantes (`const _f=f; f=function(){ … _f() … }`) : pour comprendre un écran, suivre sa chaîne ci-dessous, de haut en bas.
 
 ## Écrans
 
@@ -191,6 +191,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `versions/v184.js` | 23 | ZESTE 1.80 : ambiance « bar tamisé » le soir | ~applyTheme ; actions : setwarm |
 | `versions/v185.js` | 29 | ZESTE 1.81 : lancement et icône de saison | ~splash |
 | `versions/v187.js` | 14 | ZESTE 1.85 : grand titre qui s'efface sous la barre de titre | ~renderView |
+| `versions/v188.js` | 21 | ZESTE 1.86 : vague à « Préparer », paysage et encoche |  ; actions : barmode |
 | `socle/ui_final.js` | 175 | VERSION FINALE | ~switchTab ; actions : setglasses, setamb, fav, rlagain, tab |
 | `versions/v126.js` | 79 | TROPHÉES À PALIERS (1.27) et grille unifiée (1.28) | ~trophySheet, !checkTrophies, !trophyGrid ; actions : tiertrophy |
 | `versions/v130.js` | 71 | 1.31 : mises à jour (repris d'ASCEN) | ~renderView, ~paintSheet, ~openServe, ~switchTab, !moveTabInd ; actions : retryview |
