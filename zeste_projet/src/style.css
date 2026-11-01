@@ -2208,3 +2208,17 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 .home-mix .home-mix-b>.sh-sub:first-child{margin-top:0}
 .home-mix .home-mix-b>.sp8:first-child{display:none}
 .bac-setup .bac-t{display:block;margin-top:2px;line-height:1.3}
+/* 1.78 : gestes */
+#v-bar .lvl.one.lv-drag{background:var(--tint-bg);color:var(--tint);transform:scale(1.06);transition:transform .12s}
+#v-bar .lvl.one.lv-drag .lvl-txt{color:var(--tint);font-weight:700}
+.peek{text-align:center;padding:0 var(--z-s2)}
+.peek .pk-g{height:120px;display:grid;place-items:center}
+.peek .pk-g svg{height:120px;width:auto}
+.peek h1{font-family:var(--serif);font-size:calc(26rem / 17);margin:6px 0 2px}
+.peek .pk-s{color:var(--label2);font-size:var(--z-fs-l);margin-bottom:var(--z-s1)}
+.peek .status{text-align:left}
+.peek .pk-list{text-align:left;display:grid;gap:6px;margin-top:var(--z-s1)}
+.pk-i{display:flex;gap:var(--z-s1);font-size:var(--z-fs-b)}
+.pk-i b{min-width:70px;font-variant-numeric:tabular-nums}
+.pk-i.miss span{color:var(--red)}
+.pk-i b{flex:0 0 72px;min-width:0}

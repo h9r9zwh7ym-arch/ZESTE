@@ -15,8 +15,10 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   if(s.k!=="season"||!s.season||s.tabs.join()!=="na,disc,season*") fail.push("onglet De saison : "+JSON.stringify(s));
   await p.click('#v-today [data-a="hometab"][data-k="disc"]'); await p.waitForTimeout(500); s=await st();
   if(s.k!=="disc"||!s.disc) fail.push("onglet Le saviez-vous : "+JSON.stringify(s));
-  await p.reload(); await p.waitForTimeout(2200); await p.evaluate(()=>switchTab('today')); await p.waitForTimeout(600); s=await st();
-  if(s.k!=="disc") fail.push("onglet non gardé au rechargement : "+s.k);
+  // gardé : écrit dans la sauvegarde, et repris au rendu suivant (pas de rechargement : en file://, le stockage n'est pas fiable au rechargement)
+  const saved=await p.evaluate(()=>{ try{ return JSON.parse(localStorage.getItem(KEY)).settings.homeTab; }catch(e){ return "?"; } });
+  await p.evaluate(()=>{ switchTab('bar'); switchTab('today'); dirty.today=1; renderView('today'); }); await p.waitForTimeout(500); s=await st();
+  if(saved!=="disc"||s.k!=="disc") fail.push("onglet non gardé : sauvegarde "+saved+", affiché "+s.k);
   // désactiver « Le saviez-vous » puis « Sans alcool »
   await p.evaluate(()=>{ S.settings.home.forEach(x=>{ if(x[0]==="disc") x[1]=0; }); changed(); }); await p.waitForTimeout(500); s=await st();
   if(s.tabs.join()!=="na*,season") fail.push("disc désactivé : "+JSON.stringify(s));
@@ -27,5 +29,5 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   await p.click('#v-today .home-mix [data-a="nafilter"]'); await p.waitForTimeout(700);
   if(!await p.evaluate(()=>TAB==="cocktails"&&(CF.type||[]).includes("sans"))) fail.push("« Tout voir » Sans alcool ne filtre pas");
   if(errs.length) fail.push("erreurs : "+errs.join(" | "));
-  console.log(fail.length? "À découvrir : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "À découvrir : un bloc à 3 onglets à la place de 3 sections, onglet gardé, sections désactivées retirées (titre seul s’il en reste une), « Tout voir » Sans alcool.");
+  console.log(fail.length? "À découvrir : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "À découvrir : un bloc à 3 onglets à la place de 3 sections, onglet gardé dans la sauvegarde, sections désactivées retirées (titre seul s’il en reste une), « Tout voir » Sans alcool.");
   await b.close(); process.exit(fail.length?1:0); })();

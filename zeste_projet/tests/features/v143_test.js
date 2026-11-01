@@ -9,7 +9,7 @@ const BIG={gin:3,campari:2,vermouth_rouge:1,vermouth_dry:2,rhum_blanc:1,rhum_amb
     await p.addInitScript(([s,x])=>{ if(!/[?&]r=1/.test(location.search)){ /* (1.54) le rechargement passe par ?r=1 et ne réinitialise jamais : en file://, ni sessionStorage ni localStorage ne sont fiables au moment du script d’amorçage */ localStorage.setItem("zeste.v1",JSON.stringify({v:1,t:1,quizSkip:1,settings:Object.assign({fx:{splash:false},hintSwipe:1},x),stock:s})); } },[stock,extra]);
     await p.goto(APP); await p.waitForTimeout(2500); await p.evaluate(()=>switchTab("bar")); await p.waitForTimeout(900);
     const c=await p.context().newCDPSession(p); const touch=(type,x,y)=>c.send('Input.dispatchTouchEvent',{type,touchPoints:type==="touchEnd"?[]:[{x,y}]});
-    const drag=async(id,dx,dy=1,end=true)=>{ const r=await p.evaluate(id=>{ const e=document.getElementById('sr-'+id); e.scrollIntoView({block:"center"}); const b=e.getBoundingClientRect(); return {x:b.right-40,y:b.top+b.height/2}; },id); await p.waitForTimeout(250);
+    const drag=async(id,dx,dy=1,end=true)=>{ const r=await p.evaluate(id=>{ const e=document.getElementById('sr-'+id); e.scrollIntoView({block:"center"}); const b=e.getBoundingClientRect(); return {x:b.left+150,y:b.top+b.height/2}; },id); // (1.78) part du nom : la jauge de niveau se règle au glissé await p.waitForTimeout(250);
       await touch('touchStart',r.x,r.y); const n=12; for(let i=1;i<=n;i++){ await touch('touchMove',r.x+dx*i/n,r.y+dy*i/n); await p.waitForTimeout(16); } if(end) await touch('touchEnd'); await p.waitForTimeout(450); };
     return {p,q:(f,a)=>p.evaluate(f,a),drag,touch}; };
   // ---------- glisser ----------
