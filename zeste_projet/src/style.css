@@ -2244,3 +2244,39 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 #splash .sb.leaf{background:var(--c);border-radius:0 90% 0 90%;transform:rotate(var(--r))}
 @keyframes sbfall{0%{opacity:0;translate:0 0}12%{opacity:.9}100%{opacity:0;translate:var(--dx,0px) 105vh;rotate:calc(var(--r) + 220deg)}}
 #splash .sp-stage{position:relative;z-index:1}
+/* 1.83 : paysage (iPhone) et grands écrans (iPad, ordinateur) */
+@media (orientation:landscape) and (max-height:540px), (min-width:1000px){
+  :root{--rail:calc(84px + env(safe-area-inset-left,0px))}
+  .tabbar{top:0;bottom:0;right:auto;width:var(--rail);flex-direction:column;justify-content:center;align-items:stretch;gap:4px;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);border-top:0;box-shadow:.5px 0 0 var(--sep)}
+  .tabbar button{flex:0 0 auto;max-width:none;width:100%;height:58px;justify-content:center}
+  .view{left:var(--rail);padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  #ambient{left:var(--rail)}
+  #toast{left:calc(50% + var(--rail) / 2);bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+  .sheet{left:var(--rail)}
+  .mini-glass{top:calc(env(safe-area-inset-top,0px) + 12px)}
+  /* accueil : le verre à gauche, le texte à droite */
+  .hero{display:grid;grid-template-columns:minmax(150px,36%) 1fr;grid-template-areas:"g n" "g r" "g p" "g b";column-gap:20px;row-gap:6px;align-items:center;text-align:left;padding:18px 22px}
+  .hero .hg{grid-area:g;height:180px}
+  .hero .hn{grid-area:n;align-self:end;margin:0}
+  .hero .hr{grid-area:r;margin:0;max-width:none}
+  .hero .pills{grid-area:p;justify-content:flex-start}
+  .hero .btn-row{grid-area:b;align-self:start}
+  /* Labo (Composer) : la scène reste à gauche, la composition à droite */
+  #v-labo .content:has(> .lab-stage){max-width:1120px;display:grid;grid-template-columns:minmax(300px,44%) minmax(0,1fr);column-gap:22px;align-items:start}
+  #v-labo .content:has(> .lab-stage)>*{grid-column:2;min-width:0}
+  #v-labo .content:has(> .lab-stage)>h1.lt,#v-labo .content:has(> .lab-stage)>.seg{grid-column:1 / -1}
+  #v-labo .content:has(> .lab-stage)>.lab-stage{grid-column:1;grid-row:3 / span 60;position:sticky;top:52px;max-height:none}
+}
+@media (orientation:landscape) and (max-height:540px){
+  .hero .hg{height:150px}
+  .hero .hn{font-size:calc(28rem / 17)}
+  #v-labo .lab-glass{height:150px}
+  .dhero .dg{height:120px}
+  .dhero{padding-bottom:10px}
+  #v-labo .content:has(> .lab-stage)>.lab-stage{top:8px}
+  .tabbar button{height:52px}
+  .tabbar button span{font-size:calc(11rem / 17)}
+}
+@media (min-width:1000px){
+  .content{max-width:860px}
+}
