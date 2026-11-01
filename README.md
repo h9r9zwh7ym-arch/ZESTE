@@ -2,7 +2,7 @@
 
 Zeste est une app web de bar à cocktails pour iPhone, en français : elle propose quoi boire selon ce qu'on a au bar,
 garde les notes et les goûts (tout reste sur l’appareil, rien n’est envoyé), et contient un Labo pour composer et noter ses propres cocktails.
-Version **1.81** · © Yannick Wahler.
+Version **1.82** · © Yannick Wahler.
 
 - **Ouvrir l'app** : `index.html` (fichier unique, fonctionne hors ligne une fois installé sur l'écran d'accueil),
   ou l'artifact claude.ai `https://claude.ai/artifact/S4FstFgJfmaipC6JGEtoiw`.

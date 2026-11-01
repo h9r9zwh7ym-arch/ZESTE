@@ -10,6 +10,7 @@ echo "— données";      O=$(node tests/v.js) || { echo "$O"; exit 1; }; echo "
 echo "— IBA";          node tests/ibacmp.js | head -1
 echo "— cohérence";    node tests/audit2.js | tail -1
 echo "— formules";     O=$(node tests/formulas.js) || { echo "$O"; echo "Échec : tests/formulas.js"; exit 1; }; echo "$O" | tail -1
+echo "— allègement";   O=$(node tests/minify_check.js) || { echo "$O"; echo "Échec : tests/minify_check.js"; exit 1; }; echo "$O" | tail -1
 echo "— enveloppes";   O=$(node tests/wrappers.js) || { echo "$O"; echo "Échec : tests/wrappers.js"; exit 1; }; echo "$O" | tail -1
 if [ -f "$NODE_PATH/eslint/bin/eslint.js" ]; then echo "— ESLint"; T=$(mktemp -d); node -e "const h=require('fs').readFileSync('dist/zeste.html','utf8'); require('fs').writeFileSync('$T/app.js',h.split('<script>')[1].split('</script>')[0])"; cp tests/eslint.config.cjs $T/; O=$(cd $T && node "$NODE_PATH/eslint/bin/eslint.js" -c eslint.config.cjs app.js --rule 'no-undef: off') || { echo "$O" | head -20; echo "Échec : ESLint"; exit 1; }; echo "aucune erreur (clés en double, code inaccessible, comparaisons impossibles…)"; rm -rf $T; else echo "— ESLint : non installé, sauté"; fi
 echo "— recettes";     O=$(node tests/recaudit.js) || { echo "$O"; echo "Échec : tests/recaudit.js"; exit 1; }; echo "$O" | tail -1
