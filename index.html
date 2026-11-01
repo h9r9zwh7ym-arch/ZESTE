@@ -2207,6 +2207,11 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 .mini-glass svg{width:100%;height:100%;display:block}
 .mini-glass:active{transform:scale(.92)}
 @media (prefers-reduced-motion:reduce){.mini-glass{transition:none}}
+/* 1.77 : bloc « À découvrir » de l'accueil */
+.home-mix .home-seg{margin:var(--z-s1) 20px var(--z-s2)}
+.home-mix .home-mix-b>.sh-sub:first-child{margin-top:0}
+.home-mix .home-mix-b>.sp8:first-child{display:none}
+.bac-setup .bac-t{display:block;margin-top:2px;line-height:1.3}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -5356,7 +5361,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.76";
+const APP_VERSION="1.77";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -7963,6 +7968,28 @@ function bacGramsOf(h){ const r=RMAP[h.id]; if(!r||r.na) return 0;
       out.push({t:h.t,g,kind:"c",n:r.n+(h.m>1?" × "+h.m:"")+(h.v==="mine"?" (ta version)":"")}); });
     return out.sort((a,b)=>a.t-b.t); };
 }
+// ================= ZESTE 1.77 : accueil plus court =================
+// « Sans alcool », « Le saviez-vous ? » et « De saison » se suivaient en trois blocs. Ils sont réunis en un seul bloc
+// « À découvrir » avec trois onglets : un seul contenu à la fois, l'accueil raccourcit d'autant.
+// Chaque section garde son interrupteur et sa place dans « Personnaliser l'accueil » : le bloc se pose à la place de la
+// première des trois qui est activée, et ne montre que les onglets activés et non vides (le matin, pas de « Sans alcool »).
+const HOME_MIX=[["na","Sans alcool"],["disc","Le saviez-vous"],["season","De saison"]];
+const HOME_MIX_RAW={}; HOME_MIX.forEach(([k])=>HOME_MIX_RAW[k]=HOME_SEC[k]);
+function homeMix(ctx){
+  const on=new Set((S.settings.home||[]).filter(([k,v])=>v).map(([k])=>k));
+  const parts=HOME_MIX.filter(([k])=>on.has(k)&&HOME_MIX_RAW[k]).map(([k,n])=>{ let h=""; try{ h=HOME_MIX_RAW[k](ctx)||""; }catch(e){ h=""; } return [k,n,h]; }).filter(x=>x[2]);
+  if(!parts.length) return "";
+  let cur=S.settings.homeTab; if(!parts.some(x=>x[0]===cur)) cur=parts[0][0];
+  const [k,,h0]=parts.find(x=>x[0]===cur);
+  // le titre de la section devient l'onglet ; son bouton « Tout voir » éventuel passe dans l'en-tête du bloc
+  const hm=h0.match(/^\s*<h2 class="sh">[\s\S]*?<\/h2>/), more=hm&&(hm[0].match(/<button class="more"[\s\S]*?<\/button>/)||[])[0];
+  const body=hm? h0.slice(hm[0].length) : h0;
+  const tabs=parts.length>1? `<div class="seg home-seg" role="tablist">${parts.map(([kk,n])=>`<button class="${kk===k?"on":""}" role="tab" aria-selected="${kk===k}" data-a="hometab" data-k="${kk}">${n}</button>`).join("")}</div>` : "";
+  return `<div class="home-mix" data-k="${k}"><h2 class="sh">${parts.length>1?"À découvrir":esc(parts[0][1])}${more||""}</h2>${tabs}<div class="home-mix-b">${body}</div></div>`;
+}
+HOME_MIX.forEach(([k])=>{ HOME_SEC[k]=(ctx)=>{ const first=(S.settings.home||[]).find(([kk,v])=>v&&HOME_MIX.some(m=>m[0]===kk)); return first&&first[0]===k? homeMix(ctx) : ""; }; });
+Object.assign(ACT,{ hometab:d=>{ S.settings.homeTab=d.k; save(); dirty.today=1; renderView("today");
+  const b=document.querySelector("#v-today .home-mix-b"); if(b&&typeof FX==="function"&&FX("reveal")&&b.animate) b.animate([{opacity:0,transform:"translateY(6px)"},{opacity:1,transform:"none"}],{duration:220,easing:"ease-out"}); } });
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],

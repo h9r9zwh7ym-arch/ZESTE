@@ -2203,3 +2203,8 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 .mini-glass svg{width:100%;height:100%;display:block}
 .mini-glass:active{transform:scale(.92)}
 @media (prefers-reduced-motion:reduce){.mini-glass{transition:none}}
+/* 1.77 : bloc « À découvrir » de l'accueil */
+.home-mix .home-seg{margin:var(--z-s1) 20px var(--z-s2)}
+.home-mix .home-mix-b>.sh-sub:first-child{margin-top:0}
+.home-mix .home-mix-b>.sp8:first-child{display:none}
+.bac-setup .bac-t{display:block;margin-top:2px;line-height:1.3}

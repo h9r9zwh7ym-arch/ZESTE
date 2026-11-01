@@ -15,7 +15,7 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
     return o; });
   fail.push(...U);
   // accueil : teinte et « Tout voir »
-  await p.evaluate(()=>switchTab('today')); await p.waitForTimeout(800);
+  await p.evaluate(()=>{ S.settings.homeTab="season"; switchTab('today'); dirty.today=1; renderView('today'); }); await p.waitForTimeout(800); // (1.77) onglet « De saison » du bloc « À découvrir »
   const H=await p.evaluate(()=>{ const c=document.querySelector('#v-today .card.season'); return {cls:c&&c.className}; });
   const sk=await p.evaluate(()=>seasonKey());
   if(!H.cls||!H.cls.includes("s-"+sk)) fail.push("carte de saison sans teinte : "+H.cls);
