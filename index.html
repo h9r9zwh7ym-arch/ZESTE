@@ -2238,6 +2238,16 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 }
 :root[data-warm] body{background:radial-gradient(120% 60% at 50% -10%,rgba(242,169,59,.10),transparent 60%),var(--bg)}
 :root[data-warm][data-moment] .amb-sky{background:linear-gradient(180deg,#3A2412 0%,#24170D 45%,rgba(0,0,0,0) 100%)}
+/* 1.81 : écran de lancement de saison */
+#splash::before{content:"";position:absolute;inset:-20%;background:radial-gradient(45% 35% at 50% 38%,var(--halo,transparent),transparent 70%);opacity:.32;pointer-events:none}
+#splash .sp-season{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#splash .sb{position:absolute;top:-16px;display:block;opacity:0;animation:sbfall 2s ease-in forwards}
+#splash .sb.flake{border-radius:50%;background:var(--c);box-shadow:0 0 6px rgba(255,255,255,.6)}
+#splash .sb.petal{background:var(--c);border-radius:80% 0 80% 0;transform:rotate(var(--r))}
+#splash .sb.spark{background:var(--c);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+#splash .sb.leaf{background:var(--c);border-radius:0 90% 0 90%;transform:rotate(var(--r))}
+@keyframes sbfall{0%{opacity:0;translate:0 0}12%{opacity:.9}100%{opacity:0;translate:var(--dx,0px) 105vh;rotate:calc(var(--r) + 220deg)}}
+#splash .sp-stage{position:relative;z-index:1}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>
 // ---------- INGRÉDIENTS ----------
 // [id, nom, catégorie, degré %, sucre g/100ml, acidité %, arômes, extra]
@@ -5387,7 +5397,7 @@ const SND=(()=>{
   Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
 // ================= ZESTE 1.17 =================
-const APP_VERSION="1.80";
+const APP_VERSION="1.81";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 
 // ---------- Type de cocktail (pour le filtre) ----------
@@ -8146,6 +8156,34 @@ setInterval(()=>{ try{ const want=warmOn(), is=!!document.documentElement.datase
 }
 Object.assign(ACT,{ setwarm:()=>{ S.settings.warm=!S.settings.warm; applyTheme(); changed(); } });
 // (ui_final.js appelle applyTheme() au démarrage, après ce module)
+// ================= ZESTE 1.81 : lancement et icône de saison =================
+// L'écran de lancement garde le vert et le ruban de la marque, avec une touche de la saison : un halo de couleur et
+// quelques flocons (hiver), pétales (printemps), éclats de soleil (été) ou feuilles (automne) qui tombent pendant
+// les 2 secondes. L'icône de l'onglet du navigateur reçoit une pastille de la même couleur.
+// L'icône de l'écran d'accueil de l'iPhone, elle, est figée par iOS au moment de l'ajout : elle ne change pas.
+const SEASON_LOOK={
+  hiver:{halo:"#7FB8D8",bits:["#FFFFFF","#DDEFF8"],shape:"flake"},
+  printemps:{halo:"#F2A7C3",bits:["#F7C6D9","#FFFFFF","#C8E6A0"],shape:"petal"},
+  ete:{halo:"#F5C518",bits:["#FFE27A","#F5C518"],shape:"spark"},
+  automne:{halo:"#E08A3C",bits:["#E08A3C","#C8642A","#E8B04A"],shape:"leaf"}
+};
+function seasonBitsHTML(k,n){ const L=SEASON_LOOK[k]; let h="";
+  for(let i=0;i<n;i++){ const x=(hrand("sx"+i+k)*100).toFixed(1), d=(hrand("sd"+i)*1.2).toFixed(2), du=(1.6+hrand("su"+i)*1.2).toFixed(2), s=(6+hrand("ss"+i)*8).toFixed(1), c=L.bits[i%L.bits.length], r=Math.round(hrand("sr"+i)*360);
+    h+=`<i class="sb ${L.shape}" style="left:${x}%;width:${s}px;height:${s}px;--c:${c};--r:${r}deg;--dx:${((hrand("sdx"+i)-0.5)*80).toFixed(0)}px;animation-delay:${d}s;animation-duration:${du}s"></i>`; }
+  return h; }
+{ const _sp=splash;
+  splash=function(){ const T=_sp.apply(this,arguments); const el=document.getElementById("splash"); if(!el) return T;
+    const k=seasonKey(); el.classList.add("s-"+k); el.style.setProperty("--halo",SEASON_LOOK[k].halo);
+    const box=document.createElement("div"); box.className="sp-season"; box.setAttribute("aria-hidden","true"); box.innerHTML=seasonBitsHTML(k,16); el.prepend(box);
+    return T; };
+}
+// pastille de saison sur l'icône de l'onglet (SVG, si le navigateur l'accepte ; sinon l'icône PNG d'origine reste)
+function seasonFavicon(){ try{ const k=seasonKey(), c=SEASON_LOOK[k].halo;
+    const mark=zesteMark({round:true}).replace(/ class="[^"]*"/g,"").replace(/ aria-hidden="true"/,"");
+    const svg=mark.replace(/<\/svg>$/,`<circle cx="82" cy="82" r="15" fill="${c}" stroke="#F7F1E3" stroke-width="5"/></svg>`);
+    let l=document.querySelector('link[rel="icon"][data-season]'); if(!l){ l=document.createElement("link"); l.rel="icon"; l.type="image/svg+xml"; l.dataset.season="1"; document.head.appendChild(l); }
+    l.href="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); }catch(e){} }
+seasonFavicon();
 // ================= VERSION FINALE =================
 const FX_LIST=[
  ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],

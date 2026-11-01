@@ -2234,3 +2234,13 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 }
 :root[data-warm] body{background:radial-gradient(120% 60% at 50% -10%,rgba(242,169,59,.10),transparent 60%),var(--bg)}
 :root[data-warm][data-moment] .amb-sky{background:linear-gradient(180deg,#3A2412 0%,#24170D 45%,rgba(0,0,0,0) 100%)}
+/* 1.81 : écran de lancement de saison */
+#splash::before{content:"";position:absolute;inset:-20%;background:radial-gradient(45% 35% at 50% 38%,var(--halo,transparent),transparent 70%);opacity:.32;pointer-events:none}
+#splash .sp-season{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#splash .sb{position:absolute;top:-16px;display:block;opacity:0;animation:sbfall 2s ease-in forwards}
+#splash .sb.flake{border-radius:50%;background:var(--c);box-shadow:0 0 6px rgba(255,255,255,.6)}
+#splash .sb.petal{background:var(--c);border-radius:80% 0 80% 0;transform:rotate(var(--r))}
+#splash .sb.spark{background:var(--c);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+#splash .sb.leaf{background:var(--c);border-radius:0 90% 0 90%;transform:rotate(var(--r))}
+@keyframes sbfall{0%{opacity:0;translate:0 0}12%{opacity:.9}100%{opacity:0;translate:var(--dx,0px) 105vh;rotate:calc(var(--r) + 220deg)}}
+#splash .sp-stage{position:relative;z-index:1}
