@@ -4842,7 +4842,7 @@ document.addEventListener("pointermove",()=>{ if(typeof RADDRAG!=="undefined"&&R
 document.addEventListener("touchmove",()=>{ const p=document.getElementById("pull"); if(!p) return; if(p.classList.contains("armed")&&!p.dataset.snd){ p.dataset.snd=1; SND.select(); } else if(!p.classList.contains("armed")) delete p.dataset.snd; },{passive:true});
 Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
-const APP_VERSION="1.83";
+const APP_VERSION="1.84";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 const CTYPES=[["court","Cocktail court"],["long","Long drink"],["spritz","Spritz et bulles"],["shot","Shot"],["chaud","Chaud"],["sans","Sans alcool"]];
 function typeOf(r){

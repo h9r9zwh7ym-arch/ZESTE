@@ -1,0 +1,91 @@
+# Ordre de chargement de Zeste (1.84) : un fichier par ligne, relatif à src/. build.sh les concatène dans cet ordre.
+# L'ordre compte : chaque version enveloppe les fonctions définies avant elle (voir CARTE.md).
+# Nouvelle version : ajouter versions/vNNN.js juste avant socle/ui_final.js (qui pose des actions ACT après les modules),
+# sauf si elle enveloppe une fonction que v126/v130 remplacent : alors tout à la fin (cas de v186.js).
+
+# — données (ingrédients, recettes, saisons…)
+donnees/data_ing.js
+donnees/data_rec.js
+donnees/data_lab.js
+donnees/data_more.js
+donnees/data_more2.js
+donnees/data_na.js
+donnees/data_food.js
+donnees/data_final.js
+donnees/data_118.js
+donnees/data_world.js
+donnees/data_iba.js
+donnees/data_softs.js
+donnees/data_drinks.js
+# — socle (moteur, interface de base, sons)
+socle/core.js
+socle/icons.js
+socle/ui.js
+socle/ui10.js
+socle/labo2.js
+socle/trophies.js
+socle/explore.js
+socle/chal.js
+socle/sound.js
+# — versions : chaque fichier vNNN apporte une version de l’app
+versions/v117.js
+versions/v118.js
+versions/v120.js
+versions/v122.js
+versions/v123.js
+versions/v124.js
+versions/v125.js
+versions/v127.js
+versions/v137.js
+versions/v138.js
+versions/v139.js
+versions/v140.js
+versions/v141.js
+versions/v142.js
+versions/v143.js
+versions/v144.js
+versions/v146.js
+versions/v147.js
+versions/v148.js
+versions/v149.js
+versions/v150.js
+versions/v151.js
+versions/v152.js
+versions/v154.js
+versions/v155.js
+versions/v156.js
+versions/v157.js
+versions/v158.js
+versions/v159.js
+versions/v160.js
+versions/v161.js
+versions/v162.js
+versions/v163.js
+versions/v164.js
+versions/v165.js
+versions/v166.js
+versions/v167.js
+versions/v168.js
+versions/v169.js
+versions/v170.js
+versions/v171.js
+versions/v172.js
+versions/v173.js
+versions/v174.js
+versions/v175.js
+versions/v176.js
+versions/v177.js
+versions/v178.js
+versions/v179.js
+versions/v180.js
+versions/v181.js
+versions/v182.js
+versions/v183.js
+versions/v184.js
+versions/v185.js
+# — fin du socle : réglages, réparation des données, démarrage
+socle/ui_final.js
+# — après le démarrage : remplacements tardifs (v126, v130) et enveloppes qui doivent les suivre
+versions/v126.js
+versions/v130.js
+versions/v186.js

@@ -15,9 +15,9 @@ const VOULU={
   "ACT.advdo@v117.js":"son rétabli par v174","ACT.mapfs@v117.js":"openMapFS joue le souffle","ACT.mapclose@v117.js":"son rétabli par v174"
 };
 const ts=require('typescript'),fs=require('fs');
-const order=fs.readFileSync('build.sh','utf8').split('cd src; cat ')[1].split(';')[0].trim().split(/\s+/);
+const FULL={}, order=require('../tools/ordre.js')().map(p=>{ const b=p.split('/').pop(); FULL[b]=p; return b; }); // (1.84) noms de fichiers ; chemin réel dans src/ via FULL (ordre de src/ORDRE)
 const ev={}; // name -> [{file,kind,line}]
-for(const f of order){ const src=fs.readFileSync('src/'+f,'utf8'); const sf=ts.createSourceFile(f,src,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);
+for(const f of order){ const src=fs.readFileSync('src/'+FULL[f],'utf8'); const sf=ts.createSourceFile(f,src,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);
   const caps={}; // alias -> F (captures dans ce fichier)
   const visit=(n,depth)=>{
     if(ts.isVariableDeclaration(n)&&n.initializer&&ts.isIdentifier(n.initializer)&&ts.isIdentifier(n.name)) caps[n.name.text]=n.initializer.text;
@@ -32,7 +32,7 @@ const found=[];
 for(const F in ev){ const L=ev[F]; for(let i=0;i<L.length;i++){ if(L[i].kind!=="replace") continue; const lost=L.slice(0,i).filter(x=>x.kind==="wrap"); if(lost.length) found.push([F+"@"+L[i].f, lost.map(x=>x.f+":"+x.line).join(", ")]); } }
 // actions ACT : enveloppes dynamiques W("k") / [..].forEach(W) / const _x=ACT.k ; remplacements ACT.k=… ou Object.assign(ACT,{k:…})
 const actEv={};
-order.forEach((f,idx)=>{ const s=fs.readFileSync('src/'+f,'utf8'); const add=(k,kind)=>(actEv[k]=actEv[k]||[]).push({idx,f,kind});
+order.forEach((f,idx)=>{ const s=fs.readFileSync('src/'+FULL[f],'utf8'); const add=(k,kind)=>(actEv[k]=actEv[k]||[]).push({idx,f,kind});
   for(const m of s.matchAll(/\bW\(\s*"([a-z0-9_]+)"/g)) add(m[1],"wrap");
   for(const m of s.matchAll(/\[((?:"[a-z0-9_]+",?)+)\]\.forEach\(W\)/g)) for(const k of m[1].match(/[a-z0-9_]+/g)) add(k,"wrap");
   const caps={}; for(const m of s.matchAll(/const\s+(_?\w+)\s*=\s*ACT\.([a-z0-9_]+)\s*;/g)) caps[m[1]]=m[2];
