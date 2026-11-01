@@ -1936,6 +1936,7 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 @media (min-width:1000px){
 .content{max-width:860px}
 }
+.tabbar.tb-snap .tab-ind,.tabbar.tb-snap,.tabbar.tb-snap button,.tabbar.tb-snap button svg{transition:none!important}
 </style></head><body><div id="app"><div class="view" id="v-today"></div><div class="view" id="v-cocktails"></div><div class="view" id="v-bar"></div><div class="view" id="v-labo"></div><div class="view" id="v-profil"></div></div><nav class="tabbar" aria-label="Onglets"></nav><div id="sheets"></div><div id="overlay" role="dialog"></div><div id="toast" role="status" aria-live="polite"></div><script>const ING_RAW = [
 ["gin","Gin London Dry","spirit",42,0,0,"h2f1",{col:"#DDEBEE",tip:"Le style de base : genévrier marqué, sec, polyvalent. Tanqueray, Beefeater ou Bombay Sapphire se trouvent en grande surface et font parfaitement le job pour la plupart des recettes."}],
 ["vodka","Vodka","spirit",40,0,0,"",{col:"#E6EEF2",tip:"Neutre par définition : inutile de viser le haut de gamme pour les cocktails. Une vodka propre, sans arôme ajouté, suffit largement."}],
@@ -4842,7 +4843,7 @@ document.addEventListener("pointermove",()=>{ if(typeof RADDRAG!=="undefined"&&R
 document.addEventListener("touchmove",()=>{ const p=document.getElementById("pull"); if(!p) return; if(p.classList.contains("armed")&&!p.dataset.snd){ p.dataset.snd=1; SND.select(); } else if(!p.classList.contains("armed")) delete p.dataset.snd; },{passive:true});
 Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
-const APP_VERSION="1.84";
+const APP_VERSION="1.85";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 const CTYPES=[["court","Cocktail court"],["long","Long drink"],["spritz","Spritz et bulles"],["shot","Shot"],["chaud","Chaud"],["sans","Sans alcool"]];
 function typeOf(r){
@@ -7034,6 +7035,12 @@ const svg=mark.replace(/<\/svg>$/,`<circle cx="82" cy="82" r="15" fill="${c}" st
 let l=document.querySelector('link[rel="icon"][data-season]'); if(!l){ l=document.createElement("link"); l.rel="icon"; l.type="image/svg+xml"; l.dataset.season="1"; document.head.appendChild(l); }
 l.href="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); }catch(e){} }
 seasonFavicon();
+function fadeLargeTitle(v){ if(!v||!v.classList||!v.classList.contains("view")) return;
+const h=v.querySelector("h1.lt"); if(!h) return;
+const y=v.scrollTop, k=Math.max(0,Math.min(1,1-(y-10)/24)), o=y<=10?"":k.toFixed(3);
+h.style.opacity=o; const prev=h.previousElementSibling; if(prev&&prev.getBoundingClientRect().bottom<=h.getBoundingClientRect().top+2) prev.style.opacity=o; }
+document.addEventListener("scroll",e=>{ fadeLargeTitle(e.target); },{capture:true,passive:true});
+{ const _rv=renderView; renderView=function(t){ const r=_rv.apply(this,arguments); try{ fadeLargeTitle(document.getElementById("v-"+t)); }catch(e){} return r; }; }
 const FX_LIST=[
 ["splash","Animation de lancement","Le verre qui se dessine et se remplit à l’ouverture"],
 ["sky","Ciel animé","Soleil, étoiles et poussières dorées qui bougent selon l’heure"],
@@ -7295,13 +7302,16 @@ const a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(), w=Math.round(r
 setTimeout(moveTabInd,0); if(typeof document!=="undefined"&&document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>moveTabInd());
 let rz=0; const onRz=()=>{ clearTimeout(rz); rz=setTimeout(moveTabInd,120); }; addEventListener("resize",onRz); window.visualViewport&&visualViewport.addEventListener("resize",onRz); }
 function isRail(){ const tb=document.querySelector(".tabbar"); return !!tb&&getComputedStyle(tb).flexDirection==="column"; }
+let TABIND_W=68;
 { const _m=moveTabInd;
 moveTabInd=function(){ const tb=document.querySelector(".tabbar"), on=tb&&tb.querySelector("button.on"), ind=tb&&tb.querySelector(".tab-ind"); if(!on||!ind) return;
-if(!isRail()){ ind.style.top=""; ind.style.height=""; return _m.apply(this,arguments); }
-const a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(), w=Math.round(Math.min(64,r.width-12)), h=34;
-ind.style.width=w+"px"; ind.style.height=h+"px"; ind.style.top="0px";
-ind.style.transform=`translate(${Math.round(r.left-a.left+r.width/2-w/2)}px,${Math.round(r.top-a.top+4)}px)`; };
+if(!isRail()){ ind.style.top=""; ind.style.height=""; const r=_m.apply(this,arguments); const w=parseFloat(ind.style.width); if(w>0) TABIND_W=w; return r; }
+const a=tb.getBoundingClientRect(), r=on.getBoundingClientRect(), w=Math.round(Math.min(TABIND_W,r.width-8));
+ind.style.width=w+"px"; ind.style.height=""; ind.style.top="0px";
+ind.style.transform=`translate(${Math.round(r.left-a.left+r.width/2-w/2)}px,${Math.round(r.top-a.top-1)}px)`; };
 }
-{ let t=0; const re=()=>{ clearTimeout(t); t=setTimeout(()=>{ try{ moveTabInd(); if(typeof miniSync==="function") miniSync(); }catch(e){} },120); };
+{ let t=[]; const re=()=>{ const tb=document.querySelector(".tabbar"); if(tb) tb.classList.add("tb-snap"); t.forEach(clearTimeout);
+const go=()=>{ try{ moveTabInd(); if(typeof miniSync==="function") miniSync(); }catch(e){} };
+requestAnimationFrame(go); t=[setTimeout(go,150),setTimeout(go,400),setTimeout(()=>{ go(); requestAnimationFrame(()=>tb&&tb.classList.remove("tb-snap")); },700)]; };
 addEventListener("resize",re); addEventListener("orientationchange",re); }
 </script></body></html>

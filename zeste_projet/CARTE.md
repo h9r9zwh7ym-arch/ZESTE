@@ -2,7 +2,7 @@
 
 _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la main)._
 
-81 fichiers, chargés dans l’ordre de `src/ORDRE`. Chaque version ajoute un module qui enveloppe des fonctions existantes (`const _f=f; f=function(){ … _f() … }`) : pour comprendre un écran, suivre sa chaîne ci-dessous, de haut en bas.
+82 fichiers, chargés dans l’ordre de `src/ORDRE`. Chaque version ajoute un module qui enveloppe des fonctions existantes (`const _f=f; f=function(){ … _f() … }`) : pour comprendre un écran, suivre sa chaîne ci-dessous, de haut en bas.
 
 ## Écrans
 
@@ -95,7 +95,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 
 | Fonction | Étapes | Modules |
 |---|---|---|
-| `renderView` | 8 | ui.js → v140.js → v141.js → v143.js → v150.js → v160.js → v179.js → v130.js |
+| `renderView` | 9 | ui.js → v140.js → v141.js → v143.js → v150.js → v160.js → v179.js → v187.js → v130.js |
 | `switchTab` | 6 | ui.js → v140.js → v150.js → v179.js → ui_final.js → v130.js |
 | `openServe` | 6 | labo2.js → chal.js → sound.js → v117.js → v167.js → v130.js |
 | `trainSet` | 5 | core.js → v120.js → v163.js → v163.js → v171.js |
@@ -190,9 +190,10 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `versions/v183.js` | 54 | ZESTE 1.79 : les vrais verres | ~buildRecipes, ~glassSVGRaw |
 | `versions/v184.js` | 23 | ZESTE 1.80 : ambiance « bar tamisé » le soir | ~applyTheme ; actions : setwarm |
 | `versions/v185.js` | 29 | ZESTE 1.81 : lancement et icône de saison | ~splash |
+| `versions/v187.js` | 14 | ZESTE 1.85 : grand titre qui s'efface sous la barre de titre | ~renderView |
 | `socle/ui_final.js` | 175 | VERSION FINALE | ~switchTab ; actions : setglasses, setamb, fav, rlagain, tab |
 | `versions/v126.js` | 79 | TROPHÉES À PALIERS (1.27) et grille unifiée (1.28) | ~trophySheet, !checkTrophies, !trophyGrid ; actions : tiertrophy |
 | `versions/v130.js` | 71 | 1.31 : mises à jour (repris d'ASCEN) | ~renderView, ~paintSheet, ~openServe, ~switchTab, !moveTabInd ; actions : retryview |
-| `versions/v186.js` | 18 | ZESTE 1.83 : format paysage et grands écrans | ~moveTabInd |
+| `versions/v186.js` | 24 | ZESTE 1.83 : format paysage et grands écrans | ~moveTabInd |
 
 _~ enveloppe (garde la version précédente), ! remplace entièrement._

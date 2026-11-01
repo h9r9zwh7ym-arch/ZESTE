@@ -27,6 +27,17 @@ const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
   // retour en portrait
   await p.setViewportSize({width:390,height:844}); await p.waitForTimeout(500);
   r=await look("bar"); if(r.dir!=="row"||r.vleft!==0||!r.indIn) fail.push("retour en portrait : "+JSON.stringify(r));
+  // (1.85) même pastille dans les deux modes, posée tout de suite après la rotation (sans glisser à travers l'écran)
+  const pill=()=>p.evaluate(()=>{ const tb=document.querySelector('.tabbar'), on=tb.querySelector('button.on').getBoundingClientRect(), i=tb.querySelector('.tab-ind').getBoundingClientRect(); return {w:Math.round(i.width),h:Math.round(i.height),dy:Math.round(i.top-on.top),cx:Math.round(i.left+i.width/2-(on.left+on.width/2))}; });
+  const P0=await pill(); await p.setViewportSize({width:844,height:390}); await p.waitForTimeout(900); const P1=await pill();
+  if(P0.w!==P1.w||P0.h!==P1.h||P0.dy!==P1.dy||Math.abs(P0.cx)>1||Math.abs(P1.cx)>1) fail.push("pastille différente entre portrait et paysage : "+JSON.stringify({P0,P1}));
+  await p.setViewportSize({width:390,height:844}); await p.waitForTimeout(60); const P2=await pill();
+  if(P2.w!==P0.w||P2.h!==P0.h||P2.dy!==P0.dy||Math.abs(P2.cx)>1) fail.push("après rotation, la pastille n’est pas posée tout de suite : "+JSON.stringify(P2));
+  // (1.85) le grand titre s'efface sous la barre de titre (pas de titre fantôme flou derrière la barre)
+  await p.evaluate(()=>switchTab('today')); await p.waitForTimeout(600);
+  const T=await p.evaluate(async()=>{ const v=document.getElementById('v-today'), h=v.querySelector('h1.lt'), op=y=>new Promise(r=>{ v.scrollTop=y; v.dispatchEvent(new Event('scroll')); requestAnimationFrame(()=>r(getComputedStyle(h).opacity)); });
+    const a=await op(0), b=await op(40), c=await op(0); return [a,b,c]; });
+  if(T[0]!=="1"||T[1]!=="0"||T[2]!=="1") fail.push("grand titre sous la barre : opacité "+T.join(" / "));
   if(errs.length) fail.push("erreurs : "+errs.join(" | "));
-  console.log(fail.length? "Paysage : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "Paysage : portrait inchangé ; en paysage iPhone et sur iPad, rail d’onglets avec pastille, accueil et Labo en deux colonnes, aucune page trop large ; la rotation suit sans recharger.");
+  console.log(fail.length? "Paysage : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "Paysage : portrait inchangé ; en paysage iPhone et sur iPad, rail d’onglets avec pastille, accueil et Labo en deux colonnes, aucune page trop large ; la rotation suit sans recharger, pastille identique et posée aussitôt, grand titre effacé sous la barre.");
   await b.close(); process.exit(fail.length?1:0); })();

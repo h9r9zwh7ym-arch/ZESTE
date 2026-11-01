@@ -2280,3 +2280,5 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 @media (min-width:1000px){
   .content{max-width:860px}
 }
+/* 1.85 : rotation — la pastille et la barre se posent sans animation pendant le changement d'orientation */
+.tabbar.tb-snap .tab-ind,.tabbar.tb-snap,.tabbar.tb-snap button,.tabbar.tb-snap button svg{transition:none!important}

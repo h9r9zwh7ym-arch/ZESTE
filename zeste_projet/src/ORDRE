@@ -83,6 +83,7 @@ versions/v182.js
 versions/v183.js
 versions/v184.js
 versions/v185.js
+versions/v187.js
 # — fin du socle : réglages, réparation des données, démarrage
 socle/ui_final.js
 # — après le démarrage : remplacements tardifs (v126, v130) et enveloppes qui doivent les suivre
