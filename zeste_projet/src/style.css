@@ -2222,3 +2222,15 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 .pk-i b{min-width:70px;font-variant-numeric:tabular-nums}
 .pk-i.miss span{color:var(--red)}
 .pk-i b{flex:0 0 72px;min-width:0}
+/* 1.80 : ambiance « bar tamisé » le soir (réglage, de 19 h à 6 h) — bois, ambre, laiton */
+:root[data-warm]{
+    --bg:#17110C; --bg2:#231A11; --bg3:#2C2117; --fill:rgba(214,170,110,.2); --fill2:rgba(214,170,110,.1);
+    --label:#F6E9D6; --label2:rgba(246,233,214,.68); --label3:rgba(246,233,214,.34); --sep:rgba(214,170,110,.26);
+    --tint:#F2A93B; --tint-bg:rgba(242,169,59,.16); --on-tint:#1B1209;
+    --zest:#F5C518; --on-zest:#1B1209;
+    --green:#8ED38A; --red:#FF7A66; --orange:#FFB45C;
+    --bar:rgba(23,17,12,.86); --glass-stroke:rgba(246,233,214,.5); --glass-fill:rgba(246,233,214,.06);
+    --shadow:none; color-scheme:dark;
+}
+:root[data-warm] body{background:radial-gradient(120% 60% at 50% -10%,rgba(242,169,59,.10),transparent 60%),var(--bg)}
+:root[data-warm][data-moment] .amb-sky{background:linear-gradient(180deg,#3A2412 0%,#24170D 45%,rgba(0,0,0,0) 100%)}
