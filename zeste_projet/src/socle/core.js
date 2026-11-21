@@ -128,7 +128,7 @@ function computeZones(){
 let S; // état
 function prepActive(id){ return (S.preps||[]).some(p=>{ const t=PREP_TPL.find(x=>x[0]===p.tpl); return t && t[2]===id && daysLeft(p)>=0; }); }
 function has(id){ const i=ING[id]; if(!i) return false; if(i.al) return has(i.al); if(i.basic) return !((S.settings&&S.settings.nobasic)||[]).includes(id); if(prepActive(id)) return true;
-  const v=S.stock[id]; return tracked(id)? (v||0)>0 : v===1; }
+  return (S.stock[id]||0)>0; }   // (1.87) aussi pour les catégories sans jauge (0/1) : une valeur 2–4 ne fait plus disparaître la bouteille
 function inBar(id){ return S.stock[id]!==undefined; }
 let STC={}, MEMO={};
 function memo(k,f){ return k in MEMO? MEMO[k] : (MEMO[k]=f()); }

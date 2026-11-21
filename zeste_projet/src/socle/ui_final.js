@@ -19,23 +19,59 @@ function fxPreset(){ const f=S.settings.fx||{}; for(const [n,p] of Object.entrie
 const ID_ALIAS={airmail:"air_mail",harvey_wallbanger:"harvey"};
 function migrateIds(){ const t=JSON.stringify(S); let n=t; for(const a in ID_ALIAS) n=n.split('"'+a+'"').join('"'+ID_ALIAS[a]+'"');
   if(n!==t){ S=JSON.parse(n); if(Array.isArray(S.fav)) S.fav=[...new Set(S.fav)]; } }
+// ---------- (1.87) Format des données versionné ----------
+// S.v est le numéro du format (SCHEMA, ui.js). Chaque migration fait passer de n à n+1, une seule fois : au chargement,
+// à la restauration d'une sauvegarde et à la reprise de la copie de secours. Des données d'une version plus récente
+// (S.v > SCHEMA) ne sont jamais rétrogradées. Une nouvelle migration s'ajoute ici avec SCHEMA+1, et un exemple
+// de l'ancien format dans tests/features/migration_test.js.
+const MIGRATIONS={
+  // 1 → 2 : niveaux des catégories sans jauge (jus, softs, frais) ramenés à 0/1 ; « dishes » toujours un tableau ;
+  // réserve « orphans » (voir healState). La marque app:"zeste" (sauvegardes reconnaissables) vient de DEF().
+  1:s=>{
+    if(s.stock&&typeof s.stock==="object") for(const id in s.stock){ const v=s.stock[id]; if(ING[id]&&!tracked(id)&&typeof v==="number"&&v>1) s.stock[id]=1; }
+    if(s.dishes!=null&&!Array.isArray(s.dishes)) s.dishes=s.dishes&&typeof s.dishes==="object"?Object.keys(s.dishes):[];
+    if(!s.orphans||typeof s.orphans!=="object") s.orphans={hist:[],stock:{},custom:[],fav:[]};
+  }
+};
+function migrateState(s){ if(!s||typeof s!=="object"||Array.isArray(s)) return s;
+  let v=typeof s.v==="number"&&isFinite(s.v)?Math.max(1,Math.floor(s.v)):1;
+  while(v<SCHEMA){ try{ MIGRATIONS[v](s); }catch(e){} v++; } s.v=v; return s; }
+// Création du Labo : identifiant, couleur, verre, glace, méthode et unités contrôlés (une sauvegarde forgée ne peut rien injecter)
+const CUSTOM_ID=/^[A-Za-z0-9_-]{1,40}$/, HEX6=/^#[0-9a-fA-F]{6}$/, UNITS=["ml","d","f","u","bs","br","gt"], ROLES=["","top","float","rinse","opt"], ICES=["none","cubes","big","pilee"];
+function cleanCustom(r){
+  const obj=x=>x&&typeof x==="object"&&!Array.isArray(x), num=x=>typeof x==="number"&&isFinite(x), str=x=>typeof x==="string"&&x.trim().length>0;
+  if(!obj(r)||typeof r.id!=="string"||!CUSTOM_ID.test(r.id)||!Array.isArray(r.ing)||!r.ing.length) return null;
+  if(!r.ing.every(i=>obj(i)&&typeof i.id==="string"&&num(i.q)&&i.q>=0)) return null;
+  const ing=r.ing.map(i=>Object.assign({},i,{u:UNITS.includes(i.u)?i.u:"ml",r:ROLES.includes(i.r)?i.r:""}));
+  const out=Object.assign(r,{ing,n:str(r.n)?r.n.slice(0,60):"Ma création",fam:FAMILIES[r.fam]?r.fam:"sour",m:METH[r.m]?r.m:"shake",g:GNAME[r.g]?r.g:"coupe",
+    ice:ICES.includes(r.ice)?r.ice:"none",col:HEX6.test(r.col)?r.col:"#C98A2E",gar:typeof r.gar==="string"?r.gar:""});
+  if(out.garList!=null&&!(Array.isArray(out.garList)&&out.garList.every(x=>typeof x==="string"))) delete out.garList;
+  return out; }
 // 1.34 : les données enregistrées sont vérifiées champ par champ avant usage. Une sauvegarde abîmée, une
 // synchronisation incomplète ou une recette supprimée ne doivent jamais empêcher l'app de démarrer : ce qui a
-// le mauvais type est remis à zéro, les identifiants inconnus sont ignorés, les nombres sont bornés.
+// le mauvais type est remis à zéro, les nombres sont bornés.
+// (1.87) Ce qui est bien formé mais renvoie à une recette ou un ingrédient inconnu (renommé, retiré, ou d'une version plus
+// récente) n'est plus effacé : il est mis de côté dans S.orphans et revient de lui-même si l'identifiant réapparaît.
 function healState(){
   const obj=x=>x&&typeof x==="object"&&!Array.isArray(x), num=x=>typeof x==="number"&&isFinite(x), str=x=>typeof x==="string"&&x.length>0;
   const D=DEF(); if(!obj(S)) S=D;
-  for(const k of ["stock","ratings","notes","price","quiz","adj","stockT","opened","opens","mw","skips","chal","troT","rt","tierSeen"]) if(k in S&&!obj(S[k])) S[k]=D[k]||{};
+  for(const k of ["stock","ratings","notes","price","quiz","adj","stockT","opened","opens","mw","skips","chal","troT","rt","tierSeen","snooze"]) if(k in S&&!obj(S[k])) S[k]=D[k]||{};
   for(const k of ["fav","hist","preps","custom","tro","citiesSeen","linSeen","drinks","dishes","heroLog"]) if(k in S&&!Array.isArray(S[k])) S[k]=D[k]||[];
   if(!obj(S.settings)) S.settings=D.settings;
-  const stock={}; for(const [id,v] of Object.entries(S.stock)) if(ING[id]&&num(v)) stock[id]=Math.max(0,Math.min(4,Math.round(v))); S.stock=stock;
-  // recettes perso : seulement celles dont tous les ingrédients existent encore
-  S.custom=S.custom.filter(r=>obj(r)&&str(r.id)&&Array.isArray(r.ing)&&r.ing.length&&r.ing.every(i=>obj(i)&&ING[i.id]&&num(i.q))).map(r=>Object.assign(r,{n:str(r.n)?r.n:"Ma création",fam:str(r.fam)?r.fam:"sour",m:str(r.m)?r.m:"shake",g:str(r.g)?r.g:"coupe"}));
+  const O=S.orphans=obj(S.orphans)?S.orphans:{}; O.stock=obj(O.stock)?O.stock:{}; for(const k of ["hist","custom","fav"]) O[k]=Array.isArray(O[k])?O[k]:[];
+  // bouteilles : celles d'un ingrédient inconnu sont mises de côté ; celles qui étaient de côté reviennent si l'ingrédient existe
+  const stock={}; for(const [id,v] of Object.entries(O.stock)) if(ING[id]&&num(v)&&!(id in S.stock)){ S.stock[id]=v; delete O.stock[id]; }
+  for(const [id,v] of Object.entries(S.stock)){ if(!num(v)) continue; if(ING[id]) stock[id]=Math.max(0,Math.min(4,Math.round(v))); else O.stock[id]=v; } S.stock=stock;
+  // recettes perso : bien formées ; celles dont un ingrédient n'existe pas (ou plus) attendent de côté
+  const allC=S.custom.concat(O.custom).map(cleanCustom).filter(Boolean), seenC=new Set(); S.custom=[]; O.custom=[];
+  for(const r of allC){ if(seenC.has(r.id)) continue; seenC.add(r.id); (r.ing.every(i=>ING[i.id])?S.custom:O.custom).push(r); }
   const known=new Set(REC_RAW.map(r=>r[0]).concat(S.custom.map(r=>r.id)));
   const ratings={}; for(const [id,v] of Object.entries(S.ratings)) if(num(v)&&v>=1&&v<=5) ratings[id]=Math.round(v); S.ratings=ratings;
-  const soon=Date.now()+864e5;
-  S.hist=S.hist.filter(h=>obj(h)&&str(h.id)&&known.has(h.id)&&num(h.t)&&h.t>0&&h.t<soon);
-  S.fav=[...new Set(S.fav.filter(x=>str(x)&&known.has(x)))];
+  const soon=Date.now()+864e5, wellH=h=>obj(h)&&str(h.id)&&num(h.t)&&h.t>0, okH=h=>known.has(h.id)&&h.t<soon;
+  const H=S.hist.filter(wellH), OH=O.hist.filter(wellH), back=OH.filter(okH);
+  S.hist=H.filter(okH); O.hist=H.filter(h=>!okH(h)).concat(OH.filter(h=>!okH(h))).slice(-2000);
+  if(back.length) S.hist=S.hist.concat(back).sort((a,b)=>a.t-b.t);   // retour d'entrées mises de côté : remises à leur date
+  const F=S.fav.concat(O.fav).filter(str); S.fav=[...new Set(F.filter(x=>known.has(x)))]; O.fav=[...new Set(F.filter(x=>!known.has(x)))];
   S.tro=S.tro.filter(str); S.dishes=(S.dishes||[]).filter(str);
   S.drinks=(S.drinks||[]).filter(x=>obj(x)&&num(x.t)&&num(x.ml)&&x.ml>0&&x.ml<5000&&num(x.abv)&&x.abv>=0&&x.abv<=100);
   S.preps=S.preps.filter(x=>obj(x)&&str(x.id)&&str(x.tpl));
@@ -52,7 +88,7 @@ function healState(){
   if(st.fx!=null&&!obj(st.fx)) st.fx={};
 }
 function fixState(){
-  SREV++; migrateIds();
+  SREV++; S=migrateState(S)||S; migrateIds();
   healState();
   S.settings=Object.assign({unit:"cl",nobasic:[],na:false,ambiance:true,moment:"auto",theme:"auto",cur:"CHF",explore:1,ctx:true},S.settings||{});
   if(!Array.isArray(S.settings.nobasic)) S.settings.nobasic=[];

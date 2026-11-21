@@ -14,6 +14,8 @@ for(let i=TROPHIES.length-1;i>=0;i--) if(TIER_SUBSUMED.has(TROPHIES[i][0])) TROP
 TIER_TROPHIES.forEach(tt=>{ TRO_GLYPH[tt.key]=tt.glyph; });
 function tierInfo(tt){
   const v=tt.metric(); let cur=-1; tt.tiers.forEach((t,i)=>{ if(v>=t[1]) cur=i; });
+  // (1.87) un palier atteint reste acquis (S.tierSeen) : vider des bouteilles ne fait plus redescendre « Cave bien garnie »
+  const seen=S&&S.tierSeen&&S.tierSeen[tt.key]; if(typeof seen==="number"&&seen>cur&&seen<tt.tiers.length) cur=seen;
   return {v,cur,next:cur+1<tt.tiers.length?tt.tiers[cur+1]:null};
 }
 function tierLevels(){ return TIER_TROPHIES.reduce((a,tt)=>a+tierInfo(tt).cur+1,0); }

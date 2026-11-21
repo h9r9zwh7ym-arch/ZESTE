@@ -128,7 +128,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `donnees/data_drinks.js` | 54 | ---------- NOUVELLES BOISSONS (1.68) : tonics aromatisés, softs, sans alcool, alcools ---- |  |
 | `socle/core.js` | 667 | MOTEUR |  |
 | `socle/icons.js` | 112 | 1.30 : système d'icônes |  |
-| `socle/ui.js` | 759 | ÉTAT & SAUVEGARDE |  |
+| `socle/ui.js` | 772 | ÉTAT & SAUVEGARDE |  |
 | `socle/ui10.js` | 218 | V10 |  ; actions : homeedit, made, bmfinish |
 | `socle/labo2.js` | 209 | LABO V2 : le jeu du barman |  ; actions : mixtype, mixserve, mixq, mixadd1, mixfix, mixadd, mixrm, tolab |
 | `socle/trophies.js` | 91 | TROPHÉES : niveaux, médailles et célébrations |  ; actions : trophy, dish |
@@ -137,7 +137,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `socle/sound.js` | 115 | SONS 2.0 (synthétisés, aucun fichier) | ~openSheet, ~confetti, ~paintRL, ~showTrophy, ~rwShow, ~openServe ; actions : setsound, setfx, homeon, stepck, bmck, toggle, addtoggle, refill |
 | `versions/v117.js` | 114 | ZESTE 1.17 | ~filtered, ~nFilters, ~openServe, ~vCompose ; actions : svgoal, mapfs, famgo, resetf |
 | `versions/v118.js` | 51 | ZESTE 1.18 | ~reasons, ~logMade ; actions : lvl, setlvl, refill, toggle |
-| `versions/v120.js` | 208 | ZESTE 1.20 | ~barMode, ~closeOverlay, ~pendingRatings, ~tonightRaw, ~recSheet, ~mfSelect, ~medal, ~trophySheet, ~labScore, ~labSummary ; actions : rwmonth, rate, bmfinish, lineage, cmode2, city, lvl, setlvl |
+| `versions/v120.js` | 214 | ZESTE 1.20 | ~barMode, ~closeOverlay, ~pendingRatings, ~tonightRaw, ~recSheet, ~mfSelect, ~medal, ~trophySheet, ~labScore, ~labSummary ; actions : rwmonth, rate, bmfinish, lineage, cmode2, city, lvl, setlvl |
 | `versions/v122.js` | 30 | 1.22 | ~applyTheme ; actions : settxt |
 | `versions/v123.js` | 46 | OCCASIONS |  ; actions : occasion |
 | `versions/v124.js` | 127 | ALCOOLÉMIE (indicative) | ~vToday, !settingsSheet ; actions : bacdetail, setsex |
@@ -173,7 +173,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `versions/v166.js` | 85 | 1.62 (B) : barème du Labo v3 | ~vCompose, ~labOverflow, ~labNope, ~chalCheck, !labScore, !labSummary ; actions : mixserve |
 | `versions/v167.js` | 46 | 1.62 (C) : affichage du score du Labo | ~vCompose, ~openServe, !labGrade |
 | `versions/v168.js` | 28 | ZESTE 1.63 : Labo — « Autre » sous 10 cl, « + » sans son, quantité au clavier | ~vCompose ; actions : mixqedit, mixadd, mixq |
-| `versions/v169.js` | 80 | ZESTE 1.65 : données 100 % locales, copie de secours, sauvegardes (inspiré d'ASCEN) | !save, !exportData ; actions : storage |
+| `versions/v169.js` | 84 | ZESTE 1.65 : données 100 % locales, copie de secours, sauvegardes (inspiré d'ASCEN) | !save, !exportData ; actions : storage |
 | `versions/v170.js` | 14 | ---------- 1.66 : Profil > « Mes créations » (tous les cocktails créés dans le Labo, du pl | ~vProfil ; actions : gocreate |
 | `versions/v171.js` | 84 | ZESTE 1.67 : Labo — conseils vérifiés par la note ; plafonds adoucis ; prédiction — créati | ~analyze, ~vCompose, ~goalAdvice, ~labScore, ~trainSet, ~predict ; actions : mixfix |
 | `versions/v172.js` | 9 | ZESTE 1.68 : modèle de goût — une variante compte comme son ingrédient de base | ~shares |
@@ -192,8 +192,8 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `versions/v185.js` | 29 | ZESTE 1.81 : lancement et icône de saison | ~splash |
 | `versions/v187.js` | 14 | ZESTE 1.85 : grand titre qui s'efface sous la barre de titre | ~renderView |
 | `versions/v188.js` | 21 | ZESTE 1.86 : vague à « Préparer », paysage et encoche |  ; actions : barmode |
-| `socle/ui_final.js` | 175 | VERSION FINALE | ~switchTab ; actions : setglasses, setamb, fav, rlagain, tab |
-| `versions/v126.js` | 79 | TROPHÉES À PALIERS (1.27) et grille unifiée (1.28) | ~trophySheet, !checkTrophies, !trophyGrid ; actions : tiertrophy |
+| `socle/ui_final.js` | 211 | VERSION FINALE | ~switchTab ; actions : setglasses, setamb, fav, rlagain, tab |
+| `versions/v126.js` | 81 | TROPHÉES À PALIERS (1.27) et grille unifiée (1.28) | ~trophySheet, !checkTrophies, !trophyGrid ; actions : tiertrophy |
 | `versions/v130.js` | 71 | 1.31 : mises à jour (repris d'ASCEN) | ~renderView, ~paintSheet, ~openServe, ~switchTab, !moveTabInd ; actions : retryview |
 | `versions/v186.js` | 24 | ZESTE 1.83 : format paysage et grands écrans | ~moveTabInd |
 

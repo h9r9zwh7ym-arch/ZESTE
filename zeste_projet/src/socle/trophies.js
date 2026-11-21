@@ -33,7 +33,7 @@ TROPHIES.push(
  ["weekend","Rituel du vendredi","Prépare un cocktail trois vendredis différents",3,()=>new Set(S.hist.filter(h=>new Date(h.t).getDay()===5).map(h=>new Date(h.t).toDateString())).size],
  ["d50","Encyclopédie vivante","Prépare 50 recettes différentes",50,()=>distinct().length],
  ["lab100","Perfection","Obtiens 100/100 au labo",100,()=>S.labBest||0],
- ["allfam","Tour complet","Au moins un cocktail de chaque famille, sans alcool compris",Object.keys(FAMILIES).length,()=>new Set(distinct().map(id=>RMAP[id].fam)).size],
+ ["allfam","Tour complet","Un cocktail dans chacune des "+Object.keys(FAMILIES).length+" familles, shots et sans alcool compris",Object.keys(FAMILIES).length,()=>new Set(distinct().map(id=>RMAP[id].fam)).size],
  ["palate60","Palais d’or","Note 60 cocktails",60,()=>rated().length],
  ["d100","Maître Zeste","Prépare 100 recettes différentes",100,()=>distinct().length],
  ["collector","Vitrine pleine","Débloque 30 trophées",30,()=>(S.tro||[]).filter(k=>k!=="collector").length]

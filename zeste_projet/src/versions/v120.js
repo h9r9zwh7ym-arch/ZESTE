@@ -14,17 +14,23 @@ function sanitizeBackup(d){
   if(!d||typeof d!=="object"||Array.isArray(d)) return null;
   const isObj=x=>x&&typeof x==="object"&&!Array.isArray(x), num=x=>typeof x==="number"&&isFinite(x);
   if(!isObj(d.stock)) return null;
-  const out=DEF();
-  Object.entries(d.stock).forEach(([id,v])=>{ if(ING[id]&&num(v)) out.stock[id]=Math.max(0,Math.min(4,Math.round(v))); });
+  // (1.87) une sauvegarde Zeste porte la marque de l'app ; les plus anciennes au moins un champ propre à Zeste
+  const ZK=["settings","ratings","hist","custom","fav","tro","mix","preps","quiz","adj","notes","duels","sig","drinks","price","opened","rt"];
+  if(d.app!=="zeste"&&!ZK.some(k=>k in d)) return null;
+  const out=DEF(); if(num(d.v)) out.v=d.v;
+  // les identifiants inconnus sont gardés : healState les met de côté (S.orphans) au lieu de les perdre
+  Object.entries(d.stock).forEach(([id,v])=>{ if(num(v)) out.stock[id]=Math.max(0,Math.min(4,Math.round(v))); });
   if(isObj(d.ratings)) Object.entries(d.ratings).forEach(([id,v])=>{ if(num(v)&&v>=1&&v<=5) out.ratings[id]=Math.round(v); });
-  if(Array.isArray(d.hist)) out.hist=d.hist.filter(h=>h&&typeof h.id==="string"&&num(h.t)).map(h=>({id:h.id,t:h.t}));
+  // historique : nombre de verres (m) et « ta version » (v) gardés (alcoolémie, 1.76)
+  if(Array.isArray(d.hist)) out.hist=d.hist.filter(h=>h&&typeof h.id==="string"&&num(h.t)).map(h=>{ const x={id:h.id,t:h.t}; if(num(h.m)&&h.m>=1&&h.m<=20) x.m=Math.round(h.m); if(h.v==="mine") x.v="mine"; return x; });
   if(Array.isArray(d.fav)) out.fav=d.fav.filter(x=>typeof x==="string");
-  if(Array.isArray(d.custom)) out.custom=d.custom.filter(r=>r&&typeof r.id==="string"&&typeof r.n==="string"&&Array.isArray(r.ing)&&r.ing.every(i=>i&&ING[i.id]&&num(i.q)));
+  if(Array.isArray(d.custom)) out.custom=d.custom.map(r=>cleanCustom(JSON.parse(JSON.stringify(r)))).filter(Boolean);
   if(isObj(d.settings)) out.settings=Object.assign({},out.settings,d.settings);
-  // champs simples conservés tels quels s'ils ont le bon type
-  ["quiz","adj","notes","price","stockT","opened","opens","mw","skips","chal","dishes","troT","rt","mix","tierSeen"].forEach(k=>{ if(isObj(d[k])) out[k]=d[k]; });
-  ["tro","preps","citiesSeen","linSeen","drinks","heroLog"].forEach(k=>{ if(Array.isArray(d[k])) out[k]=d[k]; });
-  ["quizSkip","roul","labBest","labServes","mwN","prepCount","bmDone","chalHard"].forEach(k=>{ if(num(d[k])||typeof d[k]==="boolean") out[k]=d[k]; });
+  // champs conservés tels quels s'ils ont le bon type (healState les vérifie ensuite)
+  ["quiz","adj","notes","price","stockT","opened","opens","mw","skips","chal","troT","rt","mix","tierSeen","snooze","orphans"].forEach(k=>{ if(isObj(d[k])) out[k]=d[k]; });
+  ["tro","preps","citiesSeen","linSeen","drinks","heroLog","dishes"].forEach(k=>{ if(Array.isArray(d[k])) out[k]=d[k]; });
+  ["quizSkip","quizIntro","roul","labBest","labServes","labSaved","mwN","prepCount","bmDone","chalHard","secondChance","fate","bubbleSaved","backupT"].forEach(k=>{ if(num(d[k])||typeof d[k]==="boolean") out[k]=d[k]; });
+  if(typeof d.chalOn==="string"||d.chalOn===null) out.chalOn=d.chalOn;
   return out;
 }
 function importData(){
@@ -36,7 +42,7 @@ function importData(){
     const rd=new FileReader();
     rd.onerror=()=>toast("Impossible de lire ce fichier");
     rd.onload=()=>{ let d=null; try{ d=JSON.parse(String(rd.result).replace(/^\uFEFF/,"")); }catch(e){ toast("Ce fichier n’est pas une sauvegarde Zeste valide"); return; }
-      const clean=sanitizeBackup(d); if(!clean){ toast("Ce fichier n’est pas une sauvegarde Zeste valide"); return; }
+      let clean=null; try{ if(d&&typeof d==="object"&&!Array.isArray(d)&&!(typeof d.v==="number"&&d.v>=1)) d.v=1; clean=sanitizeBackup(migrateState(d)); }catch(e){ clean=null; }   /* (1.87) ancien format : migré avant contrôle */ if(!clean){ toast("Ce fichier n’est pas une sauvegarde Zeste valide"); return; }
       const nb=Object.values(clean.stock).filter(v=>v>0).length, nr=Object.keys(clean.ratings).length, nh=clean.hist.length;
       confirmSheet({title:"Restaurer cette sauvegarde ?",icon:ICS.down[1].replace(/#fff/g,"currentColor"),html:`Elle contient <b>${nb} bouteille${nb>1?"s":""}</b>, <b>${nr} note${nr>1?"s":""}</b> et <b>${nh} cocktail${nh>1?"s":""} préparé${nh>1?"s":""}</b>. Tes données actuelles seront remplacées.`,ok:"Restaurer",
         onOk:()=>{ try{ S=clean; fixState(); buildRecipes(S.custom||[]); MODEL=null; closeAll(); Object.keys(dirty).forEach(k=>dirty[k]=1); changed(); toast("Sauvegarde restaurée"); }catch(e){ toast("La restauration a échoué, tes données n’ont pas été modifiées"); } } }); };

@@ -34,9 +34,13 @@ function zidbRecover(){ zidbGet().then(async rec=>{
     let has=false; try{ has=!!localStorage.getItem(KEY); }catch(e){}
     if(has&&!(rec.t>(S.t||0))) return;
     const str=await zgunz(rec.data); let d; try{ d=JSON.parse(str); }catch(e){ return; }
-    S=Object.assign(DEF(),d); fixState(); try{ localStorage.setItem(KEY,str); }catch(e){} buildRecipes(S.custom||[]); MODEL=null;
+    S=Object.assign(DEF(),{v:1},d); fixState(); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} buildRecipes(S.custom||[]); MODEL=null;
     renderAll(); refreshSheets(); toast("Tes données ont été récupérées depuis la copie de secours"); }).catch(()=>{}); }
 setTimeout(zidbRecover,0);
+// (1.87) deux onglets ouverts sur Zeste : quand l'autre enregistre, celui-ci reprend ses données au lieu de les écraser plus tard
+if(typeof addEventListener==="function") addEventListener("storage",e=>{ if(e.key!==KEY||!e.newValue) return; let d; try{ d=JSON.parse(e.newValue); }catch(x){ return; }
+  if(!d||typeof d!=="object"||!((d.t||0)>(S.t||0))) return;
+  S=Object.assign(DEF(),{v:1},d); fixState(); buildRecipes(S.custom||[]); MODEL=null; renderAll(); refreshSheets(); });
 // stockage protégé : le système ne l'efface pas pour libérer de la place (accordé surtout à l'app installée)
 try{ if(typeof navigator!=="undefined"&&navigator.storage&&navigator.storage.persisted) navigator.storage.persisted().then(p=>{ if(!p&&navigator.storage.persist) navigator.storage.persist(); }).catch(()=>{}); }catch(e){}
 

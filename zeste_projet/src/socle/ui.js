@@ -1,12 +1,18 @@
 // ================= ÉTAT & SAUVEGARDE =================
 const KEY="zeste.v1";
+// (1.87) numéro du format des données (S.v) : migrations numérotées dans ui_final.js (MIGRATIONS, migrateState)
+const SCHEMA=2;
 const USE_LEGACY_VIBRATE=false; // ignoré sur iPhone (Safari iOS n’a pas navigator.vibrate) ; l’haptique passe par un switch invisible (v144.js)
-const DEF=()=>({v:1,t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
-function loadLocal(){ let j=null; try{ j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),JSON.parse(j)); }catch(e){ try{ if(j) localStorage.setItem(KEY+".illisible."+Date.now(),j); }catch(e2){} } return DEF(); } // (1.65) illisible : mis de côté, jamais écrasé
+const DEF=()=>({v:SCHEMA,app:"zeste",t:0,stock:{},ratings:{},notes:{},fav:[],hist:[],preps:[],custom:[],mix:{m:"shake",items:[]},settings:{unit:"cl",nobasic:[]},roul:0,labSaved:0,tro:[]});
+function loadLocal(){ let j=null; try{ j=localStorage.getItem(KEY); if(j) return Object.assign(DEF(),{v:1},JSON.parse(j)); }catch(e){ try{ if(j) localStorage.setItem(KEY+".illisible."+Date.now(),j); }catch(e2){} } return DEF(); } // (1.65) illisible : mis de côté, jamais écrasé ; (1.87) sans numéro de format = format 1, migré par fixState
 S=loadLocal();
 // (fixState : remplacée plus loin, voir ui_final.js)
 // (1.65) tout reste sur l'appareil : plus de synchronisation avec le compte claude.ai (copie de secours et sauvegardes : v169.js)
 function save(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+// (1.87) petits signaux (fiche ouverte, suggestion du jour) : un seul enregistrement différé, au lieu de réécrire tout l'état
+// à chaque ouverture de fiche en dehors de save() (sans copie de secours ni invalidation des caches)
+let DEFER_T=null;
+function deferSave(){ if(DEFER_T) return; DEFER_T=setTimeout(()=>{ DEFER_T=null; save(); },1500); }
 async function pushRemote(){}
 async function initRemote(){}
 
@@ -65,7 +71,7 @@ function tile(r, sub){
 }
 function monthName(m){ return ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"][m-1]; }
 function dateLabel(){ const d=new Date(); const j=["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"][d.getDay()]; return j+" "+d.getDate()+" "+monthName(d.getMonth()+1); }
-function rel(t){ const d0=new Date(); d0.setHours(0,0,0,0); const d=Math.floor((d0.getTime()-new Date(t).setHours(0,0,0,0))/864e5); if(d<=0) return "Aujourd’hui"; if(d===1) return "Hier"; if(d<7) return "Il y a "+d+" jours"; const x=new Date(t); return x.getDate()+" "+monthName(x.getMonth()+1); }
+function rel(t){ const d0=new Date(); d0.setHours(0,0,0,0); const d=Math.round((d0.getTime()-new Date(t).setHours(0,0,0,0))/864e5);   /* (1.87) arrondi : une journée de changement d'heure dure 23 ou 25 h */ if(d<=0) return "Aujourd’hui"; if(d===1) return "Hier"; if(d<7) return "Il y a "+d+" jours"; const x=new Date(t); return x.getDate()+" "+monthName(x.getMonth()+1); }
 function barCount(){ return Object.keys(S.stock).filter(id=>ING[id]&&!ING[id].basic&&tracked(id)&&S.stock[id]>0).length; }
 function makeable(){ return RECS.filter(r=>status(r).ok).length; }
 function updateBarStats(){ const a=$("#st-b"), b=$("#st-m"); [[a,barCount()],[b,makeable()]].forEach(([el,v])=>{ if(el && el.textContent!=String(v)){ el.textContent=v; el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); } }); }
@@ -317,7 +323,7 @@ const TROPHIES=[
  ["hundred","Légende","Prépare 100 cocktails",100,()=>S.hist.length],
  ["d10","Curieux","10 recettes différentes",10,()=>distinct().length],
  ["d30","Globe-trotter","30 recettes différentes",30,()=>distinct().length],
- ["fam","Tour des familles","Un cocktail de chaque famille",8,()=>new Set(distinct().map(id=>RMAP[id].fam)).size],
+ ["fam","Tour des familles","Un cocktail dans 8 familles différentes",8,()=>new Set(distinct().map(id=>RMAP[id].fam)).size],
  ["sour","Tour du monde du sour","5 sours différents",5,()=>distinct().filter(id=>RMAP[id].fam==="sour").length],
  ["stir","Maître du verre à mélange","5 cocktails mélangés au verre",5,()=>distinct().filter(id=>RMAP[id].fam==="stirred").length],
  ["tiki","Âme tiki","3 cocktails tiki",3,()=>distinct().filter(id=>RMAP[id].fam==="tiki").length],
@@ -336,6 +342,11 @@ const TROPHIES=[
  ["night","Noctambule","Un cocktail entre minuit et 4 h",1,()=>S.hist.filter(h=>{const x=new Date(h.t).getHours();return x<4;}).length]
 ];
 let DST=null, DST_KEY="";
+// (1.87) « Annuler » un verre reprend aussi ce qu'il venait de débloquer (trophée, palier), sans toucher au reste
+function troSnap(){ return {tro:(S.tro||[]).slice(),tier:Object.assign({},S.tierSeen||{})}; }
+function troRevoke(snap){ SREV++; DST=null;
+  S.tro=(S.tro||[]).filter(k=>{ if(snap.tro.includes(k)) return true; const T=TROPHIES.find(x=>x[0]===k); let v=0; try{ v=T?T[4]():0; }catch(e){} if(T&&v<T[3]){ if(S.troT) delete S.troT[k]; return false; } return true; });
+  S.tierSeen=Object.assign({},snap.tier); }
 function distinct(){ const k=SREV+"|"+S.hist.length+"|"+RECS.length; if(!DST||DST_KEY!==k||DST.S!==S){ DST={S,v:[...new Set(S.hist.map(h=>h.id))].filter(id=>RMAP[id])}; DST_KEY=k; } return DST.v.slice(); }
 // (medal : remplacée plus loin, voir trophies.js)
 // (checkTrophies : remplacée plus loin, voir trophies.js)
@@ -414,7 +425,7 @@ const popOn=(k)=>POP&&POP.k===k&&Date.now()-POP.t<700;
 
 // fiche cocktail
 function recSheet(id){
-  S.opens=S.opens||{}; S.opens[id]=(S.opens[id]||0)+1; try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){}
+  S.opens=S.opens||{}; S.opens[id]=(S.opens[id]||0)+1; deferSave();
   let mult=S.settings.glasses||1, first=true, ver=getAdj(id)?"mine":"orig";
   const sh=openSheet(()=>{ const r=RMAP[id]; if(!r) return {title:"",body:""}; const adj=getAdj(id); if(!adj) ver="orig";
     const items= ver==="mine"? adjItems(r) : r.ing;
@@ -483,7 +494,7 @@ function addSheet(){
   const results=()=>{ let b=""; if(!qq) b+=segChips(AS,"as",false);
     const L=Object.values(ING).filter(i=>i.id!=="eau"&&!i.al&&(qq? norm(i.n).includes(norm(qq)) : segOf(i.id)===AS)).sort((a,c)=>a.n.localeCompare(c.n,"fr"));
     const bas=L.filter(i=>i.basic), oth=L.filter(i=>!i.basic);
-    if(oth.length) b+=`<div class="group" style="margin-top:8px">${oth.map(i=>{ const on=inBar(i.id)&&(tracked(i.id)?S.stock[i.id]>0:S.stock[i.id]===1); return `<button class="row tap" data-a="addtoggle" data-id="${i.id}"><div class="grow"><div class="t">${esc(i.n)}</div>${qq?`<div class="s">${SEGS.find(s=>s[0]===segOf(i.id))[1]}</div>`:""}</div><span style="color:${on?"var(--tint)":"var(--label3)"};width:26px;height:26px;display:grid;place-items:center">${on?IC.checkc.replace("<svg","<svg width='24' height='24'"):IC.plus.replace("<svg","<svg width='22' height='22'")}</span></button>`; }).join("")}</div>`;
+    if(oth.length) b+=`<div class="group" style="margin-top:8px">${oth.map(i=>{ const on=inBar(i.id)&&S.stock[i.id]>0; return `<button class="row tap" data-a="addtoggle" data-id="${i.id}"><div class="grow"><div class="t">${esc(i.n)}</div>${qq?`<div class="s">${SEGS.find(s=>s[0]===segOf(i.id))[1]}</div>`:""}</div><span style="color:${on?"var(--tint)":"var(--label3)"};width:26px;height:26px;display:grid;place-items:center">${on?IC.checkc.replace("<svg","<svg width='24' height='24'"):IC.plus.replace("<svg","<svg width='22' height='22'")}</span></button>`; }).join("")}</div>`;
     if(bas.length) b+=`<div class="gh">Toujours à portée de main</div><div class="group">${bas.map(i=>`<div class="row"><div class="grow"><div class="t">${esc(i.n)}</div></div><span class="badge ${has(i.id)?"green":""}">${has(i.id)?"Compté":"Désactivé"}</span></div>`).join("")}</div><div class="gf">Ces basiques sont comptés automatiquement. <button class="link" data-a="basics">Modifier</button></div>`;
     if(!L.length) b+=`<div class="empty">Aucun ingrédient trouvé.</div>`;
     return b; };
@@ -506,7 +517,7 @@ function pickIngSheet(cb){
 
 function quickAdd(){
   const common=["gin","vodka","rhum_blanc","rhum_ambre","tequila","bourbon","scotch","triple_sec","campari","aperol","vermouth_rouge","vermouth_dry","angostura","prosecco","kirsch","williamine","citron","citron_vert","orange","eau_gazeuse","tonic","ginger_beer","cola","menthe"];
-  openSheet(()=>({title:"Ajout rapide",right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,body:`<p class="body" style="margin-bottom:var(--z-s2)">Touche ce que tu as. Tu pourras régler les niveaux ensuite dans l’onglet Bar.</p><div class="chips" style="flex-wrap:wrap;gap:var(--z-s1)">${common.map(id=>{ const on=inBar(id)&&(tracked(id)?S.stock[id]>0:S.stock[id]===1); return `<button class="chip ${on?"on":""}" data-a="addtoggle" data-id="${id}" style="height:38px;font-size:calc(16rem / 17)">${esc(shortN(id))}</button>`; }).join("")}</div><div class="sp24"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">Voir tous les ingrédients</button></div>`}),{short:true});
+  openSheet(()=>({title:"Ajout rapide",right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,body:`<p class="body" style="margin-bottom:var(--z-s2)">Touche ce que tu as. Tu pourras régler les niveaux ensuite dans l’onglet Bar.</p><div class="chips" style="flex-wrap:wrap;gap:var(--z-s1)">${common.map(id=>{ const on=inBar(id)&&S.stock[id]>0; return `<button class="chip ${on?"on":""}" data-a="addtoggle" data-id="${id}" style="height:38px;font-size:calc(16rem / 17)">${esc(shortN(id))}</button>`; }).join("")}</div><div class="sp24"></div><div class="btn-row"><button class="btn sec" data-a="addsheet">Voir tous les ingrédients</button></div>`}),{short:true});
 }
 function techSheet(id){
   const t=TECH.find(x=>x.id===id);
@@ -625,7 +636,7 @@ const ACT={
   rec:(d)=>recSheet(d.id), ing:(d)=>ingSheet(d.id), closesheet:()=>closeSheet(),
   quickadd:()=>quickAdd(), addsheet:()=>addSheet(), roulette:()=>roulette(),
   barmode:(d)=>{ closeAll(); barMode(d.id); },
-  made:(d)=>{ POP={k:"made"+d.id,t:Date.now()}; logMade(d.id); toast("Ajouté à ton historique",{action:{label:"Annuler",fn:()=>{ const k=S.hist.map(h=>h.id).lastIndexOf(d.id); if(k>=0){ S.hist.splice(k,1); changed(); } }}}); },
+  made:(d)=>{ POP={k:"made"+d.id,t:Date.now()}; const snap=troSnap(); logMade(d.id); toast("Ajouté à ton historique",{action:{label:"Annuler",fn:()=>{ const k=S.hist.map(h=>h.id).lastIndexOf(d.id); if(k>=0){ S.hist.splice(k,1); troRevoke(snap); changed(); } }}}); },
   fav:(d)=>{ const i=S.fav.indexOf(d.id); if(i<0){ S.fav.push(d.id); POP={k:"fav"+d.id,t:Date.now()}; } else S.fav.splice(i,1); changed(); },
   rate:(d,t)=>{ const n=+d.n; S.rt=S.rt||{}; S.rt[d.id]=Date.now(); if(S.ratings[d.id]===n) delete S.ratings[d.id]; else { if(!S.ratings[d.id]) learnFrom(d.id,n); S.ratings[d.id]=n; POP={k:"rate"+d.id,t:Date.now()}; if(n===5){ const b=t.getBoundingClientRect(); confetti(b.left+b.width/2,b.top+b.height/2,RMAP[d.id].col); } } changed(); },
   mult:(d)=>{ const sh=SHEETS[SHEETS.length-1]; sh&&sh.setMult&&sh.setMult(+d.d); },
@@ -647,10 +658,10 @@ const ACT={
   lvl:(d)=>{ const l=+d.l, v=S.stock[d.id], nv=(v===l)? l-1 : l; S.stock[d.id]=nv; if(!(v>0)&&nv>0) markBought(d.id);
     if(nv>0 && patchStock(d.id)) softChanged(); else if(nv===0){ patchStock(d.id); softChanged(); setTimeout(()=>{ renderView("bar"); },380); toast(ING[d.id].n+" ajouté à la liste à racheter",{action:{label:"Annuler",fn:()=>{ S.stock[d.id]=v; changed(); }}}); } else changed(); },
   setlvl:(d)=>{ const v=S.stock[d.id]; S.stock[d.id]=+d.l; if(!(v>0)&&+d.l>0) markBought(d.id); changed(); },
-  toggle:(d)=>{ S.stock[d.id]= S.stock[d.id]===1?0:1; if(patchStock(d.id)) softChanged(); else changed(); },
+  toggle:(d)=>{ S.stock[d.id]= S.stock[d.id]>0?0:1; if(patchStock(d.id)) softChanged(); else changed(); },
   refill:(d)=>{ S.stock[d.id]= tracked(d.id)?4:1; markBought(d.id); changed(); toast(ING[d.id].n+" : de nouveau en stock"); },
   rmstock:(d)=>{ const v=S.stock[d.id]; delete S.stock[d.id]; changed(); closeSheet(); toast(ING[d.id].n+" retiré",{action:{label:"Annuler",fn:()=>{ S.stock[d.id]=v; changed(); }}}); },
-  addtoggle:(d)=>{ const id=d.id, on=inBar(id)&&(tracked(id)?S.stock[id]>0:S.stock[id]===1); if(on) delete S.stock[id]; else { S.stock[id]=tracked(id)?4:1; if(Object.keys(S.stock).length>6) markBought(id); } changed(); },
+  addtoggle:(d)=>{ const id=d.id, on=inBar(id)&&S.stock[id]>0; if(on) delete S.stock[id]; else { S.stock[id]=tracked(id)?4:1; if(Object.keys(S.stock).length>6) markBought(id); } changed(); },
   lt:(d)=>{ LT=d.t; renderView("labo"); },
   tech:(d)=>techSheet(d.id), newprep:()=>newPrepSheet(), prep:(d)=>prepSheet(d.pid),
   startprep:(d)=>{ S.preps=S.preps||[]; const t=PREP_TPL.find(x=>x[0]===d.tpl); S.preps.push({id:"p"+Date.now(),tpl:d.tpl,d:new Date().toISOString(),name:t[1]}); S.prepCount=(S.prepCount||0)+1; LT="prep"; closeAll(); changed(); switchTab("labo"); toast(t[1]+" : c’est parti"); },
@@ -665,13 +676,15 @@ const ACT={
   mixfix:(d)=>{ const ex=S.mix.items.find(i=>i.id===d.id); if(ex) ex.q=Math.round((ex.q+ +d.q)*10)/10; else S.mix.items.push({id:d.id,q:+d.q}); changed(); },
   mixclear:()=>{ S.mix.items=[]; changed(); },
   mixsave:()=>{ if(!S.mix.items.length) return; nameSheet(); },
-  savemix:()=>{ const n=($("#nm")||{}).value; if(!n||!n.trim()) return toast("Donne-lui un nom"); const A=analyze();
+  savemix:()=>{ let n=($("#nm")||{}).value; if(!n||!n.trim()) return toast("Donne-lui un nom"); n=n.trim(); const A=analyze();
+    // (1.87) nom déjà pris (recette ou création) : « Negroni (2) », pour ne jamais confondre deux cocktails
+    const taken=new Set(RECS.map(r=>norm(r.n).trim())), base=n; for(let k=2;taken.has(norm(n).trim());k++) n=base+" ("+k+")";
     const famMap={sour:"sour",stirred:"stirred",long:"highball",spritz:"bulles",cremeux:"dessert"};
     const items=mixItems(); let V=0,rr=0,gg=0,bb=0; items.forEach(i=>{ const ml=Math.max(mlOf(i),1), c=colOf(i.id); V+=ml; rr+=parseInt(c.slice(1,3),16)*ml; gg+=parseInt(c.slice(3,5),16)*ml; bb+=parseInt(c.slice(5,7),16)*ml; });
     const col="#"+[rr,gg,bb].map(x=>Math.round(x/V).toString(16).padStart(2,"0")).join("");
     const st=A.st, m=S.mix.m, LG=labGlass(), g=LG.g, ice=LG.ice, garL=(S.mix.gar||[]).map(k=>LGARTXT[k]);
-    const rec={id:"c_"+Date.now(),n:n.trim(),fam:famMap[st]||"sour",m:m==="build"?"build":m,g,ice,col,gar:garL.join(", ")||"",garList:garL.length?garL:undefined,ing:items.map(i=>({id:i.id,q:i.q,u:i.u,r:ING[i.id].fizz?"top":""}))};
-    S.custom.push(rec); S.labSaved=(S.labSaved||0)+1; buildRecipes(S.custom); closeSheet(); changed(); toast("Création enregistrée"); recSheet(rec.id); },
+    const rec={id:"c_"+Date.now(),n,fam:famMap[st]||"sour",m:m==="build"?"build":m,g,ice,col,gar:garL.join(", ")||"",garList:garL.length?garL:undefined,ing:items.map(i=>({id:i.id,q:i.q,u:i.u,r:ING[i.id].fizz?"top":""}))};
+    S.custom.push(rec); S.labSaved=(S.labSaved||0)+1; buildRecipes(S.custom); closeSheet(); changed(); toast(n===base?"Création enregistrée":"Enregistrée sous « "+n+" »"); recSheet(rec.id); },
   delcustom:(d)=>{ S.custom=S.custom.filter(c=>c.id!==d.id); delete S.ratings[d.id]; buildRecipes(S.custom); closeSheet(); changed(); },
   aiprompt:()=>copyText(aiPrompt(),"Prompt copié : colle-le dans ton IA"),
   sharetxt:()=>{ const el=SHEETS[SHEETS.length-1].el; navigator.share({text:el._text}).catch(()=>{}); },
