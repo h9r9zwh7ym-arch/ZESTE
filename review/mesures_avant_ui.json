@@ -1,0 +1,2394 @@
+{
+ "390x844_light_vide": {
+  "erreurs": [],
+  "ecrans": {
+   "00_premiere_ouverture": {
+    "tailles_texte": {
+     "15px": 1,
+     "34px": 1,
+     "16px": 4,
+     "13px": 4,
+     "22px": 1
+    },
+    "petites_cibles": [
+     "button.link[qzskip] 43×20 (impact 40×20) «Passer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {},
+    "accent": [
+     "texte button.link «Passer»",
+     "fond button.btn «Faire connaissance»"
+    ],
+    "defilement_horizontal": false
+   },
+   "01_aujourdhui": {
+    "tailles_texte": {
+     "16px": 4,
+     "34px": 2,
+     "13px": 5,
+     "22px": 1
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 3
+    },
+    "accent": [
+     "fond button.btn «Remplir mon bar»"
+    ],
+    "defilement_horizontal": false
+   },
+   "02_cocktails": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 11,
+     "16px": 12
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "03_recherche_vide": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "04_bar": {
+    "tailles_texte": {
+     "34px": 1,
+     "22px": 1,
+     "16px": 3
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [
+     "fond button.btn «Ajout rapide»",
+     "texte button.btn.sec «Parcourir tous les i»"
+    ],
+    "defilement_horizontal": false
+   },
+   "05_labo": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.on[lt] 173×30 (impact 44×40) «Composer»",
+     "button.[lt] 173×30 (impact 44×40) «Fait maison»",
+     "button.on[mixice] 87×30 (impact 44×40) «Sans glace»",
+     "button.[mixice] 87×30 (impact 44×40) «Glaçons»",
+     "button.[mixice] 87×30 (impact 44×40) «Gros glaçon»",
+     "button.[mixice] 87×30 (impact 44×40) «Pilée»",
+     "button.chip[tolab] 86×32 (impact 44×28) «Daiquiri»",
+     "button.chip[tolab] 90×32 (impact 44×28) «Negroni»",
+     "button.chip[tolab] 131×32 (impact 44×28) «Moscow Mule»",
+     "button.chip[tolab] 121×32 (impact 44×28) «Whisky Sour»",
+     "button.chip[tolab] 126×32 (impact 44×28) «Aperol Spritz»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "06_labo_preparations": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "22px": 1,
+     "16px": 12
+    },
+    "petites_cibles": [
+     "button.[lt] 173×30 (impact 44×40) «Composer»",
+     "button.on[lt] 173×30 (impact 44×40) «Fait maison»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "07_profil": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 7,
+     "22px": 3
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 2,
+     "20": 7
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "10_fiche_negroni": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 9,
+     "16px": 16,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.close-x[sharecard] 32×32 (impact 40×40) «Partager en image»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.[mult] 40×36 (impact 40×40) «Moins»",
+     "button.[mult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5
+    },
+    "accent": [
+     "texte label.btn.sec «Je l’ai fait»",
+     "fond button.btn «Préparer»"
+    ],
+    "defilement_horizontal": false
+   },
+   "11_fiche_gin": {
+    "tailles_texte": {
+     "28px": 1,
+     "15px": 1,
+     "13px": 18,
+     "22px": 2,
+     "16px": 3
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "input.price-in[] 92×35 (impact 44×32) «»",
+     "button.[setvol] 55×30 (impact 44×40) «20»",
+     "button.[setvol] 55×30 (impact 44×40) «50»",
+     "button.on[setvol] 55×30 (impact 44×40) «70»",
+     "button.[setvol] 55×30 (impact 44×40) «75»",
+     "button.[setvol] 55×30 (impact 44×40) «1 l»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3,
+     "36": 6
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "13_ajout_bouteille": {
+    "tailles_texte": {
+     "16px": 21
+    },
+    "petites_cibles": [
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.chip.on[as] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[as] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[as] 158×32 (impact 28×40) «Vins & vermouths»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 1
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "14_filtres": {
+    "tailles_texte": {
+     "16px": 30,
+     "13px": 7
+    },
+    "petites_cibles": [
+     "button.link[resetf] 82×22 (impact 44×20) «Réinitialiser»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.chip.[tf] 133×32 (impact 44×28) «Cocktail court»",
+     "button.chip.[tf] 107×32 (impact 44×28) «Long drink»",
+     "button.chip.[tf] 139×32 (impact 44×28) «Spritz et bulles»",
+     "button.chip.[tf] 66×32 (impact 44×28) «Shot»",
+     "button.chip.[tf] 79×32 (impact 44×28) «Chaud»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 73×32 (impact 44×28) «Sours»",
+     "button.chip.[tf] 162×32 (impact 44×28) «Mélangés au verre»",
+     "button.chip.[tf] 98×32 (impact 44×28) «Highballs»",
+     "button.chip.[tf] 145×32 (impact 44×28) «Herbes fraîches»",
+     "button.chip.[tf] 56×32 (impact 44×28) «Tiki»",
+     "button.chip.[tf] 138×32 (impact 44×28) «Café & dessert»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 74×32 (impact 44×28) «Rhum»",
+     "button.chip.[tf] 57×32 (impact 44×28) «Gin»",
+     "button.chip.[tf] 151×32 (impact 44×28) «Tequila & mezcal»",
+     "button.chip.[tf] 84×32 (impact 44×28) «Whisky»",
+     "button.chip.[tf] 77×32 (impact 44×28) «Vodka»",
+     "button.chip.[tf] 156×32 (impact 44×28) «Cognac & brandy»",
+     "button.chip.[tf] 118×32 (impact 44×28) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 44×28) «Amers»",
+     "button.chip.[tf] 86×32 (impact 44×28) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 44×28) «Jamais faits»",
+     "button.chip.[tf] 132×32 (impact 44×28) «Mes créations»",
+     "button.chip.[tf] 160×32 (impact 44×28) «Créations à tester»",
+     "button.chip.[tf] 161×32 (impact 44×28) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 44×28) «De saison»",
+     "button.on[tsort] 173×30 (impact 0×0) «Pour toi»",
+     "button.[tsort] 173×30 (impact 0×0) «A à Z»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 1,
+     "36": 5
+    },
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "defilement_horizontal": false
+   },
+   "15_parametres": {
+    "tailles_texte": {
+     "16px": 20,
+     "13px": 6
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   }
+  }
+ },
+ "390x844_light_presquevide": {
+  "erreurs": [],
+  "ecrans": {
+   "01_aujourdhui": {
+    "tailles_texte": {
+     "16px": 9,
+     "34px": 2,
+     "13px": 5,
+     "22px": 1
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 4
+    },
+    "accent": [
+     "texte button.btn.sec «Voir la recette»",
+     "fond button.btn «Préparer»",
+     "texte button.more «Tout voir»"
+    ],
+    "defilement_horizontal": false
+   },
+   "02_cocktails": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 15,
+     "16px": 11
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "03_recherche_vide": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "04_bar": {
+    "tailles_texte": {
+     "34px": 2,
+     "13px": 5,
+     "16px": 10
+    },
+    "petites_cibles": [
+     "button.thumb[ing] 30×44 (impact 40×40) «Gin London Dry»",
+     "label.switch.on[toggle] 51×31 (impact 44×28) «Tonic»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 6
+    },
+    "accent": [
+     "texte span. «cocktails faisables »"
+    ],
+    "defilement_horizontal": false
+   },
+   "05_labo": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.on[lt] 173×30 (impact 44×40) «Composer»",
+     "button.[lt] 173×30 (impact 44×40) «Fait maison»",
+     "button.on[mixice] 87×30 (impact 44×40) «Sans glace»",
+     "button.[mixice] 87×30 (impact 44×40) «Glaçons»",
+     "button.[mixice] 87×30 (impact 44×40) «Gros glaçon»",
+     "button.[mixice] 87×30 (impact 44×40) «Pilée»",
+     "button.chip[tolab] 86×32 (impact 44×28) «Daiquiri»",
+     "button.chip[tolab] 90×32 (impact 44×28) «Negroni»",
+     "button.chip[tolab] 131×32 (impact 44×28) «Moscow Mule»",
+     "button.chip[tolab] 121×32 (impact 44×28) «Whisky Sour»",
+     "button.chip[tolab] 126×32 (impact 44×28) «Aperol Spritz»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "06_labo_preparations": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "22px": 1,
+     "16px": 12
+    },
+    "petites_cibles": [
+     "button.[lt] 173×30 (impact 44×40) «Composer»",
+     "button.on[lt] 173×30 (impact 44×40) «Fait maison»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "07_profil": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 7,
+     "22px": 3
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 2,
+     "20": 7
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "10_fiche_negroni": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 16,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.close-x[sharecard] 32×32 (impact 40×40) «Partager en image»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.[mult] 40×36 (impact 40×40) «Moins»",
+     "button.[mult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5
+    },
+    "accent": [
+     "texte label.btn.sec «Je l’ai fait»",
+     "fond button.btn «Préparer»"
+    ],
+    "defilement_horizontal": false
+   },
+   "11_fiche_gin": {
+    "tailles_texte": {
+     "28px": 1,
+     "15px": 1,
+     "13px": 15,
+     "22px": 3,
+     "16px": 3
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "12_niveau_gin": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 5
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "13_ajout_bouteille": {
+    "tailles_texte": {
+     "16px": 21
+    },
+    "petites_cibles": [
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.chip.on[as] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[as] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[as] 158×32 (impact 28×40) «Vins & vermouths»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 1
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "14_filtres": {
+    "tailles_texte": {
+     "16px": 30,
+     "13px": 7
+    },
+    "petites_cibles": [
+     "button.link[resetf] 82×22 (impact 44×20) «Réinitialiser»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.chip.[tf] 133×32 (impact 44×28) «Cocktail court»",
+     "button.chip.[tf] 107×32 (impact 44×28) «Long drink»",
+     "button.chip.[tf] 139×32 (impact 44×28) «Spritz et bulles»",
+     "button.chip.[tf] 66×32 (impact 44×28) «Shot»",
+     "button.chip.[tf] 79×32 (impact 44×28) «Chaud»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 73×32 (impact 44×28) «Sours»",
+     "button.chip.[tf] 162×32 (impact 44×28) «Mélangés au verre»",
+     "button.chip.[tf] 98×32 (impact 44×28) «Highballs»",
+     "button.chip.[tf] 145×32 (impact 44×28) «Herbes fraîches»",
+     "button.chip.[tf] 56×32 (impact 44×28) «Tiki»",
+     "button.chip.[tf] 138×32 (impact 44×28) «Café & dessert»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 74×32 (impact 44×28) «Rhum»",
+     "button.chip.[tf] 57×32 (impact 44×28) «Gin»",
+     "button.chip.[tf] 151×32 (impact 44×28) «Tequila & mezcal»",
+     "button.chip.[tf] 84×32 (impact 44×28) «Whisky»",
+     "button.chip.[tf] 77×32 (impact 44×28) «Vodka»",
+     "button.chip.[tf] 156×32 (impact 44×28) «Cognac & brandy»",
+     "button.chip.[tf] 118×32 (impact 44×28) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 44×28) «Amers»",
+     "button.chip.[tf] 86×32 (impact 44×28) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 44×28) «Jamais faits»",
+     "button.chip.[tf] 132×32 (impact 44×28) «Mes créations»",
+     "button.chip.[tf] 160×32 (impact 44×28) «Créations à tester»",
+     "button.chip.[tf] 161×32 (impact 44×28) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 44×28) «De saison»",
+     "button.on[tsort] 173×30 (impact 0×0) «Pour toi»",
+     "button.[tsort] 173×30 (impact 0×0) «A à Z»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 1,
+     "36": 5
+    },
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "defilement_horizontal": false
+   },
+   "15_parametres": {
+    "tailles_texte": {
+     "16px": 20,
+     "13px": 6
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   }
+  }
+ },
+ "390x844_light_riche": {
+  "erreurs": [],
+  "ecrans": {
+   "01_aujourdhui": {
+    "tailles_texte": {
+     "16px": 9,
+     "34px": 2,
+     "13px": 6,
+     "22px": 1
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 3
+    },
+    "accent": [
+     "texte span.pill.match «Noté 5 sur 5»",
+     "texte button.btn.sec «Voir la recette»",
+     "fond button.btn «Préparer»",
+     "texte button.more «Tout voir»",
+     "texte span.tmatch «89 %»"
+    ],
+    "defilement_horizontal": false
+   },
+   "02_cocktails": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 16,
+     "16px": 11
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "03_recherche_vide": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "04_bar": {
+    "tailles_texte": {
+     "34px": 2,
+     "13px": 9,
+     "16px": 22
+    },
+    "petites_cibles": [
+     "button.low-line[lowsheet] 264×32 (impact 44×40) «10 bouteilles bientôt à »",
+     "button.chip.on[bf] 64×32 (impact 44×40) «Tout»",
+     "button.chip.[bf] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[bf] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[bf] 158×32 (impact 0×0) «Vins & vermouths»",
+     "button.list-h.cat-h[barfold] 350×22 (impact 44×20) «Spiritueux12»",
+     "button.thumb[ing] 30×44 (impact 40×40) «Absinthe»",
+     "button.thumb[ing] 30×44 (impact 40×40) «Bourbon»",
+     "button.thumb[ing] 30×44 (impact 40×40) «Cachaça»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Gin London Dry»",
+     "button.grow[ing] 216×40 (impact 0×0) «Gin London Dry22 cocktai»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Mezcal»",
+     "button.grow[ing] 216×40 (impact 0×0) «Mezcal4 cocktails»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 7
+    },
+    "accent": [
+     "texte span. «cocktails faisables »",
+     "texte label.btn.small «Racheté»",
+     "texte label.btn.small «Racheté»"
+    ],
+    "defilement_horizontal": false
+   },
+   "05_labo": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.on[lt] 173×30 (impact 44×40) «Composer»",
+     "button.[lt] 173×30 (impact 44×40) «Fait maison»",
+     "button.on[mixice] 87×30 (impact 44×40) «Sans glace»",
+     "button.[mixice] 87×30 (impact 44×40) «Glaçons»",
+     "button.[mixice] 87×30 (impact 44×40) «Gros glaçon»",
+     "button.[mixice] 87×30 (impact 44×40) «Pilée»",
+     "button.chip[tolab] 86×32 (impact 44×28) «Daiquiri»",
+     "button.chip[tolab] 90×32 (impact 44×28) «Negroni»",
+     "button.chip[tolab] 131×32 (impact 44×28) «Moscow Mule»",
+     "button.chip[tolab] 121×32 (impact 44×28) «Whisky Sour»",
+     "button.chip[tolab] 126×32 (impact 44×28) «Aperol Spritz»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "06_labo_preparations": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 12,
+     "22px": 2,
+     "16px": 10
+    },
+    "petites_cibles": [
+     "button.[lt] 173×30 (impact 44×40) «Composer»",
+     "button.on[lt] 173×30 (impact 44×40) «Fait maison»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "07_profil": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 4,
+     "16px": 4
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 6
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "10_fiche_negroni": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 16,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.close-x[sharecard] 32×32 (impact 40×40) «Partager en image»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.[mult] 40×36 (impact 40×40) «Moins»",
+     "button.[mult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5
+    },
+    "accent": [
+     "texte label.btn.sec «Je l’ai fait»",
+     "fond button.btn «Préparer»"
+    ],
+    "defilement_horizontal": false
+   },
+   "11_fiche_gin": {
+    "tailles_texte": {
+     "28px": 1,
+     "15px": 1,
+     "13px": 15,
+     "22px": 3,
+     "16px": 3
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "12_niveau_gin": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 5
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "13_ajout_bouteille": {
+    "tailles_texte": {
+     "16px": 21
+    },
+    "petites_cibles": [
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.chip.on[as] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[as] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[as] 158×32 (impact 28×40) «Vins & vermouths»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 1
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "14_filtres": {
+    "tailles_texte": {
+     "16px": 30,
+     "13px": 7
+    },
+    "petites_cibles": [
+     "button.link[resetf] 82×22 (impact 44×20) «Réinitialiser»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.chip.[tf] 133×32 (impact 44×28) «Cocktail court»",
+     "button.chip.[tf] 107×32 (impact 44×28) «Long drink»",
+     "button.chip.[tf] 139×32 (impact 44×28) «Spritz et bulles»",
+     "button.chip.[tf] 66×32 (impact 44×28) «Shot»",
+     "button.chip.[tf] 79×32 (impact 44×28) «Chaud»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 73×32 (impact 44×28) «Sours»",
+     "button.chip.[tf] 162×32 (impact 44×28) «Mélangés au verre»",
+     "button.chip.[tf] 98×32 (impact 44×28) «Highballs»",
+     "button.chip.[tf] 145×32 (impact 44×28) «Herbes fraîches»",
+     "button.chip.[tf] 56×32 (impact 44×28) «Tiki»",
+     "button.chip.[tf] 138×32 (impact 44×28) «Café & dessert»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 74×32 (impact 44×28) «Rhum»",
+     "button.chip.[tf] 57×32 (impact 44×28) «Gin»",
+     "button.chip.[tf] 151×32 (impact 44×28) «Tequila & mezcal»",
+     "button.chip.[tf] 84×32 (impact 44×28) «Whisky»",
+     "button.chip.[tf] 77×32 (impact 44×28) «Vodka»",
+     "button.chip.[tf] 156×32 (impact 44×28) «Cognac & brandy»",
+     "button.chip.[tf] 118×32 (impact 44×28) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 44×28) «Amers»",
+     "button.chip.[tf] 86×32 (impact 44×28) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 44×28) «Jamais faits»",
+     "button.chip.[tf] 132×32 (impact 44×28) «Mes créations»",
+     "button.chip.[tf] 160×32 (impact 44×28) «Créations à tester»",
+     "button.chip.[tf] 161×32 (impact 44×28) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 44×28) «De saison»",
+     "button.on[tsort] 173×30 (impact 0×0) «Pour toi»",
+     "button.[tsort] 173×30 (impact 0×0) «A à Z»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 1,
+     "36": 5
+    },
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "defilement_horizontal": false
+   },
+   "15_parametres": {
+    "tailles_texte": {
+     "16px": 21,
+     "13px": 6
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "16_mode_preparation": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "petites_cibles": [
+     "button.close-x[bmclose] 32×32 (impact 40×40) «Fermer»",
+     "button.[bmmult] 40×36 (impact 40×40) «Moins»",
+     "button.[bmmult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [
+     "Étape 1 sur 6"
+    ],
+    "champs_sous_16px": [],
+    "bords_gauches": {},
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "defilement_horizontal": false
+   }
+  }
+ },
+ "390x844_dark_vide": {
+  "erreurs": [],
+  "ecrans": {
+   "00_premiere_ouverture": {
+    "tailles_texte": {
+     "15px": 1,
+     "34px": 1,
+     "16px": 4,
+     "13px": 4,
+     "22px": 1
+    },
+    "petites_cibles": [
+     "button.link[qzskip] 43×20 (impact 40×20) «Passer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {},
+    "accent": [
+     "texte button.link «Passer»",
+     "fond button.btn «Faire connaissance»"
+    ],
+    "defilement_horizontal": false
+   },
+   "01_aujourdhui": {
+    "tailles_texte": {
+     "16px": 4,
+     "34px": 2,
+     "13px": 5,
+     "22px": 1
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 3
+    },
+    "accent": [
+     "fond button.btn «Remplir mon bar»"
+    ],
+    "defilement_horizontal": false
+   },
+   "02_cocktails": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 11,
+     "16px": 12
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "03_recherche_vide": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "04_bar": {
+    "tailles_texte": {
+     "34px": 1,
+     "22px": 1,
+     "16px": 3
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [
+     "fond button.btn «Ajout rapide»",
+     "texte button.btn.sec «Parcourir tous les i»"
+    ],
+    "defilement_horizontal": false
+   },
+   "05_labo": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.on[lt] 173×30 (impact 44×40) «Composer»",
+     "button.[lt] 173×30 (impact 44×40) «Fait maison»",
+     "button.on[mixice] 87×30 (impact 44×40) «Sans glace»",
+     "button.[mixice] 87×30 (impact 44×40) «Glaçons»",
+     "button.[mixice] 87×30 (impact 44×40) «Gros glaçon»",
+     "button.[mixice] 87×30 (impact 44×40) «Pilée»",
+     "button.chip[tolab] 86×32 (impact 44×28) «Daiquiri»",
+     "button.chip[tolab] 90×32 (impact 44×28) «Negroni»",
+     "button.chip[tolab] 131×32 (impact 44×28) «Moscow Mule»",
+     "button.chip[tolab] 121×32 (impact 44×28) «Whisky Sour»",
+     "button.chip[tolab] 126×32 (impact 44×28) «Aperol Spritz»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "06_labo_preparations": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "22px": 1,
+     "16px": 12
+    },
+    "petites_cibles": [
+     "button.[lt] 173×30 (impact 44×40) «Composer»",
+     "button.on[lt] 173×30 (impact 44×40) «Fait maison»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "07_profil": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 7,
+     "22px": 3
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 2,
+     "20": 7
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "10_fiche_negroni": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 9,
+     "16px": 16,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.close-x[sharecard] 32×32 (impact 40×40) «Partager en image»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.[mult] 40×36 (impact 40×40) «Moins»",
+     "button.[mult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5
+    },
+    "accent": [
+     "texte label.btn.sec «Je l’ai fait»",
+     "fond button.btn «Préparer»"
+    ],
+    "defilement_horizontal": false
+   },
+   "11_fiche_gin": {
+    "tailles_texte": {
+     "28px": 1,
+     "15px": 1,
+     "13px": 18,
+     "22px": 2,
+     "16px": 3
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "input.price-in[] 92×35 (impact 44×32) «»",
+     "button.[setvol] 55×30 (impact 44×40) «20»",
+     "button.[setvol] 55×30 (impact 44×40) «50»",
+     "button.on[setvol] 55×30 (impact 44×40) «70»",
+     "button.[setvol] 55×30 (impact 44×40) «75»",
+     "button.[setvol] 55×30 (impact 44×40) «1 l»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3,
+     "36": 6
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "13_ajout_bouteille": {
+    "tailles_texte": {
+     "16px": 21
+    },
+    "petites_cibles": [
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.chip.on[as] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[as] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[as] 158×32 (impact 28×40) «Vins & vermouths»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 1
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "14_filtres": {
+    "tailles_texte": {
+     "16px": 30,
+     "13px": 7
+    },
+    "petites_cibles": [
+     "button.link[resetf] 82×22 (impact 44×20) «Réinitialiser»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.chip.[tf] 133×32 (impact 44×28) «Cocktail court»",
+     "button.chip.[tf] 107×32 (impact 44×28) «Long drink»",
+     "button.chip.[tf] 139×32 (impact 44×28) «Spritz et bulles»",
+     "button.chip.[tf] 66×32 (impact 44×28) «Shot»",
+     "button.chip.[tf] 79×32 (impact 44×28) «Chaud»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 73×32 (impact 44×28) «Sours»",
+     "button.chip.[tf] 162×32 (impact 44×28) «Mélangés au verre»",
+     "button.chip.[tf] 98×32 (impact 44×28) «Highballs»",
+     "button.chip.[tf] 145×32 (impact 44×28) «Herbes fraîches»",
+     "button.chip.[tf] 56×32 (impact 44×28) «Tiki»",
+     "button.chip.[tf] 138×32 (impact 44×28) «Café & dessert»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 74×32 (impact 44×28) «Rhum»",
+     "button.chip.[tf] 57×32 (impact 44×28) «Gin»",
+     "button.chip.[tf] 151×32 (impact 44×28) «Tequila & mezcal»",
+     "button.chip.[tf] 84×32 (impact 44×28) «Whisky»",
+     "button.chip.[tf] 77×32 (impact 44×28) «Vodka»",
+     "button.chip.[tf] 156×32 (impact 44×28) «Cognac & brandy»",
+     "button.chip.[tf] 118×32 (impact 44×28) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 44×28) «Amers»",
+     "button.chip.[tf] 86×32 (impact 44×28) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 44×28) «Jamais faits»",
+     "button.chip.[tf] 132×32 (impact 44×28) «Mes créations»",
+     "button.chip.[tf] 160×32 (impact 44×28) «Créations à tester»",
+     "button.chip.[tf] 161×32 (impact 44×28) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 44×28) «De saison»",
+     "button.on[tsort] 173×30 (impact 0×0) «Pour toi»",
+     "button.[tsort] 173×30 (impact 0×0) «A à Z»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 1,
+     "36": 5
+    },
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "defilement_horizontal": false
+   },
+   "15_parametres": {
+    "tailles_texte": {
+     "16px": 20,
+     "13px": 6
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   }
+  }
+ },
+ "390x844_dark_riche": {
+  "erreurs": [],
+  "ecrans": {
+   "01_aujourdhui": {
+    "tailles_texte": {
+     "16px": 9,
+     "34px": 2,
+     "13px": 6,
+     "22px": 1
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 3
+    },
+    "accent": [
+     "texte span.pill.match «Noté 5 sur 5»",
+     "texte button.btn.sec «Voir la recette»",
+     "fond button.btn «Préparer»",
+     "texte button.more «Tout voir»",
+     "texte span.tmatch «89 %»"
+    ],
+    "defilement_horizontal": false
+   },
+   "02_cocktails": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 16,
+     "16px": 11
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "03_recherche_vide": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 87×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 87×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 87×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 87×30 (impact 44×40) «Monde»",
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.on[cmain] 88×30 (impact 44×40) «Tous»",
+     "button.[cmain] 88×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 88×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "04_bar": {
+    "tailles_texte": {
+     "34px": 2,
+     "13px": 9,
+     "16px": 22
+    },
+    "petites_cibles": [
+     "button.low-line[lowsheet] 264×32 (impact 44×40) «10 bouteilles bientôt à »",
+     "button.chip.on[bf] 64×32 (impact 44×40) «Tout»",
+     "button.chip.[bf] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[bf] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[bf] 158×32 (impact 0×0) «Vins & vermouths»",
+     "button.list-h.cat-h[barfold] 350×22 (impact 44×20) «Spiritueux12»",
+     "button.thumb[ing] 30×44 (impact 40×40) «Absinthe»",
+     "button.thumb[ing] 30×44 (impact 40×40) «Bourbon»",
+     "button.thumb[ing] 30×44 (impact 40×40) «Cachaça»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Gin London Dry»",
+     "button.grow[ing] 216×40 (impact 0×0) «Gin London Dry22 cocktai»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Mezcal»",
+     "button.grow[ing] 216×40 (impact 0×0) «Mezcal4 cocktails»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 7
+    },
+    "accent": [
+     "texte span. «cocktails faisables »",
+     "texte label.btn.small «Racheté»",
+     "texte label.btn.small «Racheté»"
+    ],
+    "defilement_horizontal": false
+   },
+   "05_labo": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.on[lt] 173×30 (impact 44×40) «Composer»",
+     "button.[lt] 173×30 (impact 44×40) «Fait maison»",
+     "button.on[mixice] 87×30 (impact 44×40) «Sans glace»",
+     "button.[mixice] 87×30 (impact 44×40) «Glaçons»",
+     "button.[mixice] 87×30 (impact 44×40) «Gros glaçon»",
+     "button.[mixice] 87×30 (impact 44×40) «Pilée»",
+     "button.chip[tolab] 86×32 (impact 44×28) «Daiquiri»",
+     "button.chip[tolab] 90×32 (impact 44×28) «Negroni»",
+     "button.chip[tolab] 131×32 (impact 44×28) «Moscow Mule»",
+     "button.chip[tolab] 121×32 (impact 44×28) «Whisky Sour»",
+     "button.chip[tolab] 126×32 (impact 44×28) «Aperol Spritz»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "06_labo_preparations": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 12,
+     "22px": 2,
+     "16px": 10
+    },
+    "petites_cibles": [
+     "button.[lt] 173×30 (impact 44×40) «Composer»",
+     "button.on[lt] 173×30 (impact 44×40) «Fait maison»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "07_profil": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 4,
+     "16px": 4
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 6
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "10_fiche_negroni": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 16,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.close-x[sharecard] 32×32 (impact 40×40) «Partager en image»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.[mult] 40×36 (impact 40×40) «Moins»",
+     "button.[mult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5
+    },
+    "accent": [
+     "texte label.btn.sec «Je l’ai fait»",
+     "fond button.btn «Préparer»"
+    ],
+    "defilement_horizontal": false
+   },
+   "11_fiche_gin": {
+    "tailles_texte": {
+     "28px": 1,
+     "15px": 1,
+     "13px": 15,
+     "22px": 3,
+     "16px": 3
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "12_niveau_gin": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 5
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "13_ajout_bouteille": {
+    "tailles_texte": {
+     "16px": 21
+    },
+    "petites_cibles": [
+     "input.[] 311×38 (impact 0×0) «»",
+     "button.chip.on[as] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[as] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[as] 158×32 (impact 28×40) «Vins & vermouths»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 1
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "14_filtres": {
+    "tailles_texte": {
+     "16px": 30,
+     "13px": 7
+    },
+    "petites_cibles": [
+     "button.link[resetf] 82×22 (impact 44×20) «Réinitialiser»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.chip.[tf] 133×32 (impact 44×28) «Cocktail court»",
+     "button.chip.[tf] 107×32 (impact 44×28) «Long drink»",
+     "button.chip.[tf] 139×32 (impact 44×28) «Spritz et bulles»",
+     "button.chip.[tf] 66×32 (impact 44×28) «Shot»",
+     "button.chip.[tf] 79×32 (impact 44×28) «Chaud»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 73×32 (impact 44×28) «Sours»",
+     "button.chip.[tf] 162×32 (impact 44×28) «Mélangés au verre»",
+     "button.chip.[tf] 98×32 (impact 44×28) «Highballs»",
+     "button.chip.[tf] 145×32 (impact 44×28) «Herbes fraîches»",
+     "button.chip.[tf] 56×32 (impact 44×28) «Tiki»",
+     "button.chip.[tf] 138×32 (impact 44×28) «Café & dessert»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 74×32 (impact 44×28) «Rhum»",
+     "button.chip.[tf] 57×32 (impact 44×28) «Gin»",
+     "button.chip.[tf] 151×32 (impact 44×28) «Tequila & mezcal»",
+     "button.chip.[tf] 84×32 (impact 44×28) «Whisky»",
+     "button.chip.[tf] 77×32 (impact 44×28) «Vodka»",
+     "button.chip.[tf] 156×32 (impact 44×28) «Cognac & brandy»",
+     "button.chip.[tf] 118×32 (impact 44×28) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 44×28) «Amers»",
+     "button.chip.[tf] 86×32 (impact 44×28) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 44×28) «Jamais faits»",
+     "button.chip.[tf] 132×32 (impact 44×28) «Mes créations»",
+     "button.chip.[tf] 160×32 (impact 44×28) «Créations à tester»",
+     "button.chip.[tf] 161×32 (impact 44×28) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 44×28) «De saison»",
+     "button.on[tsort] 173×30 (impact 0×0) «Pour toi»",
+     "button.[tsort] 173×30 (impact 0×0) «A à Z»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 1,
+     "36": 5
+    },
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "defilement_horizontal": false
+   },
+   "15_parametres": {
+    "tailles_texte": {
+     "16px": 21,
+     "13px": 6
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "16_mode_preparation": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "petites_cibles": [
+     "button.close-x[bmclose] 32×32 (impact 40×40) «Fermer»",
+     "button.[bmmult] 40×36 (impact 40×40) «Moins»",
+     "button.[bmmult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [
+     "Étape 1 sur 6"
+    ],
+    "champs_sous_16px": [],
+    "bords_gauches": {},
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "defilement_horizontal": false
+   }
+  }
+ },
+ "375x667_light_riche": {
+  "erreurs": [],
+  "ecrans": {
+   "01_aujourdhui": {
+    "tailles_texte": {
+     "16px": 6,
+     "34px": 2,
+     "13px": 3,
+     "22px": 1
+    },
+    "petites_cibles": [
+     "button.more[tab] 63×22 (impact 44×32) «Tout voir»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 3
+    },
+    "accent": [
+     "texte span.pill.match «Noté 5 sur 5»",
+     "texte button.btn.sec «Voir la recette»",
+     "fond button.btn «Préparer»",
+     "texte button.more «Tout voir»",
+     "texte span.tmatch «89 %»"
+    ],
+    "defilement_horizontal": false
+   },
+   "02_cocktails": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 14,
+     "16px": 8
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 83×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 83×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 83×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 83×30 (impact 44×40) «Monde»",
+     "input.[] 296×38 (impact 0×0) «»",
+     "button.on[cmain] 83×30 (impact 44×40) «Tous»",
+     "button.[cmain] 83×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 83×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "03_recherche_vide": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 83×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 83×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 83×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 83×30 (impact 44×40) «Monde»",
+     "input.[] 296×38 (impact 0×0) «»",
+     "button.on[cmain] 83×30 (impact 44×40) «Tous»",
+     "button.[cmain] 83×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 83×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "04_bar": {
+    "tailles_texte": {
+     "34px": 2,
+     "13px": 6,
+     "16px": 16
+    },
+    "petites_cibles": [
+     "button.low-line[lowsheet] 264×32 (impact 44×40) «10 bouteilles bientôt à »",
+     "button.chip.on[bf] 64×32 (impact 44×40) «Tout»",
+     "button.chip.[bf] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[bf] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[bf] 158×32 (impact 0×0) «Vins & vermouths»",
+     "button.list-h.cat-h[barfold] 335×22 (impact 44×20) «Spiritueux12»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Absinthe»",
+     "button.grow[ing] 201×40 (impact 0×0) «Absinthe6 cocktails»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Bourbon»",
+     "button.grow[ing] 201×40 (impact 0×0) «Bourbon10 cocktails»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 7
+    },
+    "accent": [
+     "texte span. «cocktails faisables »",
+     "texte label.btn.small «Racheté»",
+     "texte label.btn.small «Racheté»"
+    ],
+    "defilement_horizontal": false
+   },
+   "05_labo": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 5,
+     "22px": 1
+    },
+    "petites_cibles": [
+     "button.on[lt] 166×30 (impact 44×40) «Composer»",
+     "button.[lt] 166×30 (impact 44×40) «Fait maison»",
+     "button.on[mixice] 83×30 (impact 44×40) «Sans glace»",
+     "button.[mixice] 83×30 (impact 44×40) «Glaçons»",
+     "button.[mixice] 83×30 (impact 44×40) «Gros glaçon»",
+     "button.[mixice] 83×30 (impact 44×40) «Pilée»",
+     "button.chip[tolab] 86×32 (impact 44×28) «Daiquiri»",
+     "button.chip[tolab] 90×32 (impact 44×28) «Negroni»",
+     "button.chip[tolab] 131×32 (impact 44×28) «Moscow Mule»",
+     "button.chip[tolab] 121×32 (impact 44×28) «Whisky Sour»",
+     "button.chip[tolab] 126×32 (impact 44×28) «Aperol Spritz»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "16": 1,
+     "20": 4
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "06_labo_preparations": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 2,
+     "16px": 7
+    },
+    "petites_cibles": [
+     "button.[lt] 166×30 (impact 44×40) «Composer»",
+     "button.on[lt] 166×30 (impact 44×40) «Fait maison»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "07_profil": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 3,
+     "22px": 3,
+     "16px": 3
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "10_fiche_negroni": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 13,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.close-x[sharecard] 32×32 (impact 40×40) «Partager en image»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.[mult] 40×36 (impact 40×40) «Moins»",
+     "button.[mult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 4
+    },
+    "accent": [
+     "texte label.btn.sec «Je l’ai fait»",
+     "fond button.btn «Préparer»"
+    ],
+    "defilement_horizontal": false
+   },
+   "11_fiche_gin": {
+    "tailles_texte": {
+     "28px": 1,
+     "15px": 1,
+     "13px": 12,
+     "22px": 3,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "12_niveau_gin": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 5
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "13_ajout_bouteille": {
+    "tailles_texte": {
+     "16px": 17
+    },
+    "petites_cibles": [
+     "input.[] 296×38 (impact 0×0) «»",
+     "button.chip.on[as] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[as] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[as] 158×32 (impact 0×40) «Vins & vermouths»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 1
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "14_filtres": {
+    "tailles_texte": {
+     "16px": 28,
+     "13px": 4
+    },
+    "petites_cibles": [
+     "button.link[resetf] 82×22 (impact 44×20) «Réinitialiser»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.chip.[tf] 133×32 (impact 44×28) «Cocktail court»",
+     "button.chip.[tf] 107×32 (impact 44×28) «Long drink»",
+     "button.chip.[tf] 139×32 (impact 44×28) «Spritz et bulles»",
+     "button.chip.[tf] 66×32 (impact 44×28) «Shot»",
+     "button.chip.[tf] 79×32 (impact 44×28) «Chaud»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 73×32 (impact 44×28) «Sours»",
+     "button.chip.[tf] 162×32 (impact 44×28) «Mélangés au verre»",
+     "button.chip.[tf] 98×32 (impact 44×28) «Highballs»",
+     "button.chip.[tf] 145×32 (impact 44×28) «Herbes fraîches»",
+     "button.chip.[tf] 56×32 (impact 44×28) «Tiki»",
+     "button.chip.[tf] 138×32 (impact 44×28) «Café & dessert»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 74×32 (impact 44×28) «Rhum»",
+     "button.chip.[tf] 57×32 (impact 44×28) «Gin»",
+     "button.chip.[tf] 151×32 (impact 44×28) «Tequila & mezcal»",
+     "button.chip.[tf] 84×32 (impact 44×28) «Whisky»",
+     "button.chip.[tf] 77×32 (impact 44×28) «Vodka»",
+     "button.chip.[tf] 156×32 (impact 44×28) «Cognac & brandy»",
+     "button.chip.[tf] 118×32 (impact 44×28) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 44×28) «Amers»",
+     "button.chip.[tf] 86×32 (impact 0×0) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 0×0) «Jamais faits»",
+     "button.chip.[tf] 132×32 (impact 0×0) «Mes créations»",
+     "button.chip.[tf] 160×32 (impact 0×0) «Créations à tester»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "defilement_horizontal": false
+   },
+   "15_parametres": {
+    "tailles_texte": {
+     "16px": 18,
+     "13px": 6
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "20": 2,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "16_mode_preparation": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "petites_cibles": [
+     "button.close-x[bmclose] 32×32 (impact 40×40) «Fermer»",
+     "button.[bmmult] 40×36 (impact 40×40) «Moins»",
+     "button.[bmmult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [
+     "Étape 1 sur 6"
+    ],
+    "champs_sous_16px": [],
+    "bords_gauches": {},
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "defilement_horizontal": false
+   }
+  }
+ },
+ "375x667_dark_riche": {
+  "erreurs": [],
+  "ecrans": {
+   "01_aujourdhui": {
+    "tailles_texte": {
+     "16px": 6,
+     "34px": 2,
+     "13px": 3,
+     "22px": 1
+    },
+    "petites_cibles": [
+     "button.more[tab] 63×22 (impact 44×32) «Tout voir»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 3
+    },
+    "accent": [
+     "texte span.pill.match «Noté 5 sur 5»",
+     "texte button.btn.sec «Voir la recette»",
+     "fond button.btn «Préparer»",
+     "texte button.more «Tout voir»",
+     "texte span.tmatch «89 %»"
+    ],
+    "defilement_horizontal": false
+   },
+   "02_cocktails": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 14,
+     "16px": 8
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 83×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 83×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 83×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 83×30 (impact 44×40) «Monde»",
+     "input.[] 296×38 (impact 0×0) «»",
+     "button.on[cmain] 83×30 (impact 44×40) «Tous»",
+     "button.[cmain] 83×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 83×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "03_recherche_vide": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.on[cmode2] 83×30 (impact 44×40) «Liste»",
+     "button.[cmode2] 83×30 (impact 44×40) «Radar»",
+     "button.[cmode2] 83×30 (impact 44×40) «Lignées»",
+     "button.[cmode2] 83×30 (impact 44×40) «Monde»",
+     "input.[] 296×38 (impact 0×0) «»",
+     "button.on[cmain] 83×30 (impact 44×40) «Tous»",
+     "button.[cmain] 83×30 (impact 44×40) «Faisables»",
+     "button.[cmain] 83×30 (impact 44×40) «Favoris»",
+     "button.fbtn[filters] 75×34 (impact 44×40) «Filtres»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "04_bar": {
+    "tailles_texte": {
+     "34px": 2,
+     "13px": 6,
+     "16px": 16
+    },
+    "petites_cibles": [
+     "button.low-line[lowsheet] 264×32 (impact 44×40) «10 bouteilles bientôt à »",
+     "button.chip.on[bf] 64×32 (impact 44×40) «Tout»",
+     "button.chip.[bf] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[bf] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[bf] 158×32 (impact 0×0) «Vins & vermouths»",
+     "button.list-h.cat-h[barfold] 335×22 (impact 44×20) «Spiritueux12»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Absinthe»",
+     "button.grow[ing] 201×40 (impact 0×0) «Absinthe6 cocktails»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Bourbon»",
+     "button.grow[ing] 201×40 (impact 0×0) «Bourbon10 cocktails»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "20": 7
+    },
+    "accent": [
+     "texte span. «cocktails faisables »",
+     "texte label.btn.small «Racheté»",
+     "texte label.btn.small «Racheté»"
+    ],
+    "defilement_horizontal": false
+   },
+   "05_labo": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 5,
+     "22px": 1
+    },
+    "petites_cibles": [
+     "button.on[lt] 166×30 (impact 44×40) «Composer»",
+     "button.[lt] 166×30 (impact 44×40) «Fait maison»",
+     "button.on[mixice] 83×30 (impact 44×40) «Sans glace»",
+     "button.[mixice] 83×30 (impact 44×40) «Glaçons»",
+     "button.[mixice] 83×30 (impact 44×40) «Gros glaçon»",
+     "button.[mixice] 83×30 (impact 44×40) «Pilée»",
+     "button.chip[tolab] 86×32 (impact 44×28) «Daiquiri»",
+     "button.chip[tolab] 90×32 (impact 44×28) «Negroni»",
+     "button.chip[tolab] 131×32 (impact 44×28) «Moscow Mule»",
+     "button.chip[tolab] 121×32 (impact 44×28) «Whisky Sour»",
+     "button.chip[tolab] 126×32 (impact 44×28) «Aperol Spritz»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 3,
+     "16": 1,
+     "20": 4
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "06_labo_preparations": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 2,
+     "16px": 7
+    },
+    "petites_cibles": [
+     "button.[lt] 166×30 (impact 44×40) «Composer»",
+     "button.on[lt] 166×30 (impact 44×40) «Fait maison»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "07_profil": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 3,
+     "22px": 3,
+     "16px": 3
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 5
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "10_fiche_negroni": {
+    "tailles_texte": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 13,
+     "22px": 2
+    },
+    "petites_cibles": [
+     "button.close-x[sharecard] 32×32 (impact 40×40) «Partager en image»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.[mult] 40×36 (impact 40×40) «Moins»",
+     "button.[mult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 4
+    },
+    "accent": [
+     "texte label.btn.sec «Je l’ai fait»",
+     "fond button.btn «Préparer»"
+    ],
+    "defilement_horizontal": false
+   },
+   "11_fiche_gin": {
+    "tailles_texte": {
+     "28px": 1,
+     "15px": 1,
+     "13px": 12,
+     "22px": 3,
+     "16px": 1
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "12_niveau_gin": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 5
+    },
+    "petites_cibles": [
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 2
+    },
+    "accent": [],
+    "defilement_horizontal": false
+   },
+   "13_ajout_bouteille": {
+    "tailles_texte": {
+     "16px": 17
+    },
+    "petites_cibles": [
+     "input.[] 296×38 (impact 0×0) «»",
+     "button.chip.on[as] 104×32 (impact 44×40) «Spiritueux»",
+     "button.chip.[as] 154×32 (impact 44×40) «Liqueurs & amers»",
+     "button.chip.[as] 158×32 (impact 0×40) «Vins & vermouths»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 1,
+     "20": 1
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "14_filtres": {
+    "tailles_texte": {
+     "16px": 28,
+     "13px": 4
+    },
+    "petites_cibles": [
+     "button.link[resetf] 82×22 (impact 44×20) «Réinitialiser»",
+     "button.close-x[closesheet] 32×32 (impact 40×40) «Fermer»",
+     "button.chip.[tf] 133×32 (impact 44×28) «Cocktail court»",
+     "button.chip.[tf] 107×32 (impact 44×28) «Long drink»",
+     "button.chip.[tf] 139×32 (impact 44×28) «Spritz et bulles»",
+     "button.chip.[tf] 66×32 (impact 44×28) «Shot»",
+     "button.chip.[tf] 79×32 (impact 44×28) «Chaud»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 73×32 (impact 44×28) «Sours»",
+     "button.chip.[tf] 162×32 (impact 44×28) «Mélangés au verre»",
+     "button.chip.[tf] 98×32 (impact 44×28) «Highballs»",
+     "button.chip.[tf] 145×32 (impact 44×28) «Herbes fraîches»",
+     "button.chip.[tf] 56×32 (impact 44×28) «Tiki»",
+     "button.chip.[tf] 138×32 (impact 44×28) «Café & dessert»",
+     "button.chip.[tf] 113×32 (impact 44×28) «Sans alcool»",
+     "button.chip.[tf] 74×32 (impact 44×28) «Rhum»",
+     "button.chip.[tf] 57×32 (impact 44×28) «Gin»",
+     "button.chip.[tf] 151×32 (impact 44×28) «Tequila & mezcal»",
+     "button.chip.[tf] 84×32 (impact 44×28) «Whisky»",
+     "button.chip.[tf] 77×32 (impact 44×28) «Vodka»",
+     "button.chip.[tf] 156×32 (impact 44×28) «Cognac & brandy»",
+     "button.chip.[tf] 118×32 (impact 44×28) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 44×28) «Amers»",
+     "button.chip.[tf] 86×32 (impact 0×0) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 0×0) «Jamais faits»",
+     "button.chip.[tf] 132×32 (impact 0×0) «Mes créations»",
+     "button.chip.[tf] 160×32 (impact 0×0) «Créations à tester»"
+    ],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "0": 4,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "defilement_horizontal": false
+   },
+   "15_parametres": {
+    "tailles_texte": {
+     "16px": 18,
+     "13px": 6
+    },
+    "petites_cibles": [],
+    "textes_instruction": [],
+    "champs_sous_16px": [],
+    "bords_gauches": {
+     "20": 2,
+     "36": 4
+    },
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "defilement_horizontal": false
+   },
+   "16_mode_preparation": {
+    "tailles_texte": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "petites_cibles": [
+     "button.close-x[bmclose] 32×32 (impact 40×40) «Fermer»",
+     "button.[bmmult] 40×36 (impact 40×40) «Moins»",
+     "button.[bmmult] 40×36 (impact 40×40) «Plus»"
+    ],
+    "textes_instruction": [
+     "Étape 1 sur 6"
+    ],
+    "champs_sous_16px": [],
+    "bords_gauches": {},
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "defilement_horizontal": false
+   }
+  }
+ }
+}
