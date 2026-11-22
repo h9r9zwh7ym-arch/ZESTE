@@ -128,7 +128,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `donnees/data_drinks.js` | 54 | ---------- NOUVELLES BOISSONS (1.68) : tonics aromatisés, softs, sans alcool, alcools ---- |  |
 | `socle/core.js` | 666 | MOTEUR |  |
 | `socle/icons.js` | 112 | 1.30 : système d'icônes |  |
-| `socle/ui.js` | 769 | ÉTAT & SAUVEGARDE |  |
+| `socle/ui.js` | 770 | ÉTAT & SAUVEGARDE |  |
 | `socle/ui10.js` | 218 | V10 |  ; actions : homeedit, made, bmfinish |
 | `socle/labo2.js` | 209 | LABO V2 : le jeu du barman |  ; actions : mixtype, mixserve, mixq, mixadd1, mixfix, mixadd, mixrm, tolab |
 | `socle/trophies.js` | 91 | TROPHÉES : niveaux, médailles et célébrations |  ; actions : trophy, dish |

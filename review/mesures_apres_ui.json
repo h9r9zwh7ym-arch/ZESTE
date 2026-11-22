@@ -1,0 +1,1881 @@
+{
+ "390x844_light_vide": {
+  "errs": [],
+  "screens": {
+   "00_premiere_ouverture": {
+    "small": [],
+    "fonts": {
+     "16px": 5,
+     "34px": 1,
+     "13px": 4,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Passer»",
+     "fond button.btn «Faire connaissance»"
+    ],
+    "leftEdges": {},
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "01_aujourdhui": {
+    "small": [],
+    "fonts": {
+     "16px": 4,
+     "34px": 2,
+     "13px": 5,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Remplir mon bar»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 3
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "02_cocktails": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 11,
+     "16px": 12
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "03_recherche_vide": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 4,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "04_bar": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "22px": 1,
+     "16px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Ajout rapide»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "05_labo": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "06_labo_preparations": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "22px": 1,
+     "16px": 12
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "07_profil": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 7,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 2,
+     "20": 7
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "10_fiche_negroni": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 9,
+     "16px": 16,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "11_fiche_gin": {
+    "small": [],
+    "fonts": {
+     "28px": 1,
+     "16px": 5,
+     "13px": 18,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 4,
+     "36": 6
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "13_ajout_bouteille": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "16px": 21
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 1
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "14_filtres": {
+    "small": [
+     "button.chip.[tf] 161×32 (impact 162×25) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 101×25) «De saison»"
+    ],
+    "fonts": {
+     "16px": 29,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "leftEdges": {
+     "0": 4,
+     "36": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "15_parametres": {
+    "small": [],
+    "fonts": {
+     "16px": 20,
+     "13px": 6
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   }
+  }
+ },
+ "390x844_light_presquevide": {
+  "errs": [],
+  "screens": {
+   "01_aujourdhui": {
+    "small": [],
+    "fonts": {
+     "16px": 9,
+     "34px": 2,
+     "13px": 5,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "02_cocktails": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 15,
+     "16px": 11
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "03_recherche_vide": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 4,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "04_bar": {
+    "small": [],
+    "fonts": {
+     "34px": 2,
+     "13px": 5,
+     "16px": 10
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 6
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "05_labo": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "06_labo_preparations": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "22px": 1,
+     "16px": 12
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "07_profil": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 7,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 2,
+     "20": 7
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "10_fiche_negroni": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 16,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "11_fiche_gin": {
+    "small": [],
+    "fonts": {
+     "28px": 1,
+     "16px": 4,
+     "13px": 15,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "12_niveau_gin": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "13_ajout_bouteille": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "16px": 21
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 1
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "14_filtres": {
+    "small": [
+     "button.chip.[tf] 161×32 (impact 162×25) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 101×25) «De saison»"
+    ],
+    "fonts": {
+     "16px": 29,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "leftEdges": {
+     "0": 4,
+     "36": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "15_parametres": {
+    "small": [],
+    "fonts": {
+     "16px": 20,
+     "13px": 6
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   }
+  }
+ },
+ "390x844_light_riche": {
+  "errs": [],
+  "screens": {
+   "01_aujourdhui": {
+    "small": [],
+    "fonts": {
+     "16px": 9,
+     "34px": 2,
+     "13px": 7,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 3
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "02_cocktails": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 16,
+     "16px": 11
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "03_recherche_vide": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 4,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "04_bar": {
+    "small": [
+     "button.chip.[bf] 158×32 (impact 23×0) «Vins & vermouths»",
+     "button.thumb[ing] 30×44 (impact 0×12) «Gin London Dry»",
+     "button.grow[ing] 216×40 (impact 0×21) «Gin London Dry23 cocktai»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Mezcal»",
+     "button.grow[ing] 216×40 (impact 0×0) «Mezcal4 cocktails»"
+    ],
+    "fonts": {
+     "34px": 2,
+     "13px": 9,
+     "16px": 22
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 7
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "05_labo": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "06_labo_preparations": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 12,
+     "22px": 2,
+     "16px": 10
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "07_profil": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 4,
+     "16px": 4
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 6
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "10_fiche_negroni": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 16,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "11_fiche_gin": {
+    "small": [],
+    "fonts": {
+     "28px": 1,
+     "16px": 4,
+     "13px": 15,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "12_niveau_gin": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "13_ajout_bouteille": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "16px": 21
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 1
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "14_filtres": {
+    "small": [
+     "button.chip.[tf] 161×32 (impact 162×25) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 101×25) «De saison»"
+    ],
+    "fonts": {
+     "16px": 29,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "leftEdges": {
+     "0": 4,
+     "36": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "15_parametres": {
+    "small": [],
+    "fonts": {
+     "16px": 21,
+     "13px": 6
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "16_mode_preparation": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "inputsSmall": [],
+    "instr": [
+     "Étape 1 sur 6"
+    ],
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "leftEdges": {},
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   }
+  }
+ },
+ "390x844_dark_vide": {
+  "errs": [],
+  "screens": {
+   "00_premiere_ouverture": {
+    "small": [],
+    "fonts": {
+     "16px": 5,
+     "34px": 1,
+     "13px": 4,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Passer»",
+     "fond button.btn «Faire connaissance»"
+    ],
+    "leftEdges": {},
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "01_aujourdhui": {
+    "small": [],
+    "fonts": {
+     "16px": 4,
+     "34px": 2,
+     "13px": 5,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Remplir mon bar»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 3
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "02_cocktails": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 11,
+     "16px": 12
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "03_recherche_vide": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 4,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "04_bar": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "22px": 1,
+     "16px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Ajout rapide»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "05_labo": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "06_labo_preparations": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "22px": 1,
+     "16px": 12
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "07_profil": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 7,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 2,
+     "20": 7
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "10_fiche_negroni": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 9,
+     "16px": 16,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 5
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "11_fiche_gin": {
+    "small": [],
+    "fonts": {
+     "28px": 1,
+     "16px": 5,
+     "13px": 18,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 4,
+     "36": 6
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "13_ajout_bouteille": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "16px": 21
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 1
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "14_filtres": {
+    "small": [
+     "button.chip.[tf] 161×32 (impact 162×25) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 101×25) «De saison»"
+    ],
+    "fonts": {
+     "16px": 29,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "leftEdges": {
+     "0": 4,
+     "36": 5
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "15_parametres": {
+    "small": [],
+    "fonts": {
+     "16px": 20,
+     "13px": 6
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   }
+  }
+ },
+ "390x844_dark_riche": {
+  "errs": [],
+  "screens": {
+   "01_aujourdhui": {
+    "small": [],
+    "fonts": {
+     "16px": 9,
+     "34px": 2,
+     "13px": 7,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 3
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "02_cocktails": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 16,
+     "16px": 11
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "03_recherche_vide": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 4,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "04_bar": {
+    "small": [
+     "button.chip.[bf] 158×32 (impact 23×0) «Vins & vermouths»",
+     "button.thumb[ing] 30×44 (impact 0×12) «Gin London Dry»",
+     "button.grow[ing] 216×40 (impact 0×21) «Gin London Dry23 cocktai»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Mezcal»",
+     "button.grow[ing] 216×40 (impact 0×0) «Mezcal4 cocktails»"
+    ],
+    "fonts": {
+     "34px": 2,
+     "13px": 9,
+     "16px": 22
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 7
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "05_labo": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 13,
+     "16px": 5,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "16": 1,
+     "20": 5
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "06_labo_preparations": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 12,
+     "22px": 2,
+     "16px": 10
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "07_profil": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 4,
+     "16px": 4
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 6
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "10_fiche_negroni": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 16,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 5
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "11_fiche_gin": {
+    "small": [],
+    "fonts": {
+     "28px": 1,
+     "16px": 4,
+     "13px": 15,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "12_niveau_gin": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "13_ajout_bouteille": {
+    "small": [
+     "input.[] 311×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "16px": 21
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 1
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "14_filtres": {
+    "small": [
+     "button.chip.[tf] 161×32 (impact 162×25) «Grands classiques»",
+     "button.chip.[tf] 101×32 (impact 101×25) «De saison»"
+    ],
+    "fonts": {
+     "16px": 29,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "leftEdges": {
+     "0": 4,
+     "36": 5
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "15_parametres": {
+    "small": [],
+    "fonts": {
+     "16px": 21,
+     "13px": 6
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 4,
+     "36": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "16_mode_preparation": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "inputsSmall": [],
+    "instr": [
+     "Étape 1 sur 6"
+    ],
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "leftEdges": {},
+    "accentColor": "#F5C518",
+    "hScroll": false
+   }
+  }
+ },
+ "375x667_light_riche": {
+  "errs": [],
+  "screens": {
+   "01_aujourdhui": {
+    "small": [
+     "button.more[tab] 63×22 (impact 80×41) «Tout voir»"
+    ],
+    "fonts": {
+     "16px": 6,
+     "34px": 2,
+     "13px": 4,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 3
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "02_cocktails": {
+    "small": [
+     "input.[] 296×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 14,
+     "16px": 8
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "03_recherche_vide": {
+    "small": [
+     "input.[] 296×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 4,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "04_bar": {
+    "small": [
+     "button.chip.[bf] 158×32 (impact 8×0) «Vins & vermouths»",
+     "button.thumb[ing] 30×44 (impact 0×15) «Absinthe»",
+     "button.grow[ing] 201×40 (impact 0×22) «Absinthe6 cocktails»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Bourbon»",
+     "button.grow[ing] 201×40 (impact 0×0) «Bourbon10 cocktails»"
+    ],
+    "fonts": {
+     "34px": 2,
+     "13px": 6,
+     "16px": 16
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 7
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "05_labo": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 5,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "16": 1,
+     "20": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "06_labo_preparations": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 2,
+     "16px": 7
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "07_profil": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 3,
+     "22px": 3,
+     "16px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 5
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "10_fiche_negroni": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 13,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "11_fiche_gin": {
+    "small": [],
+    "fonts": {
+     "28px": 1,
+     "16px": 2,
+     "13px": 12,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "12_niveau_gin": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 2
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "13_ajout_bouteille": {
+    "small": [
+     "input.[] 296×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "16px": 17
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 1
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "14_filtres": {
+    "small": [
+     "button.chip.[tf] 118×32 (impact 119×31) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 79×31) «Amers»",
+     "button.chip.[tf] 86×32 (impact 0×0) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 0×0) «Jamais faits»"
+    ],
+    "fonts": {
+     "16px": 25,
+     "13px": 4
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "leftEdges": {
+     "0": 4,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "15_parametres": {
+    "small": [],
+    "fonts": {
+     "16px": 18,
+     "13px": 6
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "20": 2,
+     "36": 4
+    },
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   },
+   "16_mode_preparation": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "inputsSmall": [],
+    "instr": [
+     "Étape 1 sur 6"
+    ],
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "leftEdges": {},
+    "accentColor": "#1F5A3D",
+    "hScroll": false
+   }
+  }
+ },
+ "375x667_dark_riche": {
+  "errs": [],
+  "screens": {
+   "01_aujourdhui": {
+    "small": [
+     "button.more[tab] 63×22 (impact 80×41) «Tout voir»"
+    ],
+    "fonts": {
+     "16px": 6,
+     "34px": 2,
+     "13px": 4,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 3,
+     "20": 3
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "02_cocktails": {
+    "small": [
+     "input.[] 296×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 14,
+     "16px": 8
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "03_recherche_vide": {
+    "small": [
+     "input.[] 296×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "22px": 1,
+     "16px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 4,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "04_bar": {
+    "small": [
+     "button.chip.[bf] 158×32 (impact 8×0) «Vins & vermouths»",
+     "button.thumb[ing] 30×44 (impact 0×15) «Absinthe»",
+     "button.grow[ing] 201×40 (impact 0×22) «Absinthe6 cocktails»",
+     "button.thumb[ing] 30×44 (impact 0×0) «Bourbon»",
+     "button.grow[ing] 201×40 (impact 0×0) «Bourbon10 cocktails»"
+    ],
+    "fonts": {
+     "34px": 2,
+     "13px": 6,
+     "16px": 16
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "20": 7
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "05_labo": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 8,
+     "16px": 5,
+     "22px": 1
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 3,
+     "16": 1,
+     "20": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "06_labo_preparations": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 9,
+     "22px": 2,
+     "16px": 7
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 5,
+     "36": 1
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "07_profil": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 3,
+     "22px": 3,
+     "16px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 5
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "10_fiche_negroni": {
+    "small": [],
+    "fonts": {
+     "34px": 1,
+     "13px": 7,
+     "16px": 13,
+     "22px": 2
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "fond button.btn «Préparer»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "11_fiche_gin": {
+    "small": [],
+    "fonts": {
+     "28px": 1,
+     "16px": 2,
+     "13px": 12,
+     "22px": 3
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 3,
+     "36": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "12_niveau_gin": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 5
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [],
+    "leftEdges": {
+     "0": 1,
+     "20": 2
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "13_ajout_bouteille": {
+    "small": [
+     "input.[] 296×38 (impact 0×0) «»"
+    ],
+    "fonts": {
+     "16px": 17
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "0": 1,
+     "20": 1
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "14_filtres": {
+    "small": [
+     "button.chip.[tf] 118×32 (impact 119×31) «Eaux-de-vie»",
+     "button.chip.[tf] 78×32 (impact 79×31) «Amers»",
+     "button.chip.[tf] 86×32 (impact 0×0) «Suisses»",
+     "button.chip.[tf] 117×32 (impact 0×0) «Jamais faits»"
+    ],
+    "fonts": {
+     "16px": 25,
+     "13px": 4
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «Réinitialiser»",
+     "fond button.btn «Afficher 382 cocktai»"
+    ],
+    "leftEdges": {
+     "0": 4,
+     "36": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "15_parametres": {
+    "small": [],
+    "fonts": {
+     "16px": 18,
+     "13px": 6
+    },
+    "inputsSmall": [],
+    "instr": [],
+    "accent": [
+     "texte button.link «OK»"
+    ],
+    "leftEdges": {
+     "20": 2,
+     "36": 4
+    },
+    "accentColor": "#F5C518",
+    "hScroll": false
+   },
+   "16_mode_preparation": {
+    "small": [],
+    "fonts": {
+     "16px": 2,
+     "13px": 1,
+     "28px": 1,
+     "22px": 7
+    },
+    "inputsSmall": [],
+    "instr": [
+     "Étape 1 sur 6"
+    ],
+    "accent": [
+     "fond i.now «»",
+     "fond button.btn «C’est prêt»"
+    ],
+    "leftEdges": {},
+    "accentColor": "#F5C518",
+    "hScroll": false
+   }
+  }
+ }
+}

@@ -1,0 +1,14 @@
+mesure (ms, médiane de 5, CPU ×4) | avant | après
+froid today | 72 | 78
+chaud today | 53 | 55
+froid cocktails | 126 | 126
+chaud cocktails | 70 | 64
+froid bar | 53 | 49
+chaud bar | 15 | 14
+froid labo | 36 | 32
+chaud labo | 20 | 21
+froid profil | 39 | 39
+chaud profil | 24 | 20
+changed() | 66 | 59
+fiche Negroni | 183 | 156
+fiche Negroni (2e) | 151 | 160

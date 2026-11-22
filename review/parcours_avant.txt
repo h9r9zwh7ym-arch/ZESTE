@@ -1,0 +1,24 @@
+✓ Première ouverture : accueil puis quiz proposé — Passer
+  Bienvenue dans ZesteTon bar, te
+✓ Première ouverture : « Passer » mène à l'accueil
+✓ Première ouverture : aucune erreur JS
+✓ Bar vide : état propre
+✓ Stock : 4 bouteilles ajoutées, Negroni faisable — {"n":4,"neg":true}
+✓ Stock : niveau du gin passé à ¼ en 2 touches — niveau 1
+✓ Stock : « Vide » = à racheter, Negroni n'est plus faisable — {"v":0,"ok":false,"list":true}
+✓ Bar presque vide : aucune erreur JS
+✓ Suggestion du soir faisable à l'ouverture (0 touche) — Boulevardier
+✓ Recherche « gin » + Faisables : que des recettes faisables — {"q":"gin","main":"ok","n":22,"allok":true}
+✗ Recherche sans résultat : état propre avec une action — Aucun cocktailEssaie d’enlever un filtre ou de changer ta recherche.
+✓ Noter un cocktail (fiche, 4 étoiles) — note 4
+✓ Suggestions : faisables et variées, achats proposés — {"n":80,"ok":true,"distinct":7,"buy":81}
+✓ Labo : lancer une préparation (sirop de gingembre) → en stock — {"n":1,"has":true}
+✓ Débloquer un trophée (Premier mélange) — {"before":9,"after":10,"lab1":true}
+✗ Exporter : fichier daté, marqué Zeste, format numéroté — {"name":"zeste-sauvegarde-2026-11-22.json","len":19395,"v":1}
+✓ Importer : tout revient (notes, stock, historique) — {"rt":21,"st":38,"h":305,"expRt":21,"expH":305}
+✓ Bar très rempli + 1 an : aucune erreur JS
+✓ Clavier ouvert (recherche) : champ visible, non couvert par les onglets — {"inTop":true,"overTab":false}
+✓ Clavier ouvert (quantité au Labo) : champ visible, non couvert — {"input":true,"visible":true,"covered":false}
+✓ Données illisibles : mises de côté, l'app démarre — {"kept":true,"tabs":true}
+✓ Données de mauvais type : réparées, l'app démarre
+2 échec(s) sur 22

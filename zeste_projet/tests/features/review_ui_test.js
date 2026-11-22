@@ -3,7 +3,7 @@
 // recherche sans résultat avec une action, pas de « % pour toi » sur un cocktail déjà noté, « Annuler » après « Réinitialiser ».
 const {chromium}=require('playwright'); const path=require('path'), http=require('http'), fs=require('fs');
 const SRV=http.createServer((q,r)=>{ r.writeHead(200,{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store"}); r.end(fs.readFileSync(path.join(__dirname,'../../dist/zeste.html'))); });
-const RX=/(^|[^\p{L}])(touche|touchez|appuie|appuyez|fais glisser|glisse|tape|tapote|maintiens|clique|choisis|ajoute|sélectionne|donne un nom|essaie|active ou coupe)(?=[^\p{L}]|$)/iu;
+const RX=/(^|[^\p{L}])(touche|touchez|appuie|appuyez|fais glisser|glisse|tape|tapote|maintiens|clique|choisis|ajoute|sélectionne|donne un nom|essaie|active ou coupe|note au moins|note quelques|continue à|prépare un cocktail pour|tu peux changer)(?=[^\p{L}]|$)/iu;
 (async()=>{ await new Promise(z=>SRV.listen(0,'127.0.0.1',z)); const APP='http://127.0.0.1:'+SRV.address().port+'/zeste.html';
   const b=await chromium.launch(); const fail=[], errs=[]; const ok=(c,m)=>{ if(!c) fail.push(m); };
   const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true}); const p=await ctx.newPage(); p.on('pageerror',e=>errs.push(e.message));
@@ -26,7 +26,8 @@ const RX=/(^|[^\p{L}])(touche|touchez|appuie|appuyez|fais glisser|glisse|tape|ta
   const steps=[["Labo un ingrédient","closeAll(); S.mix={m:'shake',items:[{id:'gin',q:50}],gar:[]}; switchTab('labo'); renderView('labo')"],["Ajout rapide","closeAll(); ACT.quickadd?ACT.quickadd({}):addSheet()"],
     ["Fiche absente","closeAll(); ingSheet('violette')"],["Sections de l'accueil","closeAll(); ACT.homeedit({})"],["Nom de création","closeAll(); S.mix={m:'shake',items:[{id:'gin',q:45},{id:'citron',q:25},{id:'sirop_sucre',q:20}],gar:[]}; nameSheet()"],
     ["Animations","closeAll(); fxSheet()"],["Trophée or","closeAll(); TRO_Q.push('lab100'); TRO_Q.push('d50'); showTrophy()"],["Carte","document.querySelector('.tro-pop')&&document.querySelector('.tro-pop').remove(); TRO_SHOW=false; TRO_Q=[]; closeAll(); switchTab('cocktails'); ACT.cmode2({m:'map'}); ACT.mapfs&&ACT.mapfs({})"],
-    ["Recherche vide","document.getElementById('mapfs')&&document.getElementById('mapfs').remove(); MFS=null; CF.mode='list'; CF.q='zzzz'; CF.x=['swiss']; renderView('cocktails')"]];
+    ["Profil vide","document.getElementById('mapfs')&&document.getElementById('mapfs').remove(); MFS=null; CF.mode='list'; const bk=JSON.stringify(S); S.ratings={}; S.hist=[]; S.quiz=null; MODEL=null; SREV++; switchTab('profil'); renderView('profil'); window.__bk=bk"],["Fiche d'un basique","closeAll(); ingSheet('citron')"],
+    ["Recherche vide","closeAll(); S=JSON.parse(window.__bk); fixState(); MODEL=null; switchTab('cocktails'); CF.mode='list'; CF.q='zzzz'; CF.x=['swiss']; renderView('cocktails')"]];
   for(const [n,e] of steps){ await p.evaluate(e); await p.waitForTimeout(700); const hits=(await visTexts()).filter(s=>RX.test(s)); ok(!hits.length,n+" : consigne « "+hits.join(" | ")+" »"); }
   // 3. recherche sans résultat : deux actions qui marchent
   const e=await p.evaluate(async()=>{ const W=()=>new Promise(z=>setTimeout(z,300)); const r={btn:document.querySelectorAll('#cx-res .empty [data-a="emptyreset"]').length};
@@ -44,5 +45,5 @@ const RX=/(^|[^\p{L}])(touche|touchez|appuie|appuyez|fais glisser|glisse|tape|ta
     closeAll(); await new Promise(z=>setTimeout(z,400)); S.adj={negroni:{s:1}}; ACT.adjreset({id:"negroni"}); const gone=!S.adj.negroni; document.querySelector("#toast .tbtn")?.click(); return {facts,gone,back:!!(S.adj.negroni&&S.adj.negroni.s===1)}; });
   ok(!/pour toi/.test(r.facts),"cocktail noté : « % pour toi » encore affiché ("+r.facts+")"); ok(r.gone&&r.back,"Réinitialiser Ta version non annulable "+JSON.stringify(r));
   if(errs.length) fail.push("erreurs : "+[...new Set(errs)].join(" | "));
-  console.log(fail.length? "Review UI : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "Review UI : réglage « Retour haptique » (coupé : plus de switch caché, l'action marche ; rétabli), tac sur préparation, note de l'accueil, Terminer et création ; aucune consigne sur 9 écrans ; recherche vide avec deux actions ; « Sans alcool » une fois ; chips et Réinitialiser ≥ 44 px, marge de 20 px ; pas de % sur un cocktail noté ; Réinitialiser annulable.");
+  console.log(fail.length? "Review UI : "+fail.length+" échec(s)\n  "+fail.join("\n  ") : "Review UI : réglage « Retour haptique » (coupé : plus de switch caché, l'action marche ; rétabli), tac sur préparation, note de l'accueil, Terminer et création ; aucune consigne sur 11 écrans ; recherche vide avec deux actions ; « Sans alcool » une fois ; chips et Réinitialiser ≥ 44 px, marge de 20 px ; pas de % sur un cocktail noté ; Réinitialiser annulable.");
   await b.close(); SRV.close(); process.exit(fail.length?1:0); })();

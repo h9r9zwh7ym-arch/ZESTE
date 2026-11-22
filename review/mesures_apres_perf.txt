@@ -1,0 +1,86 @@
+taille : 1043 Ko ; gzip : 373 Ko
+JS : 763 Ko ; CSS : 264 Ko ; polices/icônes base64 : 102 Ko
+{
+ "vide": [
+  {
+   "zt": 575,
+   "fcp": 664,
+   "lt": [
+    409
+   ],
+   "lsKB": 0,
+   "load": 666,
+   "rendu today": 37.6,
+   "rendu cocktails": 98.9,
+   "rendu bar": 6,
+   "rendu labo": 33.2,
+   "rendu profil": 28.2,
+   "save()": 2.1,
+   "changed()": 2.1,
+   "frappe recherche (ms par touche)": "1/0/0/0/0/0/0/0/0/0",
+   "fiche Negroni": 374.7,
+   "listenersDoc": "58→58",
+   "nodes": 1612
+  },
+  {
+   "zt": 549,
+   "fcp": 648,
+   "lt": [
+    387
+   ],
+   "lsKB": 0,
+   "load": 636
+  },
+  {
+   "zt": 540,
+   "fcp": 628,
+   "lt": [
+    383
+   ],
+   "lsKB": 0,
+   "load": 627
+  }
+ ],
+ "1 an": [
+  {
+   "zt": 655,
+   "fcp": 788,
+   "lt": [
+    516,
+    66
+   ],
+   "lsKB": 28,
+   "load": 797,
+   "rendu today": 77,
+   "rendu cocktails": 147.9,
+   "rendu bar": 69,
+   "rendu labo": 60.5,
+   "rendu profil": 65.5,
+   "save()": 3.7,
+   "changed()": 79,
+   "frappe recherche (ms par touche)": "1/0/0/0/0/0/0/0/0/0",
+   "fiche Negroni": 163.8,
+   "listenersDoc": "58→58",
+   "nodes": 3876
+  },
+  {
+   "zt": 636,
+   "fcp": 728,
+   "lt": [
+    488
+   ],
+   "lsKB": 28,
+   "load": 733
+  },
+  {
+   "zt": 657,
+   "fcp": 740,
+   "lt": [
+    492,
+    50
+   ],
+   "lsKB": 28,
+   "load": 765
+  }
+ ]
+}

@@ -56,7 +56,9 @@ const STATES={
         return out; }); };
     const ev=s=>p.evaluate(s).catch(e=>errs.push("eval "+s.slice(0,40)+" : "+e.message));
     if(!st){ await measure("00_premiere_ouverture"); await ev("closeOverlay&&closeOverlay(); closeAll&&closeAll(); S.quizSkip=1; S.quizIntro=1; save();"); await p.waitForTimeout(500); }
-    await ev("switchTab('today')"); await measure("01_aujourdhui");
+    // même moment pour toutes les séries de captures (sinon l'accueil du matin et celui du soir ne se comparent pas)
+    await ev("S.settings.moment='soir'; applyAmbient(); HERO_LAST=null; dirty.today=1");
+    await ev("switchTab('today'); renderView('today')"); await measure("01_aujourdhui");
     await ev("switchTab('cocktails')"); await measure("02_cocktails");
     await ev("CF.q='zzzz'; renderView('cocktails')"); await measure("03_recherche_vide"); await ev("CF.q=''; renderView('cocktails')");
     await ev("switchTab('bar')"); await measure("04_bar");

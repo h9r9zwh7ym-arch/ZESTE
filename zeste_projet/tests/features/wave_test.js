@@ -6,7 +6,9 @@ const {chromium}=require('playwright'); const path=require('path');
 const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
 const ST={v:1,t:1,quizSkip:1,settings:{fx:{splash:false},hintSwipe:1},stock:{gin:3,campari:2,vermouth_rouge:2,citron:1,sirop_sucre:1},ratings:{negroni:5},mix:{items:[{id:"gin",q:45},{id:"campari",q:30}],m:"stir",gar:[]}};
 (async()=>{ const b=await chromium.launch(); const fail=[]; const errs=[];
-  const open=async opt=>{ const p=await b.newPage(Object.assign({viewport:{width:390,height:844}},opt||{})); p.on('pageerror',e=>errs.push(e.message)); await p.addInitScript(s=>localStorage.setItem("zeste.v1",s),JSON.stringify(ST)); await p.goto(APP); await p.waitForTimeout(1800); return p; };
+  const open=async opt=>{ const p=await b.newPage(Object.assign({viewport:{width:390,height:844}},opt||{})); p.on('pageerror',e=>errs.push(e.message)); await p.addInitScript(s=>localStorage.setItem("zeste.v1",s),JSON.stringify(ST)); await p.goto(APP); await p.waitForTimeout(1800);
+    /* le matin, l'accueil ne propose rien à préparer : on fixe le soir pour que le test ne dépende pas de l'heure */
+    await p.evaluate(()=>{ S.settings.moment="soir"; HERO_LAST=null; dirty.today=1; renderView("today"); }); await p.waitForTimeout(300); return p; };
   let p=await open();
   await p.evaluate(()=>{ const bt=document.querySelector('#v-today .hero [data-a="barmode"]'); bt.click(); bt.click(); });
   await p.waitForTimeout(150); const a=await p.evaluate(()=>({n:document.querySelectorAll('.wave-sweep').length, ov:document.getElementById('overlay').classList.contains('open'), col:(document.querySelector('.wave-sweep .ws-body')||{}).style?.background}));
