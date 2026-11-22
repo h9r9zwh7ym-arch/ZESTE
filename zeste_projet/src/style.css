@@ -2311,7 +2311,9 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 :where(.link,.chip,button.cat-h){position:relative}
 .link::after{content:"";position:absolute;inset:-12px -6px}
 .chip::after{content:"";position:absolute;inset:-6px 0}
-button.cat-h::after{content:"";position:absolute;inset:-11px 0}
+button.cat-h::after{content:"";position:absolute;inset:-14px 0 -8px}   /* 24 px libres au-dessus, 8 px au-dessous (la liste suit) */
+button.cat-h,h2.sh .more{position:relative;z-index:1}   /* la zone agrandie passe devant le texte voisin, qui sinon la rogne */
+.switch::before{content:"";position:absolute;inset:-7px -4px}   /* interrupteur de 31 px : zone de 45 px (::after dessine le bouton) */
 .sheet-body .chips[style*="flex-wrap"],.starter{overflow:visible}   /* rangées qui passent à la ligne : rien à faire défiler, la zone de toucher n'est plus rognée */
 .sheet-body .chips[style*="flex-wrap"],.starter{row-gap:var(--z-s2)}   /* 32 px + 16 px entre deux rangées : 44 px de zone pour chaque chip, sans chevauchement */
 .price-in{min-height:44px}
