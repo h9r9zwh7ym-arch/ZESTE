@@ -13,8 +13,6 @@ function save(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setI
 // à chaque ouverture de fiche en dehors de save() (sans copie de secours ni invalidation des caches)
 let DEFER_T=null;
 function deferSave(){ if(DEFER_T) return; DEFER_T=setTimeout(()=>{ DEFER_T=null; save(); },1500); }
-async function pushRemote(){}
-async function initRemote(){}
 
 
 // ================= OUTILS UI =================
@@ -691,7 +689,6 @@ const ACT={
   sharetxt:()=>{ const el=SHEETS[SHEETS.length-1].el; navigator.share({text:el._text}).catch(()=>{}); },
   unit:(d)=>{ S.settings.unit=d.u; changed(); },
   export:()=>exportData(), import:()=>importData(),
-  reset:()=>{ if(confirm("Effacer ton bar, tes notes, ton historique et tes créations ?")){ const u=S.settings.unit, nm=S.settings.name; S=DEF(); S.settings.unit=u; S.settings.name=nm; S.quizSkip=1; fixState(); buildRecipes([]); changed(); toast("Tout a été réinitialisé"); } },
   bmclose:()=>{ RL=null; closeOverlay(); },
   bmnav:(d)=>{ if(BM.timer){clearInterval(BM.timer);BM.timer=null;} BM.tleft=null; BM.dir=+d.d>0?"fwd":"back"; BM.i=Math.max(0,Math.min(bmSteps().length-1,BM.i+(+d.d))); paintBM(); },
   bmck:(d)=>{ BM.done[d.k]=!BM.done[d.k]; paintBM(); },
@@ -765,7 +762,6 @@ function init(){
   $(".tabbar").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; if(b.dataset.t===TAB){ const v=$("#v-"+TAB); v.scrollTo({top:0,behavior:"smooth"}); } else switchTab(b.dataset.t); });
   document.querySelectorAll(".view").forEach(v=>v.addEventListener("scroll",onScroll,{passive:true}));
   switchTab("today");
-  initRemote();
   applyAmbient(); applyWowClass();
   const splashMs=FX("splash")?splash():0;
   if(!S.quiz && !S.quizSkip) setTimeout(()=>{ if(!S.quiz&&!S.quizSkip&&!QZ) openQuiz(); },splashMs+250);

@@ -126,9 +126,9 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `donnees/data_iba.js` | 39 | ---- v1.21 : alignement sur les recettes officielles de l’IBA (iba-world.com, relevé d’aoû |  |
 | `donnees/data_softs.js` | 21 | ---------- SOFTS COURANTS EN SUISSE (1.55) ---------- |  |
 | `donnees/data_drinks.js` | 54 | ---------- NOUVELLES BOISSONS (1.68) : tonics aromatisés, softs, sans alcool, alcools ---- |  |
-| `socle/core.js` | 667 | MOTEUR |  |
+| `socle/core.js` | 666 | MOTEUR |  |
 | `socle/icons.js` | 112 | 1.30 : système d'icônes |  |
-| `socle/ui.js` | 773 | ÉTAT & SAUVEGARDE |  |
+| `socle/ui.js` | 769 | ÉTAT & SAUVEGARDE |  |
 | `socle/ui10.js` | 218 | V10 |  ; actions : homeedit, made, bmfinish |
 | `socle/labo2.js` | 209 | LABO V2 : le jeu du barman |  ; actions : mixtype, mixserve, mixq, mixadd1, mixfix, mixadd, mixrm, tolab |
 | `socle/trophies.js` | 91 | TROPHÉES : niveaux, médailles et célébrations |  ; actions : trophy, dish |
@@ -148,7 +148,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `versions/v139.js` | 82 | ZESTE 1.39 : hiérarchie visuelle | ~vProfil, ~trophySummary, ~vBar, ~vCompose ; actions : carnet, gofaisables, famgo |
 | `versions/v140.js` | 94 | ZESTE 1.40 : hiérarchie « app pro », typographie unique, animations signées | ~vBar, ~vProfil, ~vCompose, ~openSheet, ~recSheet, ~renderView, ~switchTab, ~revealIn, ~updateBarStats ; actions : buysheet |
 | `versions/v141.js` | 50 | ZESTE 1.41 : glace naturelle dans le labo, bar plus simple à lire | ~labGlass, ~labTry, ~vCompose, ~renderView, !stockRow ; actions : mixice |
-| `versions/v142.js` | 72 | ZESTE 1.42 : bar épuré, pictos du labo, Paramètres et À propos, nuit soignée | ~vBar, ~vCompose, ~settingsSheet, ~fxSheet, ~applyAmbient, !NEXT_SHEET_XFORM ; actions : about |
+| `versions/v142.js` | 71 | ZESTE 1.42 : bar épuré, pictos du labo, Paramètres et À propos, nuit soignée | ~vBar, ~vCompose, ~settingsSheet, ~fxSheet, ~applyAmbient, !NEXT_SHEET_XFORM ; actions : about |
 | `versions/v143.js` | 71 | ZESTE 1.43 : « bouteille finie » d'un glissé, catégories repliables | ~stockRow, ~renderView, ~vBar ; actions : finish, barfold |
 | `versions/v144.js` | 31 | ZESTE 1.44 : retour haptique sur iPhone |  ; actions : sethaptic |
 | `versions/v146.js` | 41 | ZESTE 1.46 : Labo (Composer) — hiérarchie et mise en page | ~vCompose ; actions : mixclear |

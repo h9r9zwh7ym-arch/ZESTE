@@ -120,7 +120,7 @@ const SET_GROUPS={
   bar:["Bar et recettes","unit",()=>{ const s=S.settings;
     return `<div class="group">${srow("unit","Unités","")}<div class="row set-sub">${sseg("unit",s.unit,[["cl","Centilitres"],["ml","Millilitres"]],"unit2")}</div>${srow("money","Devise","")}<div class="row set-sub">${sseg("cur",s.cur||"CHF",[["CHF","Franc suisse"],["EUR","Euro"]],"setcur")}</div>${srow("unit","Verres par défaut","")}<div class="row set-sub">${sseg("glasses",String(s.glasses||1),[["1","1 verre"],["2","2 verres"],["4","4 verres"]],"setglasses")}</div>${srow("clock","Écran allumé en préparation",sw(s.wake!==false,"setwake","Écran allumé en préparation"))}</div>`; },
     ()=>S.settings.unit==="ml"?"Millilitres":"Centilitres"],
-  data:["Données","up",()=>`<div class="group">${srow("up","Exporter une sauvegarde","","export")}${srow("down","Importer une sauvegarde","","import")}</div><div class="gf">Ton bar, tes notes et ton historique se synchronisent avec ton compte quand c’est possible, et restent aussi sur cet appareil.</div><div class="sp16"></div><div class="group">${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div>`,
+  data:["Données","up",()=>`<div class="group">${srow("up","Exporter une sauvegarde","","export")}${srow("down","Importer une sauvegarde","","import")}</div><div class="gf">Tout reste sur cet appareil : rien n’est envoyé.</div><div class="sp16"></div><div class="group">${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div>`,
     ()=>""]
 };
 Object.assign(ACT,{ setgroup:(d)=>{ const g=SET_GROUPS[d.g]; if(g) subSheet(g[0],g[2]); } });

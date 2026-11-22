@@ -2736,7 +2736,6 @@ const i=ING[id]; if(i.u) return i.u; if(i.cat==="bitters"||["fleur_oranger","tab
 if(id==="menthe"||id==="basilic") return "f"; if(id==="sucre"||id==="oeuf"||id==="concombre"||id==="piment") return "u"; if(id==="marmelade") return "bs"; return "ml";
 }
 function mlOf(it){ const u=it.u||"ml", I=ING[it.id]||{}; if(it.r==="rinse") return 1; if(it.id==="oeuf") return it.q*45; if(u==="d") return it.q*0.8; if(u==="gt") return it.q*0.05; if(u==="u") return it.q*(I.yml||0); if(u==="f"||u==="br") return 0; if(u==="bs") return it.q*(I.bsml||5); return it.q; }
-if(!("sucre" in ING)) {}
 let RECS=[], RMAP={};
 function buildRecipes(custom){
 RECS = REC_RAW.map(([id,n,fam,m,g,ice,col,ing,gar,x])=>Object.assign({id,n,fam,m,g,ice,col,gar,
@@ -3435,8 +3434,6 @@ S=loadLocal();
 function save(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 let DEFER_T=null;
 function deferSave(){ if(DEFER_T) return; DEFER_T=setTimeout(()=>{ DEFER_T=null; save(); },1500); }
-async function pushRemote(){}
-async function initRemote(){}
 const $=s=>document.querySelector(s);
 let TAB="today"; const dirty={today:1,cocktails:1,bar:1,labo:1,profil:1};
 let POP=null;
@@ -4057,7 +4054,6 @@ aiprompt:()=>copyText(aiPrompt(),"Prompt copié : colle-le dans ton IA"),
 sharetxt:()=>{ const el=SHEETS[SHEETS.length-1].el; navigator.share({text:el._text}).catch(()=>{}); },
 unit:(d)=>{ S.settings.unit=d.u; changed(); },
 export:()=>exportData(), import:()=>importData(),
-reset:()=>{ if(confirm("Effacer ton bar, tes notes, ton historique et tes créations ?")){ const u=S.settings.unit, nm=S.settings.name; S=DEF(); S.settings.unit=u; S.settings.name=nm; S.quizSkip=1; fixState(); buildRecipes([]); changed(); toast("Tout a été réinitialisé"); } },
 bmclose:()=>{ RL=null; closeOverlay(); },
 bmnav:(d)=>{ if(BM.timer){clearInterval(BM.timer);BM.timer=null;} BM.tleft=null; BM.dir=+d.d>0?"fwd":"back"; BM.i=Math.max(0,Math.min(bmSteps().length-1,BM.i+(+d.d))); paintBM(); },
 bmck:(d)=>{ BM.done[d.k]=!BM.done[d.k]; paintBM(); },
@@ -4127,7 +4123,6 @@ $(".tabbar").innerHTML=`<span class="tab-ind"></span>`+tabs.map(([k,n,ic])=>`<bu
 $(".tabbar").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; if(b.dataset.t===TAB){ const v=$("#v-"+TAB); v.scrollTo({top:0,behavior:"smooth"}); } else switchTab(b.dataset.t); });
 document.querySelectorAll(".view").forEach(v=>v.addEventListener("scroll",onScroll,{passive:true}));
 switchTab("today");
-initRemote();
 applyAmbient(); applyWowClass();
 const splashMs=FX("splash")?splash():0;
 if(!S.quiz && !S.quizSkip) setTimeout(()=>{ if(!S.quiz&&!S.quizSkip&&!QZ) openQuiz(); },splashMs+250);
@@ -5516,7 +5511,7 @@ return `<div class="group">${srow("reco","Style","")}<div class="row set-sub">${
 bar:["Bar et recettes","unit",()=>{ const s=S.settings;
 return `<div class="group">${srow("unit","Unités","")}<div class="row set-sub">${sseg("unit",s.unit,[["cl","Centilitres"],["ml","Millilitres"]],"unit2")}</div>${srow("money","Devise","")}<div class="row set-sub">${sseg("cur",s.cur||"CHF",[["CHF","Franc suisse"],["EUR","Euro"]],"setcur")}</div>${srow("unit","Verres par défaut","")}<div class="row set-sub">${sseg("glasses",String(s.glasses||1),[["1","1 verre"],["2","2 verres"],["4","4 verres"]],"setglasses")}</div>${srow("clock","Écran allumé en préparation",sw(s.wake!==false,"setwake","Écran allumé en préparation"))}</div>`; },
 ()=>S.settings.unit==="ml"?"Millilitres":"Centilitres"],
-data:["Données","up",()=>`<div class="group">${srow("up","Exporter une sauvegarde","","export")}${srow("down","Importer une sauvegarde","","import")}</div><div class="gf">Ton bar, tes notes et ton historique se synchronisent avec ton compte quand c’est possible, et restent aussi sur cet appareil.</div><div class="sp16"></div><div class="group">${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div>`,
+data:["Données","up",()=>`<div class="group">${srow("up","Exporter une sauvegarde","","export")}${srow("down","Importer une sauvegarde","","import")}</div><div class="gf">Tout reste sur cet appareil : rien n’est envoyé.</div><div class="sp16"></div><div class="group">${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div>`,
 ()=>""]
 };
 Object.assign(ACT,{ setgroup:(d)=>{ const g=SET_GROUPS[d.g]; if(g) subSheet(g[0],g[2]); } });
@@ -5787,7 +5782,6 @@ return `${open}<span class="sh-pic" style="--pc-l:${picCol(mix(colOf(id),"#1F2A2
 SET_GROUPS.look[2]=strip(SET_GROUPS.look[2],/<div class="gf">Le ciel de l’accueil[^<]*<\/div>/);
 SET_GROUPS.snd[2]=strip(SET_GROUPS.snd[2],/<div class="gf">Glaçons, shaker[^<]*<\/div>/);
 const reco=SET_GROUPS.reco[2]; SET_GROUPS.reco[2]=()=>{ let b=reco(); const i=b.indexOf('<div class="gh">Ce qui guide'); if(i>=0) b=b.slice(0,i); return b.replace(/<div class="gf">[^<]*<\/div>/,""); };
-SET_GROUPS.data[2]=strip(SET_GROUPS.data[2],/<div class="gf">Ton bar, tes notes[^<]*<\/div>/);
 }
 { const _ss=settingsSheet;
 settingsSheet=function(){ _ss(); const sh=SHEETS[SHEETS.length-1]; if(!sh) return; const r0=sh.render;
@@ -7237,7 +7231,7 @@ b+=`<div class="gh">Animations</div><div class="group">${srow("anim","Niveau",""
 b+=`<div class="gh">Accueil</div><div class="group">${srow("home","Sections et ordre",`<span class="val">${s.home.filter(x=>x[1]).length} actives</span>`,"homeedit")}</div>`;
 b+=`<div class="gh">Suggestions</div><div class="group">${srow("reco","Style","")}<div class="row set-sub">${sseg("explore",String(s.explore),[["0","Valeurs sûres"],["1","Équilibré"],["2","Aventurier"]],"setexplore")}</div>${srow("ctx","Selon le moment",sw(s.ctx!==false,"setctx","Suggestions selon le moment"))}${srow("na","Inclure le sans alcool",sw(!!s.na,"setna","Inclure le sans alcool"))}${srow("star","Rappels « Alors, ce … ? »",sw(s.remind!==false,"setremind","Rappels de note"))}${srow("quiz","Inclure les créations à tester",sw(s.untested!==false,"setuntested","Inclure les créations à tester"))}${srow("brain","Réinitialiser l’apprentissage","","resetlearn")}</div><div class="gf">${["Valeurs sûres : surtout des cocktails proches de ce que tu aimes déjà.","Équilibré : tes favoris, avec une découverte de temps en temps.","Aventurier : davantage de découvertes hors de tes habitudes."][s.explore]} « Selon le moment » favorise l’apéro, les cocktails chauds en hiver ou les recettes rapides en semaine.</div>`;
 b+=`<div class="gh">Bar et recettes</div><div class="group">${srow("unit","Unités","")}<div class="row set-sub">${sseg("unit",s.unit,[["cl","Centilitres"],["ml","Millilitres"]],"unit2")}</div>${srow("money","Devise","")}<div class="row set-sub">${sseg("cur",s.cur||"CHF",[["CHF","Franc suisse"],["EUR","Euro"]],"setcur")}</div>${srow("unit","Verres par défaut","")}<div class="row set-sub">${sseg("glasses",String(s.glasses||1),[["1","1 verre"],["2","2 verres"],["4","4 verres"]],"setglasses")}</div>${srow("clock","Écran allumé en préparation",sw(s.wake!==false,"setwake","Écran allumé en préparation"))}${srow("basics","Contenu additionnel",`<span class="val">${BASICS.filter(has).length} basiques</span>`,"basics")}</div>`;
-b+=`<div class="gh">Données</div><div class="group">${srow("up","Exporter une sauvegarde","","export")}${srow("down","Importer une sauvegarde","","import")}${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div><div class="gf">Ton bar, tes notes et ton historique se synchronisent avec ton compte quand c’est possible, et restent aussi sur cet appareil.</div>`;
+b+=`<div class="gh">Données</div><div class="group">${srow("up","Exporter une sauvegarde","","export")}${srow("down","Importer une sauvegarde","","import")}${srow("trash",`<span style="color:var(--red)">Tout réinitialiser</span>`,"","reset")}</div><div class="gf">Tout reste sur cet appareil : rien n’est envoyé.</div>`;
 b+=`<div class="gh">À propos</div><div class="group">${srow("info","Version",`<span class="val">${APP_VERSION}</span>`)}${srow("info","Recettes",`<span class="val">${RECS.filter(r=>!r.mine).length}, dont ${RECS.filter(r=>r.na).length} sans alcool</span>`)}</div><div class="about-foot"><div class="af-logo">${glassSVG(RMAP.negroni)}</div><b>Zeste ${APP_VERSION}</b><span>${esc(COPYRIGHT)}</span><span>À consommer avec modération. Santé !</span></div>`;
 return {title:"Paramètres",right:`<button class="link" data-a="closesheet" style="font-weight:600">OK</button>`,body:b};
 });

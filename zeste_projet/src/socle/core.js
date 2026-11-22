@@ -19,7 +19,6 @@ function unitOf(id){
   if(id==="menthe"||id==="basilic") return "f"; if(id==="sucre"||id==="oeuf"||id==="concombre"||id==="piment") return "u"; if(id==="marmelade") return "bs"; return "ml";
 }
 function mlOf(it){ const u=it.u||"ml", I=ING[it.id]||{}; if(it.r==="rinse") return 1; if(it.id==="oeuf") return it.q*45; if(u==="d") return it.q*0.8; if(u==="gt") return it.q*0.05; if(u==="u") return it.q*(I.yml||0); if(u==="f"||u==="br") return 0; if(u==="bs") return it.q*(I.bsml||5); return it.q; }
-if(!("sucre" in ING)) {}
 
 // Recettes
 let RECS=[], RMAP={};

@@ -35,7 +35,6 @@ const ING_PICTO={citron:"lemon",citron_vert:"citrus",menthe:"mint",blanc_oeuf:"e
   SET_GROUPS.look[2]=strip(SET_GROUPS.look[2],/<div class="gf">Le ciel de l’accueil[^<]*<\/div>/);
   SET_GROUPS.snd[2]=strip(SET_GROUPS.snd[2],/<div class="gf">Glaçons, shaker[^<]*<\/div>/);
   const reco=SET_GROUPS.reco[2]; SET_GROUPS.reco[2]=()=>{ let b=reco(); const i=b.indexOf('<div class="gh">Ce qui guide'); if(i>=0) b=b.slice(0,i); return b.replace(/<div class="gf">[^<]*<\/div>/,""); };
-  SET_GROUPS.data[2]=strip(SET_GROUPS.data[2],/<div class="gf">Ton bar, tes notes[^<]*<\/div>/);
 }
 { const _ss=settingsSheet;
   settingsSheet=function(){ _ss(); const sh=SHEETS[SHEETS.length-1]; if(!sh) return; const r0=sh.render;

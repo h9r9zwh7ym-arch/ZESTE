@@ -1,6 +1,6 @@
 // ================= ZESTE 1.65 : données 100 % locales, copie de secours, sauvegardes (inspiré d'ASCEN) =================
 // Rien ne quitte l'appareil : la synchronisation avec le compte claude.ai (capacité « db ») est retirée.
-// (initRemote et pushRemote sont vides depuis la 1.65, dans ui.js)
+// (initRemote et pushRemote, vides depuis la 1.65, ont été retirés en 1.87)
 
 // ---------- copie de secours IndexedDB, compressée ----------
 // Chaque enregistrement est aussi copié (gzip natif) dans IndexedDB, au plus toutes les 3 s et tout de suite quand l'app
