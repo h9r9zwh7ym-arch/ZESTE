@@ -26,8 +26,8 @@ save=function(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); const j=JSON.stringify
   try{ localStorage.setItem(KEY,j); LS_FAIL=false; }
   catch(e){ if(!LS_FAIL&&typeof toast==="function") toast("Stockage principal plein : tes données sont gardées dans la copie de secours. Fais une sauvegarde."); LS_FAIL=true; }
   zidbMirror(j,S.t); };
-if(typeof addEventListener==="function") addEventListener("pagehide",zidbFlush);
-if(typeof document!=="undefined"&&document.addEventListener) document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden") zidbFlush(); });
+if(typeof addEventListener==="function") addEventListener("pagehide",()=>{ flushDeferred(); zidbFlush(); });   // (1.87) l’enregistrement différé part aussi
+if(typeof document!=="undefined"&&document.addEventListener) document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"){ flushDeferred(); zidbFlush(); } });
 // au lancement : la copie de secours plus récente que localStorage (plein, vidé ou illisible) est reprise ; sinon elle est créée
 function zidbRecover(){ zidbGet().then(async rec=>{
     if(!rec||!rec.data){ zidbMirror(JSON.stringify(S),S.t||Date.now(),true); return; }

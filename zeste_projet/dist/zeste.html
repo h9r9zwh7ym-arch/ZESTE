@@ -3436,6 +3436,7 @@ S=loadLocal();
 function save(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 let DEFER_T=null;
 function deferSave(){ if(DEFER_T) return; DEFER_T=setTimeout(()=>{ DEFER_T=null; save(); },1500); }
+function flushDeferred(){ if(DEFER_T){ clearTimeout(DEFER_T); DEFER_T=null; save(); } }
 const $=s=>document.querySelector(s);
 let TAB="today"; const dirty={today:1,cocktails:1,bar:1,labo:1,profil:1};
 let POP=null;
@@ -3622,7 +3623,7 @@ function usedIn(id){ return RECS.filter(r=>r.ing.some(i=>i.id===id)).length; }
 function stockRow(id){
 const i=ING[id], v=S.stock[id];
 if(tracked(id)) return `<div class="row" id="sr-${id}" style="--inset:58px"><button class="thumb" data-a="ing" data-id="${id}" style="width:30px;height:44px">${bottleSVG(id,v)}</button><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div><div class="s">${LVLN[v]}${prepActive(id)?", fait maison":""}</div></button>${lvlCtl(id,v)}</div>`;
-return `<div class="row" id="sr-${id}"><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div><div class="s">${v===1?"En stock":"À racheter"}</div></button><button class="switch ${v===1?"on":""}" data-a="toggle" data-id="${id}" aria-label="${esc(i.n)}"></button></div>`;
+return `<div class="row" id="sr-${id}"><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div><div class="s">${v>0?"En stock":"À racheter"}</div></button><button class="switch ${v>0?"on":""}" data-a="toggle" data-id="${id}" aria-label="${esc(i.n)}"></button></div>`;
 }
 function lvlCtl(id,v){ let s=`<div class="lvl ${v===0?"empty":""}" role="group" aria-label="Niveau">`; for(let l=1;l<=4;l++) s+=`<button data-a="lvl" data-id="${id}" data-l="${l}" class="${v>=l?"on":""}" aria-label="${LVLN[l]}"><i style="height:${6+l*5}px"></i></button>`; return s+"</div>"; }
 function patchStock(id){
@@ -3630,7 +3631,7 @@ const row=document.getElementById("sr-"+id); if(!row||TAB!=="bar") return false;
 const v=S.stock[id];
 if(tracked(id)){ const bl=row.querySelector(".thumb .bl"); if(bl) bl.style.transform=`translateY(${((1-v/4)*21).toFixed(2)}px)`; else row.querySelector(".thumb").innerHTML=bottleSVG(id,v); row.querySelector(".s").textContent=LVLN[v]+(prepActive(id)?", fait maison":"");
 row.querySelectorAll(".lvl button").forEach(b=>{ const l=+b.dataset.l, on=v>=l; if(on&&!b.classList.contains("on")){ b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); } b.classList.toggle("on",on); }); }
-else { row.querySelector(".switch").classList.toggle("on",v===1); row.querySelector(".s").textContent=v===1?"En stock":"À racheter"; }
+else { row.querySelector(".switch").classList.toggle("on",v>0); row.querySelector(".s").textContent=v>0?"En stock":"À racheter"; }
 return true;
 }
 let LT="compose";
@@ -3746,9 +3747,9 @@ let o=nav("Profil",`<button class="icon-btn" data-a="settings" aria-label="Param
 o+=`<div class="stat-grid"><div class="stat"><b>${S.hist.length}</b><span>préparés</span></div><div class="stat"><b>${distinct().length}</b><span>recettes</span></div><div class="stat t"><b>${rated().length}</b><span>notés</span></div></div>`;
 const tv=tasteVector(), sty=tasteStyle();
 o+=`<h2 class="sh">Ton profil de goût</h2>${sty?`<div class="sh-sub">Ton style : <b style="color:var(--tint)">${esc(sty)}</b></div>`:`<div class="sp8"></div>`}`;
-if(tv&&tv.liked){ o+=`<div class="card"><div class="prof">${radarSVG(tv.liked)}<div style="font-size:var(--z-fs-b)">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<div class="muted" style="font-size:calc(13rem / 17);margin-top:var(--z-s1)">Calculé à partir des cocktails que tu as notés 4 étoiles ou plus.</div></div></div></div>`; }
+if(tv&&tv.liked){ o+=`<div class="card"><div class="prof">${radarSVG(tv.liked)}<div style="font-size:var(--z-fs-b)">${esc(tasteSentence())||"Chaque note l’affine."}<div class="muted" style="font-size:calc(13rem / 17);margin-top:var(--z-s1)">Calculé à partir des cocktails que tu as notés 4 étoiles ou plus.</div></div></div></div>`; }
 else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); o+=`<div class="card"><div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div style="font-size:var(--z-fs-b)">D’après ton quiz</div></div></div>`; }
-else o+=`<div class="card muted" style="font-size:var(--z-fs-b)">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût. Plus tu notes, plus les suggestions deviennent justes.</div>`;
+else o+=`<div class="card muted" style="font-size:var(--z-fs-b)">Ton profil de goût apparaît dès trois cocktails notés, dont un qui t’a plu.</div>`;
 if(hasTaste()){ const nx=RECS.filter(r=>!madeCount(r.id)&&!S.ratings[r.id]&&!r.na).map(r=>[r,predict(r)-0.22*status(r).miss.length]).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0];
 if(nx){ const ok=status(nx).ok; o+=`<h2 class="sh">Ton prochain coup de cœur</h2><button class="card buy" data-a="rec" data-id="${nx.id}" style="width:calc(100% - 32px);text-align:left"><div class="bb" style="width:56px;height:70px">${glassSVG(nx)}</div><div class="grow"><div class="bt" style="font-family:var(--serif)">${esc(nx.n)}</div><div class="bs">${matchPct(nx)} % pour toi · ${ok?"faisable maintenant":"manque "+esc(status(nx).miss.map(x=>lc(shortN(x))).join(", "))}</div></div>${IC.chev}</button>`; } }
 const byBase={}; S.hist.forEach(h=>{ const r=RMAP[h.id]; if(!r) return; const b=BASE_LABEL[baseGroup(r)]; byBase[b]=(byBase[b]||0)+1; });
@@ -3756,7 +3757,7 @@ const bb=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6);
 if(bb.length){ const mx=bb[0][1]; o+=`<h2 class="sh">Tes spiritueux</h2><div class="card bars" style="padding:var(--z-s1) 0">${bb.map(([n,c])=>`<div class="bar-row"><div class="bl">${esc(n)}</div><div class="bt"><i style="width:${c/mx*100}%"></i></div><div class="bn">${c}</div></div>`).join("")}</div>`; }
 const fams=Object.keys(FAMILIES), done=new Set(distinct().map(id=>RMAP[id].fam));
 const dl=distinct();
-o+=`<h2 class="sh">Familles explorées<span class="more" style="color:var(--label2)">${done.size} sur ${fams.length}</span></h2>${done.size?"":`<div class="sh-sub">Prépare un cocktail pour colorier ta première famille.</div>`}<div class="fam-bar"><i style="width:${Math.round(done.size/fams.length*100)}%"></i></div><div class="fams">${fams.map(f=>{ const n=dl.filter(id=>RMAP[id].fam===f).length; return `<button class="famc ${n?"on":""}" data-a="famgo" data-f="${f}">${n?`<span class="fc-ic">${IC.check}</span>`:`<span class="fc-ic off"></span>`}<span class="fc-t"><span class="fc-n">${esc(FAMILIES[f])}</span><em>${n?n+" recette"+(n>1?"s":"")+" préparée"+(n>1?"s":""):"À découvrir"}</em></span></button>`; }).join("")}</div>`;
+o+=`<h2 class="sh">Familles explorées<span class="more" style="color:var(--label2)">${done.size} sur ${fams.length}</span></h2>${done.size?"":``}<div class="fam-bar"><i style="width:${Math.round(done.size/fams.length*100)}%"></i></div><div class="fams">${fams.map(f=>{ const n=dl.filter(id=>RMAP[id].fam===f).length; return `<button class="famc ${n?"on":""}" data-a="famgo" data-f="${f}">${n?`<span class="fc-ic">${IC.check}</span>`:`<span class="fc-ic off"></span>`}<span class="fc-t"><span class="fc-n">${esc(FAMILIES[f])}</span><em>${n?n+" recette"+(n>1?"s":"")+" préparée"+(n>1?"s":""):"À découvrir"}</em></span></button>`; }).join("")}</div>`;
 const best=rated().filter(x=>x[1]>=4).sort((a,b)=>b[1]-a[1]).slice(0,5);
 if(best.length) o+=`<h2 class="sh">Tes mieux notés</h2><div class="group">${best.map(([id])=>recRow(RMAP[id])).join("")}</div>`;
 const last=S.hist.slice(-6).reverse().filter(h=>RMAP[h.id]);
@@ -3849,11 +3850,11 @@ function ingSheet(id){
 openSheet(()=>{ const i=ING[id], v=S.stock[id], hv=has(id); const uses=RECS.filter(r=>r.ing.some(x=>x.id===id));
 const unlock=RECS.filter(r=>{ const s=status(r); return s.miss.length===1&&s.miss[0]===id; }).sort((a,b)=>predict(b)-predict(a));
 let b=`<div style="text-align:center;padding:0 20px"><div style="height:110px;display:grid;place-items:center">${tracked(id)?bottleSVG(id,v==null?4:v).replace("<svg","<svg style='height:110px;width:auto'"):`<div class="badge" style="font-size:var(--z-fs-l);height:30px;padding:0 var(--z-s2)">${CATS[i.cat].n}</div>`}</div><h1 style="font-family:var(--serif);font-size:calc(28rem / 17);margin:var(--z-s1) 0 4px">${esc(i.n)}</h1><div class="muted" style="font-size:var(--z-fs-b)">${CATS[i.cat].n}${i.abv?", "+num(i.abv)+" %":""}${i.basic?", toujours disponible":""}</div></div>`;
-if(i.basic) b+=`<div class="card" style="margin-top:var(--z-s2);font-size:var(--z-fs-b)">Contenu additionnel : il est considéré comme toujours disponible. Tu peux changer ça dans les réglages du profil.<div class="sp8"></div><button class="btn small sec" data-a="basics">Gérer les basiques</button></div>`;
+if(i.basic) b+=`<div class="card" style="margin-top:var(--z-s2);font-size:var(--z-fs-b)">Contenu additionnel : il est considéré comme toujours disponible.<div class="sp8"></div><button class="btn small sec" data-a="basics">Gérer les basiques</button></div>`;
 if(!i.basic){
 if(tracked(id)){ b+=`<div class="gh">Niveau dans ton bar</div><div class="card"><div class="lvl-big">${[0,1,2,3,4].map(l=>`<button class="${v===l?"on":""}" data-a="setlvl" data-id="${id}" data-l="${l}">${bottleSVG(id,l)}${LVLN[l]}</button>`).join("")}</div></div>`;
 if(v===undefined) b+=`<div class="gf">Pas encore dans ton bar.</div>`; }
-else b+=`<div class="group" style="margin-top:var(--z-s2)"><div class="row"><div class="grow">J’en ai</div><button class="switch ${v===1?"on":""}" data-a="toggle" data-id="${id}"></button></div></div>`;
+else b+=`<div class="group" style="margin-top:var(--z-s2)"><div class="row"><div class="grow">J’en ai</div><button class="switch ${v>0?"on":""}" data-a="toggle" data-id="${id}"></button></div></div>`;
 }
 if(prepActive(id)) b+=`<div class="gf">Tu en as une préparation maison en cours.</div>`;
 b+=priceBlock(id);
@@ -5688,9 +5689,9 @@ return h; };
 let RADAR_PLAY=false;
 function focalTaste(){
 const tv=tasteVector(), sty=tasteStyle(); let body;
-if(tv&&tv.liked) body=`<div class="prof">${radarSVG(tv.liked)}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">D’après les cocktails notés 4 étoiles ou plus.</span></div></div>`;
+if(tv&&tv.liked) body=`<div class="prof">${radarSVG(tv.liked)}<div class="fc-txt">${esc(tasteSentence())||"Chaque note l’affine."}<span class="fc-note">D’après les cocktails notés 4 étoiles ou plus.</span></div></div>`;
 else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); body=`<div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div class="fc-txt">D’après ton quiz</div></div>`; }
-else body=`<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
+else body=`<div class="fc-txt">Ton profil de goût apparaît dès trois cocktails notés, dont un qui t’a plu.</div>`;
 return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`;
 }
 let TRO_SEEN=null; try{ TRO_SEEN=JSON.parse(localStorage.getItem("zeste.troSeen")||"null"); }catch(e){}
@@ -5755,7 +5756,7 @@ return r; }; }
 stockRow=function(id){
 const i=ING[id], v=S.stock[id];
 if(tracked(id)) return `<div class="row bar-row" id="sr-${id}" style="--inset:58px"><button class="thumb" data-a="ing" data-id="${id}" style="width:30px;height:44px" aria-label="${esc(i.n)}">${bottleSVG(id,v)}</button><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${LVLN[v]}${prepActive(id)?", fait maison":""}</span>${lvlCtl(id,v)}</div>`;
-return `<div class="row bar-row" id="sr-${id}"><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${v===1?"En stock":"À racheter"}</span><button class="switch ${v===1?"on":""}" data-a="toggle" data-id="${id}" aria-label="${esc(i.n)}"></button></div>`;
+return `<div class="row bar-row" id="sr-${id}"><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${v>0?"En stock":"À racheter"}</span><button class="switch ${v>0?"on":""}" data-a="toggle" data-id="${id}" aria-label="${esc(i.n)}"></button></div>`;
 };
 if(S.settings&&S.settings.barView&&S.settings.barView!=="list") S.settings.barView="list";
 { const _vb=vBar;
@@ -5798,7 +5799,7 @@ function aboutBody(){
 const n=RECS.filter(r=>!r.mine).length, na=RECS.filter(r=>r.na).length, g=(typeof guideHTML==="function"?guideHTML():"");
 return `<div class="about-hero"><div class="af-logo brand">${zesteMark({label:"Logo Zeste"})}</div><b>Zeste ${APP_VERSION}</b><span>${n} recettes, dont ${na} sans alcool</span></div>`
 +(g? g.replace('<div class="gh">Ce qui guide tes suggestions</div>','<div class="gh">Comment Zeste te conseille</div>')
-: `<div class="gh">Comment Zeste te conseille</div><div class="card about-p">Note quelques cocktails : Zeste apprend tes goûts, et tu verras ici ce qui guide ses idées.</div>`)
+: `<div class="gh">Comment Zeste te conseille</div><div class="card about-p">Zeste apprend tes goûts à chaque note : ce qui guide ses idées apparaîtra ici.</div>`)
 +`<div class="gh">Ton alcoolémie</div><div class="card about-p">Une estimation (Widmark) selon ton poids, ton sexe et tes verres. Jamais une mesure : ne t’y fie pas pour conduire.</div>`
 +`<div class="gh">Tes données</div><div class="card about-p">Tout reste sur ton téléphone, rien n’est envoyé. Fais une sauvegarde de temps en temps (Paramètres › Données).</div>`
 +`<div class="gh">Les recettes</div><div class="card about-p">Les 102 cocktails officiels de l’IBA, vérifiés un à un, dosages compris.</div>`
@@ -6090,8 +6091,8 @@ if(A.plus.length) out+="Tu aimes ce qui est "+joinFr(A.plus.map(n)); if(A.minus.
 return out? out+".":""; };
 focalTaste=function(){ const sty=tasteStyle(), rv=tasteRadar(), nR=rated().length;
 const src=nR&&S.quiz?"D’après tes notes et ton quiz.":nR?"D’après tes notes.":"D’après ton quiz.";
-const body= rv? `<div class="prof">${radarSVG(rv,avgProfile())}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">${src}</span></div></div>`
-: `<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
+const body= rv? `<div class="prof">${radarSVG(rv,avgProfile())}<div class="fc-txt">${esc(tasteSentence())||"Chaque note l’affine."}<span class="fc-note">${src}</span></div></div>`
+: `<div class="fc-txt">Ton profil de goût apparaît dès trois cocktails notés, dont un qui t’a plu.</div>`;
 return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`; };
 { const _lg=labGlass;
 labGlass=function(){ const M=mixState(), mine=M.g; let auto;
@@ -6510,8 +6511,8 @@ save=function(){ SREV++; STC={}; MEMO={}; S.t=Date.now(); const j=JSON.stringify
 try{ localStorage.setItem(KEY,j); LS_FAIL=false; }
 catch(e){ if(!LS_FAIL&&typeof toast==="function") toast("Stockage principal plein : tes données sont gardées dans la copie de secours. Fais une sauvegarde."); LS_FAIL=true; }
 zidbMirror(j,S.t); };
-if(typeof addEventListener==="function") addEventListener("pagehide",zidbFlush);
-if(typeof document!=="undefined"&&document.addEventListener) document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden") zidbFlush(); });
+if(typeof addEventListener==="function") addEventListener("pagehide",()=>{ flushDeferred(); zidbFlush(); });
+if(typeof document!=="undefined"&&document.addEventListener) document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"){ flushDeferred(); zidbFlush(); } });
 function zidbRecover(){ zidbGet().then(async rec=>{
 if(!rec||!rec.data){ zidbMirror(JSON.stringify(S),S.t||Date.now(),true); return; }
 let has=false; try{ has=!!localStorage.getItem(KEY); }catch(e){}

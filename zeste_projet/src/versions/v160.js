@@ -15,8 +15,8 @@ tasteSentence=function(){ const A=tasteAxes(); if(!A) return ""; const n=i=>DIMS
   return out? out+".":""; };
 focalTaste=function(){ const sty=tasteStyle(), rv=tasteRadar(), nR=rated().length;
   const src=nR&&S.quiz?"D’après tes notes et ton quiz.":nR?"D’après tes notes.":"D’après ton quiz.";
-  const body= rv? `<div class="prof">${radarSVG(rv,avgProfile())}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">${src}</span></div></div>`
-    : `<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
+  const body= rv? `<div class="prof">${radarSVG(rv,avgProfile())}<div class="fc-txt">${esc(tasteSentence())||"Chaque note l’affine."}<span class="fc-note">${src}</span></div></div>`
+    : `<div class="fc-txt">Ton profil de goût apparaît dès trois cocktails notés, dont un qui t’a plu.</div>`;
   return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`; };
 // F19 — Labo : « Conseillé » = ce que choisit « Auto ». Avant, le badge montrait labReco (le style seul) alors qu'Auto passait
 // ensuite par l'échelle glace/contenance de v141 et pouvait prendre un autre verre. Une seule source : le choix automatique.

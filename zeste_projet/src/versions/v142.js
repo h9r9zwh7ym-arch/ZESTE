@@ -49,7 +49,7 @@ function aboutBody(){
   const n=RECS.filter(r=>!r.mine).length, na=RECS.filter(r=>r.na).length, g=(typeof guideHTML==="function"?guideHTML():"");
   return `<div class="about-hero"><div class="af-logo brand">${zesteMark({label:"Logo Zeste"})}</div><b>Zeste ${APP_VERSION}</b><span>${n} recettes, dont ${na} sans alcool</span></div>`
     +(g? g.replace('<div class="gh">Ce qui guide tes suggestions</div>','<div class="gh">Comment Zeste te conseille</div>')
-       : `<div class="gh">Comment Zeste te conseille</div><div class="card about-p">Note quelques cocktails : Zeste apprend tes goûts, et tu verras ici ce qui guide ses idées.</div>`)
+       : `<div class="gh">Comment Zeste te conseille</div><div class="card about-p">Zeste apprend tes goûts à chaque note : ce qui guide ses idées apparaîtra ici.</div>`)
     +`<div class="gh">Ton alcoolémie</div><div class="card about-p">Une estimation (Widmark) selon ton poids, ton sexe et tes verres. Jamais une mesure : ne t’y fie pas pour conduire.</div>`
     +`<div class="gh">Tes données</div><div class="card about-p">Tout reste sur ton téléphone, rien n’est envoyé. Fais une sauvegarde de temps en temps (Paramètres › Données).</div>`
     +`<div class="gh">Les recettes</div><div class="card about-p">Les 102 cocktails officiels de l’IBA, vérifiés un à un, dosages compris.</div>`

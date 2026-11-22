@@ -44,6 +44,6 @@ let ICE_DROP=false;
 stockRow=function(id){
   const i=ING[id], v=S.stock[id];
   if(tracked(id)) return `<div class="row bar-row" id="sr-${id}" style="--inset:58px"><button class="thumb" data-a="ing" data-id="${id}" style="width:30px;height:44px" aria-label="${esc(i.n)}">${bottleSVG(id,v)}</button><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${LVLN[v]}${prepActive(id)?", fait maison":""}</span>${lvlCtl(id,v)}</div>`;
-  return `<div class="row bar-row" id="sr-${id}"><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${v===1?"En stock":"À racheter"}</span><button class="switch ${v===1?"on":""}" data-a="toggle" data-id="${id}" aria-label="${esc(i.n)}"></button></div>`;
+  return `<div class="row bar-row" id="sr-${id}"><button class="grow" data-a="ing" data-id="${id}" style="text-align:left"><div class="t">${esc(i.n)}</div></button><span class="s lvl-txt">${v>0?"En stock":"À racheter"}</span><button class="switch ${v>0?"on":""}" data-a="toggle" data-id="${id}" aria-label="${esc(i.n)}"></button></div>`;
 };
 // (1.42 : l'étagère et son bouton ont été retirés)

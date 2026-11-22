@@ -44,9 +44,9 @@ Object.assign(ACT,{ buysheet:()=>buySheet() });
 let RADAR_PLAY=false;
 function focalTaste(){
   const tv=tasteVector(), sty=tasteStyle(); let body;
-  if(tv&&tv.liked) body=`<div class="prof">${radarSVG(tv.liked)}<div class="fc-txt">${esc(tasteSentence())||"Continue à noter pour affiner ton profil."}<span class="fc-note">D’après les cocktails notés 4 étoiles ou plus.</span></div></div>`;
+  if(tv&&tv.liked) body=`<div class="prof">${radarSVG(tv.liked)}<div class="fc-txt">${esc(tasteSentence())||"Chaque note l’affine."}<span class="fc-note">D’après les cocktails notés 4 étoiles ou plus.</span></div></div>`;
   else if(S.quiz){ const Q=quizPrior(), av=avgProfile(); body=`<div class="prof">${radarSVG(av.map((v,i)=>clamp01(v+Q.dir[i]*2.2)))}<div class="fc-txt">D’après ton quiz</div></div>`; }
-  else body=`<div class="fc-txt">Note au moins trois cocktails, dont un qui t’a plu, pour voir apparaître ton profil de goût.</div>`;
+  else body=`<div class="fc-txt">Ton profil de goût apparaît dès trois cocktails notés, dont un qui t’a plu.</div>`;
   // (1.59) plus de compteurs en bas : ils répétaient Historique et Tes mieux notés
   return `<div class="focal-card"><div class="fc-k">Ton profil de goût</div>${sty?`<div class="fc-t">${esc(sty)}</div>`:""}${body}</div>`;
 }
