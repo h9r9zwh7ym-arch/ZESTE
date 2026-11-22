@@ -1962,7 +1962,9 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
 :where(.link,.chip,button.cat-h){position:relative}
 .link::after{content:"";position:absolute;inset:-12px -6px}
 .chip::after{content:"";position:absolute;inset:-6px 0}
-button.cat-h::after{content:"";position:absolute;inset:-11px 0}
+button.cat-h::after{content:"";position:absolute;inset:-14px 0 -8px}   
+button.cat-h,h2.sh .more{position:relative;z-index:1}   
+.switch::before{content:"";position:absolute;inset:-7px -4px}   
 .sheet-body .chips[style*="flex-wrap"],.starter{overflow:visible}   
 .sheet-body .chips[style*="flex-wrap"],.starter{row-gap:var(--z-s2)}   
 .price-in{min-height:44px}
@@ -4888,7 +4890,7 @@ document.addEventListener("pointermove",()=>{ if(typeof RADDRAG!=="undefined"&&R
 document.addEventListener("touchmove",()=>{ const p=document.getElementById("pull"); if(!p) return; if(p.classList.contains("armed")&&!p.dataset.snd){ p.dataset.snd=1; SND.select(); } else if(!p.classList.contains("armed")) delete p.dataset.snd; },{passive:true});
 Object.assign(ACT,{ setsound:()=>{ S.settings.sound=S.settings.sound===false; save(); if(S.settings.sound!==false) SND.test(); refreshSheets(); }, soundtest:()=>SND.test(), sndvol:(d)=>{ S.settings.vol=+d.v; save(); SND.clink(); refreshSheets(); } });
 })();
-const APP_VERSION="1.86";
+const APP_VERSION="1.87";
 const COPYRIGHT="© "+new Date().getFullYear()+" Yannick Wahler. Tous droits réservés.";
 const CTYPES=[["court","Cocktail court"],["long","Long drink"],["spritz","Spritz et bulles"],["shot","Shot"],["chaud","Chaud"],["sans","Sans alcool"]];
 function typeOf(r){

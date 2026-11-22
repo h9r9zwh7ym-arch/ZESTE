@@ -8,7 +8,7 @@ Tu reprends **Zeste**, une app web de bar à cocktails pour iPhone, développée
 - Il utilise l’app sur **iPhone (Safari)**. Beaucoup de bugs n’apparaissent que dans Safari/WebKit : c’est la cible réelle.
 - **Priorité absolue : la véracité.** Pour toute information ajoutée ou modifiée (recettes, proportions, techniques, verrerie, glace, garnitures, dilution, conseils, UX, modèles de recommandation), vérifie avec des sources reconnues, plusieurs si besoin. N’invente jamais une recette ou une technique. Si une information fait débat, présente l’incertitude honnêtement.
 - **Conserver ce qui marche** : analyser le code avant de modifier, ne pas réécrire inutilement, garder l’architecture et le design.
-- **Numérotation des versions** : la version actuelle est **1.86**. Chaque mise à jour livrée incrémente : 1.21 → 1.86… La constante est `APP_VERSION` dans `src/versions/v117.js`. À chaque livraison, incrémenter aussi `CACHE` dans `sw.js` (`zeste-v44` à la 1.86) pour que le service worker recharge son cache. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
+- **Numérotation des versions** : la version actuelle est **1.87**. Chaque mise à jour livrée incrémente : 1.21 → 1.87… La constante est `APP_VERSION` dans `src/versions/v117.js`. Depuis la 1.87, `build.sh` écrit lui-même `CACHE` dans `sw.js` à partir de cette version (`zeste-1.87`) : le service worker recharge son cache à chaque nouvelle version, sans risque d’oubli. Le copyright (`COPYRIGHT`, même fichier que la version) affiche l’année en cours automatiquement.
 - Copyright affiché dans « À propos » : `© <année> Yannick Wahler. Tous droits réservés.`
 - Style de travail apprécié : tester réellement (captures, mesures), annoncer honnêtement ce qui a été vérifié et ce qui ne l’a pas été, expliquer les bugs trouvés. Réponses courtes quand il le demande (souvent « 3-4 lignes »), grep ciblé plutôt que relecture du projet.
 
@@ -27,11 +27,11 @@ node tests/m9.js                    # score du Labo : 20 mauvais mélanges, IBA,
 node tests/m10.js                   # conseils du Labo (jamais une baisse de note) et continuité de la note
 ```
 
-Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Playwright (Chromium) est requis ; WebKit est testé via WebKitGTK (`tests/webkit.js`, `apt-get install webkit2gtk-driver xvfb`). Si WebKit échoue au démarrage du pilote (« fetch failed »), relancer `node tests/webkit.js` seul. Tests de fonctionnalités : `tests/features/*.js` (33 fichiers, bloquants dans `all.sh`). Autres outils : `tests/contrast.js` (WCAG, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/audit2.js` ; hors suite : `tests/m7.js`, `m8.js` (moteur), `audit.js` et `txt.js` (relecture des données et des textes), `deadcode.js`, `sounds.js`, `perf.py`. Un `README.md` à la racine du dépôt résume le tout pour un humain.
+Tous les scripts se lancent **depuis la racine du projet** (`zeste_projet/`). Playwright (Chromium) est requis ; WebKit est testé via WebKitGTK (`tests/webkit.js`, `apt-get install webkit2gtk-driver xvfb`). Si WebKit échoue au démarrage du pilote (« fetch failed »), relancer `node tests/webkit.js` seul. Tests de fonctionnalités : `tests/features/*.js` (58 fichiers, bloquants dans `all.sh`). Le fuzz demande Python ≥ 3.12 avec Playwright **de la même version que celui de Node** (Chromium partagé) : par exemple `uv venv -p python3.12 venv && uv pip install -p venv/bin/python playwright==<version de Node>`, puis `PY=venv/bin/python sh tests/all.sh`. Autres outils : `tests/contrast.js` (WCAG, clair et sombre), `tests/a11y.js` (VoiceOver, cibles tactiles), `tests/audit2.js` ; hors suite : `tests/m7.js`, `m8.js` (moteur), `audit.js` et `txt.js` (relecture des données et des textes), `deadcode.js`, `sounds.js`, `perf.py`. Un `README.md` à la racine du dépôt résume le tout pour un humain.
 
 ## 3. Architecture
 
-**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (81 modules JS et `style.css` dans `src/`). Depuis la 1.84, les sources sont rangées en trois dossiers et l'ordre de concaténation est écrit dans **`src/ORDRE`** (un fichier par ligne, commenté) — l'ordre est important :
+**Un seul fichier HTML**, sans dépendance ni framework : HTML + CSS + JS vanilla assemblés par `build.sh` (83 modules JS et `style.css` dans `src/`). Depuis la 1.84, les sources sont rangées en trois dossiers et l'ordre de concaténation est écrit dans **`src/ORDRE`** (un fichier par ligne, commenté) — l'ordre est important :
 
 ```
 src/style.css
@@ -43,7 +43,7 @@ src/ORDRE      l'ordre exact (données, socle, versions, ui_final.js, puis v126,
 **`CARTE.md`** (régénérée par `tools/carte.js` à chaque `tests/all.sh`) donne, pour chaque écran (`vToday`, `vBar`, `vCompose`, `recSheet`…), la chaîne des modules qui le déclarent, l'enveloppent ou le remplacent, les fonctions les plus enveloppées et, pour chaque module, ce qu'il touche : c'est le point d'entrée pour comprendre ou modifier un écran.
 (Pas de `v145.js` ni de `v153.js` : la 1.45 n’a touché que le CSS, la 1.53 a enrichi `v152.js`.)
 
-- **Données** (`data_*.js`) : `ING_RAW` (164 ingrédients) et `REC_RAW` (369 recettes, dont 31 sans alcool, et les 102 de la liste IBA dans `data_iba.js` et les fichiers d’origine) ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
+- **Données** (`data_*.js`) : `ING_RAW` (181 ingrédients) et `REC_RAW` (382 recettes, dont 35 sans alcool, et les 102 de la liste IBA dans `data_iba.js` et les fichiers d’origine) ; les fichiers suivants font des `push`. `buildRecipes()` compile en `RECS` (liste) et `RMAP` (dictionnaire par id).
   - Format d’une recette : `[id, nom, famille, méthode, verre, glace, couleur, [[ingrédient, quantité, unité?, rôle?], …], garniture, {options}]`.
   - Unités : `ml` (par défaut), `d` (trait), `f` (feuille), `u` (unité), `bs`, `br`, `gt`. Rôles : `top` (compléter), `float`, `rinse`, `opt` (facultatif).
   - Méthodes : `shake`, `stir`, `build`, `mbuild` (piler puis construire), `mshake`, `hot`, `louche`.
@@ -60,12 +60,13 @@ src/ORDRE      l'ordre exact (données, socle, versions, ui_final.js, puis v126,
   - Avant de modifier une fonction, cherche **toutes** ses redéfinitions et enveloppes dans les modules suivants (`vCompose`, `vBar`, `stockRow`, `renderView`, `settingsSheet` en ont beaucoup).
 - **`ui_final.js`** se termine par `fixState(); applyTheme(); init(); applyFx();` : c’est le démarrage. Un module qui doit agir dès le premier rendu se place **avant** `ui_final.js`. `v126.js` et `v130.js` (service worker) restent après.
 - **Actions** : tout élément avec `data-a="nom"` déclenche `ACT.nom(dataset, élément, événement)` par délégation (`ui.js`, écouteur `click` sur `document`). Exception : les `label.hap` (voir « Haptique »).
-- **État** : objet global `S`, sauvegardé dans `localStorage` (clé `zeste.v1`) par `save()`, **uniquement sur l'appareil** (1.65 : plus de synchronisation claude.ai, `initRemote` est vide), avec une copie de secours compressée dans IndexedDB (`v169.js`, voir § 9 quater). Champs principaux :
+- **État** : objet global `S`, sauvegardé dans `localStorage` (clé `zeste.v1`) par `save()` (les petits signaux — fiche ouverte, suggestion du jour — passent par `deferSave()`, un enregistrement différé de 1,5 s), **uniquement sur l'appareil** (1.65 : plus de synchronisation claude.ai, `initRemote` est vide), avec une copie de secours compressée dans IndexedDB (`v169.js`, voir § 9 quater). Champs principaux :
   - bar et notes : `stock` (niveau 0–4 des bouteilles suivies, 0/1 pour les softs), `ratings`, `rt`, `hist` (`{id,t}`), `fav`, `custom` ;
   - personnalisation : `adj`, `price`, `opened`, `quiz` ;
   - progression : `tro` et `troT`, `chal`, `mix` (état du labo : `items[{id,q}]`, `m`, `g`, `gUser`, `ice`, `gar`, `t`) ;
   - `settings` : unit, cur, theme, fx, sound, vol, home, glasses, wake, remind, untested, explore, ctx, na, ambiance, moment, barFold, hintSwipe…
-  - `healState()` (`ui_final.js`) répare tout champ de mauvais type au chargement et après synchronisation.
+  - **format versionné (1.87)** : `S.v` = numéro du format (`SCHEMA`, `ui.js`, actuellement 2), `S.app` = `"zeste"` (marque des sauvegardes). `migrateState()` (`ui_final.js`) applique `MIGRATIONS[n]` (n → n+1) une seule fois, au chargement (`fixState`), à la restauration d'une sauvegarde et à la reprise de la copie de secours ; des données d'un format plus récent ne sont jamais rétrogradées. **Toute modification du format = une migration numérotée + un exemple de l'ancien format dans `tests/features/migration_test.js`.**
+  - `healState()` (`ui_final.js`) répare tout champ de mauvais type au chargement. Depuis la 1.87, ce qui est bien formé mais renvoie à une recette ou un ingrédient inconnu (historique, stock, favoris, créations) va dans `S.orphans` au lieu d'être effacé, et revient de lui-même quand l'identifiant réapparaît ; `cleanCustom()` contrôle les créations (identifiant, couleur, verre, glace, unités).
 - **Rendu** : `renderView(onglet)` régénère le HTML d’un onglet. `changed()` sauvegarde et redessine l’onglet visible (ou à la fermeture de la feuille qui le couvre). `paintSheet`/`refreshSheets` gèrent les feuilles ; `subSheet(titre, corps)` ouvre une sous-feuille avec « ‹ Paramètres ».
 
 ### Environnement d’exécution (claude.ai)
@@ -100,6 +101,11 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 24. **Score « sans note »** : `labScore` renvoie `{none:true, score:null}` quand le mélange n'a pas deux rôles différents. Tout affichage ou toute logique qui lit `SC.score` doit tester `SC.none` (service bloqué, défis refusés, sous-scores masqués).
 25. **Code évalué dans la portée de l'app** (`m9.js`, bancs) : un `const score=…` entre en collision avec la fonction `score(r)` de l'app ; envelopper le code du banc dans un bloc `{ … }`.
 26. **Ne jamais réécrire entièrement une fonction ou une action déjà enveloppée** (`f=function(){…}` sans appeler la version précédente) : l’ajout de l’enveloppe plus ancienne disparaît en silence (1.59 → 1.70 : filtre « créations à tester », sons). Envelopper (`const _f=f; f=function(){ … _f() … }`) ; `tests/wrappers.js` échoue sinon, sauf exception listée avec sa raison.
+
+27. **Format des données** (1.87) : ne jamais changer la forme d'un champ de `S` sans ajouter une migration (`MIGRATIONS`, `SCHEMA+1`) et un exemple de l'ancien format dans `migration_test.js`. `loadLocal`, la copie de secours et l'événement `storage` partent de `Object.assign(DEF(),{v:1},données)` : une donnée sans numéro est du format 1.
+28. **Sauvegarde = tout `S`** (1.87) : `sanitizeBackup` (`v120.js`) liste chaque champ avec son type. Un nouveau champ de `S` doit y être ajouté, sinon la restauration le perd ; `migration_test.js` compare un aller-retour export → import champ par champ.
+29. **Haptique coupable** (1.87) : `hapt()` ne convertit plus rien si `S.settings.haptic===false` ; un bouton d'action doit donc marcher aussi en simple `<button>` (le CSS des `label.hap` a toujours son pendant `button`).
+30. **Bancs à planchers** (`m9.js`) : les planchers de non-régression sont mesurés, pas idéaux. Une correction de recette sourcée peut les déplacer de quelques dixièmes : relever le plancher en écrivant pourquoi (fait en 1.70 et 1.87), jamais pour masquer un recul du barème.
 
 ## 5. Règles en vigueur
 
@@ -178,6 +184,13 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **1.85 — Rotation et titres** (`versions/v186.js` corrigé, `versions/v187.js`) : (1) **rotation** : au retour en portrait, la pastille de l'onglet actif traversait l'écran en diagonale pendant 0,4 s (elle animait depuis sa position sur le rail) ; à chaque changement d'orientation, la barre passe en `tb-snap` (aucune transition), la pastille est recalée tout de suite puis à 150, 400 et 700 ms (fin de la mise en page d'iOS). (2) **même pastille** en portrait et sur le rail : 30 px de haut, derrière l'icône (1 px au-dessus du bouton), largeur de la colonne − 8 px (`TABIND_W`, 68 px sur iPhone) — avant : 68 × 30 en bas, 64 × 34 décalée sur le rail. (3) **titre flou** : en faisant défiler, le grand titre (`h1.lt`) passait sous la barre de titre translucide et floutée et faisait un fantôme flou à côté du petit titre ; il s'efface désormais entre 10 et 34 px de défilement (la barre devient opaque avec le petit titre à 34 px), ainsi que la ligne de date au-dessus. Vérifié avec une encoche simulée (zone sûre de 59 px). `landscape_test` vérifie la pastille identique, posée aussitôt après rotation, et le titre effacé.
 - **1.86 — Vague à « Préparer », paysage et encoche** (`versions/v188.js`) : (1) **vague** : toucher « Préparer » (accueil, fiche, aperçu) fait monter du bas un liquide de la couleur du cocktail, à surface ondulée (deux vagues décalées qui défilent), qui couvre l'écran en 0,54 s ; le mode préparation s'ouvre dessous sans son fondu d'entrée (`#overlay.no-in`), puis le liquide repart par le haut avec un bord ondulé en 0,62 s ; son de versement ; double toucher ignoré pendant la vague ; coupé par « Réduire les animations » et sans « Liquide vivant » (ouverture immédiate). (2) **paysage** : la scène du Labo se collait à 8 px du haut, sous la barre de titre (44 px) — elle se colle maintenant à 50 px, verre réduit à 128 px pour tenir en hauteur. (3) **encoche** : le mode préparation (`#overlay`), les vues et le mini-verre respectent la zone sûre latérale (`env(safe-area-inset-left/right)`). `duels_test` attend la vague. Test `features/wave_test.js` (avec encoche simulée).
 
+- **1.87 — Review complète** (consigne : `../PROMPT-REVIEW.md`, rapport : `../REVIEW.md`, branche `review-complete`, retour possible au tag `avant-review`). Pas de nouveau module : chaque correction est faite à l'étage concerné.
+  - **Données** : format versionné (`SCHEMA`, `MIGRATIONS`, `migrateState`) ; migration 1 → 2 (softs et jus à niveau ramenés à 0/1, `dishes` en tableau, `orphans`) ; plus rien de bien formé n'est effacé (`S.orphans`) ; sauvegarde restaurée à l'identique (`labSaved`, `dishes`, `hist[].m/.v`, `snooze`, `chalOn`, trophées secrets, `backupT`…), fichier sans champ Zeste refusé, création forgée nettoyée (`cleanCustom`) ; palier de trophée acquis pour de bon ; « Annuler » un verre reprend son trophée (`troSnap`/`troRevoke`) ; « Hier » juste après un changement d'heure (`rel` arrondit) ; `has()` : présence = valeur > 0 pour toutes les catégories ; `deferSave()` ; deux onglets ne s'écrasent plus (événement `storage`) ; nom de création unique.
+  - **UI** : réglage « Retour haptique » (Paramètres › Sons et animations › Toucher, `S.settings.haptic`) ; tac aussi sur `startprep`, `remind`, `bmfinish`, `savemix` ; plus aucune consigne à l'écran (trophée, carte, Labo à un rôle : « — » et deux pastilles, ajout rapide, nom de création, sections de l'accueil, états vides) ; recherche vide avec « Effacer la recherche » / « Retirer les filtres » (`ACT.emptyreset`) ; zones de 44 px (chips, liens, en-têtes repliables du bar, champ prix ; rangées de chips espacées de 16 px) ; accent en neutre hors action principale ; « Sans alcool » une fois dans les filtres (`FAM_AS_TYPE.sansalcool`) ; pas de « % pour toi » sur un cocktail noté ; « Réinitialiser » Ta version annulable.
+  - **Recettes** : 36 classiques hors IBA (plus l’IBA Tiki) et 14 histoires vérifiées en ligne (`data/verif.json`, clés `recettes` et `histoires`) ; 11 histoires corrigées (Corpse Reviver n° 2, Schümli Pflümli, Honeymoon, Mary Pickford, Godfather, Panaché, Pastis, French 75, Tuxedo, Eggnog, Illegal nuancé) ; Presbyterian au scotch, Godfather 2:1, IBA Tiki en verre tiki ; substituts courants (bourbon ↔ rye, champagne ↔ prosecco, ginger ale ↔ ginger beer, rhums) ; sirop de sureau maison compté 30 jours ; conseil sur l'œuf cru ; pistes pour l'allspice dram et la crème de violette.
+  - **Perf et code** : `CACHE` du service worker écrit par `build.sh` ; code mort retiré (`initRemote`, `pushRemote`, ancien `ACT.reset` à `confirm()`, texte de synchronisation périmé). Plancher « dégradées » de `m9` : 60 → 60,5 % (voir piège 30).
+  - **Tests** : `features/migration_test.js`, `features/review_ui_test.js`, `features/review_recipes_test.js` ; outils d'audit et captures avant/après dans `../review/`.
+
 ## 8. Haptique
 
 - **Motif** (`src/v144.js`) : Safari iOS ignore `navigator.vibrate`, mais toucher **directement du doigt** un `<label>` qui contient un vrai `<input type="checkbox" switch>` fait vibrer, même si le switch est invisible (opacité 0, 1 px, jamais `display:none`). Un `.click()` lancé par JavaScript ne vibre pas.
@@ -189,7 +202,8 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
   - toucher direct du switch : `lvlset` (feuille de niveau), `toggle` (soft en stock ou non), `addtoggle` (ajouter ou retirer depuis la feuille d’ajout), `refill` (« Racheté »), `rmstock` (« Retirer de mon bar »), `rate` (étoiles), `made` (« Préparé »), `mixserve` (Servir du Labo), `finish` (bouton « Finie » révélé par le glissé) ;
   - geste, donc sans haptique : `finish` par un grand glissé (appel direct de `ACT.finish`, `v143.js`).
 - **Règle** : un seul tac par action voulue ; jamais sur la navigation (onglets, feuilles), la fermeture, ni les événements automatiques (trophée débloqué, fin du minuteur, toast).
-- **Réglage « Retour haptique »** : réglage non trouvé dans le code à la 1.50 (recherche `haptiq|hapt|vibr|retour` dans `src/`, valeurs par défaut de `S.settings`, `healState`, groupe « Sons et animations »).
+- **Réglage « Retour haptique »** (1.87) : Paramètres › Sons et animations › Toucher (`ACT.sethaptic`, `S.settings.haptic`, absent = actif). Coupé, `hapt()` ne convertit plus rien : les boutons restent des `<button>` et passent par le distributeur de `ui.js`.
+- Actions haptiques (1.87) : `lvlset`, `toggle`, `addtoggle`, `refill`, `rmstock`, `finish`, `rate`, `made`, `mixserve`, `duel`, `startprep` (préparation lancée), `remind` (note de la carte « Alors, ce … ? »), `bmfinish` (« Terminer »), `savemix` (création enregistrée).
 
 ## 9. Cap design
 
@@ -244,12 +258,15 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 - **Données illisibles** : `loadLocal` (`ui.js`) les met de côté (`zeste.v1.illisible.<date>`) au lieu de les écraser.
 - **Stockage protégé** : `navigator.storage.persist()` demandé au lancement (accordé surtout à l'app installée ; Safari efface un site non installé après 7 jours sans visite).
 - **Sauvegardes** : `exportData` → `downloads` sur claude.ai, sinon partage de fichier (Fichiers, iCloud), sinon téléchargement, sinon texte ; date dans `S.backupT` (« jamais » en orange dès 5 notes ou verres, et après 21 jours).
+- **Restauration** (1.87) : `importData` migre le fichier (`migrateState`) puis `sanitizeBackup` garde chaque champ de `S` avec son type (liste à tenir à jour, piège 28) ; un fichier sans `app:"zeste"` ni aucun champ propre à Zeste est refusé ; les créations passent par `cleanCustom`.
+- **Deux onglets** (1.87) : l'événement `storage` recharge l'état écrit par l'autre onglet s'il est plus récent.
 - **Écrans** : Paramètres › Données et sauvegarde (Faire / Restaurer / Espace de stockage / Tout réinitialiser) ; « Espace de stockage » : taille sur ~5 Mo, copie de secours, total de l'appareil (`storage.estimate`), protection. Test : `storage_test.js`.
 
 ## 10. Vérification des recettes, reste à faire
 
 1. **Recettes non classiques (hors `c:1`) : vérifiées en 1.68.** Les 64 recettes ont chacune une source et un verdict dans `data/verif.json` : 40 conformes (≤ 25 % d'écart avec au moins une source), 6 corrigées (Cadillac Margarita, Cardinal, Bay Breeze, Spritz passion, Colada au Malibu, « Chindon » introuvable → « Suze pamplemousse »), 18 boissons maison plausibles sans recette de référence unique. Les 13 recettes ajoutées en 1.68 y sont aussi, avec leur source ; l'Oaxaca Old Fashioned est repassé à la tequila reposado de la recette de Phil Ward.
 2. Les 33 créations suisses (`cr:1`) restent « à tester » : ne jamais les présenter comme traditionnelles.
+2 bis. **Classiques hors IBA (`c:1`) : 36 vérifiés en 1.87** (plus l’IBA Tiki ; source et verdict dans `data/verif.json`), **les 133 autres restent sans source écrite** (liste : `../REVIEW.md`, annexe A). Les histoires vérifiées sont sous la clé `histoires` ; les autres restent à revoir avec la même méthode : ne corriger qu'avec une source.
 3. **Audit automatique** (`tests/recaudit.js`, dans `all.sh`) : liens de variantes, ingrédients, doublons, unités, quantités, drapeau sans alcool (bloquants) ; débordement du verre et note du Labo < 70 (listés). Exception justifiée : les 45 ml d'Angostura du Trinidad Sour.
 4. **Limites connues du Labo**, listées par l'audit et non corrigées :
    - environ 80 recettes « débordent » de 1 à 15 % : marge du modèle de glace et de dilution (Gin tonic : 107 %) ;
@@ -258,7 +275,9 @@ L’app est publiée comme artifact sur claude.ai : `https://claude.ai/artifact/
 
 ## 11. Autres chantiers proposés
 
-1. **Tests sur un vrai iPhone** (WebKitGTK n’est pas iOS Safari) : haptique, glissé « Finie », barre Servir collante, segments.
+1. **Tests sur un vrai iPhone** (WebKitGTK n’est pas iOS Safari) : haptique (et le réglage qui la coupe), clavier ouvert au Labo, glissé « Finie », barre Servir collante, segments — liste complète dans `../REVIEW.md`.
+1 bis. **Vérifier les 133 classiques hors IBA restants** et les dernières histoires (même méthode que la 1.87).
+1 ter. **Fusionner les chaînes d'enveloppes** écran par écran (`vCompose` : 21 étapes), et alléger `style.css` (263 Ko, règles superposées).
 2. **Migrer les autres écrans** (Aujourd’hui, Cocktails, Profil, feuilles) vers les jetons `--z-*` et le cap design.
 3. **Liste de courses** exportable : bouteilles vides et achats malins.
 4. **Carte recette à partager** (image), en réutilisant le principe du Rewind (SVG vers canvas vers PNG).
