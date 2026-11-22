@@ -260,7 +260,8 @@ J'ai relu les 34 fichiers sources modifiés, ligne par ligne. Ce qui a été tro
 1. **Interrupteurs « En stock » des softs** (bar et fiche) : ils testaient encore `=== 1`, alors que la présence est désormais `> 0`. Aucun effet avec des données migrées, mais c'était incohérent : aligné.
 2. **Cinq consignes** que mon détecteur ne voyait pas (verbes « Note », « Continue », « Prépare », « Tu peux ») : reformulées en constats. Le test UI les couvre désormais.
 3. **L'enregistrement différé** (fiche ouverte, suggestion du jour) pouvait se perdre si l'app était fermée dans les 1,5 s : il part maintenant aussi au passage en arrière-plan.
-4. **`wave_test` dépendait de l'heure.** Le matin, l'accueil ne propose rien à préparer, donc le test ne trouvait pas le bouton « Préparer ». Il échouait aussi sur la 1.86 avant midi. Il fixe maintenant le moment « soir » et passe quelle que soit l'heure (commit final).
+4. **`wave_test` dépendait de l'heure.** Le matin, l'accueil ne propose rien à préparer, donc le test ne trouvait pas le bouton « Préparer ». Il échouait aussi sur la 1.86 avant midi. Il fixe maintenant le moment « soir » et passe quelle que soit l'heure (commit final). Les 8 tests qui touchent à l'accueil ont ensuite été lancés à 8 h, 14 h, 18 h, 21 h et 1 h (fuseau du navigateur) : tous passent.
+5. **`update_test` attendait un délai fixe** de 3,5 s avant de chercher l'annonce « Nouvelle version ». Il a échoué une fois, pendant que deux autres navigateurs tournaient sur la machine ; seul, il passe à chaque fois. Il attend maintenant l'annonce jusqu'à 10 s. Le contrôle « pas d'annonce sans changement » garde son délai fixe, car c'est une absence qu'il vérifie.
 
 Contrôlé sans problème :
 
