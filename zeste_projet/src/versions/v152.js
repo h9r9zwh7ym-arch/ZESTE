@@ -6,8 +6,9 @@ function recPolish(o){ let b=o.body; const id=(b.match(/data-a="rate" data-id="(
   b=b.replace(/<div class="status no">[\s\S]*?<\/span><\/div>/,"");
   b=b.replace(/<span class="badge red">Manque<\/span>/g,'<span class="badge warn">Manque</span>');
   // « N % pour toi » en tête du bandeau (à la place du verre), et plus sous les étoiles
+  // (1.87) pas de prédiction sur un cocktail déjà noté : ta note (dans « Ton avis ») fait foi, le bandeau garde le verre
   if(hasTaste()){ const pct=`<div><b>${matchPct(r)} %</b><span>pour toi</span></div>`;
-    b=b.replace(/<div class="facts">([\s\S]*?)<div><b>[^<]*<\/b><span>verre<\/span><\/div><\/div>/,(m,rest)=>`<div class="facts">${pct}${rest}</div>`);
+    if(!S.ratings[r.id]) b=b.replace(/<div class="facts">([\s\S]*?)<div><b>[^<]*<\/b><span>verre<\/span><\/div><\/div>/,(m,rest)=>`<div class="facts">${pct}${rest}</div>`);
     b=b.replace(/<b style="color:var\(--tint\);font-family:var\(--rounded\);font-size:calc\(17rem \/ 17\)">\d+ %<\/b><br>pour toi/,"Pas encore noté"); }
   // ingrédients : une ligne par ingrédient, sans en-têtes de catégorie
   b=b.replace(/<div class="ing-sec">[\s\S]*?<\/div>/g,"");

@@ -41,7 +41,7 @@ const _paintQuizIntro=paintQuiz;
 paintQuiz=function(){
   if(!QZ||QZ.i!==-1) return _paintQuizIntro();
   const pts=[[IC.coupe,"Des recettes vérifiées","Plus de 360 cocktails, avec ce que tu as vraiment chez toi."],[IC.sparkle,"Des idées qui te ressemblent","Chaque note affine les suggestions."],[IC.flask,"Un labo pour créer","Compose, goûte, ajuste : l’app t’aide à équilibrer."]];
-  $("#overlay").innerHTML=`<div class="ov-top"><div></div><div></div><button class="link" data-a="qzskip" style="font-size:calc(15rem / 17)">Passer</button></div>
+  $("#overlay").innerHTML=`<div class="ov-top"><div></div><div></div><button class="link" data-a="qzskip" style="font-size:var(--z-fs-b)">Passer</button></div>
   <div class="ov-body qz-intro"><div class="qi-logo">${zesteMark({label:"Logo Zeste"})}</div><h1 class="qi-t">Bienvenue dans Zeste</h1><p class="qi-s">Ton bar, tes cocktails.</p>
   <div class="qi-pts">${pts.map(([ic,t,d],k)=>`<div class="qi-pt" style="animation-delay:${.25+k*.1}s"><span class="qi-ic">${ic}</span><div><b>${t}</b><span>${d}</span></div></div>`).join("")}</div></div>
   <div class="ov-bottom"><button class="btn" data-a="qzintro">Faire connaissance</button></div><p class="qi-f">9 questions, environ une minute</p>`;

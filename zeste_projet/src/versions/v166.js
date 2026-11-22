@@ -80,5 +80,5 @@ labSummary=function(A,SC){ const p=profileOf(A.items,A.met), av=avgProfile();
   const weak=(SC.goals||[]).filter(x=>x[0]!=="gar"&&x[2]<0.7).map(x=>x[1].toLowerCase());
   return "Plutôt "+joinFr(top)+"."+(weak.length?" À améliorer : "+joinFr(weak)+".":""); };
 // Pas de note sans deux rôles : on ne sert pas, on le dit
-{ const _s=ACT.mixserve; ACT.mixserve=(d,t)=>{ const M=mixState(); if(M.items.length){ const A=analyze(); if(A&&labScore(A).none){ toast("Ajoute un second ingrédient"); return; } } return _s(d,t); }; }
+{ const _s=ACT.mixserve; ACT.mixserve=(d,t)=>{ const M=mixState(); if(M.items.length){ const A=analyze(); if(A&&labScore(A).none){ toast("Pas de note avec un seul ingrédient"); return; } } return _s(d,t); }; }
 { const _c=chalCheck; chalCheck=function(c,A,SC){ return _c(c,A,SC&&SC.none? Object.assign({},SC,{score:-1}) : SC); }; }

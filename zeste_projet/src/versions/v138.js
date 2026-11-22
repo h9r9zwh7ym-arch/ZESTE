@@ -11,7 +11,7 @@ HOME_N.duo="Surprends-moi";
     return t&&k&&norm(k).includes(norm(t))? h.replace(`<div class="kick">${k}</div>`,"") : h; }; }
 
 // ---------- Cocktails : « Sans alcool » est un filtre (plus de « 0 % » à part), une famille n'apparaît plus deux fois ----------
-const FAM_AS_TYPE={bulles:"spritz",chaud:"chaud",shot:"shot",na:"sans"};
+const FAM_AS_TYPE={bulles:"spritz",chaud:"chaud",shot:"shot",na:"sans",sansalcool:"sans"};   // (1.87) la clé de la famille est « sansalcool » (data_na.js)
 function naToType(){ if(CF.main==="na"){ CF.main=""; CF.type=(CF.type||[]).filter(x=>x!=="sans").concat(["sans"]); } }
 { const _cr=cocktailsResults;
   cocktailsResults=function(){ naToType(); let h=_cr();
@@ -26,7 +26,7 @@ Object.assign(ACT,{
 { const _fs=filterSheet;
   filterSheet=function(){ CF.fam=CF.fam.filter(f=>{ const t=FAM_AS_TYPE[f]; if(t&&!CF.type.includes(t)) CF.type.push(t); return !t; }); _fs();
     const sh=SHEETS[SHEETS.length-1]; if(!sh) return; const r0=sh.render;
-    sh.render=()=>{ const o=r0(); o.body=o.body.replace(/<button class="chip[^"]*" data-a="tf" data-g="fam" data-k="(bulles|chaud|shot|na)">[^<]*<\/button>/g,"").replace('<div class="gh">Type de cocktail</div>','<div class="gh">Style</div>'); return o; };
+    sh.render=()=>{ const o=r0(); o.body=o.body.replace(/<button class="chip[^"]*" data-a="tf" data-g="fam" data-k="(bulles|chaud|shot|na|sansalcool)">[^<]*<\/button>/g,"").replace('<div class="gh">Type de cocktail</div>','<div class="gh">Style</div>'); return o; };
     paintSheet(sh); };
 }
 

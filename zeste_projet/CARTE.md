@@ -128,7 +128,7 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `donnees/data_drinks.js` | 54 | ---------- NOUVELLES BOISSONS (1.68) : tonics aromatisés, softs, sans alcool, alcools ---- |  |
 | `socle/core.js` | 667 | MOTEUR |  |
 | `socle/icons.js` | 112 | 1.30 : système d'icônes |  |
-| `socle/ui.js` | 772 | ÉTAT & SAUVEGARDE |  |
+| `socle/ui.js` | 773 | ÉTAT & SAUVEGARDE |  |
 | `socle/ui10.js` | 218 | V10 |  ; actions : homeedit, made, bmfinish |
 | `socle/labo2.js` | 209 | LABO V2 : le jeu du barman |  ; actions : mixtype, mixserve, mixq, mixadd1, mixfix, mixadd, mixrm, tolab |
 | `socle/trophies.js` | 91 | TROPHÉES : niveaux, médailles et célébrations |  ; actions : trophy, dish |
@@ -150,14 +150,14 @@ _Générée par `tools/carte.js` à partir des sources (ne pas modifier à la ma
 | `versions/v141.js` | 50 | ZESTE 1.41 : glace naturelle dans le labo, bar plus simple à lire | ~labGlass, ~labTry, ~vCompose, ~renderView, !stockRow ; actions : mixice |
 | `versions/v142.js` | 72 | ZESTE 1.42 : bar épuré, pictos du labo, Paramètres et À propos, nuit soignée | ~vBar, ~vCompose, ~settingsSheet, ~fxSheet, ~applyAmbient, !NEXT_SHEET_XFORM ; actions : about |
 | `versions/v143.js` | 71 | ZESTE 1.43 : « bouteille finie » d'un glissé, catégories repliables | ~stockRow, ~renderView, ~vBar ; actions : finish, barfold |
-| `versions/v144.js` | 24 | ZESTE 1.44 : retour haptique sur iPhone |  |
+| `versions/v144.js` | 31 | ZESTE 1.44 : retour haptique sur iPhone |  ; actions : sethaptic |
 | `versions/v146.js` | 41 | ZESTE 1.46 : Labo (Composer) — hiérarchie et mise en page | ~vCompose ; actions : mixclear |
 | `versions/v147.js` | 15 | ZESTE 1.47 : Bar et feuille de niveau — mise en page (rendu seulement) | ~stockRow, ~vBar |
 | `versions/v148.js` | 25 | ZESTE 1.48 : versement qui s'adapte à la place restante |  ; actions : mixpour |
 | `versions/v149.js` | 19 | ZESTE 1.49 : Labo (Composer) — retouches visuelles (rendu seulement) | ~vCompose |
 | `versions/v150.js` | 26 | ZESTE 1.50 : Labo (Composer) — débordement en un seul message, retouches (rendu seulement) | ~vCompose, ~toast, ~renderView, ~switchTab ; actions : mixice |
 | `versions/v151.js` | 4 | ZESTE 1.51 : Profil — l'engrenage du haut suffit (rendu seulement) | ~vProfil |
-| `versions/v152.js` | 43 | ZESTE 1.52 : fiche recette — doublons retirés, structure, en-tête (rendu seulement) | ~openSheet, ~paintSheet, !NEXT_SHEET_XFORM |
+| `versions/v152.js` | 44 | ZESTE 1.52 : fiche recette — doublons retirés, structure, en-tête (rendu seulement) | ~openSheet, ~paintSheet, !NEXT_SHEET_XFORM |
 | `versions/v154.js` | 15 | ZESTE 1.54 : Labo — conseils, composition (rendu seulement) | ~vCompose |
 | `versions/v155.js` | 11 | ZESTE 1.55 : labo — accords sans alcool | ~pairings |
 | `versions/v156.js` | 31 | ZESTE 1.56 : Labo — contenance des verres réglable | ~healState, ~sanitizeBackup, ~vCompose, !labAvail ; actions : capsheet |

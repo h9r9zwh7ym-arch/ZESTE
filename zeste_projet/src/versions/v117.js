@@ -69,7 +69,7 @@ function openMapFS(){
   const el=document.createElement("div"); el.id="mapfs";
   el.innerHTML=`<div class="mf-top"><button class="close-x" data-a="mapclose" aria-label="Fermer">${IC.x}</button><b>Le monde des cocktails</b><div class="mf-zoom"><button data-a="mapzoom" data-z="0.6" aria-label="Zoomer">+</button><button data-a="mapzoom" data-z="1.6" aria-label="Dézoomer">−</button></div></div>
    <div class="mf-map"><svg id="mfsvg" preserveAspectRatio="xMidYMid meet"><rect x="-400" y="-300" width="1200" height="800" class="sea"/><g class="grat">${[...Array(13)].map((_,k)=>`<path d="M${k*30} 0V180"/>`).join("")}${[...Array(7)].map((_,k)=>`<path d="M0 ${k*30}H360"/>`).join("")}</g><path class="land" d="${WORLD_PATH}"/><g id="mfpins"></g></svg></div>
-   <div class="mf-panel"><div class="chips mf-reg">${Object.entries(REGIONS).map(([k,v])=>`<button class="chip" data-a="mapreg" data-r="${k}">${v[0]}</button>`).join("")}</div><div class="mf-city"><span class="muted">Glisse pour te déplacer, pince pour zoomer, touche une ville.</span></div></div>`;
+   <div class="mf-panel"><div class="chips mf-reg">${Object.entries(REGIONS).map(([k,v])=>`<button class="chip" data-a="mapreg" data-r="${k}">${v[0]}</button>`).join("")}</div><div class="mf-city"></div></div>`;
   document.body.appendChild(el); MFS={el,vb:{x:vb[0],y:vb[1],w:vb[2],h:vb[3]},ptr:new Map(),moved:false,sel:null};
   mfFit(); mfDraw(); requestAnimationFrame(()=>el.classList.add("open"));
   const svg=el.querySelector("#mfsvg");

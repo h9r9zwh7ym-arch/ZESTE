@@ -2306,3 +2306,28 @@ svg.phys .tiltfix.slosh .liq{animation:none!important}
   #v-labo .lab-stage .lab-top{margin-bottom:0}
 }
 #overlay.open.no-in{animation:none}
+/* ================= 1.87 (review) ================= */
+/* zones tactiles de 44 px sans changer le dessin : liens, chips, en-têtes repliables du bar, champ prix */
+:where(.link,.chip,button.cat-h){position:relative}
+.link::after{content:"";position:absolute;inset:-12px -6px}
+.chip::after{content:"";position:absolute;inset:-6px 0}
+button.cat-h::after{content:"";position:absolute;inset:-11px 0}
+.sheet-body .chips[style*="flex-wrap"],.starter{overflow:visible}   /* rangées qui passent à la ligne : rien à faire défiler, la zone de toucher n'est plus rognée */
+.sheet-body .chips[style*="flex-wrap"],.starter{row-gap:var(--z-s2)}   /* 32 px + 16 px entre deux rangées : 44 px de zone pour chaque chip, sans chevauchement */
+.price-in{min-height:44px}
+/* accent réservé à l'action principale et à l'état actif : boutons secondaires, « Tout voir », pastilles et étoiles d'affichage en neutre */
+.btn.sec{background:var(--fill);color:var(--label)}
+h2.sh .more{color:var(--label2)}
+.pill.match{background:var(--fill);color:var(--label)}
+.tmatch{color:var(--label)}
+.stars.sm span.on{color:var(--label)}
+.bar-head .go span{color:var(--label)}
+/* marge latérale de 20 px dans les feuilles */
+.sheet-body .chips{padding-left:var(--z-side);padding-right:var(--z-side)}
+/* Labo avec un seul rôle : pas de consigne, un tiret et deux pastilles (la seconde reste vide) */
+.lab-live.lab-none{display:flex;align-items:center;justify-content:center;gap:var(--z-s1)}
+.lab-none b{font-family:var(--rounded);font-size:var(--z-fs-h);color:var(--label2);font-weight:600}
+.lab-none i{width:8px;height:8px;border-radius:4px;box-shadow:inset 0 0 0 1.5px var(--label3)}
+.lab-none i.on{background:var(--label2);box-shadow:none}
+/* recherche sans résultat : une action au lieu d'une consigne */
+.empty-acts{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--z-s1);margin-top:var(--z-s2)}

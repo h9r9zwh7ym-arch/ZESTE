@@ -7,7 +7,7 @@ const LAB_GOAL_N={bal:"Équilibre",abv:"Force",fill:"Remplissage",ice:"Glace",ga
 { const _vc=vCompose; vCompose=function(){ let h=_vc(); const M=mixState(); if(!M.items.length) return h;
     const A=analyze(); if(!A) return h; const SC=labScore(A);
     let live;
-    if(SC.none) live=`<div class="lab-live lab-none">Ajoute un second ingrédient</div>`;
+    if(SC.none) live=`<div class="lab-live lab-none" role="img" aria-label="Pas encore de note : il faut deux ingrédients de rôle différent"><b>—</b><i class="on"></i><i></i></div>`;
     else { const [w]=labGrade(SC.score), low=SC.goals.filter(g=>g[0]!=="gar"&&g[2]<0.7);
       live=`<div class="lab-live" role="status"><b>${SC.score}</b> · ${esc(w)}</div>`+(low.length?`<div class="lab-goals warn">${low.map(([k,n,v])=>`<button class="goal ${v<0.4?"bad":"mid"}" data-a="labgoal" data-k="${k}"><i>!</i>${esc(n)}</button>`).join("")}</div>`:""); }
     h=h.replace(/<div class="lab-goals[^"]*">[\s\S]*?<\/div>|<div class="lab-allok">[\s\S]*?<\/div>/,"\u0000");
@@ -23,7 +23,7 @@ const LAB_GOAL_N={bal:"Équilibre",abv:"Force",fill:"Remplissage",ice:"Glace",ga
 // ---------- Écran « Et voilà ton cocktail » (point 7) ----------
 // Sous-score en chiffre à la place des coches, barres blanches (orange sous 70, rouge sous 40), chevron et conseil sous 85,
 // plus d'icône près de l'anneau ni de phrases « Tous les objectifs… » / « Touche un objectif… ».
-{ const _os=openServe; openServe=function(){ const M=mixState(); if(M.items.length){ const A=analyze(); if(A&&labScore(A).none){ toast("Ajoute un second ingrédient"); return; } }
+{ const _os=openServe; openServe=function(){ const M=mixState(); if(M.items.length){ const A=analyze(); if(A&&labScore(A).none){ toast("Pas de note avec un seul ingrédient"); return; } }
     _os(); if(!SV) return; const el=SV.el, SC=labScore(analyze());
     // contraste ≥ 4,5:1 du texte blanc : plus la couleur du cocktail est claire, plus le fond est assombri
     { const c=(el.style.getPropertyValue("--c")||"#888888").trim(), n=parseInt(c.slice(1),16), ch=v=>{ v/=255; return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4); };

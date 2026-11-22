@@ -68,7 +68,7 @@ function showTrophy(){
   const k=TRO_Q.shift(), T=TROPHIES.find(x=>x[0]===k); if(!T) return showTrophy(); TRO_SHOW=true; const tr=tierOf(k), tc=TIERS[tr];
   if(!FX("confetti")){ toast("Trophée débloqué : "+T[1],{icon:medal(k,true),trophy:1}); TRO_SHOW=false; setTimeout(showTrophy,2600); return; }
   const el=document.createElement("div"); el.className="tro-pop t-"+tr; el.style.setProperty("--tc",tc.c[1]);
-  el.innerHTML=`<div class="tp-bg"></div><div class="tp-rays"></div><div class="tp-in"><div class="tp-k">Trophée débloqué</div><div class="tp-m">${medal(k,true)}</div><span class="tp-tier">${tc.n}</span><div class="tp-n">${esc(T[1])}</div><div class="tp-d">${esc(T[2])}</div><div class="tp-tap">Touche pour continuer${TRO_Q.length?` · encore ${TRO_Q.length}`:""}</div></div>`;
+  el.innerHTML=`<div class="tp-bg"></div><div class="tp-rays"></div><div class="tp-in"><div class="tp-k">Trophée débloqué</div><div class="tp-m">${medal(k,true)}</div><span class="tp-tier">${tc.n}</span><div class="tp-n">${esc(T[1])}</div><div class="tp-d">${esc(T[2])}</div>${TRO_Q.length?`<div class="tp-tap">Encore ${TRO_Q.length}</div>`:""}</div>`;
   document.body.appendChild(el); requestAnimationFrame(()=>el.classList.add("open"));
   setTimeout(()=>{ const m=el.querySelector(".tp-m"); if(m){ const b=m.getBoundingClientRect(); confetti(b.left+b.width/2,b.top+b.height/2,tc.c[1]); if(tr==="gold"||tr==="plat") setTimeout(()=>confetti(b.left+b.width/2,b.top+b.height/3,tc.c[0]),350); } },650);
   const close=()=>{ el.classList.remove("open"); el.classList.add("out"); setTimeout(()=>{ el.remove(); TRO_SHOW=false; setTimeout(showTrophy,250); },380); };

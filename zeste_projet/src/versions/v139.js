@@ -16,7 +16,7 @@ function carnetSheet(k){
     if(k==="best") b=`<div class="group">${bestList().map(r=>recRow(r)).join("")}</div>`;
     if(k==="hist") b=`<div class="group">${S.hist.slice(-60).reverse().filter(h=>RMAP[h.id]).map(h=>recRow(RMAP[h.id],rel(h.t))).join("")}</div>${S.hist.length>60?`<div class="gf">Les 60 derniers verres.</div>`:""}`;
     if(k==="fam"||k==="spi") b=profPart(k==="fam"?"Familles explorées":"Tes spiritueux");
-    return {title:T[k],body:b||`<div class="empty"><b>Rien pour l’instant</b>Prépare et note quelques cocktails.</div>`}; });
+    return {title:T[k],body:b||`<div class="empty"><b>Rien pour l’instant</b></div>`}; });
 }
 Object.assign(ACT,{ carnet:(d)=>carnetSheet(d.k) });
 { const _famgo=ACT.famgo; ACT.famgo=(d,t,e)=>{ closeAll(); return _famgo(d,t,e); }; }

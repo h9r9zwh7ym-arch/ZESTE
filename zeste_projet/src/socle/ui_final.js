@@ -4,12 +4,12 @@ const FX_LIST=[
  ["sky","Ciel animé","Soleil, étoiles et poussières dorées qui bougent selon l’heure"],
  ["live","Verres vivants","Vagues, bulles qui montent et glaçons qui flottent"],
  ["stream","Jet de versement","Le cocktail coule dans le verre avant de le remplir"],
- ["tilt","Verre inclinable","Fais pencher le verre du bout du doigt, le liquide reste à niveau"],
+ ["tilt","Verre inclinable","Le verre penche sous le doigt, le liquide reste à niveau"],
  ["clink","Trinquer","Deux verres qui trinquent quand tu indiques avoir préparé un cocktail"],
  ["confetti","Confettis et cœurs","Pour les coups de cœur, les favoris et les trophées"],
  ["slide","Transitions directionnelles","Les onglets glissent dans le sens de ta navigation"],
  ["reveal","Apparition au défilement","Les sections arrivent en douceur quand tu changes d’onglet"],
- ["pull","Tirer pour une surprise","Tire l’accueil vers le bas pour lancer la roulette"]
+ ["pull","Tirer pour une surprise","La roulette se lance en tirant l’accueil vers le bas"]
 ];
 const FX_PRESETS={complet:{},standard:{stream:false,tilt:false,clink:false,slide:false,pull:false},reduit:Object.fromEntries(FX_LIST.map(x=>[x[0],false]))};
 const REDUCED=matchMedia("(prefers-reduced-motion: reduce)");
@@ -127,7 +127,7 @@ const ICS={ // pastilles de couleur façon réglages iOS
 };
 // 1.30 : pastilles des réglages en icônes Lucide, dans la teinte de la marque (une seule couleur, calme et lisible) ;
 // seule la suppression garde le rouge. sic() lit ICS[k][0] comme fond : les teintes suivent le thème clair/sombre.
-{ const M={user:"user-round",quiz:"sparkles",txt:"a-large-small",theme:"contrast",sky:"sun",clock:"clock",snd:"volume-2",anim:"wand-sparkles",home:"house",reco:"dice-5",ctx:"moon",na:"glass-water",brain:"rotate-ccw",unit:"beaker",money:"coins",basics:"shopping-basket",up:"upload",down:"download",trash:"trash-2",star:"star",info:"info",weight:"weight",sex:"person-standing"};
+{ const M={user:"user-round",quiz:"sparkles",txt:"a-large-small",theme:"contrast",sky:"sun",clock:"clock",snd:"volume-2",anim:"wand-sparkles",home:"house",reco:"dice-5",ctx:"moon",na:"glass-water",brain:"rotate-ccw",unit:"beaker",money:"coins",basics:"shopping-basket",up:"upload",down:"download",trash:"trash-2",star:"star",info:"info",weight:"weight",sex:"person-standing",hapt:"vibrate"};
   for(const k in M) ICS[k]=k==="trash"?["color-mix(in srgb,var(--red) 14%,transparent)",lu(M[k]).replace("<svg",'<svg style="color:var(--red)"')]:["var(--tint-bg)",lu(M[k])]; }
 const sic=k=>`<span class="set-ic" style="background:${ICS[k][0]}">${ICS[k][1]}</span>`;
 const srow=(k,label,right,act,extra="")=>`<${act?`button class="row tap" data-a="${act}" ${extra}`:`div class="row" ${extra}`} style="--inset:58px">${sic(k)}<div class="grow">${label}</div>${right||""}${act?IC.chev:""}</${act?"button":"div"}>`;
@@ -149,7 +149,7 @@ function settingsSheet(){
   });
 }
 function fxSheet(){
-  openSheet(()=>({title:"Animations",body:`<p class="body" style="margin-bottom:var(--z-s2)">Active ou coupe chaque animation. Les petites animations essentielles restent toujours là.</p><div class="group">${FX_LIST.map(([k,n,d])=>`<div class="row fx-row"><div class="grow"><div class="t">${esc(n)}</div><div class="s" style="white-space:normal">${esc(d)}</div></div>${sw(FX(k),"setfx",n,`data-k="${k}"`)}</div>`).join("")}</div><div class="sp16"></div><div class="btn-row"><button class="btn gray" data-a="fxpreview">${IC.play}Voir un aperçu</button></div>`}));
+  openSheet(()=>({title:"Animations",body:`<p class="body" style="margin-bottom:var(--z-s2)">Les petites animations essentielles restent toujours là.</p><div class="group">${FX_LIST.map(([k,n,d])=>`<div class="row fx-row"><div class="grow"><div class="t">${esc(n)}</div><div class="s" style="white-space:normal">${esc(d)}</div></div>${sw(FX(k),"setfx",n,`data-k="${k}"`)}</div>`).join("")}</div><div class="sp16"></div><div class="btn-row"><button class="btn gray" data-a="fxpreview">${IC.play}Voir un aperçu</button></div>`}));
 }
 function momentSheet(){
   const L=[["auto","Automatique","Suit l’heure réelle"],["matin","Matin","Aube pêche et soleil levant"],["aprem","Après-midi","Ciel bleu et plein soleil"],["apero","Apéro","L’heure dorée"],["soir","Soir","Mauve et premières étoiles"],["nuit","Nuit","Ciel étoilé et étoiles filantes"]];

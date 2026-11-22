@@ -40,10 +40,9 @@ const STATES={
         const ints=[...root.querySelectorAll('button,a,[data-a],label.hap,input,select,textarea,[role=button],summary')].filter(e=>!e.closest('.tabbar')||root===document.body);
         for(const e of ints){ const r=vis(e); if(!r) continue; if(e.matches('input.hap-sw')) continue; if(e.parentElement&&e.parentElement.closest('[data-a],button,label.hap')&&!e.matches('input,select,textarea')) continue;
           if(r.width>=44&&r.height>=44) continue;
-          // zone effective : test d'impact à ±22 px du centre
-          const cx=r.left+r.width/2, cy=r.top+r.height/2; let hw=0,hh=0;
-          for(let d=22; d>=0; d-=2){ const a=document.elementFromPoint(cx-d,cy), z=document.elementFromPoint(cx+d,cy); if(a&&z&&(e.contains(a)||a===e)&&(e.contains(z)||z===e)){ hw=2*d; break; } }
-          for(let d=22; d>=0; d-=2){ const a=document.elementFromPoint(cx,cy-d), z=document.elementFromPoint(cx,cy+d); if(a&&z&&(e.contains(a)||a===e)&&(e.contains(z)||z===e)){ hh=2*d; break; } }
+          // zone effective : pixels touchés sur la ligne et la colonne qui passent par le centre (pas de 1 px, 30 px au-delà du bord)
+          const cx=r.left+r.width/2, cy=r.top+r.height/2, hit=(x,y)=>{ const a=document.elementFromPoint(x,y); return !!a&&(a===e||e.contains(a)); };
+          let hw=0,hh=0; for(let x=Math.floor(r.left-30);x<=r.right+30;x++) if(hit(x+0.5,cy)) hw++; for(let y=Math.floor(r.top-30);y<=r.bottom+30;y++) if(hit(cx,y+0.5)) hh++;
           if(hw<44||hh<44) out.small.push(`${e.tagName.toLowerCase()}.${(e.className&&e.className.baseVal==null?e.className:"").toString().split(" ").slice(0,2).join(".")}[${e.dataset.a||""}] ${Math.round(r.width)}×${Math.round(r.height)} (impact ${hw}×${hh}) «${(e.textContent||e.getAttribute('aria-label')||"").trim().slice(0,24)}»`); }
         const tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); let n; while((n=tw.nextNode())){ const t=n.textContent.trim(); if(!t) continue; const el=n.parentElement; if(!el||el.closest('svg')) continue; const r=vis(el); if(!r) continue;
           const fs=getComputedStyle(el).fontSize; out.fonts[fs]=(out.fonts[fs]||0)+1;

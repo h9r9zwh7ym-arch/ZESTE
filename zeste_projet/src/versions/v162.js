@@ -2,7 +2,7 @@
 // Radar de Cocktails : préréglage actif marqué, plus de consigne, la poignée la plus proche du doigt est saisie (zone de 44 px)
 let RADSEL=null;
 { const _rv=radarView; radarView=function(){ let h=_rv();
-    h=h.replace(/<div class="sh-sub"[^>]*>Fais glisser les points[^<]*<\/div>/,"").replace('<div class="chips" style="margin-bottom:6px">','<div class="chips rad-chips" style="margin-bottom:6px">');
+    h=h.replace(/<div class="sh-sub"[^>]*>Fais glisser les points[^<]*<\/div>/,"").replace('<div class="chips" style="margin-bottom:var(--z-s1)">','<div class="chips rad-chips" style="margin-bottom:var(--z-s1)">');
     if(RADSEL) h=h.replace(RADSEL==="mine"?'<button class="chip" data-a="radmine">':`<button class="chip" data-a="radpreset" data-v="${RADSEL}">`,m=>m.replace('class="chip"','class="chip on" aria-pressed="true"'));
     return h.replace("<b>Les plus proches</b>","<b>Les plus proches de ton goût</b>"); };
   const _rp=ACT.radpreset, _rm=ACT.radmine; ACT.radpreset=d=>{ RADSEL=d.v; _rp(d); }; ACT.radmine=d=>{ RADSEL="mine"; _rm(d); };

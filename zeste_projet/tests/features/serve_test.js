@@ -2,7 +2,7 @@
 // Sous-scores en chiffres (même mise en page), barres blanches / orange < 70 / rouge < 40, chevron et conseil seulement sous 85,
 // ni icône près de l'anneau, ni « Tous les objectifs… », ni « Touche un objectif… » ; « Plutôt … » et « À améliorer : … » gardés.
 // Contraste ≥ 4,5:1 de tous les textes blancs sur le fond coloré (mesuré sur les pixels, couleur pâle et couleur vive, clair et sombre).
-// Labo : « 78 · Réussi » à la place de « Tout est bon », « Ajoute un second ingrédient » avec un seul rôle, pastilles seulement < 70 ;
+// Labo : « 78 · Réussi » à la place de « Tout est bon », « — » et deux pastilles avec un seul rôle (1.87 : plus de consigne), pastilles seulement < 70 ;
 // « Pour aller plus loin » sans l'ingrédient de la suggestion du haut ni badge « Toujours là ».
 const {chromium}=require('playwright'); const path=require('path');
 const APP='file://'+path.join(__dirname,'../../dist/zeste.html');
@@ -49,7 +49,7 @@ const lum=(r,g,b)=>{ const f=c=>{ c/=255; return c<=0.03928?c/12.92:Math.pow((c+
     const d=document.querySelector(".lab-more"); const tip=[...document.querySelectorAll(".tip-one [data-id]")].map(x=>x.dataset.id); const pairs=d?[...d.querySelectorAll('.pair [data-a="mixadd1"]')].map(x=>x.dataset.id):[];
     return {empty,one,good,gw:labGrade(SCg.score)[0],gs:SCg.score,bad,bs:SCb.score,bw:labGrade(SCb.score)[0],low,tip,pairs,tl:d?/Toujours là/.test(d.innerHTML):false,proche:/Proche d’un classique/.test(document.querySelector("#v-labo").textContent.replace(/Ça ressemble à[\s\S]*/,"")),
       words:[39,40,69,70,84,85].map(s=>labGrade(s)[0])}; });
-  ok(!L.empty.live&&!L.empty.allok,"sans ingrédient : rien"); ok(L.one.live==="Ajoute un second ingrédient","un seul rôle : « "+L.one.live+" »"); ok(!L.one.subs,"sans note : sous-scores à 0 affichés"); ok(L.good.subs,"sous-scores absents avec une note");
+  ok(!L.empty.live&&!L.empty.allok,"sans ingrédient : rien"); ok(L.one.live==="—","un seul rôle : « "+L.one.live+" » (attendu : — et deux pastilles, sans consigne, 1.87)"); ok(!L.one.subs,"sans note : sous-scores à 0 affichés"); ok(L.good.subs,"sous-scores absents avec une note");
   ok(L.good.live===L.gs+" · "+L.gw&&!L.good.allok,"score en direct : « "+L.good.live+" »"); ok(L.bad.live===L.bs+" · "+L.bw,"score en direct (mauvais) : « "+L.bad.live+" »");
   ok(JSON.stringify(L.bad.chips)===JSON.stringify(L.low),"pastilles = sous-scores < 70 : "+JSON.stringify(L.bad.chips)+" / "+JSON.stringify(L.low)); ok(!L.good.chips.length||L.good.chips.every(c=>L.low),"pastilles bon mélange : "+L.good.chips);
   ok(!L.pairs.some(x=>L.tip.includes(x)),"« Pour aller plus loin » répète la suggestion du haut"); ok(!L.tl,"badge « Toujours là »"); ok(!L.proche,"« Proche d’un classique » hors « Ça ressemble à »");
