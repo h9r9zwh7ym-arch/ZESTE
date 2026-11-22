@@ -2,6 +2,9 @@
 # Assemble Zeste en un seul fichier HTML : dist/zeste.html. À lancer depuis la racine du projet.
 cd "$(dirname "$0")"
 mkdir -p dist
+# (1.87) nom du cache du service worker tiré de APP_VERSION : une nouvelle version recharge toujours le cache des iPhone
+V=$(sed -n 's/^const APP_VERSION="\([0-9.]*\)".*/\1/p' src/versions/v117.js)
+if [ -n "$V" ]; then sed "s/^const CACHE = \"zeste-[^\"]*\";/const CACHE = \"zeste-$V\";/" sw.js > sw.js.tmp && mv sw.js.tmp sw.js; fi
 # icônes (logo Zeste) incluses dans le fichier : l'app reste autonome, où qu'elle soit hébergée
 ICON=$(base64 -w0 assets/apple-touch-icon.png); FAV=$(base64 -w0 assets/favicon-32.png)
 # polices de la marque (OFL, voir assets/fonts) : Fraunces figée en version « soft », Figtree ; sous-ensemble latin, incluses aussi
