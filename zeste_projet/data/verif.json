@@ -1,5 +1,5 @@
 {
- "_note": "1.68 : vérification des recettes non classiques (hors c:1). Verdicts : ajouté (nouvelle recette 1.68, sourcée), conforme (≤ 25 % d'écart avec au moins une source), corrigé, maison : plausible. Les créations suisses (cr:1) restent « à tester » : voir tests/recaudit.js.",
+ "_note": "1.68 : vérification des recettes non classiques (hors c:1). Verdicts : ajouté (nouvelle recette 1.68, sourcée), conforme (≤ 25 % d'écart avec au moins une source), corrigé, maison : plausible. Les créations suisses (cr:1) restent « à tester » : voir tests/recaudit.js. 1.87 (review) : 36 recettes classiques hors IBA (plus l’IBA Tiki) vérifiées en ligne et 14 histoires (clé « histoires ») ; les autres classiques hors IBA restent à vérifier (voir REVIEW.md, annexe A).",
  "recettes": {
   "kentucky_mule": {
    "verdict": "conforme (45–60 ml de bourbon selon les sources)",
@@ -390,6 +390,263 @@
    "verdict": "corrigé : tequila reposado au lieu de blanco (recette de Phil Ward)",
    "source": "https://punchdrink.com/recipes/oaxaca-old-fashioned/",
    "date": "2026-10-18"
+  },
+  "gold_rush": {
+   "verdict": "conforme (2 oz bourbon, ¾ oz citron, ¾ oz sirop de miel)",
+   "source": "https://imbibemagazine.com/?p=37480",
+   "date": "2026-11-22"
+  },
+  "amaretto_sour": {
+   "verdict": "conforme (recette de Jeffrey Morgenthaler : 45 amaretto, 22,5 bourbon, 30 citron, 5 sirop 2:1, 15 blanc d’œuf)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/3263/amaretto-sour-by-jeffrey-morgenthaler",
+   "date": "2026-11-22"
+  },
+  "hugo": {
+   "verdict": "conforme à la version au sirop de sureau (l’original de 2005 utilisait un sirop de mélisse)",
+   "source": "https://en.wikipedia.org/wiki/Hugo_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "painkiller": {
+   "verdict": "conforme (Pusser’s : 4 ananas, 1 crème de coco, 1 orange, 2 rhum)",
+   "source": "https://pussersrum.com/blogs/cocktails/pussers-painkiller",
+   "date": "2026-11-22"
+  },
+  "brown_derby": {
+   "verdict": "conforme (1,5 oz bourbon, 1 oz pamplemousse, ½ oz sirop de miel)",
+   "source": "https://www.jeffreymorgenthaler.com/brown-derby/",
+   "date": "2026-11-22"
+  },
+  "jack_rose": {
+   "verdict": "conforme (45 calvados ou applejack, 22,5 citron, 15 grenadine)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/1039/jack-rose",
+   "date": "2026-11-22"
+  },
+  "gimlet": {
+   "verdict": "conforme à la version au citron vert frais (2 oz gin, ¾ oz citron vert, ½ à ¾ oz sirop)",
+   "source": "https://vinepair.com/cocktail-recipe/gimlet/",
+   "date": "2026-11-22"
+  },
+  "toronto": {
+   "verdict": "conforme (60 rye, 7,5 Fernet-Branca, 7,5 sirop, 2 traits d’Angostura)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/3442/toronto-cocktail",
+   "date": "2026-11-22"
+  },
+  "queens_park": {
+   "verdict": "conforme (2 oz rhum, ¾ oz citron vert, menthe ; sucre et Angostura selon Trader Vic, 1947)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/2740/queens-park-swizzle",
+   "date": "2026-11-22"
+  },
+  "air_mail": {
+   "verdict": "conforme (rhum, citron vert et miel 2:1:1 ; champagne de 30 à 60 ml selon les sources)",
+   "source": "https://en.wikipedia.org/wiki/Airmail_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "el_presidente": {
+   "verdict": "conforme (rhum, vermouth blanc, un peu de curaçao et de grenadine ; proportions variables)",
+   "source": "https://en.wikipedia.org/wiki/El_Presidente_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "old_pal": {
+   "verdict": "conforme (parts égales rye, Campari, vermouth sec) ; date de publication 1922 ou 1927 selon les sources, l’histoire dit « années 1920 »",
+   "source": "https://en.wikipedia.org/wiki/Old_pal",
+   "date": "2026-11-22"
+  },
+  "white_negroni": {
+   "verdict": "conforme (parts égales, comme l’original de Wayne Collins en 2001)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/3420/white-negroni",
+   "date": "2026-11-22"
+  },
+  "godfather": {
+   "verdict": "corrigé : amaretto 15 → 22,5 ml (2 parts de scotch pour 1 d’amaretto, comme la marque ; l’IBA donnait parts égales). Histoire : l’attribution à Brando est un récit de la marque, jamais confirmé",
+   "source": "https://en.wikipedia.org/wiki/Godfather_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "presbyterian": {
+   "verdict": "corrigé : bourbon → scotch (recette de référence au scotch, ginger ale et eau gazeuse)",
+   "source": "https://www.diffordsguide.com/en-au/cocktails/recipe/3091/presbyterian",
+   "date": "2026-11-22"
+  },
+  "kamikaze": {
+   "verdict": "conforme (30 vodka, 15 Cointreau, 15 citron vert, verre à shot) ; la note de l’app précise que la dose remplit deux shots",
+   "source": "https://www.masterofmalt.com/blog/post/cocktail-of-the-week-the-kamikaze/",
+   "date": "2026-11-22"
+  },
+  "fitzgerald": {
+   "verdict": "conforme pour le service (secoué, filtré dans un verre old fashioned) ; doses à confirmer dans The Craft of the Cocktail",
+   "source": "https://www.williams-sonoma.com/recipe/fitzgerald.html",
+   "date": "2026-11-22"
+  },
+  "rum_swizzle": {
+   "verdict": "conforme à la version de Difford’s (falernum) ; la Swizzle Inn met du triple sec : version différente, gardée",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/544/bermuda-rum-swizzle",
+   "date": "2026-11-22"
+  },
+  "iba_tiki": {
+   "verdict": "verre corrigé : verre tiki et glace pilée, comme l’IBA (le highball débordait)",
+   "source": "https://iba-world.com/iba-cocktail/iba-tiki/",
+   "date": "2026-11-22"
+  },
+  "tom_collins": {
+   "verdict": "conforme (environ 50 gin, 20 à 25 citron, 15 sirop, eau gazeuse)",
+   "source": "https://www.danmurphys.com.au/dans-daily/cocktails/tom-collins-cocktail-recipe",
+   "date": "2026-11-22"
+  },
+  "sbagliato": {
+   "verdict": "conforme (parts égales Campari et vermouth rouge, prosecco ; 1:1:1 courant)",
+   "source": "https://www.campari.com/our-cocktails/negroni-sbagliato/",
+   "date": "2026-11-22"
+  },
+  "white_russian": {
+   "verdict": "conforme (5 cl vodka, 2 cl liqueur de café, 3 cl crème)",
+   "source": "https://en.wikipedia.org/wiki/White_Russian_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "el_diablo": {
+   "verdict": "conforme (1½ oz tequila, ½ oz cassis, ½ oz citron vert, ginger beer)",
+   "source": "https://punchdrink.com/recipes/el-diablo-2/",
+   "date": "2026-11-22"
+  },
+  "death_afternoon": {
+   "verdict": "conforme (un jigger d’absinthe, champagne frappé, selon Hemingway, 1935)",
+   "source": "https://en.wikipedia.org/wiki/Death_in_the_Afternoon_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "hurricane": {
+   "verdict": "conforme (rhum, citron, sirop de passion 2:1:1)",
+   "source": "https://en.wikipedia.org/wiki/Hurricane_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "pimms_cup": {
+   "verdict": "conforme (50 ml Pimm’s No. 1, 150 ml de limonade, recette de la marque)",
+   "source": "https://www.diageobaracademy.com/en-zz/home/explore-all-recipes/pimms-cup",
+   "date": "2026-11-22"
+  },
+  "b52": {
+   "verdict": "conforme (parts égales liqueur de café, crème irlandaise, Grand Marnier, en couches ; dose plus généreuse que le shot standard)",
+   "source": "https://en.wikibooks.org/wiki/Bartending/Cocktails/B-52",
+   "date": "2026-11-22"
+  },
+  "hot_toddy": {
+   "verdict": "conforme (scotch, miel, citron, eau chaude ; proportions variables selon les sources)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/987/hot-toddy",
+   "date": "2026-11-22"
+  },
+  "dirty_martini": {
+   "verdict": "conforme (gin, vermouth sec et saumure d’olive autour de 5:1:1)",
+   "source": "https://www.recipetineats.com/dirty-martini/",
+   "date": "2026-11-22"
+  },
+  "kir_royal": {
+   "verdict": "conforme (1 part de cassis pour 9 de champagne, comme le Kir de l’IBA)",
+   "source": "https://en.wikipedia.org/wiki/Kir_royal",
+   "date": "2026-11-22"
+  },
+  "gin_gin_mule": {
+   "verdict": "conforme pour l’essentiel (Pegu Club : 1¾ oz gin, ¾ oz citron vert, 1 oz sirop, menthe) ; ginger beer de 30 à 60 ml selon les sources",
+   "source": "https://archive.jamesbeard.org/recipes/gin-gin-mule",
+   "date": "2026-11-22"
+  },
+  "bijou": {
+   "verdict": "conforme (parts égales gin, Chartreuse verte, vermouth rouge, trait de bitter orange : Harry Johnson, 1900)",
+   "source": "https://en.wikipedia.org/wiki/Bijou_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "pegu_club": {
+   "verdict": "conforme (entre la version de MacElhone 4:1:1 et la version moderne 2 oz / ¾ / ¾, deux bitters)",
+   "source": "https://punchdrink.com/recipes/pegu-club/",
+   "date": "2026-11-22"
+  },
+  "jasmine": {
+   "verdict": "conforme (Paul Harrington : 1½ oz gin, ¾ oz citron, ¼ oz Cointreau, ¼ oz Campari)",
+   "source": "https://imbibemagazine.com/?p=525",
+   "date": "2026-11-22"
+  },
+  "ward8": {
+   "verdict": "conforme (rye, citron, orange, grenadine ; proportions variables selon les sources)",
+   "source": "https://www.mentalfloss.com/food/alcohol/whats-right-way-make-ward-8",
+   "date": "2026-11-22"
+  },
+  "army_navy": {
+   "verdict": "conforme (60 gin, 22,5 citron, 15 orgeat, Angostura)",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/530/army-and-navy",
+   "date": "2026-11-22"
+  },
+  "rob_roy": {
+   "verdict": "conforme (60 scotch, 30 vermouth rouge, 2 traits d’Angostura)",
+   "source": "https://olivemagazine.com/recipes/cocktails-and-drinks/rob-roy",
+   "date": "2026-11-22"
+  }
+ },
+ "histoires": {
+  "corpse_reviver": {
+   "verdict": "corrigé : citation inversée — Craddock écrit que quatre bus d’affilée « dé-raniment » le cadavre",
+   "source": "https://www.saveur.com/article/Recipes/Corpse-Reviver-No-2",
+   "date": "2026-11-22"
+  },
+  "illegal": {
+   "verdict": "nuancé : attribution à Samuele Ambrosi rapportée par Wikipédia, origine inconnue selon Difford’s",
+   "source": "https://en.wikipedia.org/wiki/Illegal_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "schumli_pflumli": {
+   "verdict": "corrigé : aucune trace d’une chanson de Hazy Osterwald à ce sujet (son succès est le « Kriminaltango »), mention retirée",
+   "source": "https://hls-dhs-dss.ch/de/articles/020725",
+   "date": "2026-11-22"
+  },
+  "honeymoon": {
+   "verdict": "corrigé : publié par Ensslin en 1916, populaire au Brown Derby dans les années 1920",
+   "source": "https://www.diffordsguide.com/cocktails/recipe/969/honeymoon",
+   "date": "2026-11-22"
+  },
+  "mary_pickford": {
+   "verdict": "corrigé : le tournage à Cuba n’est pas attesté",
+   "source": "https://en.wikipedia.org/wiki/Mary_Pickford_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "godfather": {
+   "verdict": "corrigé : préférence de Brando = récit de la marque",
+   "source": "https://en.wikipedia.org/wiki/Godfather_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "panache": {
+   "verdict": "corrigé : en Suisse alémanique on dit Panaché ou Panasch",
+   "source": "https://www.yumda.com/de/lexikon/Radler.html",
+   "date": "2026-11-22"
+  },
+  "pastis": {
+   "verdict": "corrigé : « pastis » = mélange en provençal ; « pastisson » discuté",
+   "source": "https://www.lalanguefrancaise.com/dictionnaire/definition/pastis",
+   "date": "2026-11-22"
+  },
+  "french75": {
+   "verdict": "corrigé : recette actuelle publiée en 1927 (Here’s How) ; le « 75 » de MacElhone (1922) était différent",
+   "source": "https://en.wikipedia.org/wiki/French_75_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "tuxedo": {
+   "verdict": "corrigé : Tuxedo Club fondé en 1886, cocktail de la fin du XIXe siècle",
+   "source": "https://en.wikipedia.org/wiki/Tuxedo_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "eggnog": {
+   "verdict": "corrigé : la recette « de Washington » n’est pas authentifiée (Mount Vernon n’en a aucune trace)",
+   "source": "https://www.historynewsnetwork.org/article/the-real-story-of-george-washingtons-boozy-eggnog-",
+   "date": "2026-11-22"
+  },
+  "casino": {
+   "verdict": "conforme : première parution dans The Reminder de Jacob A. Didier (1909)",
+   "source": "https://en.wikipedia.org/wiki/Casino_(cocktail)",
+   "date": "2026-11-22"
+  },
+  "dons_daiquiri": {
+   "verdict": "conforme : version des années 1970 du Mona Daiquiri de 1934",
+   "source": "https://punchdrink.com/recipes/dons-special-daiquiri/",
+   "date": "2026-11-22"
+  },
+  "rabo_galo": {
+   "verdict": "conforme : années 1950, Cinzano à São Paulo (année exacte discutée)",
+   "source": "https://punchdrink.com/recipes/rabo-de-galo",
+   "date": "2026-11-22"
   }
  }
 }

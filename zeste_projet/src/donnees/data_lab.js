@@ -37,7 +37,7 @@ const TECH = [
  st:["Mets dans 250 ml de rhum blanc : les zestes de 6 citrons verts, 40 g de gingembre émincé, 20 clous de girofle et 50 g d’amandes grillées.","Laisse infuser 24 heures, puis filtre.","Ajoute 250 ml de sirop riche et 50 ml de jus de citron vert."],
  k:"Environ 1 mois au frigo.",u:["falernum"],p:["falernum"]},
 {id:"dryshake",n:"Dry shake",t:"1 min",lvl:"Facile",d:"La technique pour une mousse parfaite dans les cocktails au blanc d’œuf.",
- st:["Verse tous les ingrédients dans le shaker, sans glace.","Secoue fort 10 secondes : le blanc d’œuf s’émulsionne sans être dilué.","Ajoute la glace et secoue encore 12 secondes.","Variante « reverse dry shake » : secoue d’abord avec glace, filtre, puis secoue à nouveau sans glace. La mousse est encore plus dense."],
+ st:["Verse tous les ingrédients dans le shaker, sans glace.","Secoue fort 10 secondes : le blanc d’œuf s’émulsionne sans être dilué.","Ajoute la glace et secoue encore 12 secondes.","Variante « reverse dry shake » : secoue d’abord avec glace, filtre, puis secoue à nouveau sans glace. La mousse est encore plus dense.","Œuf très frais, conservé au frigo. Pour une femme enceinte ou une personne fragile, prends du blanc d’œuf pasteurisé (en brique, au rayon frais) ou de l’aquafaba."],
  k:"",u:["blanc_oeuf"],p:[]},
 {id:"glace",n:"Glace limpide",t:"24 h",lvl:"Moyen",d:"Les gros glaçons transparents des bars fondent lentement et changent un Old Fashioned.",
  st:["Remplis d’eau une petite glacière sans couvercle.","Mets-la au congélateur : l’eau gèle du haut vers le bas, et les bulles et impuretés descendent.","Retire le bloc après environ 24 heures, avant que le fond soit entièrement gelé.","Laisse-le tempérer quelques minutes, puis découpe des cubes avec un couteau à pain et un petit maillet."],
@@ -48,7 +48,7 @@ const TECH = [
 const PREP_TPL = [
 ["simple","Sirop simple","sirop_sucre",30],["riche","Sirop riche 2:1","sirop_sucre",60],["miel","Sirop de miel","sirop_miel",30],
 ["gingembre","Sirop de gingembre","sirop_gingembre",14],["grenadine","Grenadine maison","grenadine",21],["orgeat","Orgeat maison","orgeat",14],
-["sureau","Sirop de sureau","sirop_sureau",180],["oleo","Oleo saccharum",null,7],["cordial","Cordial de citron vert",null,14],
+["sureau","Sirop de sureau","sirop_sureau",30],["oleo","Oleo saccharum",null,7],["cordial","Cordial de citron vert",null,14],
 ["infusion","Infusion maison",null,120],["fatwash","Spiritueux fat-washé",null,90],["milkpunch","Milk punch clarifié",null,45],
 ["shrub","Shrub",null,30],["falernum","Falernum maison","falernum",30],["vanille","Sirop de vanille","sirop_vanille",30],["framboise","Sirop de framboise","sirop_framboise",14]
 ];

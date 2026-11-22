@@ -1,7 +1,7 @@
 // ---------- EXTENSION 2 : bouteilles de grande surface ----------
 ING_RAW.push(
-["rhum_epice","Rhum épicé","spirit",35,2,0,"e3w2",{col:"#B8762E",tip:"Captain Morgan Spiced ou Kraken, partout en grande surface. Vanille, cannelle et caramel : parfait avec du cola ou de la ginger beer."}],
-["tennessee","Tennessee whiskey","spirit",40,0,0,"w3",{col:"#C8862A",tip:"Jack Daniel’s ou Gentleman Jack : plus doux et plus rond qu’un bourbon, grâce à sa filtration au charbon d’érable."}],
+["rhum_epice","Rhum épicé","spirit",35,2,0,"e3w2",{subs:["rhum_ambre"],col:"#B8762E",tip:"Captain Morgan Spiced ou Kraken, partout en grande surface. Vanille, cannelle et caramel : parfait avec du cola ou de la ginger beer."}],
+["tennessee","Tennessee whiskey","spirit",40,0,0,"w3",{subs:["bourbon"],col:"#C8862A",tip:"Jack Daniel’s ou Gentleman Jack : plus doux et plus rond qu’un bourbon, grâce à sa filtration au charbon d’érable."}],
 ["grappa","Grappa","spirit",40,0,0,"f1h1",{col:"#F0EEE6",tip:"L’eau-de-vie de marc de raisin italienne, qu’on trouve aussi chez les producteurs tessinois. Nonino ou Nardini en grande surface."}],
 ["trasch","Träsch","spirit",40,0,0,"f3",{col:"#EEEBDD",tip:"L’eau-de-vie suisse de pommes et de poires, rustique et parfumée. Le compagnon traditionnel du café en Suisse alémanique."}],
 ["malibu","Malibu (coco)","liqueur",21,30,0,"k2f2",{col:"#F4F0E6",tip:"La liqueur de rhum à la noix de coco, partout en grande surface. Sucrée : réduis le sirop quand tu l’utilises."}],

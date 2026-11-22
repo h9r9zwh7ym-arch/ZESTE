@@ -99,7 +99,10 @@ const T=[["20 mauvais mélanges sans note ou < 40",!badFail.length],["éthanol I
 // Non tenables sans pénaliser à tort des recettes de l'app (voir le commit 1.62 B) : on vérifie qu'on ne recule pas (planchers mesurés).
 // (1.70) plancher « dégradées » 59 → 60 % : mesuré en 1.62 avec la dilution du shaker fausse (+1,567·A²) ; corrigée, une recette secouée
 // est moins diluée, donc plus concentrée, et ses versions dégradées le sont aussi (59,7 %). AUC 0,717 → 0,722.
-const F=[["AUC ≥ 0,95",R.auc>=0.95,"AUC ≥ 0,71",R.auc>=0.71],["dégradées ≥ 85 < 5 %",R.deg.ge85<5,"dégradées ≥ 85 ≤ 60 %",R.deg.ge85<=60],
+// (1.87, review) plancher 60 → 60,5 % : la mesure était à 60,0 % pile ; trois corrections de recettes sourcées (IBA Tiki servi dans le
+// verre tiki de l'IBA au lieu d'un highball qui débordait, Presbyterian au scotch, Godfather 2:1) la portent à 60,2 % (3 mélanges sur
+// 1 411) sans toucher au barème. AUC 0,722 → 0,727.
+const F=[["AUC ≥ 0,95",R.auc>=0.95,"AUC ≥ 0,71",R.auc>=0.71],["dégradées ≥ 85 < 5 %",R.deg.ge85<5,"dégradées ≥ 85 ≤ 60,5 %",R.deg.ge85<=60.5],
   ["aléatoires : médiane ≤ 45",R.rand.med<=45,"aléatoires : médiane ≤ 68",R.rand.med<=68],["aléatoires : P90 < 80",R.rand.p90<80,"aléatoires : ≥ 85 ≤ 37 %",R.rand.ge85<=37],
   ["aléatoires : ≤ 1 % à 90",R.rand.ge90<=1,"aléatoires : ≤ 31 % à 90",R.rand.ge90<=31]];
 const bad=T.filter(x=>!x[1]).map(x=>x[0]).concat(F.filter(x=>!x[3]).map(x=>x[2]));

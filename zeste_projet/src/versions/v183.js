@@ -19,7 +19,7 @@ Object.assign(GNAME_SHORT,{nick:"verre",julep:"timbale",hurricane:"verre",tiki:"
 // Labo : choix et contenances (Nick & Nora 15 cl, julep 35 cl, hurricane 45 cl, tiki 45 cl)
 [["nick","Nick & Nora",150],["julep","Julep",350],["hurricane","Hurricane",450],["tiki","Tiki",450]].forEach(x=>{ if(!LGLASS.some(y=>y[0]===x[0])){ LGLASS.push(x); LCAP[x[0]]=x[2]; } });
 // Recettes servies traditionnellement dans ces verres
-const GLASS_FIX={nick:["martinez","last_word","hanky_panky","bijou","tuxedo"],julep:["mint_julep"],hurricane:["hurricane","pina_colada"],tiki:["zombie","scorpion","painkiller","fog_cutter","navy_grog"]};
+const GLASS_FIX={nick:["martinez","last_word","hanky_panky","bijou","tuxedo"],julep:["mint_julep"],hurricane:["hurricane","pina_colada"],tiki:["zombie","scorpion","painkiller","fog_cutter","navy_grog","iba_tiki"]};   // (1.87) IBA Tiki : verre tiki et glace pilée selon l’IBA
 function applyGlassFix(){ Object.entries(GLASS_FIX).forEach(([g,ids])=>ids.forEach(id=>{ const r=RMAP[id]; if(r&&r.g!==g){ r.g=g; delete r._m; delete r._sh; } })); GFULL={}; THUMB={}; }
 applyGlassFix();
 { const _b=buildRecipes; buildRecipes=function(){ const r=_b.apply(this,arguments); applyGlassFix(); return r; }; }
